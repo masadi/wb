@@ -142,7 +142,7 @@
 
 
         created() {
-            axios.get('/users')
+            axios.get('/api/users')
                 .then(({data}) => this.users = data);
         },
 
