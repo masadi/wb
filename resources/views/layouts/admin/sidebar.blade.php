@@ -4,7 +4,7 @@
     <!--router-link tag="a" to="/dashboard" class="brand-link"-->
         <img src="/images/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">PMP SMK</span>
+        <span class="brand-text font-weight-light">APM SMK</span>
     <!--/router-link-->
     </a>
 
