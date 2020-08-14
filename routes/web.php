@@ -17,8 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
+Auth::routes(['register' => false]);
+Route::get('/{query}', function () {
+    return view('welcome');
+});
 #Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/{vue_capture?}', function () {
     if (Auth::check()) {

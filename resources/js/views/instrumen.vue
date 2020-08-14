@@ -8,7 +8,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <app-instrumen :items="items" :fields="fields" :meta="meta" :editUrl="'/edit/'" :title="'Hapus Instrumen'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" @delete="handleDelete" @row-click="onRowClick"/>
+                                <app-instrumen :items="items" :fields="fields" :meta="meta" :editUrl="'/edit/'" :title="'Hapus Instrumen'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" @delete="handleDelete"/>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,6 @@ export default {
                 {key: 'category', sortable: true},
                 {key: 'created_at', sortable: true},
                 {key: 'actions', sortable: false}, //TAMBAHKAN CODE INI
-                {key: 'edit', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META
@@ -84,6 +83,9 @@ export default {
         deletePostData(id) {
             axios.delete(`/api/instrumen/${id}`).then(() => this.loadPostsData())
         },
+        editPostData(id) {
+            axios.get(`/api/instrumen/${id}`).then(() => this.loadPostsData())
+        },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
         handlePerPage(val) {
             this.per_page = val //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
@@ -109,13 +111,6 @@ export default {
         },
         handleDelete(val) {
             this.deletePostData(val.id)
-        },
-        edit: function(id){
-			return "#"
-        },
-        onRowClick(event){
-            console.log(event)
-            this.$router.push(`/details/${event.row.id}`);
         }
     }
 }

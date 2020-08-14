@@ -1,10 +1,9 @@
 <template>
     <div>
-      
+        <div class="row">
       	<!-- BLOCK INI AKAN MENGHANDLE LOAD DATA PERPAGE, DENGAN DEFAULT ADALAH 10 DATA -->
         <div class="col-md-4 mb-2">
             <div class="form-inline">
-                <label class="mr-2">Showing</label>
                 <!-- KETIKA SELECT BOXNYA DIGANTI, MAKA AKAN MENJALANKAN FUNGSI loadPerPage -->
                 <select class="form-control" v-model="meta.per_page" @change="loadPerPage">
                     <option value="10">10</option>
@@ -12,7 +11,7 @@
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                <label class="ml-2">Entries</label>
+                <label class="ml-2">Entri</label>
             </div>
         </div>
       
@@ -24,7 +23,7 @@
                 <input type="text" class="form-control" @input="search">
             </div>
         </div>
-      
+      </div>
       	<!-- BLOCK INI AKAN MENGHASILKAN LIST DATA DALAM BENTUK TABLE MENGGUNAKAN COMPONENT TABLE DARI BOOTSTRAP VUE -->
         
             <!-- :ITEMS ADALAH DATA YANG AKAN DITAMPILKAN -->
@@ -32,14 +31,16 @@
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
-                    <!-- TOMBOL EDIT HANYA AKAN DITAMPILKAN, JIKA PROPS DARI editUrl ADA VALUENYA -->
-                    <a :href="editUrl" v-if="editUrl" class="btn btn-warning btn-sm">Edit</a>
-                    <!-- TOMBOL DELETE AKAN MEMBUKA MODAL KONFIRMASI -->
-                    <button class="btn btn-danger btn-sm" @click="openDeleteModal(row)">Delete</button>
+                    <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success" class="m-2">
+                        <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-search"></i> Detil</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="openEditModal(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="openDeleteModal(row)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                    </b-dropdown>
                 </template>
             </b-table>   
       
       	<!-- BAGIAN INI AKAN MENAMPILKAN JUMLAH DATA YANG DI-LOAD -->
+          <div class="row">
         <div class="col-md-6">
             <p>Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} items</p>
         </div>
@@ -56,6 +57,7 @@
                 aria-controls="dw-datatable"
             ></b-pagination>
         </div>
+        </div>
         <b-modal v-model="deleteModal" :title="title">
             <p>Kamu yakin ingin menghapus data ini?</p>
             <template v-slot:modal-footer>
@@ -65,18 +67,61 @@
                         size="sm"
                         @click="deleteModal=false"
                     >
-                        Close
+                        Batal
                     </b-button>
                     <!-- JIKA TOMBOL DELETE DITEKAN, MAKA FUNGSI deleteModalButton AKAN DIJALANKAN -->
                     <b-button
-                        variant="primary"
+                        variant="danger"
                         size="sm"
                         @click="deleteModalButton"
                     >
-                        Delete
+                        Hapus
                     </b-button>
                 </div>
             </template>
+        </b-modal>
+        <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Instrumen">
+            {{ modalText }}
+            <template v-slot:modal-footer>
+                <div class="w-100 float-right">
+                    <b-button
+                        variant="secondary"
+                        size="sm"
+                        @click="showModal=false"
+                    >
+                        Tutup
+                    </b-button>
+                </div>
+            </template>
+        </b-modal>
+        <b-modal id="modal-prevent-closing" size="xl" v-model="editModal" title="Edit Instrumen" @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk">
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          :state="nameState"
+          label="Name"
+          label-for="name-input"
+          invalid-feedback="Name is required"
+        >
+          <b-form-input
+            id="name-input"
+            v-model="name"
+            :state="nameState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+      <template v-slot:modal-footer="{ ok, cancel, hide }">
+            <!--b>Custom Footer</b-->
+            <!-- Emulate built in modal footer ok and cancel button actions -->
+            <b-button size="sm" variant="success" @click="ok()">
+                Simpan
+            </b-button>
+            <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
+                Batal
+            </b-button>
+        </template>
         </b-modal>
     </div>
 </template>
@@ -112,11 +157,17 @@ export default {
     },
     data() {
         return {
+            name: '',
+            nameState: null,
+            submittedNames: [],
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
             sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
             //TAMBAHKAN DUA VARIABLE INI UNTUK MENGHANDLE MODAL DAN DATA YANG AKAN DIHAPUS
             deleteModal: false,
+            showModal: false,
+            editModal: false,
+            modalText: '',
             selected: null 
         }
     },
@@ -165,7 +216,45 @@ export default {
         deleteModalButton() {
             this.$emit('delete', this.selected)
             this.deleteModal = false
-        }
+        },
+        openShowModal(row) {
+            console.log(row.item.title);
+            this.showModal = true
+            this.modalText = row.item.title
+            this.selected = row.item
+        },
+        openEditModal(row) {
+            this.editModal = true
+        },
+        checkFormValidity() {
+            const valid = this.$refs.form.checkValidity()
+            this.nameState = valid
+            return valid
+        },
+        resetModal() {
+            this.name = ''
+            this.nameState = null
+        },
+        handleOk(bvModalEvt) {
+            // Prevent modal from closing
+            bvModalEvt.preventDefault()
+            // Trigger submit handler
+            this.handleSubmit()
+        },
+        handleSubmit() {
+            // Exit when the form isn't valid
+            if (!this.checkFormValidity()) {
+                return
+            }
+            // Push the name to submitted names
+            this.submittedNames.push(this.name)
+            console.log(this.submittedNames)
+            // Hide the modal manually
+            this.$nextTick(() => {
+                this.$bvModal.hide('modal-prevent-closing')
+                this.editModal = false
+            })
+        },
     }
 }
 </script>
