@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,9 +21,9 @@ Route::get('/{query}', function () {
     return view('welcome');
 });
 #Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/{vue_capture?}', function () {
+Route::get('/app/{vue_capture?}', function () {
     if (Auth::check()) {
-    return view('admin');
+        return view('admin')->with(['user' => Auth::user()]);
     }
     return redirect('/login');
 })->where('vue_capture', '[\/\w\.-]*');

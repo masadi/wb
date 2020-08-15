@@ -23,7 +23,22 @@ import Form from "./utilities/Form";
 window.Form = Form;
 
 import router from './routes';
+import Swal from 'sweetalert2';
 
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
+window.Swal = Swal;
+window.Toast = Toast;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

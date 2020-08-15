@@ -6,12 +6,14 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
-
+use App\Traits\Uuid;
 class User extends Authenticatable
 {
-    use LaratrustUserTrait;
-    use Notifiable;
-
+    use LaratrustUserTrait, Notifiable, Uuid;
+    public $incrementing = false;
+    protected $keyType = 'string';
+	//protected $table = 'instrumens';
+	protected $primaryKey = 'user_id';
     /**
      * The attributes that are mass assignable.
      *

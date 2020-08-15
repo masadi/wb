@@ -1,7 +1,6 @@
 @extends('core.app')
 
 @section('content')
-
     <!-- Navbar -->
     @include('layouts.admin.nav')
     <!-- /.navbar -->

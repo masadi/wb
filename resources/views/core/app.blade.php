@@ -15,7 +15,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <style>
+        nav ul li ul:not(.dropdown-menu) {padding-left: 30px !important;}
+    </style>
+    <script>
+        window.user = {!! json_encode([
+            'user_id' => $user->user_id,
+        ]) !!};
+    </script>
 </head>
 <body class="hold-transition sidebar-mini dark text-sm">
 
