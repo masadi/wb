@@ -37,7 +37,7 @@ $user = auth()->user();
                 <li class="nav-item">
                     <router-link tag="a" to="/faq" class="nav-link">
                         <i class="nav-icon fas fa-comments"></i>
-                        <p>Galeri</p>
+                        <p>FAQ</p>
                     </router-link>
                 </li>
                 <li class="nav-item has-treeview">
