@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                FAQ Page
+                                FAQ Page gak muncul
                             </div>
                         </div>
                     </div>
