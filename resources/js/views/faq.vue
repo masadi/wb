@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                Blank Page
+                                FAQ Page
                             </div>
                         </div>
                     </div>
