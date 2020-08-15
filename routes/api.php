@@ -18,6 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/instrumen', 'InstrumenController@index');
+Route::get('/berita', 'BeritaController@index');
+Route::get('/get-kategori', 'BeritaController@kategori');
+Route::post('/berita', 'BeritaController@store');
+Route::delete('/berita/{id}', 'BeritaController@destroy');
 Route::get('/hitung-nilai-instrumen/{user_id}', 'InstrumenController@hitung_nilai');
 Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
 Route::get('/users', 'UsersController@index');

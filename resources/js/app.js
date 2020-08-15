@@ -18,7 +18,11 @@ import VueRouter from "vue-router";
 
 window.Vue = Vue;
 Vue.use(VueRouter);
-
+import { HasError, AlertError } from 'vform';
+import Multiselect from 'vue-multiselect'
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+Vue.component('multiselect', Multiselect)
 import Form from "./utilities/Form";
 window.Form = Form;
 
@@ -37,8 +41,11 @@ const Toast = Swal.mixin({
         toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 })
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 window.Swal = Swal;
 window.Toast = Toast;
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -61,5 +68,8 @@ window.Toast = Toast;
 
 new Vue({
     el: '#pmp_smk',
-    router
+    router,
+    //data: {
+    //user: `${user.user_id}`
+    //}
 });

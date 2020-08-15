@@ -10,6 +10,18 @@ let routes = [{
         component: require('./views/komponen').default
     },
     {
+        path: '/berita',
+        component: require('./views/berita').default
+    },
+    {
+        path: '/galeri',
+        component: require('./views/galeri').default
+    },
+    {
+        path: '/faq',
+        component: require('./views/faq').default
+    },
+    {
         path: '/aspek',
         component: require('./views/aspek').default
     },

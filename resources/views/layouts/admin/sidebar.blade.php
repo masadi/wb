@@ -15,9 +15,6 @@ $user = auth()->user();
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
-
                 <li class="nav-item">
                     <router-link tag="a" to="/beranda" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -25,6 +22,24 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 @if($user->isAbleTo('users-create'))
+                <li class="nav-item">
+                    <router-link tag="a" to="/berita" class="nav-link">
+                        <i class="nav-icon fas fa-newspaper"></i>
+                        <p>Berita</p>
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link tag="a" to="/galeri" class="nav-link">
+                        <i class="nav-icon fas fa-photo-video"></i>
+                        <p>Galeri</p>
+                    </router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link tag="a" to="/faq" class="nav-link">
+                        <i class="nav-icon fas fa-comments"></i>
+                        <p>Galeri</p>
+                    </router-link>
+                </li>
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="">
                         <i class="nav-icon fas fa-list"></i>

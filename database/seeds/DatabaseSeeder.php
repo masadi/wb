@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         //$this->call(InstrumenSeeder::class);
         $this->call(LaratrustSeeder::class);
+        $this->call(KategoriSeeder::class);
     }
 }
