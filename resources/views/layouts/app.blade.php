@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="{{asset('vendor/adminlte/dist/css/adminlte.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!--link rel="shortcut icon" href="{{asset('favicons/favicon.ico')}}" /-->
+    <style>
+        .header{
+            background-image: url('{{asset('vendor/img/bgheader-min.png')}}');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+    </style>
 </head>
 
 <body class="layout-top-nav">
@@ -25,7 +32,6 @@
                             <a href="{{url('/')}}"><img src="{{asset('vendor/img/kemdikbud.png')}}" alt=""
                                     class="img-responsive"></a>
                         </div>
-                        <img src="{{asset('vendor/img/smk-hebat.png')}}" alt="" class="img-responsive float-right my-4">
                         <div class="header-text">
                             <h1 class="mb-0">Direktorat Sekolah Menengah Kejuruan</h1>
                             <p class="lead mb-0"><strong>Direktorat Jenderal Pendidikan Vokasi</strong></p>
@@ -76,7 +82,9 @@
                                                      document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
-
+                            <a class="dropdown-item" href="{{ url('app/beranda') }}">
+                                Dashboard
+                            </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
