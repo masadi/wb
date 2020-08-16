@@ -17,12 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/instrumen', 'InstrumenController@index');
-Route::get('/berita', 'BeritaController@index');
+//Route::get('/instrumen', 'InstrumenController@index');
+//Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
 Route::get('/get-kategori', 'BeritaController@kategori');
+/*Route::get('/berita', 'BeritaController@index');
 Route::post('/berita', 'BeritaController@store');
-Route::delete('/berita/{id}', 'BeritaController@destroy');
+Route::delete('/berita/{id}', 'BeritaController@destroy');*/
 Route::get('/hitung-nilai-instrumen/{user_id}', 'InstrumenController@hitung_nilai');
-Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
-Route::get('/users', 'UsersController@index');
-Route::post('/users', 'UsersController@create');
+//Route::get('/users', 'UsersController@index');
+//Route::post('/users', 'UsersController@create');
+Route::resource('users', 'UsersController');
+Route::resource('komponen', 'KomponenController');
+Route::resource('berita', 'BeritaController');
+Route::resource('instrumen', 'InstrumenController');

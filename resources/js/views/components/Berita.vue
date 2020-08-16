@@ -43,98 +43,68 @@
                 </template> 
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
-                        <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-search"></i> Detil</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="openEditModal(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="openDeleteModal(row)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="deleteData(row.item.id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
                 </template>
             </b-table>   
       
       	<!-- BAGIAN INI AKAN MENAMPILKAN JUMLAH DATA YANG DI-LOAD -->
-          <div class="row">
-        <div class="col-md-6">
-            <p>Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} items</p>
-        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} items</p>
+            </div>
       
-      	<!-- BLOCK INI AKAN MENJADI PAGINATION DARI DATA YANG DITAMPILKAN -->
-        <div class="col-md-6">
-          	<!-- DAN KETIKA TERJADI PERGANTIAN PAGE, MAKA AKAN MENJALANKAN FUNGSI changePage -->
-            <b-pagination
-                v-model="meta.current_page"
-                :total-rows="meta.total"
-                :per-page="meta.per_page"
-                align="right"
-                @change="changePage"
-                aria-controls="dw-datatable"
-            ></b-pagination>
+            <!-- BLOCK INI AKAN MENJADI PAGINATION DARI DATA YANG DITAMPILKAN -->
+            <div class="col-md-6">
+                <!-- DAN KETIKA TERJADI PERGANTIAN PAGE, MAKA AKAN MENJALANKAN FUNGSI changePage -->
+                <b-pagination
+                    v-model="meta.current_page"
+                    :total-rows="meta.total"
+                    :per-page="meta.per_page"
+                    align="right"
+                    @change="changePage"
+                    aria-controls="dw-datatable"
+                ></b-pagination>
+            </div>
         </div>
+        <!--modal-->
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEdit" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Perbaharui Berita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form @submit.prevent="updateData()">
+                    <div class="modal-body">
+                        <input v-model="form.user_id" type="hidden" name="user_id" id="user_id">
+                        <div class="form-group">
+                            <label>Judul</label>
+                            <input v-model="form.judul" type="text" name="judul"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('judul') }">
+                            <has-error :form="form" field="judul"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Isi Berita</label>
+                            <textarea v-model="form.isi_berita" name="isi_berita"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('isi_berita') }" autocomplete="false">
+                            </textarea>
+                            <has-error :form="form" field="isi_berita"></has-error>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
         </div>
-        <b-modal v-model="deleteModal" :title="title">
-            <p>Kamu yakin ingin menghapus data ini?</p>
-            <template v-slot:modal-footer>
-                <div class="w-100 float-right">
-                    <b-button
-                        variant="secondary"
-                        size="sm"
-                        @click="deleteModal=false"
-                    >
-                        Batal
-                    </b-button>
-                    <!-- JIKA TOMBOL DELETE DITEKAN, MAKA FUNGSI deleteModalButton AKAN DIJALANKAN -->
-                    <b-button
-                        variant="danger"
-                        size="sm"
-                        @click="deleteModalButton"
-                    >
-                        Hapus
-                    </b-button>
-                </div>
-            </template>
-        </b-modal>
-        <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Berita">
-            {{ modalText }}
-            <template v-slot:modal-footer>
-                <div class="w-100 float-right">
-                    <b-button
-                        variant="secondary"
-                        size="sm"
-                        @click="showModal=false"
-                    >
-                        Tutup
-                    </b-button>
-                </div>
-            </template>
-        </b-modal>
-        <b-modal id="modal-prevent-closing" size="xl" v-model="editModal" title="Edit Instrumen" @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk">
-            <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          :state="judul"
-          label="Judul"
-          label-for="judul"
-          invalid-feedback="Name is required"
-        >
-          <b-form-input
-            id="judul"
-            v-model="judul"
-            :state="judul"
-            required
-            value="judul"
-          ></b-form-input>
-        </b-form-group>
-      </form>
-      <template v-slot:modal-footer="{ ok, cancel, hide }">
-            <!--b>Custom Footer</b-->
-            <!-- Emulate built in modal footer ok and cancel button actions -->
-            <b-button size="sm" variant="success" @click="ok()">
-                Simpan
-            </b-button>
-            <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
-                Batal
-            </b-button>
-        </template>
-        </b-modal>
     </div>
 </template>
 
@@ -169,18 +139,19 @@ export default {
     },
     data() {
         return {
-            name: '',
-            judul: '',
-            submittedNames: [],
+            editmode: false,
+            form: new Form({
+                id : '',
+                user_id: user.user_id,
+                judul : '',
+                isi_berita: '',
+                kategori: '',
+            }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
             sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
             //TAMBAHKAN DUA VARIABLE INI UNTUK MENGHANDLE MODAL DAN DATA YANG AKAN DIHAPUS
-            deleteModal: false,
-            showModal: false,
-            editModal: false,
-            modalText: '',
-            selected: null 
+            isLoading: false
         }
     },
     watch: {
@@ -221,42 +192,57 @@ export default {
             //KIRIM EMIT DENGAN NAMA SEARCH DAN VALUE SESUAI YANG DIKETIKKAN OLEH USER
             this.$emit('search', e.target.value)
         }, 500),
-        openDeleteModal(row) {
-            this.deleteModal = true
-            this.selected = row.item
+        editData(row) {
+            this.editmode = true
+            this.form.id = row.item.id
+            this.form.judul = row.item.judul
+            this.selectedKategori = row.item.kategori
+            this.form.isi_berita = row.item.isi_berita
+            $('#modalEdit').modal('show');
         },
-        deleteModalButton() {
-            this.$emit('delete', this.selected)
-            this.deleteModal = false
+        updateData(){
+            let id = this.form.id;
+            this.form.put('/api/berita/'+id).then((response)=>{
+                $('#modalEdit').modal('hide');
+                Toast.fire({
+                    icon: 'success',
+                    title: response.message
+                });
+                this.loadPerPage(10);
+            }).catch((e)=>{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
         },
-        openShowModal(row) {
-            this.showModal = true
-            this.modalText = row.item.isi_berita
-            this.selected = row.item
-        },
-        openEditModal(row) {
-            this.editModal = true
-            this.judul = row.item.judul
-        },
-        resetModal() {
-            this.name = ''
-            this.judul = ''
-        },
-        handleOk(bvModalEvt) {
-            // Prevent modal from closing
-            bvModalEvt.preventDefault()
-            // Trigger submit handler
-            this.handleSubmit()
-        },
-        handleSubmit() {
-            // Exit when the form isn't valid
-            // Push the name to submitted names
-            this.submittedNames.push(this.name)
-            console.log(this.submittedNames)
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.$bvModal.hide('modal-prevent-closing')
-                this.editModal = false
+        deleteData(id){
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini tidak dapat dikembalikan!",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.value) {
+                    return fetch('/api/berita/'+id, {
+                        method: 'DELETE',
+                    }).then(()=>{
+                    //this.form.delete('api/komponen/'+id).then(()=>{
+                        Swal.fire(
+                            'Berhasil!',
+                            'Berita berhasil dihapus',
+                            'success'
+                        ).then(()=>{
+                            this.loadPerPage(10);
+                        });
+                    }).catch((data)=> {
+                        Swal.fire("Failed!", data.message, "warning");
+                    });
+                }
             })
         },
     }

@@ -119,7 +119,21 @@ class BeritaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $messages = [
+            'judul.required'         => 'Judul Berita tidak boleh kosong',
+            'isi_berita.required'     => 'Isi Berita tidak boleh kosong',
+		];
+		$validator = Validator::make(request()->all(), [
+			'judul'          => 'required',
+            'isi_berita'          => 'required',
+		],
+		$messages
+        )->validate();
+        $berita = Berita::find($id);
+        $berita->judul = Str::title($request->judul);
+        $berita->isi_berita = $request->isi_berita;
+        $berita->save();
+        return response()->json(['message' => 'Berita berhasil diperbaharui']);
     }
 
     /**

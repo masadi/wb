@@ -27,26 +27,24 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <app-berita :items="items" :fields="fields" :meta="meta" :title="'Hapus Berita'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" @delete="handleDelete"/>
+                                <app-berita :items="items" :fields="fields" :meta="meta" :title="'Hapus Berita'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--modal-->
-        <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNew" aria-hidden="true">
+        <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" v-show="!editmode">Tambah Berita</h5>
-                    <h5 class="modal-title" v-show="editmode">Perbaharui Berita</h5>
+                    <h5 class="modal-title">Tambah Berita</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <form @submit.prevent="editmode ? updateData() : insertData()">
+                <form @submit.prevent="insertData()">
                     <div class="modal-body">
                         <input v-model="form.user_id" type="hidden" name="user_id" id="user_id">
                         <div class="form-group">
@@ -58,8 +56,8 @@
                         <div class="form-group">
                             <label>Kategori</label>
                             <multiselect v-model="form.kategori" :options="all_kategori" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="== Pilih Kategori ==" label="nama" track-by="nama" :preselect-first="true" :class="{ 'is-invalid': form.errors.has('kategori') }" @open="allKategori">
-    <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} kategori terpilih</span></template>
-  </multiselect>
+                                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} kategori terpilih</span></template>
+                            </multiselect>
                             <has-error :form="form" field="kategori"></has-error>
                         </div>
                     
@@ -100,7 +98,7 @@ export default {
             editmode: false,
             form: new Form({
                 id : '',
-                user_id: user.user_id,
+                user_id: '',
                 judul : '',
                 isi_berita: '',
                 kategori: '',
@@ -122,7 +120,6 @@ export default {
             sortByDesc: true, //ASCEDING
             selectedKategori: [],
             all_kategori: [],
-            isLoading: false
         }
     },
     components: {
@@ -130,17 +127,6 @@ export default {
         'app-berita': Berita //REGISTER COMPONENT DATATABLE
     },
     methods: {
-        limitText (count) {
-            return `and ${count} other countries`
-        },
-        asyncFind (query) {
-            console.log(query)
-            this.isLoading = true,
-            this.allKategori
-        },
-        clearAll () {
-            this.selectedKategori = []
-        },
         allKategori(){
             axios.get(`/api/get-kategori`).then(response => {
                 console.log(response.data.data)
@@ -176,12 +162,6 @@ export default {
                 }
             })
         },
-        deletePostData(id) {
-            axios.delete(`/api/berita/${id}`).then(() => this.loadPostsData())
-        },
-        editPostData(id) {
-            axios.get(`/api/berita/${id}`).then(() => this.loadPostsData())
-        },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
         handlePerPage(val) {
             this.per_page = val //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
@@ -205,25 +185,17 @@ export default {
 
             this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
         },
-        handleDelete(val) {
-            this.deletePostData(val.id)
-        },
-        editModal(user){
-            this.editmode = true;
-            this.form.reset();
-            $('#addNew').modal('show');
-            this.form.fill(user);
-        },
         newModal(){
             this.editmode = false;
             this.form.reset();
             this.form.user_id = user.user_id;
-            $('#addNew').modal('show');
+            console.log(this.form);
+            $('#modalAdd').modal('show');
         },
         insertData(){
             this.form.post('/api/berita').then((response)=>{
                 console.log(response);
-                $('#addNew').modal('hide');
+                $('#modalAdd').modal('hide');
                 Toast.fire({
                     icon: 'success',
                     title: response.message
