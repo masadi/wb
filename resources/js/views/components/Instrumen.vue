@@ -30,6 +30,12 @@
             <!-- :FIELDS AKAN MENJADI HEADER DARI TABLE, MAKA BERISI FIELD YANG SALING BERKORELASI DENGAN ITEMS -->
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
+                <template v-slot:cell(komponen)="row">
+                    {{row.item.indikator.atribut.aspek.komponen.nama}}
+                </template>
+                <template v-slot:cell(rumusan_pertanyaan)="row">
+                    {{row.item.pertanyaan}}
+                </template>
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success" class="m-2">
                         <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-search"></i> Detil</b-dropdown-item>
@@ -58,30 +64,36 @@
             ></b-pagination>
         </div>
         </div>
-        <b-modal v-model="deleteModal" :title="title">
-            <p>Kamu yakin ingin menghapus data ini?</p>
-            <template v-slot:modal-footer>
-                <div class="w-100 float-right">
-                    <b-button
-                        variant="secondary"
-                        size="sm"
-                        @click="deleteModal=false"
-                    >
-                        Batal
-                    </b-button>
-                    <!-- JIKA TOMBOL DELETE DITEKAN, MAKA FUNGSI deleteModalButton AKAN DIJALANKAN -->
-                    <b-button
-                        variant="danger"
-                        size="sm"
-                        @click="deleteModalButton"
-                    >
-                        Hapus
-                    </b-button>
-                </div>
-            </template>
-        </b-modal>
         <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Instrumen">
-            {{ modalText }}
+            <table class="table table-border">
+                <tr>
+                    <td>Komponen</td>
+                    <td>: {{ (modalText.indikator) ? (modalText.indikator.atribut) ? (modalText.indikator.atribut.aspek) ? modalText.indikator.atribut.aspek.komponen.nama : '-' : '-' : '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Aspek</td>
+                    <td>: {{ (modalText.indikator) ? (modalText.indikator.atribut) ? modalText.indikator.atribut.aspek.nama : '-' : '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Atribut</td>
+                    <td>: {{ (modalText.indikator) ? (modalText.indikator.atribut) ? modalText.indikator.atribut.nama : '-' : '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Indikator</td>
+                    <td>: {{ (modalText.indikator) ? modalText.indikator.nama : '-' }}</td>
+                </tr>
+                <tr>
+                    <td>Rumusan Pertanyaan</td>
+                    <td>: {{ modalText.pertanyaan }}</td>
+                </tr>
+                <!--span v-for="(list, index) in row.item.kategori">
+                    <span>{{list.nama}}</span><span v-if="index+1 < row.item.kategori.length">, </span>
+                </span-->
+                <tr v-for="(list, index) in modalText.subs">
+                    <td>Capaian Kinerja {{list.urut}}</td>
+                    <td>: {{ list.pertanyaan }}</td>
+                </tr>
+            </table>
             <template v-slot:modal-footer>
                 <div class="w-100 float-right">
                     <b-button
@@ -220,7 +232,7 @@ export default {
         openShowModal(row) {
             console.log(row.item.title);
             this.showModal = true
-            this.modalText = row.item.title
+            this.modalText = row.item
             this.selected = row.item
         },
         openEditModal(row) {

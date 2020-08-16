@@ -29,8 +29,8 @@ class BeritaController extends Controller
                     })
                     ->orWhere(function($query){
                         $query->whereHas('kategori', function($query) {
-                            //$query->where('nama', 'LIKE', '%' . request()->q . '%');
-                            $query->where('nama', 'asd');
+                            $query->where('nama', 'LIKE', '%' . request()->q . '%');
+                            //$query->where('nama', 'asd');
                         });
                     });
                     /*->orWhere('kategori', function($query){

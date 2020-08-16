@@ -29,6 +29,7 @@
         "admin-lte": "^3.0",
         "babel-loader": "^8.1.0",
         "bootstrap-vue": "^2.16.0",
+        "object-to-formdata": "^4.1.0",
         "vform": "^1.0.1",
         "vue-multiselect": "^2.1.6"
     }

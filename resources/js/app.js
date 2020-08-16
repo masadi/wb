@@ -25,7 +25,6 @@ Vue.component(AlertError.name, AlertError)
 Vue.component('multiselect', Multiselect)
 import Form from "./utilities/Form";
 window.Form = Form;
-
 import router from './routes';
 import Swal from 'sweetalert2';
 

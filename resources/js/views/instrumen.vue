@@ -46,10 +46,8 @@ export default {
         return {
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
-                {key: 'title', sortable: true},
-                {key: 'author', sortable: true},
-                {key: 'category', sortable: true},
-                {key: 'created_at', sortable: true},
+                {key: 'komponen', sortable: true},
+                {key: 'rumusan_pertanyaan', sortable: true},
                 {key: 'actions', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG

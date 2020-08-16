@@ -27,5 +27,8 @@ Route::get('/app/{vue_capture?}', function () {
     }
     return redirect('/login');
 })->where('vue_capture', '[\/\w\.-]*');
+Route::group(['prefix' => 'komponen'], function(){
+    Route::post('/upload', 'KomponenController@upload');
+});
 //Route::get('/users', 'UsersController@index');
 //Route::post('/users', 'UsersController@create');

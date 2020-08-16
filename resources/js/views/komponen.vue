@@ -44,7 +44,7 @@
                     </button>
                 </div>
 
-                <form @submit.prevent="insertData()">
+                <form @submit.prevent="insertData()" enctype="multipart/form-data" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Nama Komponen</label>
@@ -54,6 +54,12 @@
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
                             <has-error :form="form" field="nama"></has-error>
                         </div>
+                        <div class="form-group">
+                            <label>Import Excel</label>
+                            <input type="file" name="file" @change="fileUpload($event.target)"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('file') }">
+                            <has-error :form="form" field="file"></has-error>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -61,6 +67,14 @@
                         <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                   </form>
+                  <div class="progress">
+                        <!-- PROGRESS BAR DENGAN VALUE NYA KITA DAPATKAN DARI VARIABLE progressBar -->
+                        <div class="progress-bar" role="progressbar" 
+                            :style="{width: progressBar + '%'}" 
+                            :aria-valuenow="progressBar" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,7 +84,9 @@
     // VueJS components will run here.
     import Datatable from './components/Komponen.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
-
+    import objectToFormData from "./components/objectToFormData"; 
+    //window.objectToFormData = objectToFormData;
+    //const objectToFormData = window.objectToFormData
 export default {
     //KETIKA COMPONENT INI DILOAD
     created() {
@@ -79,10 +95,13 @@ export default {
     },
     data() {
         return {
+            progressBar: 0,
+            file: '',
             editmode: false,
             form: new Form({
                 id : '',
                 nama: '',
+                file: '',
             }),
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
@@ -104,6 +123,28 @@ export default {
         'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
     },
     methods: {
+        fileUpload(event) {
+            this.file = event.files[0]
+            this.isLoading = true
+            let formData = new FormData();
+            formData.append('file', this.file);
+            axios.post('/api/komponen/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                //FUNGSI INI YANG MEMILIKI PERAN UNTUK MENGUBAH SEBERAPA JAUH PROGRESS UPLOAD FILE BERJALAN
+                onUploadProgress: function( progressEvent ) {
+                    //DATA TERSEBUT AKAN DI ASSIGN KE VARIABLE progressBar
+                    this.progressBar = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total))
+                }.bind(this)
+            }).then((response) => {
+                setTimeout(() => {
+                    this.message = response.data
+                    this.isLoading = false
+                    console.log(response);
+                })
+            })
+        },
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1

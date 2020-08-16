@@ -9,7 +9,6 @@ class Aspek extends Model
     protected $table = 'aspek';
     protected $guarded = [];
     public function komponen(){
-        return $this->hasOne('App\Komponen');
-        //return $this->hasOne('App\Aspek', 'aspek_id', 'aspek_id');
+        return $this->belongsTo('App\Komponen');
     }
 }

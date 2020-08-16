@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Atribut extends Model
 {
     protected $table = 'atribut';
-	protected $guarded = [];
+    protected $guarded = [];
+    public function aspek(){
+        return $this->belongsTo('App\Aspek');
+    }
 }

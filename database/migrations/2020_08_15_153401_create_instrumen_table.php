@@ -15,11 +15,13 @@ class CreateInstrumenTable extends Migration
     {
         Schema::create('instrumen', function (Blueprint $table) {
             $table->uuid('instrumen_id');
-            $table->foreignId('indikator_id')->constrained('indikator')->onDelete('cascade');
+            $table->foreignId('indikator_id')->nullable()->constrained('indikator')->onDelete('cascade');
+            $table->uuid('ins_id')->nullable();
             $table->smallInteger('urut')->unsigned();
-            $table->string('pertanyaan');
+            $table->text('pertanyaan');
             $table->timestamps();
             $table->primary('instrumen_id');
+            $table->foreign('ins_id')->references('instrumen_id')->on('instrumen')->onDelete('cascade');
         });
     }
 

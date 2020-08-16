@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Rap2hpoutre\FastExcel\FastExcel;
 use App\Komponen;
+use App\Aspek;
+use App\Atribut;
+use App\Indikator;
+use App\Instrumen;
+use Carbon\Carbon;
 use Validator;
 class KomponenController extends Controller
 {
@@ -111,5 +117,68 @@ class KomponenController extends Controller
         $data = Komponen::find($id);
         $data->delete();
         return response()->json(['message' => 'Komponen berhasil dihapus']);
+    }
+    public function upload(Request $request){
+        $messages = [
+            'file.required'	=> 'File Upload tidak boleh kosong',
+            //'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
+        ];
+        $validator = Validator::make(request()->all(), [
+            //'file' => 'required|mimes:xlsx,csv',
+            'file' => 'required',
+        ],
+        $messages
+        )->validate();
+        $file = $request->file('file');
+        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move('uploads', $fileExcel);
+        $insert = 0;
+        $komponen = (new FastExcel)->import('uploads/'.$fileExcel, function ($item) use ($request, &$insert){
+            if($item['Komponen']){
+                $komponen = Komponen::updateOrCreate([
+                    'nama' => $item['Komponen'],
+                ]);
+                $aspek = Aspek::updateOrCreate([
+                    'komponen_id' => $komponen->id,
+                    'nama' => $item['Aspek'],
+                ]);
+                $atribut = Atribut::updateOrCreate([
+                    'aspek_id' => $aspek->id,
+                    'nama' => $item['Atribut'],
+                ]);
+                $indikator = Indikator::updateOrCreate([
+                    'atribut_id' => $atribut->id,
+                    'nama' => $item['Indikator Kinerja'],
+                ]);
+                $instrumen = Instrumen::updateOrCreate([
+                    'indikator_id' => $indikator->id,
+                    'urut' => 0,
+                    'pertanyaan' => $item['Rumusan Pertanyaan'],
+                ]);
+                for($i=1;$i<=5;$i++){
+                    Instrumen::updateOrCreate([
+                        'indikator_id' => $indikator->id,
+                        'ins_id' => $instrumen->instrumen_id,
+                        'urut' => $i,
+                        'pertanyaan' => $item['Capaian '.$i],
+                    ]);
+                }
+            }
+            $insert++;
+        });
+        if($insert){
+            $data = [
+                'title' => 'Berhasil',
+                'text' => 'Data Instrumen berhasil disimpan',
+                'icon' => 'success',
+            ];
+        } else {
+            $data = [
+                'title' => 'Gagal',
+                'text' => 'Data Instrumen gagal disimpan',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($data);
     }
 }

@@ -12,8 +12,10 @@ class Instrumen extends Model
 	protected $table = 'instrumen';
 	protected $primaryKey = 'instrumen_id';
     protected $guarded = [];
-    public function aspek(){
-        return $this->hasOne('App\Aspek');
-        //return $this->hasOne('App\Aspek', 'aspek_id', 'aspek_id');
+    public function indikator(){
+        return $this->belongsTo('App\Indikator');
+    }
+    public function subs(){
+        return $this->hasMany('App\Instrumen', 'ins_id', 'instrumen_id')->orderBy('urut', 'DESC');
     }
 }
