@@ -27,7 +27,10 @@ import Form from "./utilities/Form";
 window.Form = Form;
 import router from './routes';
 import Swal from 'sweetalert2';
-
+//import CKEditor from '@ckeditor/ckeditor5-vue';
+//Vue.use(CKEditor);
+import CKEditor from '@ckeditor/ckeditor5-vue';
+Vue.use(CKEditor);
 
 const Toast = Swal.mixin({
     toast: true,

@@ -90,9 +90,23 @@
                         </div>
                         <div class="form-group">
                             <label>Isi Berita</label>
-                            <textarea v-model="form.isi_berita" name="isi_berita"
+                            <!--ckeditor :editor="editor" v-model="form.isi_berita" :config="editorConfig" name="isi_berita" class="form-control" :class="{ 'is-invalid': form.errors.has('isi_berita') }"></ckeditor-->
+                            <ckeditor
+                                editor="classic"
+                                tag-name="textarea"
+                                v-model="form.isi_berita"
+                                :editor="editor"
+                                :config="editorConfig"
+                                :disabled="editorDisabled"
+                                @ready="onEditorReady"
+                                @focus="onEditorFocus"
+                                @blur="onEditorBlur"
+                                @input="onEditorInput"
+                                @destroy="onEditorDestroy"
+                            ></ckeditor>
+                            <!--textarea v-model="form.isi_berita" name="isi_berita"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('isi_berita') }" autocomplete="false">
-                            </textarea>
+                            </textarea-->
                             <has-error :form="form" field="isi_berita"></has-error>
                         </div>
                     </div>
@@ -110,7 +124,7 @@
 
 <script>
 import _ from 'lodash' //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
-
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export default {
     //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
     props: {
@@ -139,6 +153,12 @@ export default {
     },
     data() {
         return {
+            editor: ClassicEditor,
+            //editorData: '<p>Hello world!</p>',
+            editorConfig: {
+                //
+            },
+            editorDisabled: false,
             editmode: false,
             form: new Form({
                 id : '',
@@ -175,6 +195,29 @@ export default {
         }
     },
     methods: {
+        //CKEDITOR START
+        toggleEditorDisabled() {
+            this.editorDisabled = !this.editorDisabled;
+        },
+        destroyApp() {
+            app.$destroy();
+        },
+        onEditorReady( editor ) {
+            console.log( 'Editor is ready.', { editor } );
+        },
+        onEditorFocus( event, editor ) {
+            console.log( 'Editor focused.', { event, editor } );
+        },
+        onEditorBlur( event, editor ) {
+            console.log( 'Editor blurred.', { event, editor } );
+        },
+        onEditorInput( data, event, editor ) {
+            console.log( 'Editor data input.', { event, editor, data } );
+        },
+        onEditorDestroy( editor ) {
+            console.log( 'Editor destroyed.', { editor } );
+        },
+        //CKEDITOR END
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH

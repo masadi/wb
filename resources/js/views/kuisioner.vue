@@ -31,9 +31,75 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
+                        <div class="row">
+                            <div class="row">
+                        <!--div class="card">
                             <div class="card-body">
-                                <app-instrumen :items="items" :fields="fields" :meta="meta" :editUrl="'/edit/'" :title="'Hapus Instrumen'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" @delete="handleDelete"/>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>a</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="kuisioner in kuisioners">
+                                        <td>{{kuisioner.id}}</td>
+                                        <td>{{kuisioner.nama}}</td>
+                                        <td>a</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div-->
+                            <div class="timeline">
+                                    <!-- timeline item -->
+                                    <div>
+                                        <i class="fas fa-envelope bg-blue"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i> 12:05</span>
+                                            <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                                            <div class="timeline-body">
+                                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                                weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                                jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                                quora plaxo ideeli hulu weebly balihoo...
+                                            </div>
+                                            <div class="timeline-footer">
+                                                <a class="btn btn-primary btn-sm">Read more</a>
+                                                <a class="btn btn-danger btn-sm">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END timeline item -->
+                                    <!-- timeline item -->
+                                    <div>
+                                        <i class="fas fa-user bg-green"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                                            <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
+                                        </div>
+                                    </div>
+                                    <!-- END timeline item -->
+                                    <!-- timeline item -->
+                                    <div>
+                                        <i class="fas fa-comments bg-yellow"></i>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fas fa-clock"></i> 27 mins ago</span>
+                                            <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+                                            <div class="timeline-body">
+                                                Take me to your leader!
+                                                Switzerland is small and neutral!
+                                                We are more like Germany, ambitious and misunderstood!
+                                            </div>
+                                            <div class="timeline-footer">
+                                                <a class="btn btn-warning btn-sm">View comment</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,7 +111,7 @@
 
 <script>
     // VueJS components will run here.
-    import Instrumen from './components/Kuisioner.vue' //IMPORT COMPONENT DATATABLENYA
+    //import Instrumen from './components/Kuisioner.vue' //IMPORT COMPONENT DATATABLENYA
 import axios from 'axios' //IMPORT AXIOS
 
 export default {
@@ -53,29 +119,13 @@ export default {
     //KETIKA COMPONENT INI DILOAD
     created() {
         //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
-        this.loadPostsData()
+        //this.loadPostsData()
+        axios.get('/api/kuisioner').then(({data}) => this.kuisioners = data);
     },
     data() {
         return {
-            //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
-            fields: [
-                {key: 'title', sortable: true},
-                {key: 'author', sortable: true},
-                {key: 'category', sortable: true},
-                {key: 'created_at', sortable: true},
-                {key: 'actions', sortable: false}, //TAMBAHKAN CODE INI
-            ],
-            items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
-            meta: [], //JUGA BERLAKU UNTUK META
-            current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
-            per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
-            search: '',
-            sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
-            sortByDesc: false, //ASCEDING
+            kuisioners: [],
         }
-    },
-    components: {
-        'app-instrumen': Instrumen //REGISTER COMPONENT DATATABLE
     },
     methods: {
         hitung_nilai_kuisioner: function (event) {
@@ -106,65 +156,6 @@ export default {
             })
         },
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
-        loadPostsData() {
-            let current_page = this.search == '' ? this.current_page:1
-            //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/instrumen`, {
-                //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
-                params: {
-                    page: current_page,
-                    per_page: this.per_page,
-                    q: this.search,
-                    sortby: this.sortBy,
-                    sortbydesc: this.sortByDesc ? 'DESC':'ASC'
-                }
-            })
-            .then((response) => {
-                //JIKA RESPONSENYA DITERIMA
-                let getData = response.data.data
-                this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
-                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
-                this.meta = {
-                    total: getData.total,
-                    current_page: getData.current_page,
-                    per_page: getData.per_page,
-                    from: getData.from,
-                    to: getData.to
-                }
-            })
-        },
-        deletePostData(id) {
-            axios.delete(`/api/instrumen/${id}`).then(() => this.loadPostsData())
-        },
-        editPostData(id) {
-            axios.get(`/api/instrumen/${id}`).then(() => this.loadPostsData())
-        },
-        //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
-        handlePerPage(val) {
-            this.per_page = val //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
-            this.loadPostsData() //DAN REQUEST DATA BARU KE SERVER
-        },
-        //JIKA ADA EMIT PAGINATION YANG DIKIRIM, MAKA FUNGSI INI AKAN DIEKSEKUSI
-        handlePagination(val) {
-            this.current_page = val //SET CURRENT PAGE YANG AKTIF
-            this.loadPostsData()
-        },
-        //JIKA ADA DATA PENCARIAN
-        handleSearch(val) {
-            this.search = val //SET VALUE PENCARIAN KE VARIABLE SEARCH
-            this.loadPostsData() //REQUEST DATA BARU
-        },
-        //JIKA ADA EMIT SORT
-        handleSort(val) {
-            //MAKA SET SORT-NYA
-            this.sortBy = val.sortBy
-            this.sortByDesc = val.sortDesc
-
-            this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
-        },
-        handleDelete(val) {
-            this.deletePostData(val.id)
-        }
     }
 }
 </script>
