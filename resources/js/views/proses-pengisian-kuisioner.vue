@@ -18,6 +18,11 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
+                                    <div class="info-box bg-info">
+                                        <div class="info-box-content text-center">
+                                            <paginator :url ="`${url}`" v-on:update-pagination-data="updatePaginationData"></paginator>
+                                        </div>
+                                    </div>
                                     <div v-for="(value, name) in items">
                                         <h2>Aspek {{name}}</h2>
                                         <ol class="pl-4">
@@ -38,7 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-danger float-right row">Simpan</button>
+                                    <button type="submit" class="btn btn-danger float-right row" v-on:update-pagination-data="updatePaginationData">Simpan</button>
                                 </div>
                             </div>
                         </form>
@@ -54,6 +59,9 @@
     //KETIKA COMPONENT INI DILOAD
         data() {
             return {
+                url: `/api/get-kuisioner?user_id=${user.user_id}&komponen_id=${this.$route.params.id}`,
+                komponen_id: this.$route.params.id,
+                user_id: user.user_id,
                 nilai: null,
                 title:'-',
                 form: new Form({
@@ -64,31 +72,70 @@
                     komponen_id: {},
                     instrumen_id: {},
                 }),
-                items: []
+                articles: [],
+                items: [],
+                current_page: 0,
+                total: 0,
+                per_page: 0,
             }
         },
-        created() {
+        //created() {
             //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
-            this.loadPostsData()
-        },
+            //this.updatePaginationData('')
+        //},
         methods: {
+            updatePaginationData(event) {
+                let getData = event.data
+                this.current_page = getData.aspek.current_page
+                this.total = getData.aspek.total
+                this.per_page = getData.aspek.per_page
+                this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                this.title = getData.title
+                var tempData = {};
+                var tempIndikator = {};
+                var tempAtribut = {};
+                var tempAspek = {};
+                var tempKomponen = {};
+                $.each(getData.data, function(key, value) {
+                    $.each(value, function(index, val) {
+                        tempIndikator[val.instrumen_id] = val.indikator_id; 
+                        tempAtribut[val.instrumen_id] = val.indikator.atribut_id; 
+                        tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id; 
+                        tempKomponen[val.instrumen_id] = val.indikator.atribut.aspek.komponen_id; 
+                        if(val.jawaban){
+                            tempData[val.jawaban.instrumen_id] = val.jawaban.nilai; 
+                        }
+                    });
+                });
+                this.form.indikator_id = tempIndikator;
+                this.form.atribut_id = tempAtribut;
+                this.form.aspek_id = tempAspek;
+                this.form.komponen_id = tempKomponen;
+                this.form.instrumen_id = tempData;
+                //this.insertData();
+            },
             loadPostsData() {
+
                 //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-                /*axios.get(`/api/get-kuisioner`, {
+                axios.get(`/api/get-kuisioner`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                     params : {
-                        komponen_id: this.$route.params.id,
                         user_id: user.user_id,
+                        komponen_id: this.$route.params.id,
+                        page: this.current_page,
+                        //aktif: this.current_page + 1,
                     }
-                })*/
-                axios.post(`/api/get-kuisioner`, {
+                })
+                /*axios.post(`/api/get-kuisioner`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                     komponen_id: this.$route.params.id,
                     user_id: user.user_id,
-                })
+                })*/
                 .then((response) => {
+                    //this.$emit('update-url', response);
                     //JIKA RESPONSENYA DITERIMA
                     let getData = response.data
+                    this.current_page = getData.aspek.current_page
                     this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                     this.title = getData.title
                     var tempData = {};
@@ -117,18 +164,18 @@
             insertData(){
                 this.form.user_id = user.user_id
                 this.form.post('/api/simpan-jawaban').then((response)=>{
-                    console.log(response);
-                    Toast.fire({
+                    this.loadPostsData();
+                    /*Toast.fire({
                         icon: 'success',
                         title: response.message
                     });
-                    this.$router.push({ path: '/kuisioner' })
-                }).catch((e)=>{
+                    this.$router.push({ path: '/kuisioner' })*/
+                })/*.catch((e)=>{
                     Toast.fire({
                         icon: 'error',
                         title: 'Some error occured! Please try again'
                     });
-                })
+                })*/
             },
         }
     }

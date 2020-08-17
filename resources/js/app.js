@@ -67,6 +67,9 @@ window.Toast = Toast;
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import Paginator from './utilities/Paginator';
+//import './css/styles.css';
+Vue.component('paginator', Paginator);
 
 new Vue({
     el: '#pmp_smk',
