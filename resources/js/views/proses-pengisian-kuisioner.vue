@@ -165,11 +165,10 @@
                 this.form.user_id = user.user_id
                 this.form.post('/api/simpan-jawaban').then((response)=>{
                     this.loadPostsData();
-                    /*Toast.fire({
+                    Toast.fire({
                         icon: 'success',
-                        title: response.message
+                        title: 'Jawaban berhasil disimpan',
                     });
-                    this.$router.push({ path: '/kuisioner' })*/
                 })/*.catch((e)=>{
                     Toast.fire({
                         icon: 'error',
