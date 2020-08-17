@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
 Route::get('/get-kategori', 'BeritaController@kategori');
 /*Route::get('/berita', 'BeritaController@index');
-Route::post('/berita', 'BeritaController@store');
+
 Route::delete('/berita/{id}', 'BeritaController@destroy');*/
 Route::get('/hitung-nilai-instrumen/{user_id}', 'InstrumenController@hitung_nilai');
 //Route::get('/users', 'UsersController@index');
@@ -36,3 +36,6 @@ Route::resource('users', 'UsersController');
 Route::resource('komponen', 'KomponenController');
 Route::resource('berita', 'BeritaController');
 Route::resource('instrumen', 'InstrumenController');
+Route::post('/get-kuisioner', 'KuisionerController@proses');
+Route::get('/get-kuisioner', 'KuisionerController@proses');
+Route::post('/simpan-jawaban', 'KuisionerController@simpan_jawaban');

@@ -48,6 +48,16 @@ let routes = [{
     {
         path: '/kuisioner',
         component: require('./views/kuisioner').default
+    },
+    {
+        path: '/detil-pengisian-kuisioner/:id',
+        name: 'detil_pengisian',
+        component: require('./views/detil-pengisian-kuisioner').default
+    },
+    {
+        path: '/proses-pengisian-kuisioner/:id',
+        name: 'proses_pengisian',
+        component: require('./views/proses-pengisian-kuisioner').default
     }
 ];
 

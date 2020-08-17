@@ -17,7 +17,7 @@ class CreateJawabanTable extends Migration
             $table->uuid('jawaban_id');
             $table->uuid('user_id');
             $table->uuid('instrumen_id');
-            $table->string('jawaban');
+            $table->integer('nilai')->unsigned();
             $table->timestamps();
             $table->primary('jawaban_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
