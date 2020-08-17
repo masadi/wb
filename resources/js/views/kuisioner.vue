@@ -6,7 +6,7 @@
                     <div class="row">
                         <div class="col-md-9">
                             <h2>Perangkat Kuesioner</h2>
-                            <h1>Pemetaan Penjaminan Mutu Pendidikan</h1>
+                            <h1>Pemetaan Penjaminan Mutu SMK</h1>
                         </div>
                         <div class="col-md-3">
                             <div class="info-box bg-info">
@@ -31,44 +31,24 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                                    <!--div class="card">
-                                        <div class="card-body">
-                                            <table class="table table-hover">
-                                                <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>User</th>
-                                                    <th>a</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr v-for="kuisioner in kuisioners">
-                                                    <td>{{kuisioner.id}}</td>
-                                                    <td>{{kuisioner.nama}}</td>
-                                                    <td>a</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div-->
-                                    <div class="timeline">
-                                        <div v-for="(kuisioner, key) in kuisioners">
-                                            <i class="fas fa-check bg-blue"></i>
-                                            <div class="timeline-item">
-                                                <div class="timeline-body">
-                                                    <h2>Komponen {{kuisioner.nama}}</h2>
-                                                    <div class="progress" style="height: 30px;">
-                                                        <div class="progress-bar bg-success" role="progressbar" v-bind:style="'width: '+persen[key]+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{persen[key]}}%</div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-footer">
-                                                    <a class="btn btn-primary btn-flat" v-on:click="detilKuisioner(kuisioner.id)">Detil Pengisian Kuesioner</a>
-                                                    <a class="btn btn-danger btn-flat" v-on:click="prosesKuisioner(kuisioner.id)"> Pengisian Kuesioner </a>
-                                                </div>
-                                            </div>
+                        <div class="timeline">
+                            <div v-for="(kuisioner, key) in kuisioners">
+                                <i class="fas fa-check bg-blue"></i>
+                                <div class="timeline-item">
+                                    <div class="timeline-body">
+                                        <h2>Komponen {{kuisioner.nama}}</h2>
+                                        <div class="progress" style="height: 30px;">
+                                            <div class="progress-bar bg-success" role="progressbar" v-bind:style="'width: '+persen[key]+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{persen[key]}}%</div>
                                         </div>
                                     </div>
+                                    <div class="timeline-footer">
+                                        <a class="btn btn-primary btn-flat" v-on:click="detilKuisioner(kuisioner.id)">Detil Pengisian Kuesioner</a>
+                                        <a class="btn btn-danger btn-flat" v-on:click="prosesKuisioner(kuisioner.id)"> Pengisian Kuesioner </a>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
