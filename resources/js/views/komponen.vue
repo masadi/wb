@@ -139,9 +139,9 @@ export default {
                 }.bind(this)
             }).then((response) => {
                 setTimeout(() => {
-                    this.message = response.data
                     this.isLoading = false
-                    console.log(response);
+                    $('#modalAdd').modal('hide')
+                    this.loadPostsData()
                 })
             })
         },
