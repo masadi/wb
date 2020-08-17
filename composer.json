@@ -15,7 +15,8 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "rap2hpoutre/fast-excel": "^2.0",
-        "santigarcor/laratrust": "^6.1"
+        "santigarcor/laratrust": "^6.1",
+        "staudenmeir/eloquent-has-many-deep": "^1.12"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

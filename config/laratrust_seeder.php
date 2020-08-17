@@ -16,7 +16,15 @@ return [
             'users' => 'c,r,u,d',
             'referensi' => 'c,r,u,d',
             'instrumen' => 'c,r,u,d',
+            'news'  => 'c,r,u,d',
             'profile' => 'r,u',
+            'jawaban' => 'r',
+        ],
+        'author' => [
+            'news'  => 'c,r,u,d',
+            'profile' => 'r,u',
+            'referensi' => 'r',
+            'instrumen' => 'r',
             'jawaban' => 'r',
         ],
         'menteri' => [
