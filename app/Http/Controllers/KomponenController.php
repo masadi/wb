@@ -10,6 +10,7 @@ use App\Atribut;
 use App\Indikator;
 use App\Instrumen;
 use Carbon\Carbon;
+use File;
 use Validator;
 class KomponenController extends Controller
 {
@@ -166,6 +167,7 @@ class KomponenController extends Controller
             }
             $insert++;
         });
+        File::delete(public_path('uploads/'.$fileExcel));
         if($insert){
             $data = [
                 'title' => 'Berhasil',
