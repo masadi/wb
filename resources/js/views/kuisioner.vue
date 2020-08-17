@@ -76,47 +76,10 @@
 </template>
 
 <script>
-    // VueJS components will run here.
-    //import Instrumen from './components/Kuisioner.vue' //IMPORT COMPONENT DATATABLENYA
-import axios from 'axios' //IMPORT AXIOS
-
+import axios from 'axios'
 export default {
-    //props: ['user'],
-    //KETIKA COMPONENT INI DILOAD
     created() {
-        //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
-        //this.loadPostsData()
-        //axios.get('/api/kuisioner').then(({data}) => this.kuisioners = data);
-        axios.post(`/api/kuisioner`, {
-            user_id: user.user_id,
-        }).then((response) => {
-            console.log(response.data);
-            var tempData = {};
-            var tempKuisioner = {};
-            var tempPersen = {};
-            var total_jawaban = 0;
-            var total_kuisioner = 0;
-            $.each(response.data, function(key, value) {
-                tempData[key] = value.jawaban_count; 
-                var i = 0;
-                $.each(value.aspek, function(a, val) {
-                    i += val.instrumen_count;
-                });
-                let persen = (value.jawaban_count / i)*(100);
-                    persen = persen.toFixed(0);
-                tempKuisioner[key] = i; 
-                tempPersen[key] = persen; 
-                total_jawaban += value.jawaban_count;
-                total_kuisioner += i;
-            });
-            let persen_total = (total_jawaban / total_kuisioner)*(100);
-                persen_total = persen_total.toFixed(0);
-            this.persen_utama = persen_total;
-            this.persen = tempPersen;
-            this.jumlah_kuisioner = tempKuisioner;
-            this.jumlah_jawaban = tempData;
-            this.kuisioners = response.data
-        });
+        this.loadPostsData()
     },
     data() {
         return {
@@ -128,15 +91,44 @@ export default {
         }
     },
     methods: {
+        loadPostsData(){
+            axios.post(`/api/kuisioner`, {
+                user_id: user.user_id,
+            }).then((response) => {
+                var tempData = {};
+                var tempKuisioner = {};
+                var tempPersen = {};
+                var total_jawaban = 0;
+                var total_kuisioner = 0;
+                $.each(response.data, function(key, value) {
+                    tempData[key] = value.jawaban_count; 
+                    var i = 0;
+                    $.each(value.aspek, function(a, val) {
+                        i += val.instrumen_count;
+                    });
+                    let persen = (value.jawaban_count / i)*(100);
+                        persen = persen.toFixed(0);
+                    tempKuisioner[key] = i; 
+                    tempPersen[key] = persen; 
+                    total_jawaban += value.jawaban_count;
+                    total_kuisioner += i;
+                });
+                let persen_total = (total_jawaban / total_kuisioner)*(100);
+                    persen_total = persen_total.toFixed(0);
+                this.persen_utama = persen_total;
+                this.persen = tempPersen;
+                this.jumlah_kuisioner = tempKuisioner;
+                this.jumlah_jawaban = tempData;
+                this.kuisioners = response.data
+            });
+        },
         detilKuisioner: function (id) {
             this.$router.push({ name: 'detil_pengisian', params: { id: id } })
         },
         prosesKuisioner(id){
             this.$router.push({ name: 'proses_pengisian', params: { id: id } })
-            //this.$router.push({ path: `/proses-pengisian-kuisioner/${id}` })
         },
         hitung_nilai_kuisioner: function (event) {
-      // `this` inside methods points to the Vue instance
             Swal.fire({
                 title: 'Apakah Anda Yakin?',
                 text: "Proses ini akan sedikit memakan waktu!",
@@ -162,7 +154,6 @@ export default {
                 }
             })
         },
-        //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
     }
 }
 </script>
