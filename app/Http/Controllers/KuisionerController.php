@@ -11,9 +11,7 @@ class KuisionerController extends Controller
     public function index(Request $request, $query = NULL, $id = NULL){
         return Komponen::withCount(['jawaban' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
-        }, 'instrumen' => function($query){
-            $query->where('urut', 0);
-        }])->get();
+        }, 'indikator'])->with(['aspek'])->get();
     }
     public function proses(Request $request){
         $komponen = Komponen::find($request->komponen_id);

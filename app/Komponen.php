@@ -12,7 +12,12 @@ class Komponen extends Model
     public function jawaban(){
         return $this->hasMany('App\Jawaban', 'komponen_id', 'id');
     }
-    public function instrumen() {
-        return $this->hasManyDeep(Instrumen::class, [Indikator::class, Atribut::class]);
+    public function aspek(){
+        return $this->hasMany('App\Aspek', 'komponen_id', 'id')->withCount(['instrumen' => function($query){
+            $query->where('urut', 0);
+        }]);
+    }
+    public function indikator() {
+        return $this->hasManyDeep(Indikator::class, [Aspek::class, Atribut::class]);
     }
 }

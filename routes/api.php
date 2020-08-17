@@ -31,6 +31,7 @@ Route::group(['prefix' => 'komponen'], function(){
 });
 Route::group(['prefix' => 'kuisioner'], function(){
     Route::post('/', 'KuisionerController@index');
+    Route::get('/', 'KuisionerController@index');
     //Route::get('/{query?}/{id?}', 'KuisionerController@index');
 });
 Route::resource('users', 'UsersController');

@@ -22,10 +22,10 @@
                                         <h2>Aspek {{name}}</h2>
                                         <ol class="pl-4">
                                             <li class="h5 mb-1" v-for="(item, index) in value">
-                                                <input type="text" v-model="form.indikator_id[item.instrumen_id]">
-                                                <input type="text" v-model="form.atribut_id[item.instrumen_id]">
-                                                <input type="text" v-model="form.aspek_id[item.instrumen_id]">
-                                                <input type="text" v-model="form.komponen_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.indikator_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.atribut_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.aspek_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.komponen_id[item.instrumen_id]">
                                                 <span style="font-weight: 600;">{{item.pertanyaan}}</span>
                                                 <div class="form-group">
                                                     <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">

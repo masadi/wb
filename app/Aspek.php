@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Aspek extends Model
 {
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
     protected $table = 'aspek';
     protected $guarded = [];
     public function komponen(){
@@ -13,5 +14,8 @@ class Aspek extends Model
     }
     public function atribut(){
         return $this->hasMany('App\Atribut', 'aspek_id', 'id');
+    }
+    public function instrumen() {
+        return $this->hasManyDeep(Instrumen::class, [Atribut::class, Indikator::class]);
     }
 }

@@ -12,10 +12,10 @@
                             <div class="info-box bg-info">
                             <div class="info-box-content">
                                 <span class="info-box-text">Progres Pengisian Anda</span>
-                                <span class="info-box-number">70%</span>
+                                <span class="info-box-number">{{persen_utama}}%</span>
 
                                 <div class="progress">
-                                <div class="progress-bar" style="width: 70%"></div>
+                                <div class="progress-bar" v-bind:style="'width: '+persen_utama+'%;'"></div>
                                 </div>
                                 <span class="progress-description">
                                     <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="hitung_nilai_kuisioner">Hitung Nilai Kuisioner</button>
@@ -52,13 +52,13 @@
                                         </div>
                                     </div-->
                                     <div class="timeline">
-                                        <div v-for="kuisioner in kuisioners">
+                                        <div v-for="(kuisioner, key) in kuisioners">
                                             <i class="fas fa-check bg-blue"></i>
                                             <div class="timeline-item">
                                                 <div class="timeline-body">
                                                     <h2>Komponen {{kuisioner.nama}}</h2>
                                                     <div class="progress" style="height: 30px;">
-                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                                        <div class="progress-bar bg-success" role="progressbar" v-bind:style="'width: '+persen[key]+'%;'" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{persen[key]}}%</div>
                                                     </div>
                                                 </div>
                                                 <div class="timeline-footer">
@@ -90,11 +90,40 @@ export default {
         axios.post(`/api/kuisioner`, {
             user_id: user.user_id,
         }).then((response) => {
+            console.log(response.data);
+            var tempData = {};
+            var tempKuisioner = {};
+            var tempPersen = {};
+            var total_jawaban = 0;
+            var total_kuisioner = 0;
+            $.each(response.data, function(key, value) {
+                tempData[key] = value.jawaban_count; 
+                var i = 0;
+                $.each(value.aspek, function(a, val) {
+                    i += val.instrumen_count;
+                });
+                let persen = (value.jawaban_count / i)*(100);
+                    persen = persen.toFixed(0);
+                tempKuisioner[key] = i; 
+                tempPersen[key] = persen; 
+                total_jawaban += value.jawaban_count;
+                total_kuisioner += i;
+            });
+            let persen_total = (total_jawaban / total_kuisioner)*(100);
+                persen_total = persen_total.toFixed(0);
+            this.persen_utama = persen_total;
+            this.persen = tempPersen;
+            this.jumlah_kuisioner = tempKuisioner;
+            this.jumlah_jawaban = tempData;
             this.kuisioners = response.data
         });
     },
     data() {
         return {
+            persen_utama: 0,
+            persen: [],
+            jumlah_kuisioner: [],
+            jumlah_jawaban: [],
             kuisioners: [],
         }
     },
