@@ -22,6 +22,10 @@
                                         <h2>Aspek {{name}}</h2>
                                         <ol class="pl-4">
                                             <li class="h5 mb-1" v-for="(item, index) in value">
+                                                <input type="text" v-model="form.indikator_id[item.instrumen_id]">
+                                                <input type="text" v-model="form.atribut_id[item.instrumen_id]">
+                                                <input type="text" v-model="form.aspek_id[item.instrumen_id]">
+                                                <input type="text" v-model="form.komponen_id[item.instrumen_id]">
                                                 <span style="font-weight: 600;">{{item.pertanyaan}}</span>
                                                 <div class="form-group">
                                                     <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">
@@ -54,6 +58,10 @@
                 title:'-',
                 form: new Form({
                     user_id : '',
+                    indikator_id: {},
+                    atribut_id: {},
+                    aspek_id: {},
+                    komponen_id: {},
                     instrumen_id: {},
                 }),
                 items: []
@@ -84,16 +92,26 @@
                     this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                     this.title = getData.title
                     var tempData = {};
+                    var tempIndikator = {};
+                    var tempAtribut = {};
+                    var tempAspek = {};
+                    var tempKomponen = {};
                     $.each(getData.data, function(key, value) {
                         $.each(value, function(index, val) {
+                            tempIndikator[val.instrumen_id] = val.indikator_id; 
+                            tempAtribut[val.instrumen_id] = val.indikator.atribut_id; 
+                            tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id; 
+                            tempKomponen[val.instrumen_id] = val.indikator.atribut.aspek.komponen_id; 
                             if(val.jawaban){
                                 tempData[val.jawaban.instrumen_id] = val.jawaban.nilai; 
                             }
                         });
                     });
+                    this.form.indikator_id = tempIndikator;
+                    this.form.atribut_id = tempAtribut;
+                    this.form.aspek_id = tempAspek;
+                    this.form.komponen_id = tempKomponen;
                     this.form.instrumen_id = tempData;
-                    console.log(this.form.instrumen_id)
-                    //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
                 })
             },
             insertData(){

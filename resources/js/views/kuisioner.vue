@@ -86,7 +86,12 @@ export default {
     created() {
         //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
         //this.loadPostsData()
-        axios.get('/api/kuisioner').then(({data}) => this.kuisioners = data);
+        //axios.get('/api/kuisioner').then(({data}) => this.kuisioners = data);
+        axios.post(`/api/kuisioner`, {
+            user_id: user.user_id,
+        }).then((response) => {
+            this.kuisioners = response.data
+        });
     },
     data() {
         return {
@@ -99,6 +104,7 @@ export default {
         },
         prosesKuisioner(id){
             this.$router.push({ name: 'proses_pengisian', params: { id: id } })
+            //this.$router.push({ path: `/proses-pengisian-kuisioner/${id}` })
         },
         hitung_nilai_kuisioner: function (event) {
       // `this` inside methods points to the Vue instance

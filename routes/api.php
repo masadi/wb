@@ -30,7 +30,8 @@ Route::group(['prefix' => 'komponen'], function(){
     Route::post('/upload', 'KomponenController@upload');
 });
 Route::group(['prefix' => 'kuisioner'], function(){
-    Route::get('/{query?}/{id?}', 'KuisionerController@index');
+    Route::post('/', 'KuisionerController@index');
+    //Route::get('/{query?}/{id?}', 'KuisionerController@index');
 });
 Route::resource('users', 'UsersController');
 Route::resource('komponen', 'KomponenController');

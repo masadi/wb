@@ -11,4 +11,7 @@ class Indikator extends Model
     public function atribut(){
         return $this->belongsTo('App\Atribut');
     }
+    public function instrumen(){
+        return $this->hasMany('App\Instrumen', 'indikator_id', 'id');
+    }
 }

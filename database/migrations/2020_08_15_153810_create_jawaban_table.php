@@ -16,6 +16,10 @@ class CreateJawabanTable extends Migration
         Schema::create('jawaban', function (Blueprint $table) {
             $table->uuid('jawaban_id');
             $table->uuid('user_id');
+            $table->foreignId('komponen_id')->constrained('komponen')->onDelete('cascade');
+            $table->foreignId('aspek_id')->constrained('aspek')->onDelete('cascade');
+            $table->foreignId('atribut_id')->constrained('atribut')->onDelete('cascade');
+            $table->foreignId('indikator_id')->nullable()->constrained('indikator')->onDelete('cascade');
             $table->uuid('instrumen_id');
             $table->integer('nilai')->unsigned();
             $table->timestamps();

@@ -11,4 +11,7 @@ class Atribut extends Model
     public function aspek(){
         return $this->belongsTo('App\Aspek');
     }
+    public function indikator(){
+        return $this->hasMany('App\Indikator', 'atribut_id', 'id');
+    }
 }

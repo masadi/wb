@@ -11,4 +11,7 @@ class Aspek extends Model
     public function komponen(){
         return $this->belongsTo('App\Komponen');
     }
+    public function atribut(){
+        return $this->hasMany('App\Atribut', 'aspek_id', 'id');
+    }
 }
