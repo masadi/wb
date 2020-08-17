@@ -56,6 +56,7 @@ class LaratrustSeeder extends Seeder
                 if($key == 'admin'){
                     $user = \App\User::create([
                         'name' => 'Achmadi',
+                        'username' => 'masadi',
                         'email' => 'masadi.com@gmail.com',
                         'password' => bcrypt('12345678')
                     ]);
@@ -64,6 +65,7 @@ class LaratrustSeeder extends Seeder
                     for($i=1;$i<=10;$i++){
                         $user = \App\User::create([
                             'name' => ucwords(str_replace('_', ' ', $key)).' '.$i,
+                            'username' => strtolower(str_replace(' ', '_', $key)).' '.$i,
                             'email' => $key.'_'.$i.'@apmsmk.net',
                             'password' => bcrypt('12345678')
                         ]);
@@ -73,6 +75,7 @@ class LaratrustSeeder extends Seeder
                 // Create default user for each role
                     $user = \App\User::create([
                         'name' => ucwords(str_replace('_', ' ', $key)),
+                        'username' => strtolower(str_replace(' ', '_', $key)),
                         'email' => $key.'@apmsmk.net',
                         'password' => bcrypt('12345678')
                     ]);

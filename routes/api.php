@@ -36,9 +36,11 @@ Route::group(['prefix' => 'kuisioner'], function(){
     //Route::get('/{query?}/{id?}', 'KuisionerController@index');
 });
 Route::resource('users', 'UsersController');
+Route::resource('sekolah', 'SekolahController');
 Route::resource('komponen', 'KomponenController');
 Route::resource('berita', 'BeritaController');
 Route::resource('instrumen', 'InstrumenController');
 Route::post('/get-kuisioner', 'KuisionerController@proses');
 Route::get('/get-kuisioner', 'KuisionerController@proses');
 Route::post('/simpan-jawaban', 'KuisionerController@simpan_jawaban');
+Route::post('/sinkronisasi', 'HomeController@sinkron');
