@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                     <div class="timeline-footer">
-                                        <a class="btn btn-primary btn-flat" v-on:click="detilKuisioner(kuisioner.id)">Detil Pengisian Kuesioner</a>
+                                        <a class="btn btn-primary btn-flat" v-on:click="detilKuisioner(kuisioner.id)">Progress Pengisian Kuesioner</a>
                                         <a class="btn btn-danger btn-flat" v-on:click="prosesKuisioner(kuisioner.id)"> Pengisian Kuesioner </a>
                                     </div>
                                 </div>

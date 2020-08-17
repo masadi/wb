@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 class Instrumen extends Model
 {
-    use Uuid;
-	public $incrementing = false;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships, Uuid;
+    public $incrementing = false;
     protected $keyType = 'string';
 	protected $table = 'instrumen';
 	protected $primaryKey = 'instrumen_id';
@@ -20,5 +20,16 @@ class Instrumen extends Model
     }
     public function subs(){
         return $this->hasMany('App\Instrumen', 'ins_id', 'instrumen_id')->orderBy('urut', 'DESC');
+    }
+    public function aspek()
+    {
+        return $this->hasOneThrough(
+            'App\Aspek', 
+            'App\Jawaban',
+            'instrumen_id', // Foreign key on cars table...
+            'id', // Foreign key on owners table...
+            'instrumen_id', // Local key on mechanics table...
+            'aspek_id' // Local key on cars table...
+        );
     }
 }

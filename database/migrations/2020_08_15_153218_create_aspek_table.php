@@ -17,6 +17,7 @@ class CreateAspekTable extends Migration
             $table->id();
             $table->foreignId('komponen_id')->constrained('komponen')->onDelete('cascade');
             $table->string('nama');
+            $table->integer('bobot')->unsigned();
             $table->timestamps();
         });
     }

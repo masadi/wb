@@ -18,10 +18,12 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="info-box bg-info">
+                                    <div class="sticky-top">
+                                    <div class="info-box bg-info ">
                                         <div class="info-box-content text-center">
                                             <paginator :url ="`${url}`" v-on:update-pagination-data="updatePaginationData"></paginator>
                                         </div>
+                                    </div>
                                     </div>
                                     <div v-for="(value, name) in items">
                                         <h2>Aspek {{name}}</h2>
@@ -112,6 +114,7 @@
                 this.form.aspek_id = tempAspek;
                 this.form.komponen_id = tempKomponen;
                 this.form.instrumen_id = tempData;
+                window.scrollTo(0,100);
                 //this.insertData();
             },
             loadPostsData() {
@@ -159,6 +162,7 @@
                     this.form.aspek_id = tempAspek;
                     this.form.komponen_id = tempKomponen;
                     this.form.instrumen_id = tempData;
+                    window.scrollTo(0,100);
                 })
             },
             insertData(){

@@ -7,7 +7,7 @@ use App\Komponen;
 use App\Aspek;
 use App\Instrumen;
 use App\Jawaban;
-use App\Http\Resources\AspekResource;
+use App\Nilai_aspek;
 class KuisionerController extends Controller
 {
     public function index(Request $request){
@@ -29,17 +29,8 @@ class KuisionerController extends Controller
             $output = [];
             foreach($instrumens as $instrumen){
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
-                //$output['aspek']['instrumen'][] = $instrumen->indikator->atribut->aspek;
             }
         }
-        /*
-        $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek.komponen', $callback)->with(['jawaban' => $callback_jawaban, 'subs', 'indikator.atribut.aspek.komponen' => $callback])->get();
-        $output = [];
-        foreach($instrumens as $instrumen){
-            $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
-            //$output['aspek']['instrumen'][] = $instrumen->indikator->atribut->aspek;
-        }
-        */
         return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek]);
     }
     public function simpan_jawaban(Request $request){
@@ -60,5 +51,23 @@ class KuisionerController extends Controller
                 );
             }
         }
+    }
+    public function progres(Request $request){
+        $komponen = Komponen::find($request->komponen_id);
+        $callback = function($query) use ($request){
+            $query->where('id', $request->komponen_id);
+        };
+        $callback_jawaban = function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+        };
+        $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek.komponen', $callback)->with(['aspek.nilai_aspek' => $callback_jawaban])->withCount(['jawaban' => $callback_jawaban])->get();
+        $output = [];
+        $output_nilai = Nilai_aspek::whereHas('aspek', function($query) use ($request){
+            $query->where('komponen_id', $request->komponen_id);
+        })->with(['aspek'])->get();
+        foreach($instrumens as $instrumen){
+            $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
+        }
+        return response()->json(['status' => 'success', 'nilai' => $output_nilai, 'data' => $output, 'title' => $komponen->nama]);
     }
 }

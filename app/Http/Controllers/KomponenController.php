@@ -142,6 +142,7 @@ class KomponenController extends Controller
                 $aspek = Aspek::updateOrCreate([
                     'komponen_id' => $komponen->id,
                     'nama' => $item['Aspek'],
+                    'bobot' => $item['Bobot'],
                 ]);
                 $atribut = Atribut::updateOrCreate([
                     'aspek_id' => $aspek->id,
@@ -155,6 +156,7 @@ class KomponenController extends Controller
                     'indikator_id' => $indikator->id,
                     'urut' => 0,
                     'pertanyaan' => $item['Rumusan Pertanyaan'],
+                    'skor' => 5,
                 ]);
                 for($i=1;$i<=5;$i++){
                     Instrumen::updateOrCreate([
@@ -162,6 +164,7 @@ class KomponenController extends Controller
                         'ins_id' => $instrumen->instrumen_id,
                         'urut' => $i,
                         'pertanyaan' => $item['Capaian '.$i],
+                        'skor' => 5,
                     ]);
                 }
             }

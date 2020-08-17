@@ -9,7 +9,7 @@ class Atribut extends Model
     protected $table = 'atribut';
     protected $guarded = [];
     public function aspek(){
-        return $this->belongsTo('App\Aspek');
+        return $this->belongsTo('App\Aspek')->orderBy('id');
     }
     public function indikator(){
         return $this->hasMany('App\Indikator', 'atribut_id', 'id');

@@ -46,8 +46,4 @@ class InstrumenController extends Controller
         $instrumen->delete();
         return response()->json(['status' => 'success']);
     }
-    public function hitung_nilai(Request $request){
-        $user = auth()->user();
-        dd($user);
-    }
 }

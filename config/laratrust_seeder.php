@@ -99,6 +99,12 @@ return [
             'instrumen' => 'r',
             'jawaban' => 'c,r,u,d',
         ],
+        'responden' => [
+            'profile' => 'r,u',
+            'referensi' => 'r',
+            'instrumen' => 'r',
+            'jawaban' => 'c,r,u,d',
+        ],
     ],
 
     'permissions_map' => [

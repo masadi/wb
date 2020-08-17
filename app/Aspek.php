@@ -18,4 +18,10 @@ class Aspek extends Model
     public function instrumen() {
         return $this->hasManyDeep(Instrumen::class, [Atribut::class, Indikator::class]);
     }
+    public function jawaban(){
+        return $this->hasMany('App\Jawaban', 'aspek_id', 'id');
+    }
+    public function nilai_aspek(){
+        return $this->hasOne('App\Nilai_aspek', 'aspek_id', 'id');
+    }
 }

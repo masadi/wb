@@ -19,6 +19,7 @@ class CreateInstrumenTable extends Migration
             $table->uuid('ins_id')->nullable();
             $table->smallInteger('urut')->unsigned();
             $table->text('pertanyaan');
+            $table->smallInteger('skor')->unsigned();
             $table->timestamps();
             $table->primary('instrumen_id');
             $table->foreign('ins_id')->references('instrumen_id')->on('instrumen')->onDelete('cascade');
