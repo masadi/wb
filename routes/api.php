@@ -28,7 +28,7 @@ Route::get('/hitung-nilai-instrumen/{user_id}', 'NilaiController@hitung_nilai');
 //Route::post('/users', 'UsersController@create');
 Route::group(['prefix' => 'referensi'], function(){
     Route::get('/{query}', 'ReferensiController@index');
-    Route::post('/upload', 'ReferensiController@upload');
+    Route::post('/komponen/upload', 'ReferensiController@upload');
 });
 Route::group(['prefix' => 'kuisioner'], function(){
     Route::post('/', 'KuisionerController@index');

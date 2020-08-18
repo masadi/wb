@@ -12,7 +12,11 @@ class UsersController extends Controller
 {
 
     public function index() {
-        $users = User::orderBy(request()->sortby, request()->sortbydesc)
+        $users = User::where(function($query){
+            if(request()->sekolah_id){
+                $query->where('sekolah_id', request()->sekolah_id);
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN

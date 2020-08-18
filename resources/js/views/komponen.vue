@@ -128,7 +128,7 @@ export default {
             this.isLoading = true
             let formData = new FormData();
             formData.append('file', this.file);
-            axios.post('/api/komponen/upload', formData, {
+            axios.post('/api/referensi/komponen/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },

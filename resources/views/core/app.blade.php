@@ -21,6 +21,10 @@
     <script>
         window.user = {!! json_encode([
             'user_id' => $user->user_id,
+            'sekolah_id' => $user->sekolah_id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'username' => $user->username,
         ]) !!};
     </script>
 </head>

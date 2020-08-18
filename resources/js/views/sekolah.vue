@@ -26,7 +26,7 @@
                                     Data Sekolah
                                 </h3>
                                 <div class="card-tools">
-                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-show="!sekolah_id" v-on:click="newModal">Tambah Data</button>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -91,6 +91,7 @@ export default {
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
+            sekolah_id: user.sekolah_id,
             form: new Form({
                 npsn: '',
             })
@@ -109,9 +110,10 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/sekolah`, {
+            axios.get(`/api/referensi/sekolah`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
+                    sekolah_id: this.sekolah_id,
                     page: current_page,
                     per_page: this.per_page,
                     q: this.search,

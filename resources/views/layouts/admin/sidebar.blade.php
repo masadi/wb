@@ -40,6 +40,7 @@ $user = auth()->user();
                         <p>FAQ</p>
                     </router-link>
                 </li>
+                @endif
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="">
                         <i class="nav-icon fas fa-list"></i>
@@ -48,6 +49,7 @@ $user = auth()->user();
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @if($user->isAbleTo('users-create'))
                         <li class="nav-item">
                             <router-link tag="a" to="/komponen" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
@@ -77,11 +79,19 @@ $user = auth()->user();
                                 <i class="nav-icon fas fa-tasks"></i>
                                 <p>Instrumen</p>
                             </router-link>
-                        </li>        
+                        </li>
+                        @endif
+                        @if($user->isAbleTo('referensi-create'))
                         <li class="nav-item">
                             <router-link tag="a" to="/sekolah" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Sekolah</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/ptk" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>PTK</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
@@ -90,9 +100,9 @@ $user = auth()->user();
                                 <p>Pengguna</p>
                             </router-link>
                         </li>
+                        @endif
                     </ul>
                 </li>
-                @endif
                 <!-- New Sidebar Item -->
                 <li class="nav-item">
                     <router-link tag="a" to="/kuisioner" class="nav-link">

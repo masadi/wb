@@ -38,6 +38,10 @@ let routes = [{
         component: require('./views/sekolah').default
     },
     {
+        path: '/ptk',
+        component: require('./views/ptk').default
+    },
+    {
         path: '/instrumen',
         component: require('./views/instrumen').default
     },

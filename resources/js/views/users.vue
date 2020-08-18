@@ -55,6 +55,7 @@
                 search: '',
                 sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
                 sortByDesc: true, //ASCEDING
+                sekolah_id: user.sekolah_id,
             }
         },
         created() {
@@ -71,6 +72,7 @@
                 axios.get(`/api/users`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                     params: {
+                        sekolah_id: this.sekolah_id,
                         page: current_page,
                         per_page: this.per_page,
                         q: this.search,

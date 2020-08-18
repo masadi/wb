@@ -60,12 +60,13 @@ class HomeController extends Controller
             $user_sekolah = User::updateOrCreate(
                 ['email' => $sekolah->email],
                 [
+                    'sekolah_id' => $sekolah->sekolah_id,
                     'username' => $sekolah->npsn,
                     'name' => $sekolah->nama,
-                    'password' => bcrypt('12345678')
+                    'password' => bcrypt($sekolah->npsn)
                 ]
             );
-            if($user_sekolah->hasRole('sekolah')){
+            if(!$user_sekolah->hasRole('sekolah')){
                 $role = Role::where('name', 'sekolah')->first();
                 $user_sekolah->attachRole($role);
             }
@@ -98,12 +99,13 @@ class HomeController extends Controller
                 $user = User::updateOrCreate(
                     ['email' => $ptk->email],
                     [
+                        'sekolah_id' => $ptk->sekolah_id,
                         'username' => $ptk->nuptk,
                         'name' => $ptk->nama,
                         'password' => bcrypt('12345678')
                     ]
                 );
-                if($user->hasRole('ptk')){
+                if(!$user->hasRole('ptk')){
                     $role = Role::where('name', 'ptk')->first();
                     $user->attachRole($role);
                 }

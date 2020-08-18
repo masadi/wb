@@ -71,7 +71,7 @@ return [
         ],
         'sekolah' => [
             'profile' => 'r,u',
-            'referensi' => 'r',
+            'referensi' => 'r,c,u,d',
             'instrumen' => 'r',
             'jawaban' => 'c,r,u,d',
         ],

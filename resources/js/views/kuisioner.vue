@@ -33,7 +33,8 @@
                     <div class="col-12">
                         <div class="timeline">
                             <div v-for="(kuisioner, key) in kuisioners">
-                                <i class="fas fa-check bg-blue"></i>
+                                <i v-if="persen[key] == 100" class="fas fa-check bg-blue"></i>
+                                <i v-else class="fas fa-times bg-red"></i>
                                 <div class="timeline-item">
                                     <div class="timeline-body">
                                         <h2>Komponen {{kuisioner.nama}}</h2>

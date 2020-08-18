@@ -4,7 +4,7 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <h1 class="m-0 text-dark">Dashboard</h1>
+                <h1 class="m-0 text-dark">Beranda</h1>
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
@@ -13,15 +13,14 @@
 
         <section class="content">
             <div class="container-fluid">
-                <h5 class="mb-2">Info Box</h5>
                 <div class="row">
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
-                            <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                            <span class="info-box-icon bg-info"><i class="fas fa-user-tie"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Messages</span>
-                                <span class="info-box-number">1,410</span>
+                                <span class="info-box-text">PTK</span>
+                                <span class="info-box-number">{{ptk}}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -30,11 +29,11 @@
                     <!-- /.col -->
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
-                            <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+                            <span class="info-box-icon bg-success"><i class="fas fa-user-friends"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Bookmarks</span>
-                                <span class="info-box-number">410</span>
+                                <span class="info-box-text">Peserta Didik</span>
+                                <span class="info-box-number">{{pd}}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -43,11 +42,11 @@
                     <!-- /.col -->
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
-                            <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                            <span class="info-box-icon bg-warning"><i class="fas fa-certificate"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Uploads</span>
-                                <span class="info-box-number">13,648</span>
+                                <span class="info-box-text">Grade Personal</span>
+                                <span class="info-box-number">{{grade_personal}}</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -59,276 +58,116 @@
                             <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text">Likes</span>
-                                <span class="info-box-number">93,139</span>
+                                <span class="info-box-text">Grade Sekolah</span>
+                                <span class="info-box-number">{{grade_sekolah}}</span>
                             </div>
-                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box -->
                     </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
-                <!-- =========================================================== -->
-                <!-- Info Box -->
-                <h5 class="mt-4 mb-2">Info Box With <code>bg-*</code></h5>
                 <div class="row">
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box bg-info">
-                            <span class="info-box-icon"><i class="far fa-bookmark"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Bookmarks</span>
-                                <span class="info-box-number">41,410</span>
-
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 70%"></div>
-                                </div>
-                                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-user mr-1"></i>
+                                    Selamat Datang {{user.name}}
+                                </h3>
                             </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box bg-success">
-                            <span class="info-box-icon"><i class="far fa-thumbs-up"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Likes</span>
-                                <span class="info-box-number">41,410</span>
-
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 70%"></div>
-                                </div>
-                                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
+                            <div class="card-body">
+                                    <section class="ps-timeline-sec">
+                                        <div class="container">
+                                            <ol class="ps-timeline">
+                                                <li>
+                                                    <div class="img-handler-top">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_03.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-bot">
+                                                        <p>Proses Pengisian Instrumen</p>
+                                                    </div>
+                                                    <span class="ps-sp-top"><i class="fas fa-check text-success"></i></span>
+                                                </li>
+                                                <li>
+                                                    <div class="img-handler-bot">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_13.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-top">
+                                                        <p>Menghitung Rapor Mutu Sekolah</p>
+                                                    </div>
+                                                    <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
+                                                </li>
+                                                <li>
+                                                    <div class="img-handler-top">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-bot">
+                                                        <p>Verifikasi dan Validasi Rapor Mutu Sekolah oleh Tim Direktorat</p>
+                                                    </div>
+                                                    <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
+                                                </li>
+                                                <li>
+                                                    <div class="img-handler-bot">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-top">
+                                                        <p>Pakta Integritas Tim Verifikator</p>
+                                                    </div>
+                                                    <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
+                                                </li>
+                                                <li>
+                                                    <div class="img-handler-top">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-bot">
+                                                        <p>Pakta Integritas Sekolah</p>
+                                                    </div>
+                                                    <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </section>
                             </div>
-                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box -->
                     </div>
-                    <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box bg-warning">
-                            <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Events</span>
-                                <span class="info-box-number">41,410</span>
-
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 70%"></div>
-                                </div>
-                                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box bg-danger">
-                            <span class="info-box-icon"><i class="fas fa-comments"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Comments</span>
-                                <span class="info-box-number">41,410</span>
-
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 70%"></div>
-                                </div>
-                                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
-
-                <!-- Small Box (Stat card) -->
-                <h5 class="mb-2 mt-4">Small Box</h5>
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small card -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>150</h3>
-
-                                <p>New Orders</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">
-                                More info <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small card -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                                <p>Bounce Rate</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">
-                                More info <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small card -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>44</h3>
-
-                                <p>User Registrations</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">
-                                More info <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small card -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
-
-                                <p>Unique Visitors</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">
-                                More info <i class="fas fa-arrow-circle-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                </div>
-                <!-- /.row -->
-
-                <!-- Cards -->
-                <h4 class="mb-2 mt-4">Cards</h4>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Card Refresh</h3>
-
-                                <div class="card-tools">
-                                    a
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                The body of the card
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                        <div class="d-none" id="card-refresh-content">
-                            The body of the card after card refresh
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3">
-                        <div class="card card-success" style="transition: all 0.15s ease 0s; height: inherit; width: inherit;">
-                            <div class="card-header">
-                                <h3 class="card-title">All together</h3>
-
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool"><i class="fas fa-sync-alt"></i></button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                The body of the card
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3">
-                        <div class="card card-warning">
-                            <div class="card-header">
-                                <h3 class="card-title">Loading state</h3>
-                            </div>
-                            <div class="card-body">
-                                The body of the card
-                            </div>
-                            <!-- /.card-body -->
-                            <!-- Loading (remove the following to stop the loading)-->
-                            <div class="overlay">
-                                <i class="fas fa-2x fa-sync-alt"></i>
-                            </div>
-                            <!-- end loading -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3">
-                        <div class="card card-danger">
-                            <div class="card-header">
-                                <h3 class="card-title">Loading state (dark)</h3>
-                            </div>
-                            <div class="card-body">
-                                The body of the card
-                            </div>
-                            <!-- /.card-body -->
-                            <!-- Loading (remove the following to stop the loading)-->
-                            <div class="overlay dark">
-                                <i class="fas fa-2x fa-sync-alt"></i>
-                            </div>
-                            <!-- end loading -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-
-                <!-- =========================================================== -->
-
             </div><!-- /.container-fluid -->
         </section>
-
-
-        <!-- /.content -->
-
     </div>
-
 </template>
-
 <script>
-
-
+import axios from 'axios' //IMPORT AXIOS
+export default {
+    //KETIKA COMPONENT INI DILOAD
+    created() {
+        //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
+        this.loadPostsData()
+    },
+    data() {
+        return {
+            user: user,
+            ptk: 0,
+            pd: 0,
+            nilai: 0,
+            grade_personal: 0,
+            grade_sekolah: 0,
+            sekolah_id: user.sekolah_id,
+        }
+    },
+    methods: {
+        loadPostsData() {
+            axios.get(`/api/referensi/detil-sekolah`, {
+                params: {
+                    sekolah_id: this.sekolah_id,
+                }
+            })
+            .then((response) => {
+                let getData = response.data.data
+                this.ptk = getData.ptk_count
+                this.pd = getData.pd_count
+                this.nilai = getData.nilai
+                this.grade_personal = getData.grade_personal
+                this.grade_sekolah = getData.grade_sekolah
+            })
+        },
+    },
+}
 </script>

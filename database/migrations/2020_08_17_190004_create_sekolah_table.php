@@ -36,6 +36,9 @@ class CreateSekolahTable extends Migration
 			$table->softDeletes();
 			$table->primary('sekolah_id');
         });
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('sekolah_id')->references('sekolah_id')->on('sekolah')->onDelete('cascade');
+        });
     }
 
     /**
