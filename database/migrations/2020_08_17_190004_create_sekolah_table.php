@@ -48,6 +48,9 @@ class CreateSekolahTable extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['sekolah_id']);
+        });
         Schema::dropIfExists('sekolah');
     }
 }

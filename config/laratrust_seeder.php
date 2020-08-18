@@ -75,6 +75,17 @@ return [
             'instrumen' => 'r',
             'jawaban' => 'c,r,u,d',
         ],
+        'pengawas' => [
+            'profile' => 'r,u',
+            'verifikasi' => 'r',
+            'pengawas' => 'r,c,u,d',
+            'jawaban' => 'c,r,u,d',
+        ],
+        'verifikator' => [
+            'profile' => 'r,u',
+            'verifikasi' => 'r,c,u,d',
+            'jawaban' => 'c,r,u,d',
+        ],
         'ptk' => [
             'profile' => 'r,u',
             'referensi' => 'r',
