@@ -63,6 +63,7 @@ class ReferensiController extends Controller
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('npsn', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kecamatan', 'ilike', '%' . request()->q . '%')
                 ->orWhere('kabupaten', 'ilike', '%' . request()->q . '%')
                 ->orWhere('provinsi', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
