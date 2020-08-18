@@ -16,9 +16,9 @@ class SekolahController extends Controller
         $all_data = Sekolah::orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($berita) {
                 $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%')
-                ->where('npsn', 'LIKE', '%' . request()->q . '%')
-                ->where('kabupaten', 'LIKE', '%' . request()->q . '%')
-                ->where('provinsi', 'LIKE', '%' . request()->q . '%');
+                ->orWhere('npsn', 'LIKE', '%' . request()->q . '%')
+                ->orWhere('kabupaten', 'LIKE', '%' . request()->q . '%')
+                ->orWhere('provinsi', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }

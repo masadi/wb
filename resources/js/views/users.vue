@@ -1,5 +1,4 @@
 <template>
-
     <div>
         <div class="content-header">
             <div class="container-fluid">
@@ -16,141 +15,107 @@
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
-
-        <!-- Main content -->
-        <div class="content">
-
+        <section class="content">
             <div class="container-fluid">
-
                 <div class="row">
-
-                    <div class="col-lg-6">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">:)</h3>
-
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <h3 class="card-title">
+                                    <i class="fas fa-th mr-1"></i>
+                                    Data Pengguna
+                                </h3>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0" style="height: 300px;">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>User</th>
-                                        <th>Email</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="user in users">
-                                        <td>{{user.id}}</td>
-                                        <td>{{user.name}}</td>
-                                        <td>{{user.email}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="card-body">
+                                <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Pengguna'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
                     </div>
-
-                    <div class="col-lg-6">
-
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <h3 class="card-title">New User Form</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <form class="form-horizontal" @submit.prevent="onSubmit" @keydown="form.errors.clear()">
-                                <div class="card-body" style="height: 239px;">
-                                    <div class="form-group row">
-                                        <label for="name" class="col-sm-2 col-form-label">Name</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="name" name="name" required autocomplete="name" autofocus placeholder="Name" v-model="form.name">
-                                            <span class="invalid-feedback d-block" role="alert" v-if="form.errors.has('name')" v-text="form.errors.get('name')"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="inputEmail3" placeholder="Email" v-model="form.email" required>
-                                                <span class="invalid-feedback d-block" role="alert" v-if="form.errors.has('email')" v-text="form.errors.get('email')"></span>
-                                            </div>
-
-                                        </div>
-
-                                    <div class="form-group row">
-
-                                        <label for="password" class="col-sm-2 col-form-label">Password</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password" required>
-                                            <span class="invalid-feedback d-block" role="alert" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.card-body -->
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-info" :disabled="form.errors.any()">Add User</button>
-                                </div>
-                                <!-- /.card-footer -->
-                            </form>
-                        </div>
-
-                    </div>
-
                 </div>
-
             </div>
-            <!-- /.container-fluid -->
-
-        </div>
-        <!-- /.content -->
-
+        </section>
     </div>
-
 </template>
 
 <script>
-
+    import Datatable from './components/User.vue' //IMPORT COMPONENT DATATABLENYA
     export default {
-
         data() {
-
             return {
-                users: [],
-                form: new Form({
-                    'name': '',
-                    'email': '',
-                    'password': '',
-                    'password_confirmation': ''
-                })
+                fields: [
+                    {key: 'name', sortable: true},
+                    {key: 'username', sortable: true},
+                    {key: 'email', sortable: true},
+                    {key: 'actions', sortable: false}, //TAMBAHKAN CODE INI
+                ],
+                items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
+                meta: [], //JUGA BERLAKU UNTUK META
+                current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
+                per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
+                search: '',
+                sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
+                sortByDesc: true, //ASCEDING
             }
-
         },
-
-
         created() {
-            axios.get('/api/users')
-                .then(({data}) => this.users = data);
+            //axios.get('/api/users').then(({data}) => this.users = data);
+            this.loadPostsData()
         },
-
+        components: {
+            'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
+        },
         methods: {
-            onSubmit(){
-                this.form.password_confirmation = this.form.password; // Temp for this form only.
-                this.form
-                    .post('/users')
-                    .then(user => this.users.push(user));
-            }
+            loadPostsData() {
+                let current_page = this.search == '' ? this.current_page:1
+                //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
+                axios.get(`/api/users`, {
+                    //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                    params: {
+                        page: current_page,
+                        per_page: this.per_page,
+                        q: this.search,
+                        sortby: this.sortBy,
+                        sortbydesc: this.sortByDesc ? 'DESC':'ASC'
+                    }
+                })
+                .then((response) => {
+                    //JIKA RESPONSENYA DITERIMA
+                    let getData = response.data.data
+                    this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                    //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                    this.meta = {
+                        total: getData.total,
+                        current_page: getData.current_page,
+                        per_page: getData.per_page,
+                        from: getData.from,
+                        to: getData.to
+                    }
+                })
+            },
+            //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
+            handlePerPage(val) {
+                this.per_page = val //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
+                this.loadPostsData() //DAN REQUEST DATA BARU KE SERVER
+            },
+            //JIKA ADA EMIT PAGINATION YANG DIKIRIM, MAKA FUNGSI INI AKAN DIEKSEKUSI
+            handlePagination(val) {
+                this.current_page = val //SET CURRENT PAGE YANG AKTIF
+                this.loadPostsData()
+            },
+            //JIKA ADA DATA PENCARIAN
+            handleSearch(val) {
+                this.search = val //SET VALUE PENCARIAN KE VARIABLE SEARCH
+                this.loadPostsData() //REQUEST DATA BARU
+            },
+            //JIKA ADA EMIT SORT
+            handleSort(val) {
+                if(val.sortBy){
+                    this.sortBy = val.sortBy
+                    this.sortByDesc = val.sortDesc
+
+                    this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
+                }
+            },
         }
     }
 

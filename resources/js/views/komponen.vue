@@ -149,7 +149,7 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/komponen`, {
+            axios.get(`/api/referensi/komponen`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
                     page: current_page,
@@ -204,7 +204,7 @@ export default {
             $('#modalAdd').modal('show');
         },
         insertData(){
-            this.form.post('/api/komponen').then((response)=>{
+            this.form.post('/api/referensi/simpan-komponen').then((response)=>{
                 console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({

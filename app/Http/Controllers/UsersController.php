@@ -12,14 +12,13 @@ class UsersController extends Controller
 {
 
     public function index() {
-        return User::all();
         $users = User::orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
                 $posts = $posts->where('name', 'LIKE', '%' . request()->q . '%')
-                    ->orWhere('email', 'LIKE', '%' . request()->q . '%');
-                    //->orWhere('category', 'LIKE', '%' . request()->q . '%');
+                    ->orWhere('email', 'LIKE', '%' . request()->q . '%')
+                    ->orWhere('username', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $users]);
     }

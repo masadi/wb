@@ -26,8 +26,9 @@ Route::delete('/berita/{id}', 'BeritaController@destroy');*/
 Route::get('/hitung-nilai-instrumen/{user_id}', 'NilaiController@hitung_nilai');
 //Route::get('/users', 'UsersController@index');
 //Route::post('/users', 'UsersController@create');
-Route::group(['prefix' => 'komponen'], function(){
-    Route::post('/upload', 'KomponenController@upload');
+Route::group(['prefix' => 'referensi'], function(){
+    Route::get('/{query}', 'ReferensiController@index');
+    Route::post('/upload', 'ReferensiController@upload');
 });
 Route::group(['prefix' => 'kuisioner'], function(){
     Route::post('/', 'KuisionerController@index');
