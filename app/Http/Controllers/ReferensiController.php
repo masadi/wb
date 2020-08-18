@@ -165,13 +165,23 @@ class ReferensiController extends Controller
         return response()->json($data);
     }
     public function get_detil_sekolah($request){
-        $sekolah = Sekolah::withCount(['ptk', 'pd'])->find($request->sekolah_id);
-        $nilai = [
-            'grade_personal' => 10,
-            'grade_sekolah' => 1,
-        ];
-        $custom = collect($nilai);
-        $data = $custom->merge($sekolah);
+        if($request->sekolah_id){
+            $sekolah = Sekolah::withCount(['ptk', 'pd'])->find($request->sekolah_id);
+            $nilai = [
+                'grade_personal' => 10,
+                'grade_sekolah' => 1,
+            ];
+            $custom = collect($nilai);
+            $data = $custom->merge($sekolah);
+        } else {
+            $nilai = [
+                'sekolah' => Sekolah::count(),
+                'ptk_count' => Ptk::count(),
+                'grade_personal' => 10,
+                'grade_sekolah' => 1,
+            ];
+            $data = collect($nilai);
+        }
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 }

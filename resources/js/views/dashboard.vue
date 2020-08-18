@@ -14,6 +14,18 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
+                    <div v-show="!user.sekolah_id" class="col-md-3 col-sm-6 col-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info"><i class="fas fa-university"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sekolah</span>
+                                <span class="info-box-number">{{sekolah}}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
                     <div class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
                             <span class="info-box-icon bg-info"><i class="fas fa-user-tie"></i></span>
@@ -27,7 +39,7 @@
                         <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-12">
+                    <div v-show="user.sekolah_id" class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
                             <span class="info-box-icon bg-success"><i class="fas fa-user-friends"></i></span>
 
@@ -78,20 +90,11 @@
                                         <div class="container">
                                             <ol class="ps-timeline">
                                                 <li>
-                                                    <div class="img-handler-top">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_03.png" alt=""/>
-                                                    </div>
-                                                    <div class="ps-bot">
-                                                        <p>Proses Pengisian Instrumen</p>
-                                                    </div>
-                                                    <span class="ps-sp-top"><i class="fas fa-check text-success"></i></span>
-                                                </li>
-                                                <li>
                                                     <div class="img-handler-bot">
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_13.png" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
-                                                        <p>Menghitung Rapor Mutu Sekolah</p>
+                                                        <p>Proses pengisian instrumen</p>
                                                     </div>
                                                     <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
@@ -100,7 +103,7 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
                                                     </div>
                                                     <div class="ps-bot">
-                                                        <p>Pakta Integritas Sekolah</p>
+                                                        <p>Perhitungan rapor mutu sekolah</p>
                                                     </div>
                                                     <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
@@ -109,7 +112,7 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
-                                                        <p>Verifikasi dan Validasi Rapor Mutu Sekolah oleh Tim Direktorat</p>
+                                                        <p>Pengiriman hasil rapor mutu sekolah dan mencetak pakta integritas</p>
                                                     </div>
                                                     <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
@@ -118,7 +121,7 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
                                                     </div>
                                                     <div class="ps-bot">
-                                                        <p>Pakta Integritas Tim Verifikator</p>
+                                                        <p>Validasi dan pencetakan rapor mutu oleh verifikator</p>
                                                     </div>
                                                     <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
@@ -127,9 +130,18 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
-                                                        <p>Pengesahan oleh Direktorat</p>
+                                                        <p>Input hasil verifikasi rapor mutu sekolah</p>
                                                     </div>
                                                     <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
+                                                </li>
+                                                <li>
+                                                    <div class="img-handler-top">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-bot">
+                                                        <p>Hasil Rapor Mutu Sekolah dan Pengesahan</p>
+                                                    </div>
+                                                    <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
                                             </ol>
                                         </div>
@@ -153,6 +165,7 @@ export default {
     data() {
         return {
             user: user,
+            sekolah:0,
             ptk: 0,
             pd: 0,
             nilai: 0,
@@ -170,6 +183,7 @@ export default {
             })
             .then((response) => {
                 let getData = response.data.data
+                this.sekolah = getData.sekolah
                 this.ptk = getData.ptk_count
                 this.pd = getData.pd_count
                 this.nilai = getData.nilai
