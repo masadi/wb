@@ -25,7 +25,7 @@ class ReferensiController extends Controller
     {
         $all_data = Komponen::orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -33,7 +33,7 @@ class ReferensiController extends Controller
     {
         $all_data = Aspek::orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -41,7 +41,7 @@ class ReferensiController extends Controller
     {
         $all_data = Atribut::orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -49,7 +49,7 @@ class ReferensiController extends Controller
     {
         $all_data = Indikator::orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -61,10 +61,10 @@ class ReferensiController extends Controller
             }
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('npsn', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('kabupaten', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('provinsi', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('npsn', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kabupaten', 'ilike', '%' . request()->q . '%')
+                ->orWhere('provinsi', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -76,9 +76,9 @@ class ReferensiController extends Controller
             }
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('nuptk', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('nik', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('nuptk', 'ilike', '%' . request()->q . '%')
+                ->orWhere('nik', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -90,9 +90,9 @@ class ReferensiController extends Controller
             }
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('no_induk', 'LIKE', '%' . request()->q . '%')
-                ->orWhere('nisn', 'LIKE', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('no_induk', 'ilike', '%' . request()->q . '%')
+                ->orWhere('nisn', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
