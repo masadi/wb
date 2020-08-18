@@ -42,7 +42,7 @@ $user = auth()->user();
                 </li>
                 @endif
                 <li class="nav-item has-treeview">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>Referensi
                             <i class="fas fa-angle-left right"></i>
@@ -109,13 +109,83 @@ $user = auth()->user();
                         @endif
                     </ul>
                 </li>
-                <!-- New Sidebar Item -->
-                <li class="nav-item">
-                    <router-link tag="a" to="/kuisioner" class="nav-link">
-                        <i class="nav-icon fas fa-check"></i>
-                        <p>Isi Kuisioner</p>
-                    </router-link>
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="javascript:{}">
+                        <i class="nav-icon fas fa-check-double"></i>
+                        <p>Kuisioner
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link tag="a" to="/kuisioner/pengisian" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Isi Kuisioner</p>
+                            </router-link>
+                        </li>
+                        @if($user->isAbleTo('referensi-create'))
+                        <li class="nav-item">
+                            <router-link tag="a" to="/kuisioner/progres" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Progres Pengisian</p>
+                            </router-link>
+                        </li>
+                        @endif
+                    </ul>
                 </li>
+                @if($user->isAbleTo('referensi-create'))
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="javascript:{}">
+                        <i class="nav-icon fas fa-check-double"></i>
+                        <p>Rapor Mutu
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/hitung" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hitung Rapor Mutu</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/hasil" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Rapor Mutu</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/pakta-integritas" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Pakta Integritas</p>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="javascript:{}">
+                        <i class="nav-icon fas fa-user-edit"></i>
+                        <p>Verval dan Supervisi
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link tag="a" to="/hasil-verval" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Verval</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/hasil-supervisi" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Supervisi</p>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                <!-- New Sidebar Item -->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
