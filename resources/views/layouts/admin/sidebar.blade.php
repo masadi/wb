@@ -21,7 +21,7 @@ $user = auth()->user();
                         <p>Beranda</p>
                     </router-link>
                 </li>
-                @if($user->isAbleTo('users-create'))
+                @if($user->isAbleTo('news-create'))
                 <li class="nav-item">
                     <router-link tag="a" to="/berita" class="nav-link">
                         <i class="nav-icon fas fa-newspaper"></i>
@@ -41,6 +41,7 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 @endif
+                @if(!$user->isAbleTo('news-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-list"></i>
@@ -109,6 +110,8 @@ $user = auth()->user();
                         @endif
                     </ul>
                 </li>
+                @endif
+                @if($user->isAbleTo('jawaban-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-check-double"></i>
@@ -133,6 +136,7 @@ $user = auth()->user();
                         @endif
                     </ul>
                 </li>
+                @endif
                 @if($user->isAbleTo('referensi-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
