@@ -37,7 +37,7 @@
                                                 <div class="form-group">
                                                     <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">
                                                         <input class="custom-control-input" type="radio" v-bind:id="item.instrumen_id+subs.urut" v-bind:name="`instrumen_id.${item.instrumen_id}`" v-model="form.instrumen_id[item.instrumen_id]" v-bind:value="subs.urut">
-                                                        <label v-bind:for="item.instrumen_id+subs.urut" class="custom-control-label" style="font-weight: normal;">{{subs.pertanyaan}}</label>
+                                                        <label v-bind:for="item.instrumen_id+subs.urut" class="custom-control-label" style="font-weight: normal;">{{subs.urut}}. {{subs.pertanyaan}}</label>
                                                     </div>
                                                 </div>
                                             </li>
