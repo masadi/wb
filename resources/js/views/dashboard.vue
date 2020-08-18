@@ -91,7 +91,7 @@
                                             <ol class="ps-timeline">
                                                 <li>
                                                     <div class="img-handler-bot">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_13.png" alt=""/>
+                                                        <img src="/images/icon_progres/1.png" width="150" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
                                                         <p>Proses pengisian instrumen</p>
@@ -100,7 +100,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="img-handler-top">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
+                                                        <img src="/images/icon_progres/2.png" width="150" alt="" style="margin-bottom:80px;"/>
                                                     </div>
                                                     <div class="ps-bot">
                                                         <p>Perhitungan rapor mutu sekolah</p>
@@ -109,7 +109,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="img-handler-bot">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
+                                                        <img src="/images/icon_progres/3.png" width="200" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
                                                         <p>Pengiriman hasil rapor mutu sekolah dan mencetak pakta integritas</p>
@@ -118,7 +118,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="img-handler-top">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
+                                                        <img src="/images/icon_progres/4.png" width="230" alt="" style="margin-bottom:80px;"/>
                                                     </div>
                                                     <div class="ps-bot">
                                                         <p>Validasi dan pencetakan rapor mutu oleh verifikator</p>
@@ -127,7 +127,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="img-handler-bot">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
+                                                        <img src="/images/icon_progres/5.png" width="150" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
                                                         <p>Input hasil verifikasi rapor mutu sekolah</p>
@@ -136,7 +136,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="img-handler-top">
-                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
+                                                        <img src="/images/icon_progres/6.png" width="180" alt="" style="margin-bottom:80px;"/>
                                                     </div>
                                                     <div class="ps-bot">
                                                         <p>Hasil Rapor Mutu Sekolah dan Pengesahan</p>
