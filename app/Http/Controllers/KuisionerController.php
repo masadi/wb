@@ -20,6 +20,8 @@ class KuisionerController extends Controller
         $callback_jawaban = function($query) use ($request){
             $query->where('user_id', $request->user_id);
         };
+        $previous = Komponen::where('id', '<', $request->komponen_id)->max('id');
+        $next = Komponen::where('id', '>', $request->komponen_id)->min('id');
         $aspek = Aspek::where('komponen_id', $request->komponen_id)->paginate(1);
         foreach($aspek as $a){
             $callback = function($query) use ($request, $a){
@@ -31,7 +33,7 @@ class KuisionerController extends Controller
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
             }
         }
-        return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek]);
+        return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next]);
     }
     public function simpan_jawaban(Request $request){
         if($request->instrumen_id){

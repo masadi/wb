@@ -31,7 +31,20 @@
         methods: {
             getData(page_url){
                 let url = page_url === undefined ? this.url : this.url + page_url;
-
+                axios.get(url)
+                    .then(response => {
+                        this.data = response;
+                        if(this.data.length !== 0){
+                            this.makePagination(response.data.aspek);
+                        }
+                        this.$emit('update-pagination-data', this.data);
+                    })
+            },
+            getDataOld(current_url, page_url){
+                console.log(page_url)
+                //console.log(this.url)
+                //let url = page_url === undefined ? this.url : this.url + page_url;
+                let url = page_url === undefined ? current_url : current_url + page_url;
                 axios.get(url)
                     .then(response => {
                         this.data = response;
@@ -58,6 +71,9 @@
         },
         created(){
             this.getData();
+        },
+        createdOld(){
+            this.getData(this.url);
         }
     }
 </script>

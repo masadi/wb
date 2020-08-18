@@ -156,6 +156,7 @@ class KomponenController extends Controller
                     'indikator_id' => $indikator->id,
                     'urut' => 0,
                     'pertanyaan' => $item['Rumusan Pertanyaan'],
+                    'petunjuk_pengisian' => $item['Petunjuk Pengisian'],
                     'skor' => 5,
                 ]);
                 for($i=1;$i<=5;$i++){

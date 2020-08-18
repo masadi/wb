@@ -18,12 +18,11 @@ return [
             'instrumen' => 'c,r,u,d',
             'news'  => 'c,r,u,d',
             'profile' => 'r,u',
-            'jawaban' => 'r',
+            'jawaban' => 'c,r,u,d',
         ],
         'author' => [
             'news'  => 'c,r,u,d',
             'profile' => 'r,u',
-            'referensi' => 'r',
             'instrumen' => 'r',
             'jawaban' => 'r',
         ],

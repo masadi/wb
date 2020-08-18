@@ -41,7 +41,7 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 @endif
-                @if(!$user->isAbleTo('news-create'))
+                @if($user->isAbleTo('referensi-read'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-list"></i>
