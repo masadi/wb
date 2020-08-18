@@ -11,6 +11,7 @@ use App\Indikator;
 use App\Instrumen;
 use App\Sekolah;
 use App\Ptk;
+use App\Peserta_didik;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -78,6 +79,20 @@ class ReferensiController extends Controller
                 $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%')
                 ->orWhere('nuptk', 'LIKE', '%' . request()->q . '%')
                 ->orWhere('nik', 'LIKE', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_pd($request)
+    {
+        $all_data = Peserta_didik::where(function($query){
+            if(request()->sekolah_id){
+                $query->where('sekolah_id', request()->sekolah_id);
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($berita) {
+                $all_data = $all_data->where('nama', 'LIKE', '%' . request()->q . '%')
+                ->orWhere('no_induk', 'LIKE', '%' . request()->q . '%')
+                ->orWhere('nisn', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }

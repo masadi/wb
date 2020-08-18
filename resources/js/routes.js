@@ -42,6 +42,10 @@ let routes = [{
         component: require('./views/ptk').default
     },
     {
+        path: '/pd',
+        component: require('./views/pd').default
+    },
+    {
         path: '/instrumen',
         component: require('./views/instrumen').default
     },
