@@ -96,7 +96,7 @@ class HomeController extends Controller
                         'email' => $ptk->email,
                     ]
                 );
-                $user = User::updateOrCreate(
+                /*$user = User::updateOrCreate(
                     ['email' => $ptk->email],
                     [
                         'sekolah_id' => $ptk->sekolah_id,
@@ -108,7 +108,7 @@ class HomeController extends Controller
                 if(!$user->hasRole('ptk')){
                     $role = Role::where('name', 'ptk')->first();
                     $user->attachRole($role);
-                }
+                }*/
             }
         }
         return response()->json(['message' => 'Proses sinkronisasi selesai']);

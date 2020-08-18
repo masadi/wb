@@ -84,7 +84,7 @@ class SekolahSeeder extends Seeder
                             'email' => $ptk->email,
                         ]
                     );
-                    $user = User::updateOrCreate(
+                    /*$user = User::updateOrCreate(
                         ['email' => $ptk->email],
                         [
                             'sekolah_id' => $ptk->sekolah_id,
@@ -96,7 +96,7 @@ class SekolahSeeder extends Seeder
                     if(!$user->hasRole('ptk')){
                         $role = Role::where('name', 'ptk')->first();
                         $user->attachRole($role);
-                    }
+                    }*/
                 }
             }
         }

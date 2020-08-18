@@ -31,10 +31,11 @@
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
-                    <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
+                    <b-dropdown v-show="!user.sekolah_id" id="dropdown-dropleft" dropleft text="Aksi" variant="success">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
+                    <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="openShowModal(row)">Detil</button>
                 </template>
             </b-table>   
       
@@ -57,8 +58,61 @@
             ></b-pagination>
         </div>
         </div>
-        <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Sekolah">
-            {{ modalText }}
+        <b-modal id="modal-xl" size="lg" v-model="showModal" title="Detil Sekolah">
+            <table class="table">
+                <tr>
+                    <td width="20%">Nama</td>
+                    <td width="80%">: {{modalText.nama}}</td>
+                </tr>
+                <tr>
+                    <td>NPSN</td>
+                    <td>: {{modalText.npsn}}</td>
+                </tr>
+                <tr>
+                    <td>Alamat</td>
+                    <td>: {{modalText.alamat_jalan}}</td>
+                </tr>
+                <tr>
+                    <td>Desa/Kelurahan</td>
+                    <td>: {{modalText.desa_kelurahan}}</td>
+                </tr>
+                <tr>
+                    <td>Kecamatan</td>
+                    <td>: {{modalText.kecamatan}}</td>
+                </tr>
+                <tr>
+                    <td>Kabupaten</td>
+                    <td>: {{modalText.kabupaten}}</td>
+                </tr>
+                <tr>
+                    <td>Provinsi</td>
+                    <td>: {{modalText.provinsi}}</td>
+                </tr>
+                <tr>
+                    <td>Kodepos</td>
+                    <td>: {{modalText.kode_pos}}</td>
+                </tr>
+                <tr>
+                    <td>Telepon</td>
+                    <td>: {{modalText.no_telp}}</td>
+                </tr>
+                <tr>
+                    <td>Fax</td>
+                    <td>: {{modalText.no_fax}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>: {{modalText.email}}</td>
+                </tr>
+                <tr>
+                    <td>Website</td>
+                    <td>: {{modalText.website}}</td>
+                </tr>
+                <tr>
+                    <td>Status Sekolah</td>
+                    <td>: {{(modalText.status_sekolah == 1) ? 'Negeri' : 'Swasta'}}</td>
+                </tr>
+            </table>
             <template v-slot:modal-footer>
                 <div class="w-100 float-right">
                     <b-button
@@ -105,6 +159,7 @@ export default {
     },
     data() {
         return {
+            user : user,
             editmode: false,
             form: new Form({
                 id : '',
@@ -117,7 +172,7 @@ export default {
             deleteModal: false,
             showModal: false,
             editModal: false,
-            modalText: '',
+            modalText: {},
             selected: null 
         }
     },
@@ -187,6 +242,10 @@ export default {
                     });
                 }
             })
+        },
+        openShowModal(row) {
+            this.showModal = true
+            this.modalText = row.item
         },
         editData(row) {
             //console.log(row);

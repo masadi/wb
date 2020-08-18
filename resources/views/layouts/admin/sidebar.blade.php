@@ -82,14 +82,14 @@ $user = auth()->user();
                             </router-link>
                         </li>
                         @endif
-                        @if($user->isAbleTo('referensi-create'))
+                        @if($user->isAbleTo('referensi-read'))
                         <li class="nav-item">
                             <router-link tag="a" to="/sekolah" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Sekolah</p>
                             </router-link>
                         </li>
-                        <li class="nav-item">
+                        <!--li class="nav-item">
                             <router-link tag="a" to="/ptk" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>PTK</p>
@@ -106,12 +106,12 @@ $user = auth()->user();
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Pengguna</p>
                             </router-link>
-                        </li>
+                        </li-->
                         @endif
                     </ul>
                 </li>
                 @endif
-                @if($user->isAbleTo('jawaban-create'))
+                @if($user->isAbleTo('jawaban-read'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-check-double"></i>
@@ -120,24 +120,24 @@ $user = auth()->user();
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @if($user->isAbleTo('jawaban-create'))
                         <li class="nav-item">
                             <router-link tag="a" to="/kuisioner/pengisian" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Isi Kuisioner</p>
                             </router-link>
                         </li>
-                        @if($user->isAbleTo('referensi-create'))
+                        @endif
                         <li class="nav-item">
                             <router-link tag="a" to="/kuisioner/progres" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Progres Pengisian</p>
                             </router-link>
                         </li>
-                        @endif
                     </ul>
                 </li>
                 @endif
-                @if($user->isAbleTo('referensi-create'))
+                @if($user->isAbleTo('jawaban-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-check-double"></i>
@@ -146,12 +146,12 @@ $user = auth()->user();
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+                        <!--li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/hitung" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Hitung Rapor Mutu</p>
                             </router-link>
-                        </li>
+                        </li-->
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/hasil" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
