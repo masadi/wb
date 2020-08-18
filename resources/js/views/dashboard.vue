@@ -100,7 +100,7 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
                                                     </div>
                                                     <div class="ps-bot">
-                                                        <p>Verifikasi dan Validasi Rapor Mutu Sekolah oleh Tim Direktorat</p>
+                                                        <p>Pakta Integritas Sekolah</p>
                                                     </div>
                                                     <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
@@ -109,7 +109,7 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
                                                     </div>
                                                     <div class="ps-top">
-                                                        <p>Pakta Integritas Tim Verifikator</p>
+                                                        <p>Verifikasi dan Validasi Rapor Mutu Sekolah oleh Tim Direktorat</p>
                                                     </div>
                                                     <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
@@ -118,9 +118,18 @@
                                                         <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_05.png" alt=""/>
                                                     </div>
                                                     <div class="ps-bot">
-                                                        <p>Pakta Integritas Sekolah</p>
+                                                        <p>Pakta Integritas Tim Verifikator</p>
                                                     </div>
                                                     <span class="ps-sp-top"><i class="fas fa-times text-danger"></i></span>
+                                                </li>
+                                                <li>
+                                                    <div class="img-handler-bot">
+                                                        <img src="http://www.physology.co.uk/wp-content/uploads/2016/02/ps-elem_10.png" alt=""/>
+                                                    </div>
+                                                    <div class="ps-top">
+                                                        <p>Pengesahan oleh Direktorat</p>
+                                                    </div>
+                                                    <span class="ps-sp-bot"><i class="fas fa-times text-danger"></i></span>
                                                 </li>
                                             </ol>
                                         </div>

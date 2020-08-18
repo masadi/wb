@@ -37490,7 +37490,7 @@ readers do not read off random characters that represent icons */
 
 .ps-timeline-sec .container ol.ps-timeline li {
   float: left;
-  width: 20%;
+  width: 16%;
   padding-top: 30px;
   position: relative;
 }
