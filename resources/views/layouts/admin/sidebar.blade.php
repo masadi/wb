@@ -111,6 +111,15 @@ $user = auth()->user();
                     </ul>
                 </li>
                 @endif
+                @if($user->isAbleTo('jawaban-create'))
+                <li class="nav-item">
+                    <router-link tag="a" to="/kuisioner/pengisian" class="nav-link">
+                        <i class="nav-icon fas fa-hand-point-right"></i>
+                        <p>Isi Kuisioner</p>
+                    </router-link>
+                </li>
+                @endif
+                {{--
                 @if($user->isAbleTo('jawaban-read'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
@@ -120,14 +129,7 @@ $user = auth()->user();
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if($user->isAbleTo('jawaban-create'))
-                        <li class="nav-item">
-                            <router-link tag="a" to="/kuisioner/pengisian" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Isi Kuisioner</p>
-                            </router-link>
-                        </li>
-                        @endif
+                        
                         <li class="nav-item">
                             <router-link tag="a" to="/kuisioner/progres" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
@@ -137,6 +139,7 @@ $user = auth()->user();
                     </ul>
                 </li>
                 @endif
+                --}}
                 @if($user->isAbleTo('jawaban-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">

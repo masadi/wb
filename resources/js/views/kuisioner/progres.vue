@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                Progres Pengisian Instrumen
+                                {{kuisioners}}
                             </div>
                         </div>
                     </div>
@@ -31,6 +31,24 @@
     </div>
 </template>
 <script>
-
-
+import axios from 'axios'
+export default {
+    created() {
+        this.loadPostsData()
+    },
+    data() {
+        return {
+            kuisioners: [],
+        }
+    },
+    methods: {
+        loadPostsData(){
+            axios.post(`/api/kuisioner/progres`, {
+                user_id: user.user_id,
+            }).then((response) => {
+                this.kuisioners = response.data.data
+            });
+        },
+    }
+}
 </script>

@@ -80,6 +80,85 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">No</th>
+                                            <th class="text-center" scope="col">Komponen</th>
+                                            <th class="text-center" scope="col">Nilai</th>
+                                            <th class="text-center" scope="col">Predikat</th>
+                                            <th class="text-center" scope="col">Kategori</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(kuisioner, key) in kuisioners">
+                                            <td class="text-center">{{key + 1}}</td>
+                                            <td>{{kuisioner.nama}}</td>
+                                            <td class="text-center">{{(kuisioner.nilai_komponen) ? kuisioner.nilai_komponen.total_nilai : 0}}</td>
+                                            <td class="text-center">{{(kuisioner.nilai_komponen) ? kuisioner.nilai_komponen.predikat : '-'}}</td>
+                                            <td class="text-center">
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[kuisioner.id] >= 1}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[kuisioner.id] >= 21}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[kuisioner.id] >= 41}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[kuisioner.id] >= 61}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[kuisioner.id] >= 81}"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex border-bottom">
+                                    <div class="mr-auto py-2">Komponen / Aspek / Indikator</div>
+                                    <div class="py-2 pr-4">Nilai</div>
+                                    <div class="py-2 pl-4 pr-4">Predikat</div>
+                                    <div class="py-2 pl-4">Kategori</div>
+                                </div>
+                                <div v-for="(indikator, key) in output_indikator" class="d-flex border-bottom">
+                                    <div class="mr-auto py-2">{{key + 1}}. {{indikator.atribut.aspek.komponen.nama}}</div>
+                                    <div class="py-2 pr-4">Nilai</div>
+                                    <div class="py-2 pl-4 pr-4">Predikat</div>
+                                    <div class="py-2 pl-4">Kategori</div>
+                                </div>
+                                <!--table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">Komponen / Aspek / Indikator</th>
+                                            <th class="text-center" scope="col">Nilai</th>
+                                            <th class="text-center" scope="col">Predikat</th>
+                                            <th class="text-center" scope="col">Kategori</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(aspek, key) in output_aspek">
+                                            <td>{{aspek.nama}}</td>
+                                            <td class="text-center">{{(aspek.nilai_komponen) ? aspek.nilai_komponen.total_nilai : 0}}</td>
+                                            <td class="text-center">{{(aspek.nilai_komponen) ? aspek.nilai_komponen.predikat : '-'}}</td>
+                                            <td class="text-center">
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[aspek.id] >= 1}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[aspek.id] >= 21}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[aspek.id] >= 41}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[aspek.id] >= 61}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': getBintang[aspek.id] >= 81}"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    {{output_indikator}}
+                                </table-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -126,10 +205,36 @@ export default {
                 }
             },
             sekolah_id: user.sekolah_id,
+            kuisioners: [],
+            output_indikator: [],
+            getBintang: {},
         }
     },
     methods: {
         loadPostsData() {
+            axios.get(`/api/rapor-mutu/hasil`, {
+                params: {
+                    user_id: user.user_id,
+                }
+            }).then((response) => {
+                let getData = response.data
+                let tempBintang = {};
+                $.each(getData.data, function(key, value) {
+                    tempBintang[value.id] = (value.nilai_komponen) ? value.nilai_komponen.total_nilai : 0; 
+                    $.each(value, function(index, val) {
+                        /*tempIndikator[val.instrumen_id] = val.indikator_id; 
+                        tempAtribut[val.instrumen_id] = val.indikator.atribut_id; 
+                        tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id; 
+                        tempKomponen[val.instrumen_id] = val.indikator.atribut.aspek.komponen_id; 
+                        if(val.jawaban){
+                            tempData[val.jawaban.instrumen_id] = val.jawaban.nilai; 
+                        }*/
+                    });
+                });
+                this.getBintang = tempBintang
+                this.kuisioners = getData.data
+                this.output_indikator = getData.output_indikator
+            });
         }
     }
 }

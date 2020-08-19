@@ -9,10 +9,10 @@
                         <form @submit.prevent="insertData()" method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">
+                                    <h4 class="card-title">
                                         <i class="fas fa-check mr-1"></i>
                                         Kuisioner Komponen {{title}}
-                                    </h3>
+                                    </h4>
                                     <div class="card-tools">
                                         <button type="submit" class="btn btn-danger">Simpan</button>
                                     </div>
@@ -28,12 +28,12 @@
                                     <div v-for="(value, name) in items">
                                         <h2>Aspek {{name}} </h2>
                                         <ol class="pl-4">
-                                            <li class="h5 mb-1" v-for="(item, index) in value">
+                                            <li class="mb-1" v-for="(item, index) in value">
                                                 <input type="hidden" v-model="form.indikator_id[item.instrumen_id]">
                                                 <input type="hidden" v-model="form.atribut_id[item.instrumen_id]">
                                                 <input type="hidden" v-model="form.aspek_id[item.instrumen_id]">
                                                 <input type="hidden" v-model="form.komponen_id[item.instrumen_id]">
-                                                <span style="font-weight: 600;">{{item.pertanyaan}} <button type="button" class="btn btn-primary" v-on:click="petunjuk(item.instrumen_id)" title="Petunjuk Pengisian"><i class="fas fa-search-plus"></i></button></span>
+                                                <span style="font-weight: 600;">{{item.pertanyaan}} <a href="javascript:{}" class="text-danger" v-on:click="petunjuk(item.instrumen_id)" title="Petunjuk Pengisian"><i class="fas fa-info-circle"></i></a></span>
                                                 <div class="form-group">
                                                     <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">
                                                         <input class="custom-control-input" type="radio" v-bind:id="item.instrumen_id+subs.urut" v-bind:name="`instrumen_id.${item.instrumen_id}`" v-model="form.instrumen_id[item.instrumen_id]" v-bind:value="subs.urut">
@@ -187,7 +187,6 @@
                 .then((response) => {
                     //this.$emit('update-url', response);
                     //JIKA RESPONSENYA DITERIMA
-                    console.log(response)
                     let getData = response.data
                     this.current_page = getData.aspek.current_page
                     this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
@@ -228,7 +227,9 @@
                     if(page_url){
                         //this.newPage(page_url);
                         $.each(this.$children, function(key, value) {
-                            value.getData(`&page=${page_url}`)
+                            if(value.simple){
+                                value.getData(`&page=${page_url}`)
+                            }
                             //value.getData(`&new_page=${new_page}`)
                         })
                     } else if(next_page){

@@ -8,6 +8,7 @@ use App\Aspek;
 use App\Instrumen;
 use App\Jawaban;
 use App\Nilai_aspek;
+use App\Nilai_instrumen;
 class KuisionerController extends Controller
 {
     public function index(Request $request){
@@ -51,6 +52,16 @@ class KuisionerController extends Controller
                         'nilai' => $nilai,
                     ]
                 );
+                Nilai_instrumen::updateOrCreate(
+                    [
+                        'user_id' => $request->user_id,
+                        'instrumen_id' => $instrumen_id,
+                    ],
+                    [
+                        'nilai' => $nilai,
+                        'predikat' => '-',
+                    ]
+                );
             }
         }
     }
@@ -70,6 +81,6 @@ class KuisionerController extends Controller
         foreach($instrumens as $instrumen){
             $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
         }
-        return response()->json(['status' => 'success', 'nilai' => $output_nilai, 'data' => $output, 'title' => $komponen->nama]);
+        return response()->json(['status' => 'success', 'data' => $output]);
     }
 }

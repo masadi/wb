@@ -19,6 +19,7 @@ class CreateNilaiKomponenTable extends Migration
             $table->uuid('user_id');
             $table->decimal('nilai', 5, 2);
             $table->decimal('total_nilai', 5, 2);
+            $table->string('predikat');
             $table->timestamps();
             $table->primary('nilai_komponen_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');

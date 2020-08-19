@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                Hasil Raport Mutu Sekolah
+                                {{kuisioners}}
                             </div>
                         </div>
                     </div>
@@ -31,6 +31,25 @@
     </div>
 </template>
 <script>
-
-
+import axios from 'axios'
+export default {
+    created() {
+        this.loadPostsData()
+    },
+    data() {
+        return {
+            kuisioners: [],
+        }
+    },
+    methods: {
+        loadPostsData(){
+            axios.post(`/api/rapor-mutu/hasil`, {
+                user_id: user.user_id,
+            }).then((response) => {
+                let getData = response.data
+                this.kuisioners = getData.data
+            });
+        },
+    }
+}
 </script>

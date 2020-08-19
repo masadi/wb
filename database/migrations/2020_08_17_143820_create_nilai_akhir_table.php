@@ -18,6 +18,7 @@ class CreateNilaiAkhirTable extends Migration
             $table->uuid('user_id');
             $table->decimal('nilai', 5, 2);
             $table->primary('nilai_akhir_id');
+            $table->string('predikat');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });

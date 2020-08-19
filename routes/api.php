@@ -36,6 +36,10 @@ Route::group(['prefix' => 'kuisioner'], function(){
     Route::get('/progres', 'KuisionerController@progres');
     //Route::get('/{query?}/{id?}', 'KuisionerController@index');
 });
+Route::group(['prefix' => 'rapor-mutu'], function(){
+    Route::post('/hasil', 'RaporController@index');
+    Route::get('/hasil', 'RaporController@index');
+});
 Route::resource('users', 'UsersController');
 Route::resource('sekolah', 'SekolahController');
 Route::resource('komponen', 'KomponenController');

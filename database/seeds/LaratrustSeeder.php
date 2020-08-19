@@ -61,16 +61,6 @@ class LaratrustSeeder extends Seeder
                         'password' => bcrypt('12345678')
                     ]);
                     $user->attachRole($role);
-                } elseif($key == 'ptk'){
-                    for($i=1;$i<=10;$i++){
-                        $user = \App\User::create([
-                            'name' => ucwords(str_replace('_', ' ', $key)).' '.$i,
-                            'username' => strtolower(str_replace(' ', '_', $key)).' '.$i,
-                            'email' => $key.'_'.$i.'@apmsmk.net',
-                            'password' => bcrypt('12345678')
-                        ]);
-                        $user->attachRole($role);
-                    }
                 } else {
                 // Create default user for each role
                     $user = \App\User::create([
