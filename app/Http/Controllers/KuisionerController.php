@@ -52,6 +52,18 @@ class KuisionerController extends Controller
                         'nilai' => $nilai,
                     ]
                 );
+                $predikat = '-';
+                if($nilai == 1){
+                    $predikat = 'Sangat Kurang';
+                } elseif($nilai == 2){
+                    $predikat = 'Kurang';
+                } elseif($nilai == 3){
+                    $predikat = 'Cukup';
+                } elseif($nilai == 4){
+                    $predikat = 'Baik';
+                } elseif($nilai == 5){
+                    $predikat = 'Sangat Baik';
+                }
                 Nilai_instrumen::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
@@ -59,7 +71,7 @@ class KuisionerController extends Controller
                     ],
                     [
                         'nilai' => $nilai,
-                        'predikat' => '-',
+                        'predikat' => $predikat,
                     ]
                 );
             }

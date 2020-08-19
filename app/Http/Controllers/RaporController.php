@@ -17,12 +17,19 @@ class RaporController extends Controller
                         $query->where('urut', 0);
                     }]);
                 }]);
+            }, 'nilai_aspek' => function($query) use ($request){
+                $query->where('user_id', $request->user_id);
+            }, 'instrumen' => function($query) use ($request){
+                $query->where('urut', 0);
+                $query->with(['nilai_instrumen' => function($query) use ($request){
+                    $query->where('user_id', $request->user_id);
+                }]);
             }]);
         }])->get();
-        $output_aspek = $komponen->pluck('aspek')->flatten();
-        $output_atribut = $output_aspek->pluck('atribut')->flatten();
-        $output_indikator = $output_atribut->pluck('indikator')->flatten();
-        $output_instrumen = $output_indikator->pluck('instrumen')->flatten();
+        //$output_aspek = $komponen->pluck('aspek')->flatten();
+        //$output_atribut = $output_aspek->pluck('atribut')->flatten();
+        //$output_indikator = $output_atribut->pluck('indikator')->flatten();
+        //$output_instrumen = $output_indikator->pluck('instrumen')->flatten();
         /*
         $output_aspek = $komponen->pluck('aspek.atribut.indikator.instrumen');
         dd($output_aspek);
@@ -37,6 +44,6 @@ class RaporController extends Controller
         $instrumen = Instrumen::with(['nilai_instrumen' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
         }, 'indikator.atribut.aspek.komponen'])->where('urut', 0)->get();
-        return response()->json(['status' => 'success', 'data' => $komponen, 'output_indikator' => $output_indikator]);
+        return response()->json(['status' => 'success', 'data' => $komponen]);
     }
 }

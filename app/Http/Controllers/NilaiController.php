@@ -22,59 +22,63 @@ class NilaiController extends Controller
             $instrumen_id = $komponen->aspek->map(function($aspek) use ($request){
                 $instrumen_id = $aspek->jawaban()->select('instrumen_id')->get()->keyBy('instrumen_id')->keys()->all();
                 $nilai = $aspek->jawaban()->sum('nilai');
-                $skor = $aspek->instrumen()->whereIn('instrumen_id', $instrumen_id)->sum('skor');
-                $nilai_aspek = ($nilai) ? ($nilai * $aspek->bobot) / $skor : 0;
-                $predikat_aspek = '-';
-                if($nilai_aspek < 21){
-                    $predikat_aspek = 'Sangat Kurang';
-                } elseif($nilai_aspek < 41){
-                    $predikat_aspek = 'Kurang';
-                } elseif($nilai_aspek < 61){
-                    $predikat_aspek = 'Cukup';
-                } elseif($nilai_aspek < 81){
-                    $predikat_aspek = 'Baik';
-                } elseif($nilai_aspek >= 81){
-                    $predikat_aspek = 'Sangat Baik';
+                if($nilai){
+                    $skor = $aspek->instrumen()->whereIn('instrumen_id', $instrumen_id)->sum('skor');
+                    $nilai_aspek = ($nilai) ? ($nilai * $aspek->bobot) / $skor : 0;
+                    $predikat_aspek = '-';
+                    if($nilai_aspek < 21){
+                        $predikat_aspek = 'Sangat Kurang';
+                    } elseif($nilai_aspek < 41){
+                        $predikat_aspek = 'Kurang';
+                    } elseif($nilai_aspek < 61){
+                        $predikat_aspek = 'Cukup';
+                    } elseif($nilai_aspek < 81){
+                        $predikat_aspek = 'Baik';
+                    } elseif($nilai_aspek >= 81){
+                        $predikat_aspek = 'Sangat Baik';
+                    }
+                    Nilai_aspek::updateOrCreate(
+                        [
+                            'user_id' => $request->user_id,
+                            'aspek_id' => $aspek->id,
+                            'komponen_id' => $aspek->komponen_id,
+                        ],
+                        [
+                            'nilai' => $nilai,
+                            'total_nilai' => $nilai_aspek,
+                            'predikat' => $predikat_aspek,
+                        ]
+                    );
                 }
-                Nilai_aspek::updateOrCreate(
-                    [
-                        'user_id' => $request->user_id,
-                        'aspek_id' => $aspek->id,
-                        'komponen_id' => $aspek->komponen_id,
-                    ],
-                    [
-                        'nilai' => $nilai,
-                        'total_nilai' => $nilai_aspek,
-                        'predikat' => $predikat_aspek,
-                    ]
-                );
             });
             $all_nilai_aspek = Nilai_aspek::where('user_id', $request->user_id)->where('komponen_id', $komponen->id)->sum('total_nilai');
-            $all_bobot = $komponen->aspek()->sum('bobot');
-            $nilai_komponen = ($all_nilai_aspek) ? ($all_nilai_aspek * 100) / $all_bobot : 0;
-            $predikat_komponen = '-';
-            if($nilai_komponen < 21){
-                $predikat_komponen = 'Sangat Kurang';
-            } elseif($nilai_komponen < 41){
-                $nilai_komponen = 'Kurang';
-            } elseif($nilai_komponen < 61){
-                $predikat_komponen = 'Cukup';
-            } elseif($nilai_komponen < 81){
-                $predikat_komponen = 'Baik';
-            } elseif($nilai_komponen >= 81){
-                $predikat_komponen = 'Sangat Baik';
+            if($all_nilai_aspek){
+                $all_bobot = $komponen->aspek()->sum('bobot');
+                $nilai_komponen = ($all_nilai_aspek) ? ($all_nilai_aspek * 100) / $all_bobot : 0;
+                $predikat_komponen = '-';
+                if($nilai_komponen < 21){
+                    $predikat_komponen = 'Sangat Kurang';
+                } elseif($nilai_komponen < 41){
+                    $predikat_komponen = 'Kurang';
+                } elseif($nilai_komponen < 61){
+                    $predikat_komponen = 'Cukup';
+                } elseif($nilai_komponen < 81){
+                    $predikat_komponen = 'Baik';
+                } elseif($nilai_komponen >= 81){
+                    $predikat_komponen = 'Sangat Baik';
+                }
+                Nilai_komponen::updateOrCreate(
+                    [
+                        'user_id' => $request->user_id,
+                        'komponen_id' => $komponen->id,
+                    ],
+                    [
+                        'nilai' => $all_nilai_aspek,
+                        'total_nilai' => $nilai_komponen,
+                        'predikat' => $predikat_komponen,
+                    ]
+                );
             }
-            Nilai_komponen::updateOrCreate(
-                [
-                    'user_id' => $request->user_id,
-                    'komponen_id' => $komponen->id,
-                ],
-                [
-                    'nilai' => $all_nilai_aspek,
-                    'total_nilai' => $nilai_komponen,
-                    'predikat' => $predikat_komponen,
-                ]
-            );
             $total_nilai += $all_nilai_aspek;
         }
         $predikat_akhir = '-';
