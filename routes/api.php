@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Route::get('/instrumen', 'InstrumenController@index');
 //Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
 Route::get('/get-kategori', 'BeritaController@kategori');
+Route::get('/cetak-instrumen', 'ReferensiController@cetak');
 /*Route::get('/berita', 'BeritaController@index');
 
 Route::delete('/berita/{id}', 'BeritaController@destroy');*/

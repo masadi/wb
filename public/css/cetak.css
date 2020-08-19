@@ -1,0 +1,52 @@
+body {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF;
+    font-family: Times;
+    font-size: 12px;
+}
+
+ol.componen {
+    padding: 0px;
+    list-style-type: upper-alpha;
+}
+
+ol.aspek {
+    padding-left: 15px;
+    list-style-type: lower-alpha;
+}
+
+ol.instrumen {
+    padding-left: 16px;
+    list-style-type: decimal;
+}
+
+ol.jawaban {
+    padding-left: 16px;
+    padding-top: 0px;
+    list-style-type: inherit !important;
+}
+
+
+/*
+ol ol,
+ol ol ol {
+    padding-left: 15px;
+}
+
+ol {
+    list-style-type: upper-alpha;
+    padding: 0px;
+}
+
+ol li ol {
+    list-style-type: lower-alpha;
+}
+
+ol li ol li ol {
+    list-style-type: decimal;
+}
+
+ol li ol li ol li ol {
+    list-style-type: inherit;
+}
+*/

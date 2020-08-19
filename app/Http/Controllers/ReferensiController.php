@@ -22,6 +22,7 @@ use App\HelperModel;
 use Carbon\Carbon;
 use File;
 use Validator;
+use PDF;
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
@@ -206,5 +207,17 @@ class ReferensiController extends Controller
         ];
         $data = $data->merge($progres);
         return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    public function cetak(){
+        $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query){
+            $query->with(['subs']);
+            $query->where('urut', 0);
+        }])->get();
+        //return view('cetak.instrumen', $data);
+        $pdf = PDF::loadView('cetak.instrumen', $data, [], [
+            'format' => [220, 330],
+        ]);
+        //return $pdf->stream('instrumen.pdf');
+		return $pdf->download('instrumen.pdf');
     }
 }

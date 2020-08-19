@@ -17,9 +17,9 @@
                                 <div class="progress">
                                 <div class="progress-bar" v-bind:style="'width: '+persen_utama+'%;'"></div>
                                 </div>
-                                <!--span class="progress-description">
-                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="hitung_nilai_kuisioner">Hitung Nilai Kuisioner</button>
-                                </span-->
+                                <span class="progress-description">
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="cetak_kuisioner"><i class="fas fa-print"></i> Cetak Kuisioner</button>
+                                </span>
                             </div>
                             </div>
                         </div>
@@ -108,6 +108,20 @@ export default {
         },
         prosesKuisioner(id){
             this.$router.push({ name: 'proses_pengisian', params: { id: id } })
+        },
+        cetak_kuisioner : function (event) {
+            //window.open(downloadUrl,'_blank');
+            axios.get(`/api/cetak-instrumen`, {
+                //user_id: user.user_id,
+                responseType: 'arraybuffer'
+            }).then((response) => {
+                console.log(response)
+                let blob = new Blob([response.data], { type: 'application/pdf' })
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'Instrumen Penjaminan Mutu SMK.pdf'
+                link.click()
+            })
         },
         hitung_nilai_kuisioner: function (event) {
             Swal.fire({
