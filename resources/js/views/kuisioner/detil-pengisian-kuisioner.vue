@@ -25,6 +25,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col" class="text-center">Aspek</th>
+                                            <th scope="col" class="text-center">Bobot</th>
                                             <th scope="col" class="text-center">Jumlah Soal</th>
                                             <th scope="col" class="text-center">Soal Terjawab</th>
                                             <th scope="col" class="text-center">Persentase</th>
@@ -34,6 +35,7 @@
                                     <tbody>
                                         <tr v-for="(value, name) in items">
                                             <td>{{name}}</td>
+                                            <td class="text-center">{{bobot[name]}}</td>
                                             <td class="text-center">{{jumlah_soal[name]}}</td>
                                             <td class="text-center">{{jumlah_terjawab[name]}}</td>
                                             <td class="text-center">{{persen[name]}}</td>
@@ -57,6 +59,7 @@
             return {
                 title : '',
                 jumlah_soal : {},
+                bobot: {},
                 jumlah_terjawab : {},
                 persen : {},
                 nilai : {},
@@ -84,9 +87,12 @@
                     let getData = response.data
                     let getNilai = response.data.nilai
                     var tempNilai = {}
+                    var tempBobot = {}
                     $.each(getNilai, function(key, value) {
                         tempNilai[value.aspek.nama] = value.total_nilai
+                        tempBobot[value.aspek.nama] = value.aspek.bobot
                     });
+                    this.bobot = tempBobot
                     var tempJumlahSoal = {}
                     var tempJumlahTerjawab = {}
                     var tempPersen = {}

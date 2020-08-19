@@ -93,6 +93,6 @@ class KuisionerController extends Controller
         foreach($instrumens as $instrumen){
             $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
         }
-        return response()->json(['status' => 'success', 'data' => $output]);
+        return response()->json(['status' => 'success', 'data' => $output, 'nilai' => $output_nilai]);
     }
 }
