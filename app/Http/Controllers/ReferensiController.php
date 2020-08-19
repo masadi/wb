@@ -12,6 +12,13 @@ use App\Instrumen;
 use App\Sekolah;
 use App\Ptk;
 use App\Peserta_didik;
+use App\Nilai_instrumen;
+use App\Nilai_akhir;
+use App\Pakta_integritas;
+use App\Verval;
+use App\Verifikasi;
+use App\User;
+use App\HelperModel;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -182,6 +189,22 @@ class ReferensiController extends Controller
             ];
             $data = collect($nilai);
         }
+        $user = User::find($request->user_id);
+        $instrumen = Instrumen::where('urut', 0)->count();
+        $nilai_instrumen = Nilai_instrumen::where('user_id', $request->user_id)->count();
+        $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
+        $pakta = Pakta_integritas::where('user_id', $request->user_id)->first();
+        $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
+        $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
+        $progres = [
+            'kuisioner' => ($instrumen == $nilai_instrumen),
+            'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
+            'pakta' => ($pakta) ? HelperModel::TanggalIndo($pakta->updated_at) : NULL,
+            'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
+            'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
+            'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
+        ];
+        $data = $data->merge($progres);
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 }

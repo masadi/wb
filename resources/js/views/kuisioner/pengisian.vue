@@ -17,9 +17,9 @@
                                 <div class="progress">
                                 <div class="progress-bar" v-bind:style="'width: '+persen_utama+'%;'"></div>
                                 </div>
-                                <span class="progress-description">
+                                <!--span class="progress-description">
                                     <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="hitung_nilai_kuisioner">Hitung Nilai Kuisioner</button>
-                                </span>
+                                </span-->
                             </div>
                             </div>
                         </div>

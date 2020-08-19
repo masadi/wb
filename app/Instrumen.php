@@ -19,7 +19,7 @@ class Instrumen extends Model
         return $this->hasOne('App\Jawaban', 'instrumen_id', 'instrumen_id');
     }
     public function nilai_instrumen(){
-        return $this->belongsTo('App\Nilai_instrumen', 'instrumen_id', 'instrumen_id');
+        return $this->belongsTo('App\Nilai_instrumen', 'instrumen_id', 'instrumen_id')->orderBy('updated_at', 'ASC');
     }
     public function subs(){
         return $this->hasMany('App\Instrumen', 'ins_id', 'instrumen_id')->orderBy('urut', 'ASC');
