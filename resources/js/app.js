@@ -71,7 +71,6 @@ window.Toast = Toast;
 //import './css/styles.css';
 import Paginator from './utilities/Paginator';
 Vue.component('paginator', Paginator);
-
 new Vue({
     el: '#pmp_smk',
     router,
