@@ -3,6 +3,7 @@ body {
     background-color: #FFFFFF;
     font-family: Times;
     font-size: 12px;
+    text-align: justify;
 }
 
 ol.componen {

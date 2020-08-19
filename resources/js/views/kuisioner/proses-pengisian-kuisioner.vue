@@ -147,6 +147,8 @@
                         tempKomponen[val.instrumen_id] = val.indikator.atribut.aspek.komponen_id; 
                         if(val.jawaban){
                             tempData[val.instrumen_id] = val.jawaban.nilai; 
+                        } else {
+                             //tempData[val.instrumen_id] = 4; 
                         }
                         tempPetunjuk[val.instrumen_id] = val.petunjuk_pengisian; 
                     });
@@ -198,7 +200,9 @@
                             tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id; 
                             tempKomponen[val.instrumen_id] = val.indikator.atribut.aspek.komponen_id; 
                             if(val.jawaban){
-                                tempData[val.jawaban.instrumen_id] = val.jawaban.nilai; 
+                                tempData[val.instrumen_id] = val.jawaban.nilai; 
+                            } else {
+                                //tempData[val.instrumen_id] = 4; 
                             }
                         });
                     });

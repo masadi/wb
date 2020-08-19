@@ -72,10 +72,6 @@ let routes = [{
         component: require('./views/kuisioner/proses-pengisian-kuisioner').default
     },
     {
-        path: '/rapor-mutu/hitung',
-        component: require('./views/rapor-mutu/hitung').default,
-    },
-    {
         path: '/rapor-mutu/hasil',
         component: require('./views/rapor-mutu/hasil').default
     },

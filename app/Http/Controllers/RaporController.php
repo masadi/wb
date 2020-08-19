@@ -11,6 +11,9 @@ use App\Nilai_akhir;
 use App\Pakta_integritas;
 use App\Verval;
 use App\Verifikasi;
+use App\Tahun_pendataan;
+use Carbon\Carbon;
+use PDF;
 class RaporController extends Controller
 {
     public function index(Request $request){
@@ -72,6 +75,35 @@ class RaporController extends Controller
         $instrumen = Instrumen::with(['nilai_instrumen' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
         }, 'indikator.atribut.aspek.komponen'])->where('urut', 0)->get();*/
+        return response()->json($respone);
+    }
+    public function pakta(Request $request){
+        $respone = [
+            'user' => User::with(['sekolah.pakta_integritas'])->find($request->user_id),
+            'tahun_pendataan' => Tahun_pendataan::where('periode_aktif', 1)->first(),
+        ];
+        return response()->json($respone);
+    }
+    public function pra_cetak_pakta(Request $request){
+        $user = User::with(['sekolah'])->find($request->user_id);
+        Pakta_integritas::updateOrCreate([
+            'user_id' => $request->user_id,
+            'sekolah_id' => $user->sekolah_id,
+        ]);
+    }
+    public function cetak_pakta(Request $request){
+        $user = User::with(['sekolah'])->find($request->user_id);
+        $data['sekolah'] = $user->sekolah;
+        $data['now'] = HelperModel::TanggalIndo(Carbon::now());
+        $data['tahun_pendataan'] = Tahun_pendataan::where('periode_aktif', 1)->first();
+        //return view('cetak.pakta_integritas', $data);
+        $pdf = PDF::loadView('cetak.pakta_integritas', $data);
+        //return $pdf->stream('instrumen.pdf');
+		return $pdf->download('instrumen.pdf');
+    }
+    public function batal_pakta(Request $request){
+        $delete = Pakta_integritas::where('user_id', $request->user_id);
+        $respone = $delete->delete();
         return response()->json($respone);
     }
 }

@@ -258,8 +258,8 @@ export default {
                 this.rapor.kuisioner.tgl = (getData.rapor.kuisioner) ? getData.rapor.kuisioner : '-'
                 this.rapor.hitung.lengkap = getData.rapor.hitung
                 this.rapor.hitung.tgl = (getData.rapor.hitung) ? getData.rapor.hitung : '-'
-                this.rapor.pakta.lengkap = getData.rapor.pakta
-                this.rapor.pakta.tgl = (getData.rapor.pakta) ? getData.rapor.pakta : '-'
+                this.rapor.pakta.lengkap = getData.rapor.pakta_integritas
+                this.rapor.pakta.tgl = (getData.rapor.pakta_integritas) ? getData.rapor.pakta_integritas : '-'
                 this.rapor.verval.lengkap = getData.rapor.verval
                 this.rapor.verval.tgl = (getData.rapor.verval) ? getData.rapor.verval : '-'
                 this.rapor.verifikasi.lengkap = getData.rapor.verifikasi

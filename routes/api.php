@@ -40,6 +40,10 @@ Route::group(['prefix' => 'kuisioner'], function(){
 Route::group(['prefix' => 'rapor-mutu'], function(){
     Route::post('/hasil', 'RaporController@index');
     Route::get('/hasil', 'RaporController@index');
+    Route::get('/pakta', 'RaporController@pakta');
+    Route::get('/pra-cetak-pakta', 'RaporController@pra_cetak_pakta');
+    Route::get('/cetak-pakta', 'RaporController@cetak_pakta');
+    Route::get('/batal-pakta', 'RaporController@batal_pakta');
 });
 Route::resource('users', 'UsersController');
 Route::resource('sekolah', 'SekolahController');

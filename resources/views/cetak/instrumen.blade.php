@@ -24,9 +24,9 @@
                     </ol>
                 </li>
                 @endforeach
-                </ul>
+            </ol>
         </li>
         @endforeach
-        </ul>
+    </ol>
 </div>
 @endsection
