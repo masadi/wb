@@ -74,7 +74,7 @@ Vue.component('paginator', Paginator);
 new Vue({
     el: '#pmp_smk',
     router,
-    //data: {
-    //user: `${user.user_id}`
-    //}
+    /*data: {
+        loading: true,
+    }*/
 });

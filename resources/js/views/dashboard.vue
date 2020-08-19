@@ -137,7 +137,7 @@
                 </div>
             </div>
         </section>
-        
+        <loader></loader>
     </div>
 </template>
 <script>
@@ -150,6 +150,7 @@ export default {
     },
     data() {
         return {
+            loading:true,
             user: user,
             sekolah:0,
             ptk: 0,
@@ -177,6 +178,7 @@ export default {
                 }
             })
             .then((response) => {
+                this.loading=false
                 let getData = response.data.data
                 this.sekolah = getData.sekolah
                 this.ptk = getData.ptk_count

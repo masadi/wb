@@ -15,6 +15,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/loader.css') }}" rel="stylesheet">
     <style>
         nav ul li ul:not(.dropdown-menu) {padding-left: 30px !important;}
     </style>
