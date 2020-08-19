@@ -137,7 +137,6 @@
                 </div>
             </div>
         </section>
-        <loader></loader>
     </div>
 </template>
 <script>
@@ -150,7 +149,6 @@ export default {
     },
     data() {
         return {
-            loading:true,
             user: user,
             sekolah:0,
             ptk: 0,
