@@ -34,7 +34,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(value, name) in items">
-                                            <td>{{name}}</td>
+                                            <td><a href="javascript:{}" v-on:click="isi_instrumen(aspek[name])">{{name}}</a></td>
                                             <td class="text-center">{{bobot[name]}}</td>
                                             <td class="text-center">{{jumlah_soal[name]}}</td>
                                             <td class="text-center">{{jumlah_terjawab[name]}}</td>
@@ -64,12 +64,18 @@
                 persen : {},
                 nilai : {},
                 items: [],
+                aspek:{},
             }
         },
         created() {
             this.loadPostsData()
         },
         methods: {
+            isi_instrumen(aspek_id){
+                //this.$router.replace({ name: 'proses_pengisian', params: { id: this.$route.params.id, new_page:aspek_id } })
+                //this.$router.go({ name: 'proses_pengisian', params: { id: this.$route.params.id, new_page:aspek_id } })
+                this.$router.push({ name: 'proses_pengisian', params: { id: this.$route.params.id, new_page:aspek_id } })
+            },
             loadPostsData() {
                 /*axios.post(`/api/kuisioner/progres`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
@@ -116,6 +122,7 @@
                     this.nilai = tempNilai
                     this.title = getData.title
                     this.items = getData.data
+                    this.aspek = getData.output_aspek
                 })
             }
         }

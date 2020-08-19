@@ -84,7 +84,7 @@
     //KETIKA COMPONENT INI DILOAD
         data() {
             return {
-                url: `/api/get-kuisioner?user_id=${user.user_id}&komponen_id=${this.$route.params.id}`,
+                url: (this.$route.params.new_page) ? `/api/get-kuisioner?user_id=${user.user_id}&komponen_id=${this.$route.params.id}&page=${this.$route.params.new_page}` : `/api/get-kuisioner?user_id=${user.user_id}&komponen_id=${this.$route.params.id}`,
                 komponen_id: this.$route.params.id,
                 user_id: user.user_id,
                 nilai: null,
@@ -164,12 +164,13 @@
             },
             loadPostsData() {
                 //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
+                console.log(this.$route.params.new_page);
                 axios.get(`/api/get-kuisioner`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                     params : {
                         user_id: user.user_id,
                         komponen_id: this.$route.params.id,
-                        page: this.current_page,
+                        page: (this.$route.params.new_page) ? this.$route.params.new_page : this.current_page,
                         //aktif: this.current_page + 1,
                     }
                 })

@@ -78,7 +78,7 @@ class KuisionerController extends Controller
         }
     }
     public function progres(Request $request){
-        $komponen = Komponen::find($request->komponen_id);
+        $komponen = Komponen::with('aspek')->find($request->komponen_id);
         $callback = function($query) use ($request){
             $query->where('id', $request->komponen_id);
         };
@@ -87,13 +87,21 @@ class KuisionerController extends Controller
         };
         $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek.komponen', $callback)->with(['aspek.nilai_aspek' => $callback_jawaban])->withCount(['jawaban' => $callback_jawaban])->get();
         $output = [];
+        $output_aspek = [];
         $output_nilai = Nilai_aspek::whereHas('aspek', function($query) use ($request){
             $query->where('komponen_id', $request->komponen_id);
             $query->where('user_id', $request->user_id);
         })->with(['aspek'])->get();
+        
         foreach($instrumens as $instrumen){
             $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
+            //$output_aspek[$instrumen->indikator->atribut->aspek->nama] = $i++;//$instrumen->indikator->atribut->aspek->id;
+            //$output[$instrumen->indikator->atribut->aspek->nama][$instrumen->indikator->atribut->aspek->id][] = $instrumen;
         }
-        return response()->json(['status' => 'success', 'data' => $output, 'nilai' => $output_nilai]);
+        $i=1;
+        foreach($komponen->aspek as $aspek){
+            $output_aspek[$aspek->nama] = $i++;
+        }
+        return response()->json(['status' => 'success', 'data' => $output, 'output_aspek' => $output_aspek, 'nilai' => $output_nilai]);
     }
 }

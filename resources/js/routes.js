@@ -67,7 +67,7 @@ let routes = [{
         component: require('./views/kuisioner/detil-pengisian-kuisioner').default
     },
     {
-        path: '/proses-pengisian-kuisioner/:id',
+        path: '/proses-pengisian-kuisioner/:id/:new_page?',
         name: 'proses_pengisian',
         component: require('./views/kuisioner/proses-pengisian-kuisioner').default
     },
