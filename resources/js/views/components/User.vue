@@ -33,7 +33,7 @@
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="deleteData(row.item.user_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
                 </template>
             </b-table>   

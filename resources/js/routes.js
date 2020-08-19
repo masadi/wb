@@ -54,6 +54,10 @@ let routes = [{
         component: require('./views/users').default
     },
     {
+        path: '/verifikator',
+        component: require('./views/verifikator').default
+    },
+    {
         path: '/kuisioner/pengisian',
         component: require('./views/kuisioner/pengisian').default
     },

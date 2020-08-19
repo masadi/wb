@@ -77,11 +77,13 @@ return [
         'pengawas' => [
             'profile' => 'r,u',
             'verifikasi' => 'r',
+            'referensi' => 'r',
             'pengawas' => 'r,c,u,d',
             'jawaban' => 'c,r,u,d',
         ],
         'verifikator' => [
             'profile' => 'r,u',
+            'referensi' => 'r',
             'verifikasi' => 'r,c,u,d',
             'jawaban' => 'c,r,u,d',
         ],

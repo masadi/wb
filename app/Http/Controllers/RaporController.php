@@ -52,7 +52,7 @@ class RaporController extends Controller
             'data' => $komponen, 
             'rapor' => [
                 'jml_instrumen' => $output_instrumen->count(), 
-                'jml_jawaban' => $output_nilai_instrumen->count(),
+                'jml_jawaban' => $output_nilai_instrumen->where('user_id', $request->user_id)->count(),
                 'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
                 'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
                 'pakta_integritas' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,

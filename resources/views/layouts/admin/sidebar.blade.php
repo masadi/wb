@@ -77,8 +77,20 @@ $user = auth()->user();
                         </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/instrumen" class="nav-link">
-                                <i class="nav-icon fas fa-tasks"></i>
+                                <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Instrumen</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/verifikator" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Verifikator</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/pengguna" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Pengguna</p>
                             </router-link>
                         </li>
                         @endif
@@ -99,12 +111,6 @@ $user = auth()->user();
                             <router-link tag="a" to="/pd" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Peserta Didik</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link tag="a" to="/pengguna" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Pengguna</p>
                             </router-link>
                         </li-->
                         @endif

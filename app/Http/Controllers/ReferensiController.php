@@ -19,6 +19,8 @@ use App\Verval;
 use App\Verifikasi;
 use App\User;
 use App\HelperModel;
+use App\Sekolah_sasaran;
+use App\Tahun_pendataan;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -66,6 +68,11 @@ class ReferensiController extends Controller
         $all_data = Sekolah::where(function($query){
             if(request()->sekolah_id){
                 $query->where('sekolah_id', request()->sekolah_id);
+            }
+            if(request()->verifikator_id){
+                $query->whereDoesntHave('sekolah_sasaran', function ($query) {
+                    $query->where('verifikator_id', request()->verifikator_id);
+                });
             }
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
@@ -219,5 +226,43 @@ class ReferensiController extends Controller
         ]);
         //return $pdf->stream('instrumen.pdf');
 		return $pdf->download('instrumen.pdf');
+    }
+    public function get_verifikator(){
+        $users = User::where(function($query){
+            $query->whereRoleIs('verifikator');
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
+            ->when(request()->q, function($posts) {
+                //MAKA FUNGSI FILTER AKAN DIJALANKAN
+                $posts = $posts->where('name', 'LIKE', '%' . request()->q . '%')
+                    ->orWhere('email', 'LIKE', '%' . request()->q . '%')
+                    ->orWhere('username', 'LIKE', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $users]);
+    }
+    public function sekolah_sasaran(Request $request){
+        $tahun = Tahun_pendataan::where('periode_aktif', 1)->first();
+        $insert = Sekolah_sasaran::updateOrCreate([
+            'sekolah_id' => $request->sekolah_id,
+            'verifikator_id' => $request->verifikator_id,
+            'tahun_pendataan_id' => $tahun->tahun_pendataan_id,
+        ]);
+        if($insert){
+            $response = [
+                'title' => 'Berhasil',
+                'text' => 'Sekolah sasaran berhasil ditambahkan',
+                'icon' => 'success',
+            ];
+        } else {
+            $response = [
+                'title' => 'Gagal',
+                'text' => 'Sekolah sasaran gagal ditambahkan',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($response);
+    }
+    public function get_sekolah_sasaran($request){
+        return $this->get_sekolah($request);
     }
 }
