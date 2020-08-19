@@ -15,7 +15,7 @@ class SekolahSeeder extends Seeder
      */
     public function run()
     {
-        $all_npsn = ['20606899', '20613916', '20606817'];
+        $all_npsn = ['20606899', '20613916', '20606817', '20607928'];
         foreach($all_npsn as $npsn){
             $response = Http::post('http://api.erapor-smk.net/api/v1/sekolah', [
                 'npsn' => $npsn,
