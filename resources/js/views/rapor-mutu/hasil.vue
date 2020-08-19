@@ -243,7 +243,7 @@ export default {
                 $.each(getData.data, function(komponen_id, komponen) {
                     tempBintangKomponen[komponen.id] = (komponen.nilai_komponen) ? komponen.nilai_komponen.total_nilai : 0; 
                     $.each(komponen.aspek, function(aspek_id, aspek) {
-                        tempBintangAspek[aspek.id] = (aspek.nilai_aspek) ? aspek.nilai_aspek.total_nilai : 0;
+                        tempBintangAspek[aspek.id] = (aspek.nilai_aspek) ? (aspek.nilai_aspek.total_nilai * 100 / aspek.bobot) : 0;
                         $.each(aspek.instrumen, function(key, instrumen) {
                             tempBintangInstrumen[instrumen.instrumen_id] = (instrumen.nilai_instrumen) ? instrumen.nilai_instrumen.nilai : 0; 
                         });

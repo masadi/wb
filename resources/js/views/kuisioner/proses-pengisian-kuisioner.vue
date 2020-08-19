@@ -108,10 +108,6 @@
                 content:{}
             }
         },
-        //created() {
-            //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
-            //this.updatePaginationData('')
-        //},
         components: {
             'nl2br': Nl2brComponent
         },
@@ -123,8 +119,6 @@
                         this.$router.replace({ name: 'proses_pengisian', params: { id: new_page } })
                         this.$router.go({ name: 'proses_pengisian', params: { id: new_page } })
                     }
-                    //this.$router.push({ name: 'proses_pengisian', params: { id: new_page } })
-                    
                 }
             },
             petunjuk(instrumen_id){
@@ -137,7 +131,7 @@
                 this.current_page = getData.aspek.current_page
                 this.total = getData.aspek.total
                 this.per_page = getData.aspek.per_page
-                this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                this.items = getData.data 
                 this.title = getData.title
                 var tempData = {};
                 var tempIndikator = {};
@@ -152,7 +146,7 @@
                         tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id; 
                         tempKomponen[val.instrumen_id] = val.indikator.atribut.aspek.komponen_id; 
                         if(val.jawaban){
-                            tempData[val.jawaban.instrumen_id] = val.jawaban.nilai; 
+                            tempData[val.instrumen_id] = val.jawaban.nilai; 
                         }
                         tempPetunjuk[val.instrumen_id] = val.petunjuk_pengisian; 
                     });
