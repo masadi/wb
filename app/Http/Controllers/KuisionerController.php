@@ -9,6 +9,7 @@ use App\Instrumen;
 use App\Jawaban;
 use App\Nilai_aspek;
 use App\Nilai_instrumen;
+use App\Pakta_integritas;
 class KuisionerController extends Controller
 {
     public function index(Request $request){
@@ -34,7 +35,8 @@ class KuisionerController extends Controller
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
             }
         }
-        return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next]);
+        $pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
+        return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next, 'pakta_integritas' => ($pakta_integritas) ? TRUE : FALSE]);
     }
     public function simpan_jawaban(Request $request){
         if($request->instrumen_id){

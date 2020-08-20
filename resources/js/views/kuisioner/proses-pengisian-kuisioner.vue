@@ -14,7 +14,7 @@
                                         Kuisioner Komponen {{title}}
                                     </h4>
                                     <div class="card-tools">
-                                        <button type="submit" class="btn btn-danger">Simpan</button>
+                                        <button type="submit" class="btn btn-danger" :disabled="pakta_integritas">Simpan</button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -47,7 +47,7 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-between">
                                     <button v-bind:class="{ disabled: !previous }" type="button" class="btn btn-primary" v-on:click="newPage(previous)">&laquo; Komponen Sebelumnya</button>
-                                    <button type="submit" class="btn btn-danger">Simpan</button>
+                                    <button type="submit" class="btn btn-danger" :disabled="pakta_integritas">Simpan</button>
                                     <button v-bind:class="{ disabled: !next }" type="button" class="btn btn-primary" v-on:click="newPage(next)">Komponen Berikutnya &raquo;</button>
                                     </div>
                                 </div>
@@ -105,7 +105,8 @@
                 previous: null,
                 next:null,
                 text: `myLine1\nmyLine2`,
-                content:{}
+                content:{},
+                pakta_integritas: false,
             }
         },
         components: {
@@ -128,6 +129,7 @@
             },
             updatePaginationData(event) {
                 let getData = event.data
+                this.pakta_integritas = getData.pakta_integritas
                 this.current_page = getData.aspek.current_page
                 this.total = getData.aspek.total
                 this.per_page = getData.aspek.per_page
@@ -162,9 +164,8 @@
                 this.next = getData.next
                 this.content = tempPetunjuk
                 window.scrollTo(0,100);
-                //this.insertData();
             },
-            loadPostsData() {
+            /*loadPostsData() {
                 //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
                 console.log(this.$route.params.new_page);
                 axios.get(`/api/get-kuisioner`, {
@@ -181,10 +182,12 @@
                     komponen_id: this.$route.params.id,
                     user_id: user.user_id,
                 })*/
-                .then((response) => {
+                /*.then((response) => {
                     //this.$emit('update-url', response);
                     //JIKA RESPONSENYA DITERIMA
                     let getData = response.data
+                    console.log(getData);
+                    //pakta_integritas
                     this.current_page = getData.aspek.current_page
                     this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                     this.title = getData.title
@@ -215,7 +218,7 @@
                     this.next = getData.next
                     window.scrollTo(0,100);
                 })
-            },
+            },*/
             insertData(){
                 let page_url = (this.current_page < this.total) ? (this.current_page + 1) : null
                 let next_page = this.next;
