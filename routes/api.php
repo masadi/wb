@@ -38,6 +38,13 @@ Route::group(['prefix' => 'kuisioner'], function(){
     Route::get('/progres', 'KuisionerController@progres');
     //Route::get('/{query?}/{id?}', 'KuisionerController@index');
 });
+Route::group(['prefix' => 'verifikasi'], function(){
+    Route::post('/{query}', 'VerifikasiController@index');
+    //Route::post('/komponen', 'VerifikasiController@get_komponen');
+    //Route::post('/aspek', 'VerifikasiController@get_aspek');
+    //Route::post('/instrumen', 'VerifikasiController@get_instrumen');
+    //Route::post('/subs', 'VerifikasiController@get_subs');
+});
 Route::group(['prefix' => 'rapor-mutu'], function(){
     Route::post('/hasil', 'RaporController@index');
     Route::get('/hasil', 'RaporController@index');

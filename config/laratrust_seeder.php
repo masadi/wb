@@ -85,7 +85,7 @@ return [
             'profile' => 'r,u',
             'referensi' => 'r',
             'verifikasi' => 'r,c,u,d',
-            'jawaban' => 'c,r,u,d',
+            'jawaban' => 'r',
         ],
         'ptk' => [
             'profile' => 'r,u',

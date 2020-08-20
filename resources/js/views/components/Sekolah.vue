@@ -31,11 +31,13 @@
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
-                    <b-dropdown v-show="!user.sekolah_id" id="dropdown-dropleft" dropleft text="Aksi" variant="success">
+                    <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
                     <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="openShowModal(row)">Detil</button>
+                    <button v-show="hasRole('verifikator') && row.item.pakta_integritas" class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.sekolah_id)">Verifikasi</button>
+                    <span v-show="!row.item.pakta_integritas">Belum Cetak Pakta Integritas</span>
                 </template>
             </b-table>   
       
@@ -197,6 +199,9 @@ export default {
         }
     },
     methods: {
+        openVerifikasi(sekolah_id){
+            this.$router.push({ path: `proses-verifikasi/${sekolah_id}/${user.user_id}`})
+        },
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH

@@ -31,7 +31,7 @@ import Swal from 'sweetalert2';
 //Vue.use(CKEditor);
 import CKEditor from '@ckeditor/ckeditor5-vue';
 Vue.use(CKEditor);
-
+require('select2');
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -71,9 +71,31 @@ window.Toast = Toast;
 //import './css/styles.css';
 import Paginator from './utilities/Paginator';
 Vue.component('paginator', Paginator);
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
+Vue.mixin({
+    data: function() {
+        return {
+            get detilUser() {
+                return user;
+            },
+        }
+    },
+    methods: {
+        hasRole: function(role) {
+            for (var i = 0; i < this.user.roles.length; i++) {
+                if (this.user.roles[i].name == role) {
+                    return true
+                }
+            }
+            return false
+        },
+    }
+})
 new Vue({
     el: '#pmp_smk',
     router,
+    //detilUser: user
     /*data: {
         loading: true,
     }*/

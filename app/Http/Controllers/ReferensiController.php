@@ -74,7 +74,12 @@ class ReferensiController extends Controller
                     $query->where('verifikator_id', request()->verifikator_id);
                 });
             }
-        })->orderBy(request()->sortby, request()->sortbydesc)
+            if(request()->verifikasi_id){
+                $query->whereHas('sekolah_sasaran', function ($query) {
+                    $query->where('verifikator_id', request()->verifikasi_id);
+                });
+            }
+        })->with(['pakta_integritas'])->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('npsn', 'ilike', '%' . request()->q . '%')

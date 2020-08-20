@@ -91,6 +91,11 @@ let routes = [{
         path: '/hasil-supervisi',
         component: require('./views/verval/hasil-supervisi').default
     },
+    {
+        path: '/proses-verifikasi/:sekolah_id/:verifikator_id',
+        name: 'proses_verifikasi',
+        component: require('./views/verval/proses-verifikasi').default
+    },
 ];
 
 
@@ -100,5 +105,6 @@ export default new VueRouter({
     base: '/app/',
     mode: 'history',
     routes,
-    linkActiveClass: 'active'
+    linkActiveClass: 'active',
+    user: user,
 });

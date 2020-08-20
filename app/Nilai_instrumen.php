@@ -12,4 +12,7 @@ class Nilai_instrumen extends Model
 	protected $table = 'nilai_instrumen';
 	protected $primaryKey = 'nilai_instrumen_id';
     protected $guarded = [];
+    public function user(){
+        return $this->belongsTo('App\User', 'user_id', 'user_id');
+    }
 }

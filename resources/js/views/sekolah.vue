@@ -26,7 +26,7 @@
                                     Data Sekolah
                                 </h3>
                                 <div class="card-tools">
-                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-show="!sekolah_id" v-on:click="newModal">Tambah Data</button>
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-show="hasRole('admin')" v-on:click="newModal">Tambah Data</button>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -76,6 +76,7 @@ export default {
     },
     data() {
         return {
+            user: user,
             fields: [
                 {key: 'nama', sortable: true},
                 {key: 'npsn', sortable: true},
@@ -114,6 +115,7 @@ export default {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
                     sekolah_id: this.sekolah_id,
+                    verifikasi_id: user.verifikator_id,
                     page: current_page,
                     per_page: this.per_page,
                     q: this.search,

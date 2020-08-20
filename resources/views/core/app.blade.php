@@ -26,6 +26,8 @@
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->username,
+            'verifikator_id' => ($user->hasRole('verifikator')) ? $user->user_id : NULL,
+            'roles' => $user->roles,
         ]) !!};
     </script>
 </head>
