@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\Schema;
+use App\Tahun_pendataan;
+use Config;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if(Schema::hasTable('tahun_pendataan')){
+            $tahun_pendataan = Tahun_pendataan::where('periode_aktif', 1)->first();
+            Config::set('app.tahun_pendataan', ($tahun_pendataan) ? $tahun_pendataan->tahun_pendataan_id : NULL);
+        };
     }
 }
