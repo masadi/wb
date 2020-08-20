@@ -198,6 +198,11 @@ $user = auth()->user();
                     </ul>
                 </li>
                 @endif
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout-form').submit();">
+                        <i class="nav-icon fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
                 <!-- New Sidebar Item -->
             </ul>
         </nav>
