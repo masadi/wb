@@ -112,10 +112,11 @@ export default {
         cetak_kuisioner : function (event) {
             //window.open(downloadUrl,'_blank');
             axios.get(`/api/cetak-instrumen`, {
-                //user_id: user.user_id,
+                params : {
+                    user_id: user.user_id,
+                },
                 responseType: 'arraybuffer'
             }).then((response) => {
-                console.log(response)
                 let blob = new Blob([response.data], { type: 'application/pdf' })
                 let link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)

@@ -27,27 +27,6 @@ ol.jawaban {
     list-style-type: inherit !important;
 }
 
-
-/*
-ol ol,
-ol ol ol {
-    padding-left: 15px;
+li.text-bold {
+    font-weight: bold !important;
 }
-
-ol {
-    list-style-type: upper-alpha;
-    padding: 0px;
-}
-
-ol li ol {
-    list-style-type: lower-alpha;
-}
-
-ol li ol li ol {
-    list-style-type: decimal;
-}
-
-ol li ol li ol li ol {
-    list-style-type: inherit;
-}
-*/

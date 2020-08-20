@@ -220,8 +220,12 @@ class ReferensiController extends Controller
         $data = $data->merge($progres);
         return response()->json(['status' => 'success', 'data' => $data]);
     }
-    public function cetak(){
+    public function cetak(Request $request){
         $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query){
+            $query->with(['jawaban' => function($query){
+                $query->where('user_id', request()->user_id);
+                $query->whereNull('verifikator_id');
+            }]);
             $query->with(['subs']);
             $query->where('urut', 0);
         }])->get();

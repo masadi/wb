@@ -15,7 +15,17 @@
                             <p>Pilihan Jawaban <br>
                                 <ol class="jawaban">
                                     @foreach ($instrumen->subs as $sub)
-                                    <li>{{$sub->pertanyaan}}</li>
+                                    <?php
+                                    $check = '';
+                                    $class = '';
+                                    if($instrumen->jawaban){
+                                        if($instrumen->jawaban->nilai == $sub->urut){
+                                            $check = '√';
+                                            $class = 'text-bold';
+                                        }
+                                    }
+                                    ?>
+                                    <li class="{{$class}}">{{$sub->pertanyaan}} {{$check}}</li>
                                     @endforeach
                                 </ol>
                             </p>
