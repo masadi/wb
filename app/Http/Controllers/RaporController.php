@@ -41,8 +41,8 @@ class RaporController extends Controller
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
         $output_instrumen = $output_indikator->pluck('instrumen')->flatten();
         $output_nilai_instrumen = $output_instrumen->pluck('nilai_instrumen')->flatten()->filter();
-        $sorted = $output_nilai_instrumen->sortByDesc('updated_at');
-        $kuisioner = $sorted->first();
+        $output_nilai_instrumen = $output_nilai_instrumen->where('user_id', $request->user_id)->sortByDesc('updated_at');
+        $kuisioner = $output_nilai_instrumen->first();
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
         $pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
@@ -52,7 +52,7 @@ class RaporController extends Controller
             'data' => $komponen, 
             'rapor' => [
                 'jml_instrumen' => $output_instrumen->count(), 
-                'jml_jawaban' => $output_nilai_instrumen->where('user_id', $request->user_id)->count(),
+                'jml_jawaban' => $output_nilai_instrumen->count(),
                 'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
                 'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
                 'pakta_integritas' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
