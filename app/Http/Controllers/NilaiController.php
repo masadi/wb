@@ -19,12 +19,18 @@ class NilaiController extends Controller
         }])->get();
         $total_nilai = 0;
         foreach($all_komponen as $komponen){
-            $instrumen_id = $komponen->aspek->map(function($aspek) use ($request){
-                $instrumen_id = $aspek->jawaban()->select('instrumen_id')->get()->keyBy('instrumen_id')->keys()->all();
-                $nilai = $aspek->jawaban()->sum('nilai');
+            $all_nilai_aspek = 0;
+            $instrumen_id = $komponen->aspek->map(function($aspek) use ($request, &$all_nilai_aspek){
+                $instrumen_id = $aspek->jawaban()->where('user_id', $request->user_id)->select('instrumen_id')->get()->keyBy('instrumen_id')->keys()->all();
+                $nilai = $aspek->jawaban()->where('user_id', $request->user_id)->sum('nilai');
                 if($nilai){
                     $skor = $aspek->instrumen()->whereIn('instrumen_id', $instrumen_id)->sum('skor');
-                    $nilai_aspek = ($nilai) ? ($nilai * $aspek->bobot) / $skor : 0;
+                    //$nilai_aspek = ($nilai) ? ($nilai * $aspek->bobot) / $skor : 0;
+                    //=($nilai*$aspek->bobot)/$skor*100/$aspek->bobot
+                    //$nilai_aspek = ($nilai*$aspek->bobot)/$skor*100/$aspek->bobot;
+                    $nilai_aspek_dibobot = $nilai * $aspek->bobot / $skor;
+                    $nilai_aspek = $nilai * 100 / $skor;
+                    $nilai_aspek = number_format($nilai_aspek,2,'.','.');
                     $predikat_aspek = '-';
                     if($nilai_aspek < 21){
                         $predikat_aspek = 'Sangat Kurang';
@@ -44,17 +50,18 @@ class NilaiController extends Controller
                             'komponen_id' => $aspek->komponen_id,
                         ],
                         [
-                            'nilai' => $nilai,
+                            'nilai' => $nilai_aspek_dibobot,
                             'total_nilai' => $nilai_aspek,
                             'predikat' => $predikat_aspek,
                         ]
                     );
                 }
             });
-            $all_nilai_aspek = Nilai_aspek::where('user_id', $request->user_id)->where('komponen_id', $komponen->id)->sum('total_nilai');
+            $all_nilai_aspek = Nilai_aspek::where('user_id', $request->user_id)->where('komponen_id', $komponen->id)->sum('nilai');
             if($all_nilai_aspek){
                 $all_bobot = $komponen->aspek()->sum('bobot');
-                $nilai_komponen = ($all_nilai_aspek) ? ($all_nilai_aspek * 100) / $all_bobot : 0;
+                $nilai_komponen = ($all_nilai_aspek*100)/$all_bobot;
+                $nilai_komponen = number_format($nilai_komponen,2,'.','.');
                 $predikat_komponen = '-';
                 if($nilai_komponen < 21){
                     $predikat_komponen = 'Sangat Kurang';
@@ -73,13 +80,13 @@ class NilaiController extends Controller
                         'komponen_id' => $komponen->id,
                     ],
                     [
-                        'nilai' => $all_nilai_aspek,
+                        'nilai' => $nilai_komponen,//$all_nilai_aspek,
                         'total_nilai' => $nilai_komponen,
                         'predikat' => $predikat_komponen,
                     ]
                 );
             }
-            $total_nilai += $all_nilai_aspek;
+            $total_nilai += $nilai_komponen;
         }
         $predikat_akhir = '-';
         if($total_nilai < 21){
