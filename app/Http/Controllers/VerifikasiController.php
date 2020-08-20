@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Komponen;
 use App\Aspek;
 use App\Instrumen;
+use App\Nilai_instrumen;
+use App\Jawaban;
+use App\HelperModel;
 class VerifikasiController extends Controller
 {
     public function index(Request $request, $query){
@@ -26,6 +29,7 @@ class VerifikasiController extends Controller
 			$record['text'] 	= 'Tidak ditemukan data komponen';
 			$output['result'][] = $record;
         }
+        $output['user_id'] = $request->user_id;
         return response()->json($output);
     }
     public function get_aspek(Request $request){
@@ -70,12 +74,55 @@ class VerifikasiController extends Controller
 		return response()->json($output);
     }
     public function get_subs(Request $request){
-        return Instrumen::with(['nilai_instrumen' => function($query) use ($request){
-            $query->whereHas('user', function($query) use ($request){
+        return Instrumen::with(['jawaban' => function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+            /*$query->whereHas('user', function($query) use ($request){
                 $query->whereHas('sekolah', function($query) use ($request){
                     $query->where('sekolah_id', $request->sekolah_id);
                 });
-            });
+                $query->where('sekolah_id', $request->sekolah_id);
+            });*/
         }, 'subs'])->find($request->instrumen_id);
+    }
+    public function get_simpan(Request $request){
+        $post = $request->except(['komponen', 'aspek', 'instrumen', 'jawaban']);
+        $instrumen = Instrumen::with(['indikator.atribut'])->find($request->instrumen_id['value']);
+        $save = Nilai_instrumen::updateOrCreate(
+            [
+                'user_id' => $request->user_id,
+                'verifikator_id' => $request->verifikator_id,
+                'instrumen_id' => $request->instrumen_id['value'],
+            ],
+            [
+                'nilai' => $request->nilai,
+                'predikat' => HelperModel::predikat($request->nilai),
+            ]
+        );
+        if($save){
+            Jawaban::updateOrCreate(
+                [
+                    'user_id' => $request->user_id,
+                    'verifikator_id' => $request->verifikator_id,
+                    'komponen_id' => $request->komponen_id['value'],
+                    'aspek_id' => $request->aspek_id['value'],
+                    'atribut_id' => $instrumen->indikator->atribut_id,
+                    'indikator_id' => $instrumen->indikator_id,
+                    'instrumen_id' => $request->instrumen_id['value'],
+                ],
+                [
+                    'nilai' => $request->nilai,
+                ]
+            );
+            $output = [
+                'icon' => 'success',
+                'title' => 'Jawaban berhasil diperbaharui',
+            ];
+        } else {
+            $output = [
+                'icon' => 'error',
+                'title' => 'Jawaban gagal diperbaharui',
+            ];
+        }
+        return response()->json($output);
     }
 }

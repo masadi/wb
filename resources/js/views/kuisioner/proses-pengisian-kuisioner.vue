@@ -81,7 +81,6 @@
     import Nl2brComponent from './../components/Nl2brComponent';
     import axios from 'axios' //IMPORT AXIOS
     export default {
-    //KETIKA COMPONENT INI DILOAD
         data() {
             return {
                 url: (this.$route.params.new_page) ? `/api/get-kuisioner?user_id=${user.user_id}&komponen_id=${this.$route.params.id}&page=${this.$route.params.new_page}` : `/api/get-kuisioner?user_id=${user.user_id}&komponen_id=${this.$route.params.id}`,

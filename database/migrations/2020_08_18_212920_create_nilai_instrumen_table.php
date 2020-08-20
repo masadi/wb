@@ -16,12 +16,14 @@ class CreateNilaiInstrumenTable extends Migration
         Schema::create('nilai_instrumen', function (Blueprint $table) {
             $table->uuid('nilai_instrumen_id');
             $table->uuid('user_id');
+            $table->uuid('verifikator_id')->nullable();
             $table->uuid('instrumen_id');
-            $table->decimal('nilai', 5, 2);
+            $table->integer('nilai')->unsigned();
             $table->string('predikat');
             $table->primary('nilai_instrumen_id');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('verifikator_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('instrumen_id')->references('instrumen_id')->on('instrumen')->onDelete('cascade');
         });
     }

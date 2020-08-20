@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='!rapor.kuisioner.lengkap' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SEKOLAH</span></button>
+                                    <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='isDisabled' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SEKOLAH</span></button>
                                 </div>
                                 <div class="row">
                                     <ul class="timeline" id="timeline">
@@ -230,6 +230,11 @@ export default {
             bintangKomponen: {},
             bintangAspek: {},
             bintangInstrumen: {},
+        }
+    },
+    computed: {
+        isDisabled(){
+            return !this.rapor.kuisioner.lengkap || this.rapor.pakta
         }
     },
     methods: {

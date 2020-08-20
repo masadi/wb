@@ -24,4 +24,7 @@ class Sekolah extends Model
     public function pakta_integritas(){
         return $this->belongsTo('App\Pakta_integritas', 'sekolah_id', 'sekolah_id');
     }
+    public function user(){
+        return $this->hasOne('App\User', 'sekolah_id', 'sekolah_id');
+    }
 }

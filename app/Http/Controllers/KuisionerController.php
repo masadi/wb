@@ -10,6 +10,7 @@ use App\Jawaban;
 use App\Nilai_aspek;
 use App\Nilai_instrumen;
 use App\Pakta_integritas;
+use App\HelperModel;
 class KuisionerController extends Controller
 {
     public function index(Request $request){
@@ -21,6 +22,7 @@ class KuisionerController extends Controller
         $komponen = Komponen::find($request->komponen_id);
         $callback_jawaban = function($query) use ($request){
             $query->where('user_id', $request->user_id);
+            $query->whereNull('verifikator_id');
         };
         $previous = Komponen::where('id', '<', $request->komponen_id)->max('id');
         $next = Komponen::where('id', '>', $request->komponen_id)->min('id');
@@ -49,31 +51,21 @@ class KuisionerController extends Controller
                         'aspek_id' => $request->aspek_id[$instrumen_id],
                         'komponen_id' => $request->komponen_id[$instrumen_id],
                         'instrumen_id' => $instrumen_id,
+                        'verifikator_id' => NULL,
                     ],
                     [
                         'nilai' => $nilai,
                     ]
                 );
-                $predikat = '-';
-                if($nilai == 1){
-                    $predikat = 'Sangat Kurang';
-                } elseif($nilai == 2){
-                    $predikat = 'Kurang';
-                } elseif($nilai == 3){
-                    $predikat = 'Cukup';
-                } elseif($nilai == 4){
-                    $predikat = 'Baik';
-                } elseif($nilai == 5){
-                    $predikat = 'Sangat Baik';
-                }
                 Nilai_instrumen::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
                         'instrumen_id' => $instrumen_id,
+                        'verifikator_id' => NULL,
                     ],
                     [
                         'nilai' => $nilai,
-                        'predikat' => $predikat,
+                        'predikat' => HelperModel::predikat($nilai),
                     ]
                 );
             }
@@ -86,6 +78,7 @@ class KuisionerController extends Controller
         };
         $callback_jawaban = function($query) use ($request){
             $query->where('user_id', $request->user_id);
+            $query->whereNull('verifikator_id');
         };
         $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek.komponen', $callback)->with(['aspek.nilai_aspek' => $callback_jawaban])->withCount(['jawaban' => $callback_jawaban])->get();
         $output = [];

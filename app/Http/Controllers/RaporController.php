@@ -32,15 +32,19 @@ class RaporController extends Controller
                 $query->where('urut', 0);
                 $query->with(['nilai_instrumen' => function($query) use ($request){
                     $query->where('user_id', $request->user_id);
+                    $query->whereNull('verifikator_id');
                 }]);
             }]);
         }])->get();
-        $user = User::withCount(['nilai_instrumen'])->find($request->user_id);
+        $user = User::withCount(['nilai_instrumen' => function($query){
+            $query->whereNull('verifikator_id');
+        }])->find($request->user_id);
         $output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
         $output_instrumen = $output_indikator->pluck('instrumen')->flatten();
         $output_nilai_instrumen = $output_instrumen->pluck('nilai_instrumen')->flatten()->filter();
+        $output_nilai_instrumen = $output_nilai_instrumen->whereNull('verifikator_id')->flatten()->filter();
         $output_nilai_instrumen = $output_nilai_instrumen->where('user_id', $request->user_id)->sortByDesc('updated_at');
         $kuisioner = $output_nilai_instrumen->first();
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
@@ -62,26 +66,14 @@ class RaporController extends Controller
                 'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
             ],
         ];
-        /*
-        $output_aspek = $komponen->pluck('aspek.atribut.indikator.instrumen');
-        dd($output_aspek);
-        $output_atribut = $output_aspek->pluck('atribut')->flatten();
-        $output_indikator = $output_atribut->pluck('indikator')->flatten();
-        $output_instrumen = $output_indikator->pluck('instrumen')->flatten();
-        $all_output = collect([$komponen, $output_aspek, $output_atribut, $output_indikator, $output_instrumen]);
-        dd($all_output->flatten()->toArray());
-        $output_aspek = collect($output_aspek);
-        $output_aspek = $output_aspek->flatten();
-        dd($output_aspek->all());
-        $instrumen = Instrumen::with(['nilai_instrumen' => function($query) use ($request){
-            $query->where('user_id', $request->user_id);
-        }, 'indikator.atribut.aspek.komponen'])->where('urut', 0)->get();*/
         return response()->json($respone);
     }
     public function pakta(Request $request){
         $respone = [
             'instrumen' => Instrumen::where('urut', 0)->count(),
-            'user' => User::with(['sekolah.pakta_integritas'])->withCount('nilai_instrumen')->find($request->user_id),
+            'user' => User::with(['sekolah.pakta_integritas'])->withCount(['nilai_instrumen' => function($query){
+                $query->whereNull('verifikator_id');
+            }])->find($request->user_id),
             'tahun_pendataan' => Tahun_pendataan::where('periode_aktif', 1)->first(),
         ];
         return response()->json($respone);

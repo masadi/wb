@@ -175,6 +175,8 @@ $user = auth()->user();
                         </li>
                     </ul>
                 </li>
+                @endif
+                @if($user->isAbleTo('verifikasi-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-user-edit"></i>

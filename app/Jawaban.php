@@ -12,4 +12,7 @@ class Jawaban extends Model
 	protected $table = 'jawaban';
 	protected $primaryKey = 'jawaban_id';
     protected $guarded = [];
+    public function user(){
+        return $this->belongsTo('App\User', 'user_id', 'user_id');
+    }
 }
