@@ -79,7 +79,8 @@ class RaporController extends Controller
     }
     public function pakta(Request $request){
         $respone = [
-            'user' => User::with(['sekolah.pakta_integritas'])->find($request->user_id),
+            'instrumen' => Instrumen::where('urut', 0)->count(),
+            'user' => User::with(['sekolah.pakta_integritas'])->withCount('nilai_instrumen')->find($request->user_id),
             'tahun_pendataan' => Tahun_pendataan::where('periode_aktif', 1)->first(),
         ];
         return response()->json($respone);

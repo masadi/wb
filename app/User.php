@@ -43,4 +43,7 @@ class User extends Authenticatable
     public function sekolah(){
         return $this->belongsTo('App\Sekolah', 'sekolah_id', 'sekolah_id');
     }
+    public function nilai_instrumen(){
+        return $this->hasMany('App\Nilai_instrumen', 'user_id', 'user_id');
+    }
 }

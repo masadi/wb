@@ -149,7 +149,11 @@
                     this.tahun_pendataan = getData.tahun_pendataan.tahun_pendataan_id
                     this.tanggal = (getData.user.sekolah.pakta_integritas) ? getData.user.sekolah.pakta_integritas.created_at : '-'
                     this.isBatal = (getData.user.sekolah.pakta_integritas) ? false : true
-                    this.isCheckbox = (getData.user.sekolah.pakta_integritas) ? true : false
+                    if(getData.instrumen == getData.user.nilai_instrumen_count){
+                        this.isCheckbox = (getData.user.sekolah.pakta_integritas) ? true : false
+                    } else {
+                        this.isCheckbox = true
+                    }
                     this.terms = false
                 })
             }
