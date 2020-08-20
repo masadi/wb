@@ -148,7 +148,7 @@
                         if(val.jawaban){
                             tempData[val.instrumen_id] = val.jawaban.nilai; 
                         } else {
-                             tempData[val.instrumen_id] = 4; 
+                             //tempData[val.instrumen_id] = 4; 
                         }
                         tempPetunjuk[val.instrumen_id] = val.petunjuk_pengisian; 
                     });
@@ -202,7 +202,7 @@
                             if(val.jawaban){
                                 tempData[val.instrumen_id] = val.jawaban.nilai; 
                             } else {
-                                tempData[val.instrumen_id] = 4; 
+                                //tempData[val.instrumen_id] = 4; 
                             }
                         });
                     });
