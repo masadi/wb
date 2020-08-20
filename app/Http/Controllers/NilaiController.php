@@ -25,9 +25,6 @@ class NilaiController extends Controller
                 $nilai = $aspek->jawaban()->where('user_id', $request->user_id)->sum('nilai');
                 if($nilai){
                     $skor = $aspek->instrumen()->whereIn('instrumen_id', $instrumen_id)->sum('skor');
-                    //$nilai_aspek = ($nilai) ? ($nilai * $aspek->bobot) / $skor : 0;
-                    //=($nilai*$aspek->bobot)/$skor*100/$aspek->bobot
-                    //$nilai_aspek = ($nilai*$aspek->bobot)/$skor*100/$aspek->bobot;
                     $nilai_aspek_dibobot = $nilai * $aspek->bobot / $skor;
                     $nilai_aspek = $nilai * 100 / $skor;
                     $nilai_aspek = number_format($nilai_aspek,2,'.','.');
@@ -80,7 +77,7 @@ class NilaiController extends Controller
                         'komponen_id' => $komponen->id,
                     ],
                     [
-                        'nilai' => $nilai_komponen,//$all_nilai_aspek,
+                        'nilai' => $nilai_komponen,
                         'total_nilai' => $nilai_komponen,
                         'predikat' => $predikat_komponen,
                     ]

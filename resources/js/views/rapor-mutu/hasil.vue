@@ -252,7 +252,6 @@ export default {
                         });
                     });
                 });
-                console.log(tempBintangAspek);
                 this.bintangKomponen = tempBintangKomponen
                 this.bintangAspek = tempBintangAspek
                 this.bintangInstrumen = tempBintangInstrumen
