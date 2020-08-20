@@ -199,9 +199,12 @@ $user = auth()->user();
                 </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout-form').submit();">
+                    <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout-form-sidebar').submit();">
                         <i class="nav-icon fas fa-sign-out-alt"></i> Logout
                     </a>
+                    <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </li>
                 <!-- New Sidebar Item -->
             </ul>
