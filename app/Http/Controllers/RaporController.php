@@ -35,7 +35,7 @@ class RaporController extends Controller
                 }]);
             }]);
         }])->get();
-        $user = User::find($request->user_id);
+        $user = User::withCount(['nilai_instrumen'])->find($request->user_id);
         $output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
@@ -49,6 +49,7 @@ class RaporController extends Controller
         $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
         $respone = [
             'status' => 'success', 
+            'detil_user' => $user,
             'data' => $komponen, 
             'rapor' => [
                 'jml_instrumen' => $output_instrumen->count(), 
