@@ -40,14 +40,19 @@ class RaporController extends Controller
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
         }])->find($request->user_id);
-        $output_aspek = $komponen->pluck('aspek')->flatten();
+        /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
         $output_instrumen = $output_indikator->pluck('instrumen')->flatten();
         $output_nilai_instrumen = $output_instrumen->pluck('nilai_instrumen')->flatten()->filter();
         $output_nilai_instrumen = $output_nilai_instrumen->whereNull('verifikator_id')->flatten()->filter();
         $output_nilai_instrumen = $output_nilai_instrumen->where('user_id', $request->user_id)->sortByDesc('updated_at');
-        $kuisioner = $output_nilai_instrumen->first();
+        $kuisioner = $output_nilai_instrumen->first();*/
+        $jml_instrumen = Instrumen::where('urut', 0)->count();
+        $kuisioner = Nilai_instrumen::where(function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+            $query->whereNull('verifikator_id');
+        })->orderBy('updated_at', 'DESC')->first();
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
         $pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
@@ -57,7 +62,7 @@ class RaporController extends Controller
             'detil_user' => $user,
             'data' => $komponen, 
             'rapor' => [
-                'jml_instrumen' => $output_instrumen->count(), 
+                'jml_instrumen' => $jml_instrumen, 
                 'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
                 'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
                 'pakta_integritas' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
