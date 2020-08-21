@@ -130,7 +130,11 @@
             updatePaginationData(event) {
                 let getData = event.data
                 this.form.verifikator_id = (getData.user.sekolah.sekolah_sasaran) ? getData.user.sekolah.sekolah_sasaran.verifikator_id : null
-                this.pakta_integritas = (!getData.user.pakta_integritas && !getData.user.sekolah.sekolah_sasaran) ? false : true
+                if(!getData.user.sekolah.sekolah_sasaran){
+                    this.pakta_integritas = true
+                } else if(getData.user.pakta_integritas){
+                    this.pakta_integritas = true
+                }
                 this.current_page = getData.aspek.current_page
                 this.total = getData.aspek.total
                 this.per_page = getData.aspek.per_page

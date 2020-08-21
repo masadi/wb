@@ -62,7 +62,11 @@ class VerifikasiController extends Controller
                 });
                 $query->where('verifikator_id', $request->verifikator_id);
             }])->get();
-            $respone['data'] = $komponen;
+            $respone = [
+                'data' => $komponen,
+                'sekolah' => Sekolah::find($request->sekolah_id),
+                'tahun_pendataan' => HelperModel::tahun_pendataan(),
+            ];
             return response()->json($respone);
         }
         $all_data = Instrumen::where(function($query) use ($request){
@@ -162,5 +166,8 @@ class VerifikasiController extends Controller
 			$output['result'][] = $record;
 		}
 		return response()->json($output);
+    }
+    public function get_kirim_verval(Request $request){
+        
     }
 }
