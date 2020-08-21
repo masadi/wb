@@ -234,7 +234,7 @@ export default {
     },
     computed: {
         isDisabled(){
-            return !this.rapor.kuisioner.lengkap || this.rapor.pakta_integritas
+            return !this.rapor.kuisioner.lengkap || this.rapor.pakta
         }
     },
     methods: {
