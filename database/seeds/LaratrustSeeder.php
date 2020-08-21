@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
-
+use App\Sekolah;
 class LaratrustSeeder extends Seeder
 {
     /**
@@ -15,7 +15,14 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         $this->truncateLaratrustTables();
-
+        $sekolah = Sekolah::updateOrCreate(
+            ['sekolah_id' => Str::uuid()],
+            [
+                'npsn' => 12345678,
+                'nama' => 'SEKOLAH CONTOH',
+                'status_sekolah' => 2,
+            ]
+        );
         $config = config('laratrust_seeder.roles_structure');
         $mapPermission = collect(config('laratrust_seeder.permissions_map'));
 
@@ -58,6 +65,15 @@ class LaratrustSeeder extends Seeder
                         'name' => 'Achmadi',
                         'username' => 'masadi',
                         'email' => 'masadi.com@gmail.com',
+                        'password' => bcrypt('12345678')
+                    ]);
+                    $user->attachRole($role);
+                } else if($key == 'sekolah'){
+                    $user = \App\User::create([
+                        'name' => $sekolah->nama,
+                        'username' => strtolower(str_replace(' ', '_', $key)),
+                        'sekolah_id' => $sekolah->sekolah_id,
+                        'email' => $key.'@apmsmk.net',
                         'password' => bcrypt('12345678')
                     ]);
                     $user->attachRole($role);
