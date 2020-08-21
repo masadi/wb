@@ -16,11 +16,13 @@ class CreateNilaiAkhirTable extends Migration
         Schema::create('nilai_akhir', function (Blueprint $table) {
             $table->uuid('nilai_akhir_id');
             $table->uuid('user_id');
+            $table->uuid('verifikator_id')->nullable();
             $table->decimal('nilai', 5, 2);
             $table->primary('nilai_akhir_id');
             $table->string('predikat');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('verifikator_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
 

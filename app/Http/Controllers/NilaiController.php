@@ -41,6 +41,7 @@ class NilaiController extends Controller
                             'user_id' => $request->user_id,
                             'aspek_id' => $aspek->id,
                             'komponen_id' => $aspek->komponen_id,
+                            'verifikator_id' => NULL,
                         ],
                         [
                             'nilai' => $nilai_aspek_dibobot,
@@ -59,6 +60,7 @@ class NilaiController extends Controller
                     [
                         'user_id' => $request->user_id,
                         'komponen_id' => $komponen->id,
+                        'verifikator_id' => NULL,
                     ],
                     [
                         'nilai' => $nilai_komponen,
@@ -72,6 +74,7 @@ class NilaiController extends Controller
         Nilai_akhir::updateOrCreate(
             [
                 'user_id' => $request->user_id,
+                'verifikator_id' => NULL,
             ],
             [
                 'nilai' => $total_nilai,
