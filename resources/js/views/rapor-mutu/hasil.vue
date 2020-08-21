@@ -234,7 +234,11 @@ export default {
     },
     computed: {
         isDisabled(){
-            return !this.rapor.kuisioner.lengkap || this.rapor.pakta
+            if(!this.rapor.kuisioner.lengkap || this.rapor.pakta){
+                return false
+            } else {
+                return true
+            }
         }
     },
     methods: {

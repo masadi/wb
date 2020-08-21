@@ -9,13 +9,13 @@
                         <form @submit.prevent="insertData()" method="post">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">
+                                    <h3 class="card-title">
                                         <i class="fas fa-check mr-1"></i>
                                         Kuisioner Komponen {{title}}
-                                    </h4>
-                                    <div class="card-tools">
+                                    </h3>
+                                    <!--div class="card-tools">
                                         <button type="submit" class="btn btn-danger" :disabled="pakta_integritas">Simpan</button>
-                                    </div>
+                                    </div-->
                                 </div>
                                 <div class="card-body">
                                     <div class="sticky-top">
