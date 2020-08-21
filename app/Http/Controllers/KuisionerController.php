@@ -9,7 +9,7 @@ use App\Instrumen;
 use App\Jawaban;
 use App\Nilai_aspek;
 use App\Nilai_instrumen;
-use App\Pakta_integritas;
+use App\User;
 use App\HelperModel;
 class KuisionerController extends Controller
 {
@@ -38,8 +38,11 @@ class KuisionerController extends Controller
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
             }
         }
-        $pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
-        return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next, 'pakta_integritas' => ($pakta_integritas) ? TRUE : FALSE]);
+        $pakta_integritas = User::with(['pakta_integritas', 'sekolah.sekolah_sasaran' => function($query){
+            $query->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
+        }])->find($request->user_id);
+        //Pakta_integritas::where('user_id', $request->user_id)->first();
+        return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next, 'pakta_integritas' => ($pakta_integritas) ? TRUE : FALSE, 'user' => $pakta_integritas]);
     }
     public function simpan_jawaban(Request $request){
         if($request->instrumen_id){
@@ -63,6 +66,31 @@ class KuisionerController extends Controller
                         'user_id' => $request->user_id,
                         'instrumen_id' => $instrumen_id,
                         'verifikator_id' => NULL,
+                    ],
+                    [
+                        'nilai' => $nilai,
+                        'predikat' => HelperModel::predikat($nilai),
+                    ]
+                );
+                Jawaban::updateOrCreate(
+                    [
+                        'user_id' => $request->user_id,
+                        'indikator_id' => $request->indikator_id[$instrumen_id],
+                        'atribut_id' => $request->atribut_id[$instrumen_id],
+                        'aspek_id' => $request->aspek_id[$instrumen_id],
+                        'komponen_id' => $request->komponen_id[$instrumen_id],
+                        'instrumen_id' => $instrumen_id,
+                        'verifikator_id' => $request->verifikator_id,
+                    ],
+                    [
+                        'nilai' => $nilai,
+                    ]
+                );
+                Nilai_instrumen::updateOrCreate(
+                    [
+                        'user_id' => $request->user_id,
+                        'instrumen_id' => $instrumen_id,
+                        'verifikator_id' => $request->verifikator_id,
                     ],
                     [
                         'nilai' => $nilai,

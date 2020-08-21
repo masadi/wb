@@ -90,6 +90,7 @@
                 title:'-',
                 form: new Form({
                     user_id : '',
+                    verifikator_id : '',
                     indikator_id: {},
                     atribut_id: {},
                     aspek_id: {},
@@ -128,7 +129,8 @@
             },
             updatePaginationData(event) {
                 let getData = event.data
-                this.pakta_integritas = getData.pakta_integritas
+                this.form.verifikator_id = (getData.user.sekolah.sekolah_sasaran) ? getData.user.sekolah.sekolah_sasaran.verifikator_id : null
+                this.pakta_integritas = (!getData.user.pakta_integritas && !getData.user.sekolah.sekolah_sasaran) ? false : true
                 this.current_page = getData.aspek.current_page
                 this.total = getData.aspek.total
                 this.per_page = getData.aspek.per_page
