@@ -72,18 +72,36 @@
                                     <p>Tim Verifikator</p>
 
                                     <p class="text-bold">{{detilUser.name}}</p>
-                                    <div class="form-group">
-                                        <div class="custom-control custom-checkbox">
-                                            <input :disabled='isCheckbox' class="custom-control-input" type="checkbox"
-                                                id="terms" v-model='terms'>
-                                            <label for="terms" class="custom-control-label">Saya setuju dengan
-                                                pernyataan di atas</label>
-                                        </div>
+                                    <div v-show="progress=='waiting'" class="alert alert-warning">
+                                        <h5><i class="icon fas fa-exclamation-triangle"></i> LAPORAN MENUNGGU DIPROSES!</h5>
+                                        Laporan hasil verifikasi dan validasi sedang dalam proses antrian
                                     </div>
-                                    <button type="button" :disabled='isDisabled' class="btn btn-warning btn-lg btn-flat"
-                                        v-on:click="cetak_pakta">KIRIM LAPORAN</button>
-                                    <button type="button" :disabled='isBatal' class="btn btn-danger btn-lg btn-flat"
-                                        v-on:click="batal_pakta">BATALKAN LAPORAN</button>
+                                    <div v-show="progress=='proses'" class="alert alert-info">
+                                        <h5><i class="icon fas fa-info"></i> LAPORAN SEDANG DIPROSES!</h5>
+                                        Laporan hasil verifikasi dan validasi saat ini sedang dalam proses pemeriksaan
+                                    </div>
+                                    <div v-show="progress=='terima'" class="alert alert-success">
+                                        <h5><i class="icon fas fa-check"></i> LAPORAN DITERIMA</h5>
+                                        {{keterangan}}
+                                    </div>
+                                    <div v-show="progress=='tolak'" class="alert alert-danger">
+                                        <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
+                                        {{keterangan}}
+                                    </div>
+                                    <div v-show="progress==''">
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input :disabled='isCheckbox' class="custom-control-input" type="checkbox"
+                                                    id="terms" v-model='terms'>
+                                                <label for="terms" class="custom-control-label">Saya setuju dengan
+                                                    pernyataan di atas</label>
+                                            </div>
+                                        </div>
+                                        <button type="button" :disabled='isDisabled' class="btn btn-warning btn-lg btn-flat"
+                                            v-on:click="kirim_verval">KIRIM LAPORAN</button>
+                                        <button type="button" :disabled='isBatal' class="btn btn-danger btn-lg btn-flat"
+                                            v-on:click="batal_verval">BATALKAN LAPORAN</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,6 +130,8 @@
                 }),
                 simpan:false,
                 komponen: [],
+                progress: '',
+                keterangan: '',
             }
         },
         computed: {
@@ -140,9 +160,23 @@
                     this.isShow = true
                     this.nama_sekolah = getData.sekolah.nama
                     this.tahun_pendataan = getData.tahun_pendataan
+                    let raporMutu = getData.sekolah.sekolah_sasaran.rapor_mutu
+                    console.log(raporMutu)
+                    if(raporMutu){
+                        this.isCheckbox = true
+                        this.isBatal = false
+                        this.terms = ''
+                        this.progress = raporMutu.status_rapor.status
+                        this.keterangan = raporMutu.keterangan
+                    } else {
+                        this.isCheckbox = false
+                        this.isBatal = true
+                        this.terms = ''
+                    }
+                    
                 })
             },
-            cetak_pakta : function (event) {
+            kirim_verval : function (event) {
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: "Jika ada kesalahan laporan hasil verifikasi dan validasi, Anda dapat membatalkan Pernyataan ini sebelum di validasi oleh Tim Direktorat!",
@@ -156,23 +190,32 @@
                     if (result.value) {
                         axios.post(`/api/verifikasi/kirim-verval`, {
                             user_id: user.user_id,
-                            sekolah_id: this.form.sekolah_id.value
+                            sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
                         }).then((response) => {
+                            console.log(response)
                             Swal.fire(
-                                'Berhasil!',
-                                'Pakta verval berhasil dilaporkan!',
-                                'success'
+                                response.data.title,
+                                response.data.text,
+                                response.data.icon
                             ).then(()=>{
+                                this.isShow = false
+                                this.komponen = []
+                                this.form.sekolah_id = ''
+                                this.nama_sekolah = ''
+                                this.tahun_pendataan = ''
+                                this.isCheckbox = true
+                                this.isBatal = false
+                                this.terms = ''
                                 this.loadPostsData()
                             });
                         })
                     }
                 })
             },
-            batal_pakta : function (event) {
+            batal_verval : function (event) {
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
-                    text: "Proses pembatalan Pakta Integritas!",
+                    text: "Proses pembatalan laporan hasil verifikasi dan validasi!",
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
@@ -181,16 +224,23 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
-                        axios.get(`/api/rapor-mutu/batal-pakta`, {
-                            params : {
-                                user_id: user.user_id,
-                            }
+                        axios.post(`/api/verifikasi/batal-verval`, {
+                            user_id: user.user_id,
+                            sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
                         }).then((response) => {
                             Swal.fire(
-                                'Berhasil!',
-                                'Pakta Integritas dibatalkan',
-                                'success'
+                                response.data.title,
+                                response.data.text,
+                                response.data.icon
                             ).then(()=>{
+                                this.isShow = false
+                                this.komponen = []
+                                this.form.sekolah_id = ''
+                                this.nama_sekolah = ''
+                                this.tahun_pendataan = ''
+                                this.isCheckbox = true
+                                this.isBatal = false
+                                this.terms = ''
                                 this.loadPostsData()
                             });
                         })
