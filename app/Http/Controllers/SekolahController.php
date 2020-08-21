@@ -75,7 +75,13 @@ class SekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $sekolah = Sekolah::with(['user'])->find($id);
+        $sekolah->nama = $request->nama;
+        $sekolah->save();
+        $user = $sekolah->user;
+        $user->name = $request->nama;
+        $user->save();
+        return response()->json(['message' => 'Data Sekolah berhasil diperbaharui']);
     }
 
     /**

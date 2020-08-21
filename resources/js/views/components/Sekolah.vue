@@ -35,7 +35,7 @@
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
-                    <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="openShowModal(row)">Detil</button>
+                    <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button>
                     <button v-show="hasRole('verifikator') && row.item.pakta_integritas" class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button>
                     <span v-show="!row.item.pakta_integritas">Belum Cetak Pakta Integritas</span>
                 </template>
@@ -127,6 +127,26 @@
                 </div>
             </template>
         </b-modal>
+        <b-modal id="modal-xl" size="lg" v-model="editModal" title="Detil Sekolah">
+            <template v-slot:modal-header>
+                <h5 class="modal-title">Edit Data Sekolah</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </template>
+            <template v-slot:default="{ hide }">
+                <div class="form-group">
+                    <label>NPSN</label>
+                    <input v-model="form.id" type="hidden" name="id" class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
+                    <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('npsn') }">
+                    <has-error :form="form" field="npsn"></has-error>
+                </div>
+            </template>
+            <template v-slot:modal-footer="{ hide }">
+                <b-button variant="secondary" size="sm" @click="hide()">Tutup</b-button>
+                <b-button variant="primary" size="sm" @click="updateData">Perbaharui</b-button>
+            </template>
+        </b-modal>
     </div>
 </template>
 
@@ -166,6 +186,7 @@ export default {
             form: new Form({
                 id : '',
                 nama: '',
+                //npsn: '',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -256,14 +277,15 @@ export default {
             //console.log(row);
             this.editmode = true
             this.editModal = true
-            this.form.id = row.item.id
+            this.form.id = row.item.sekolah_id
             this.form.nama = row.item.nama
+            //this.form.npsn = row.item.npsn
             $('#modalEdit').modal('show');
         },
         updateData(){
             let id = this.form.id;
             this.form.put('/api/sekolah/'+id).then((response)=>{
-                $('#modalEdit').modal('hide');
+                this.editModal = false
                 Toast.fire({
                     icon: 'success',
                     title: response.message
