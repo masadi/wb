@@ -121,7 +121,7 @@ $user = auth()->user();
                 <li class="nav-item">
                     <router-link tag="a" to="/kuisioner/pengisian" class="nav-link">
                         <i class="nav-icon fas fa-hand-point-right"></i>
-                        <p>Isi Kuisioner</p>
+                        <p>Kuisioner</p>
                     </router-link>
                 </li>
                 @endif
