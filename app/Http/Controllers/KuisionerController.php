@@ -87,6 +87,7 @@ class KuisionerController extends Controller
         $output_nilai = Nilai_aspek::whereHas('aspek', function($query) use ($request){
             $query->where('komponen_id', $request->komponen_id);
             $query->where('user_id', $request->user_id);
+            $query->whereNull('verifikator_id');
         })->with(['aspek'])->get();
         
         foreach($instrumens as $instrumen){

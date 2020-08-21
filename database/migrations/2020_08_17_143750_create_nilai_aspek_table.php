@@ -18,12 +18,14 @@ class CreateNilaiAspekTable extends Migration
             $table->foreignId('komponen_id')->constrained('komponen')->onDelete('cascade');
             $table->foreignId('aspek_id')->constrained('aspek')->onDelete('cascade');
             $table->uuid('user_id');
+            $table->uuid('verifikator_id')->nullable();
             $table->decimal('nilai', 5, 2);
             $table->decimal('total_nilai', 5, 2);
             $table->string('predikat');
             $table->primary('nilai_aspek_id');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('verifikator_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
 
