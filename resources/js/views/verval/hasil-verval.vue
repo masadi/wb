@@ -74,7 +74,7 @@
                                     <p class="text-bold">{{detilUser.name}}</p>
                                     <div v-show="progress=='waiting'" class="alert alert-warning">
                                         <h5><i class="icon fas fa-exclamation-triangle"></i> LAPORAN MENUNGGU DIPROSES!</h5>
-                                        Laporan hasil verifikasi dan validasi sedang dalam proses antrian
+                                        Laporan hasil verifikasi dan validasi sedang dalam proses antrian. Anda masih diperkenankan untuk membatalkan laporan
                                     </div>
                                     <div v-show="progress=='proses'" class="alert alert-info">
                                         <h5><i class="icon fas fa-info"></i> LAPORAN SEDANG DIPROSES!</h5>
@@ -88,7 +88,7 @@
                                         <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
                                         {{keterangan}}
                                     </div>
-                                    <div v-show="progress==''">
+                                    <div v-show="progress=='waiting'">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input :disabled='isCheckbox' class="custom-control-input" type="checkbox"
@@ -97,7 +97,7 @@
                                                     pernyataan di atas</label>
                                             </div>
                                         </div>
-                                        <button type="button" :disabled='isDisabled' class="btn btn-warning btn-lg btn-flat"
+                                        <button type="button" :disabled='isDisabled' class="btn btn-primary btn-lg btn-flat"
                                             v-on:click="kirim_verval">KIRIM LAPORAN</button>
                                         <button type="button" :disabled='isBatal' class="btn btn-danger btn-lg btn-flat"
                                             v-on:click="batal_verval">BATALKAN LAPORAN</button>
@@ -130,7 +130,7 @@
                 }),
                 simpan:false,
                 komponen: [],
-                progress: '',
+                progress: 'waiting',
                 keterangan: '',
             }
         },
