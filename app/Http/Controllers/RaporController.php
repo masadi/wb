@@ -8,6 +8,7 @@ use App\Komponen;
 use App\Instrumen;
 use App\HelperModel;
 use App\Nilai_akhir;
+use App\Nilai_instrumen;
 use App\Pakta_integritas;
 use App\Verval;
 use App\Verifikasi;
@@ -57,7 +58,10 @@ class RaporController extends Controller
             'data' => $komponen, 
             'rapor' => [
                 'jml_instrumen' => $output_instrumen->count(), 
-                'jml_jawaban' => $output_nilai_instrumen->count(),
+                'jml_jawaban' => Nilai_instrumen::where(function($query) use ($request){
+                    $query->whereNull('verifikator_id');
+                    $query->where('user_id', $request->user_id);
+                })->count(),
                 'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
                 'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
                 'pakta_integritas' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
