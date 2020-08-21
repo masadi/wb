@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='isDisabled' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SEKOLAH</span></button>
+                                    <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SEKOLAH</span></button>
                                 </div>
                                 <div class="row">
                                     <ul class="timeline" id="timeline">
@@ -190,9 +190,7 @@
 
 import axios from 'axios' //IMPORT AXIOS
 export default {
-    //KETIKA COMPONENT INI DILOAD
     created() {
-        //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
         this.loadPostsData()
     },
     data() {
@@ -222,7 +220,8 @@ export default {
                 pengesahan : {
                     lengkap: 0,
                      tgl : '-'
-                }
+                },
+                verifikator_id : null
             },
             sekolah_id: user.sekolah_id,
             kuisioners: [],
@@ -233,20 +232,22 @@ export default {
         }
     },
     computed: {
-        isDisabled(){
-            if(!this.rapor.kuisioner.lengkap || this.rapor.pakta){
-                return false
-            } else {
+        diMatikan(){
+            if(!this.rapor.kuisioner.lengkap){
                 return true
+            } else if(this.rapor.pakta.lengkap){
+                return true
+            } else if(!this.rapor.verifikator_id){
+                return true
+            } else {
+                return false
             }
         }
     },
     methods: {
         loadPostsData() {
-            axios.get(`/api/rapor-mutu/hasil`, {
-                params: {
-                    user_id: user.user_id,
-                }
+            axios.post(`/api/rapor-mutu/hasil`, {
+                user_id: user.user_id,
             }).then((response) => {
                 let getData = response.data
                 let tempBintangKomponen = {};
@@ -267,11 +268,10 @@ export default {
                 this.kuisioners = getData.data
                 this.output_indikator = getData.output_indikator
                 this.rapor.kuisioner.lengkap = (getData.rapor.jml_instrumen == getData.detil_user.nilai_instrumen_count)
-                console.log(this.rapor.kuisioner.lengkap);
                 this.rapor.kuisioner.tgl = (getData.rapor.kuisioner) ? getData.rapor.kuisioner : '-'
                 this.rapor.hitung.lengkap = getData.rapor.hitung
                 this.rapor.hitung.tgl = (getData.rapor.hitung) ? getData.rapor.hitung : '-'
-                this.rapor.pakta.lengkap = getData.rapor.pakta_integritas
+                this.rapor.pakta.lengkap = (getData.rapor.pakta_integritas) ? true : false
                 this.rapor.pakta.tgl = (getData.rapor.pakta_integritas) ? getData.rapor.pakta_integritas : '-'
                 this.rapor.verval.lengkap = getData.rapor.verval
                 this.rapor.verval.tgl = (getData.rapor.verval) ? getData.rapor.verval : '-'
@@ -279,6 +279,7 @@ export default {
                 this.rapor.verifikasi.tgl = (getData.rapor.verifikasi) ? getData.rapor.verifikasi : '-'
                 this.rapor.pengesahan.lengkap = getData.rapor.pengesahan
                 this.rapor.pengesahan.tgl = (getData.rapor.pengesahan) ? getData.rapor.pengesahan : '-'
+                this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null
             });
         },
         hitung_rapor_mutu: function (event) {
@@ -293,7 +294,11 @@ export default {
                 showLoaderOnConfirm: true,
             }).then((result) => {
                 if (result.value) {
-                    axios.get(`/api/hitung-nilai-instrumen/${user.user_id}`).then(() => {
+                    axios.post(`/api/hitung-nilai-instrumen`, {
+                        user_id: user.user_id,
+                        verifikator_id: this.rapor.verifikator_id
+                    }).then((response) => {
+                        console.log(response)
                         Swal.fire(
                             'Selesai',
                             'Hitung Nilai Instrumen Berhasil!',
@@ -303,7 +308,7 @@ export default {
                         })
                     }).catch((data)=> {
                         Swal.fire("Gagal!", data.message, "warning");
-                    });
+                    })
                 }
             })
         },

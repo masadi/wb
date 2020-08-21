@@ -25,6 +25,7 @@ Route::get('/cetak-instrumen', 'ReferensiController@cetak');
 
 Route::delete('/berita/{id}', 'BeritaController@destroy');*/
 Route::get('/hitung-nilai-instrumen/{user_id}', 'NilaiController@hitung_nilai');
+Route::post('/hitung-nilai-instrumen', 'NilaiController@hitung_nilai');
 //Route::get('/users', 'UsersController@index');
 //Route::post('/users', 'UsersController@create');
 Route::group(['prefix' => 'referensi'], function(){
@@ -47,11 +48,11 @@ Route::group(['prefix' => 'verifikasi'], function(){
 });
 Route::group(['prefix' => 'rapor-mutu'], function(){
     Route::post('/hasil', 'RaporController@index');
-    Route::get('/hasil', 'RaporController@index');
-    Route::get('/pakta', 'RaporController@pakta');
-    Route::get('/pra-cetak-pakta', 'RaporController@pra_cetak_pakta');
-    Route::get('/cetak-pakta', 'RaporController@cetak_pakta');
-    Route::get('/batal-pakta', 'RaporController@batal_pakta');
+    //Route::get('/hasil', 'RaporController@index');
+    Route::post('/pakta', 'RaporController@pakta');
+    Route::post('/pra-cetak-pakta', 'RaporController@pra_cetak_pakta');
+    Route::post('/cetak-pakta', 'RaporController@cetak_pakta');
+    Route::post('/batal-pakta', 'RaporController@batal_pakta');
 });
 Route::resource('users', 'UsersController');
 Route::resource('sekolah', 'SekolahController');

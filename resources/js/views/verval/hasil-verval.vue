@@ -19,7 +19,46 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
+                        <form class="form-horizontal" @submit.prevent="insertData()" method="post">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Silahkan pilih Komponen/Aspek/Instrumen yang akan dirubah</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="komponen_id" class="col-sm-2 col-form-label">Sekolah</label>
+                                        <div class="col-sm-10">
+                                            <v-select :options="form.sekolah" label="text" index="value" @input="getInstrumen" v-model="form.sekolah_id" placeholder="== Pilih Sekolah == "></v-select>
+                                        </div>
+                                    </div>
+                                    <table class="table" v-show="komponen.length > 0">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" scope="col">No</th>
+                                                <th class="text-center" scope="col">Komponen</th>
+                                                <th class="text-center" scope="col">Nilai Asli</th>
+                                                <th class="text-center" scope="col">Nilai Perubahan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(value, key) in komponen">
+                                                <td class="text-center">{{key + 1}}</td>
+                                                <td>{{value.nama}}</td>
+                                                <td class="text-center">{{(value.nilai_komponen) ? value.nilai_komponen.total_nilai : 0}}</td>
+                                                <td class="text-center">{{(value.nilai_komponen_verifikasi) ? value.nilai_komponen_verifikasi.total_nilai : 0}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer" v-show="simpan">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Silahkan pilih nama sekolah yang akan ditinjau hasil vervalnya</h3>
+                            </div>
                             <div class="card-body">
                                 {{isShow}}
                                 <div v-show="isShow">
@@ -41,7 +80,7 @@
                                     <button :disabled='isBatal' class="btn btn-danger btn-lg btn-flat" v-on:click="batal_pakta">BATALKAN LAPORAN</button>
                                 </div>
                             </div>
-                        </div>
+                        </div-->
                     </div>
                 </div>
             </div>
@@ -60,6 +99,13 @@ import axios from 'axios' //IMPORT AXIOS
                 isBatal : true,
                 isCheckbox : false,
                 isShow : false,
+                form: new Form({
+                    verifikator_id:user.user_id,
+                    sekolah_id: '',
+                    sekolah: [],
+                }),
+                simpan:false,
+                komponen: [],
             }
         },
         computed: {
@@ -68,9 +114,22 @@ import axios from 'axios' //IMPORT AXIOS
             }
         },
         created() {
-            //this.loadPostsData()
+            this.loadPostsData()
         },
         methods: {
+            getInstrumen(e){
+                if(!e){
+                    return false;
+                }
+                axios.post(`/api/verifikasi/instrumen`, {
+                    verifikator_id: user.user_id,
+                    sekolah_id: e.value
+                })
+                .then((response) => {
+                    let getData = response.data
+                    this.komponen = getData.data
+                })
+            },
             cetak_pakta : function (event) {
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -139,23 +198,12 @@ import axios from 'axios' //IMPORT AXIOS
                     komponen_id: this.$route.params.id,
                     user_id: user.user_id,
                 })*/
-                axios.get(`/api/rapor-mutu/pakta`, {
-                    params : {
-                        user_id: user.user_id,
-                    }
+                axios.post(`/api/verifikasi/sekolah`, {
+                    verifikator_id: user.user_id,
                 })
                 .then((response) => {
                     let getData = response.data
-                    this.nama_sekolah = getData.user.name
-                    this.tahun_pendataan = getData.tahun_pendataan.tahun_pendataan_id
-                    this.tanggal = (getData.user.sekolah.pakta_integritas) ? getData.user.sekolah.pakta_integritas.created_at : '-'
-                    this.isBatal = (getData.user.sekolah.pakta_integritas) ? false : true
-                    if(getData.instrumen == getData.user.nilai_instrumen_count){
-                        this.isCheckbox = (getData.user.sekolah.pakta_integritas) ? true : false
-                    } else {
-                        this.isCheckbox = true
-                    }
-                    this.terms = false
+                    this.form.sekolah = getData.result
                 })
             }
         }

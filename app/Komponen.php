@@ -15,6 +15,9 @@ class Komponen extends Model
     public function nilai_komponen(){
         return $this->hasOne('App\Nilai_komponen', 'komponen_id', 'id');
     }
+    public function nilai_komponen_verifikasi(){
+        return $this->hasOne('App\Nilai_komponen', 'komponen_id', 'id');
+    }
     public function aspek(){
         return $this->hasMany('App\Aspek', 'komponen_id', 'id')->withCount(['instrumen' => function($query){
             $query->where('urut', 0);

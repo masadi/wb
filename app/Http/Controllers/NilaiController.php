@@ -49,9 +49,27 @@ class NilaiController extends Controller
                             'predikat' => HelperModel::predikat($nilai_aspek, true),
                         ]
                     );
+                    Nilai_aspek::updateOrCreate(
+                        [
+                            'user_id' => $request->user_id,
+                            'aspek_id' => $aspek->id,
+                            'komponen_id' => $aspek->komponen_id,
+                            'verifikator_id' => $request->verifikator_id,
+                        ],
+                        [
+                            'nilai' => $nilai_aspek_dibobot,
+                            'total_nilai' => $nilai_aspek,
+                            'predikat' => HelperModel::predikat($nilai_aspek, true),
+                        ]
+                    );
                 }
             });
-            $all_nilai_aspek = Nilai_aspek::where('user_id', $request->user_id)->where('komponen_id', $komponen->id)->sum('nilai');
+            //$all_nilai_aspek = Nilai_aspek::where('user_id', $request->user_id)->where('komponen_id', $komponen->id)->sum('nilai');
+            $all_nilai_aspek = Nilai_aspek::where(function($query) use ($request, $komponen){
+				$query->where('user_id', $request->user_id);
+				$query->whereNull('verifikator_id');
+				$query->where('komponen_id', $komponen->id);
+			})->sum('nilai');
             if($all_nilai_aspek){
                 $all_bobot = $komponen->aspek()->sum('bobot');
                 $nilai_komponen = ($all_nilai_aspek*100)/$all_bobot;
@@ -68,6 +86,18 @@ class NilaiController extends Controller
                         'predikat' => HelperModel::predikat($nilai_komponen, true),
                     ]
                 );
+                Nilai_komponen::updateOrCreate(
+                    [
+                        'user_id' => $request->user_id,
+                        'komponen_id' => $komponen->id,
+                        'verifikator_id' => $request->verifikator_id,
+                    ],
+                    [
+                        'nilai' => $nilai_komponen,
+                        'total_nilai' => $nilai_komponen,
+                        'predikat' => HelperModel::predikat($nilai_komponen, true),
+                    ]
+                );
             }
             $total_nilai += $nilai_komponen;
         }
@@ -75,6 +105,16 @@ class NilaiController extends Controller
             [
                 'user_id' => $request->user_id,
                 'verifikator_id' => NULL,
+            ],
+            [
+                'nilai' => $total_nilai,
+                'predikat' => HelperModel::predikat($total_nilai, true),
+            ]
+        );
+        Nilai_akhir::updateOrCreate(
+            [
+                'user_id' => $request->user_id,
+                'verifikator_id' => $request->verifikator_id,
             ],
             [
                 'nilai' => $total_nilai,

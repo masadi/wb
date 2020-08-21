@@ -73,6 +73,7 @@ export default {
     },
     data() {
         return {
+            options: [],
             form: new Form({
                 user_id: this.$route.params.sekolah_id,
                 verifikator_id:user.user_id,
@@ -99,7 +100,7 @@ export default {
     methods: {
         insertData(){
             this.form.post('/api/verifikasi/simpan').then((response)=>{
-                this.form.verifikator_id = 0;
+                /*this.form.verifikator_id = 0;
                 this.form.user_id = 0
                 this.form.komponen_id = 0
                 this.form.aspek_id = 0
@@ -108,7 +109,7 @@ export default {
                 this.form.komponen = []
                 this.form.aspek = []
                 this.form.instrumen = []
-                this.form.jawaban = []
+                this.form.jawaban = []*/
                 Toast.fire({
                     icon: 'success',
                     title: 'Jawaban berhasil disimpan',
@@ -118,6 +119,9 @@ export default {
             })
         },
         getAspek(e){
+            if(!e){
+                return false
+            }
             axios.post(`/api/verifikasi/aspek`, {
                 komponen_id: e.value,
             })
@@ -129,6 +133,9 @@ export default {
             })
         },
         getInstrumen(e){
+            if(!e){
+                return false
+            }
             axios.post(`/api/verifikasi/instrumen`, {
                 aspek_id: e.value,
             })
@@ -139,9 +146,13 @@ export default {
             })
         },
         getSub(e){
+            if(!e){
+                return false
+            }
             axios.post(`/api/verifikasi/subs`, {
                 instrumen_id: e.value,
                 user_id: this.$route.params.sekolah_id,
+                verifikator_id: this.$route.params.verifikator_id,
             })
             .then((response) => {
                 let getData = response.data

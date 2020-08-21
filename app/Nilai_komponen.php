@@ -12,4 +12,7 @@ class Nilai_komponen extends Model
 	protected $table = 'nilai_komponen';
 	protected $primaryKey = 'nilai_komponen_id';
     protected $guarded = [];
+    public function user(){
+        return $this->hasOne('App\User', 'user_id', 'user_id');
+    }
 }

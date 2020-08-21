@@ -12,7 +12,6 @@ use App\Nilai_instrumen;
 use App\Pakta_integritas;
 use App\Verval;
 use App\Verifikasi;
-use App\Tahun_pendataan;
 use Carbon\Carbon;
 use PDF;
 class RaporController extends Controller
@@ -39,7 +38,7 @@ class RaporController extends Controller
         }])->get();
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
-        }])->find($request->user_id);
+        }])->with(['sekolah.sekolah_sasaran'])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
@@ -76,11 +75,10 @@ class RaporController extends Controller
     }
     public function pakta(Request $request){
         $respone = [
-            'instrumen' => Instrumen::where('urut', 0)->count(),
-            'user' => User::with(['sekolah.pakta_integritas'])->withCount(['nilai_instrumen' => function($query){
+            'user' => User::with(['sekolah.pakta_integritas'])->with(['nilai_akhir' => function($query){
                 $query->whereNull('verifikator_id');
             }])->find($request->user_id),
-            'tahun_pendataan' => Tahun_pendataan::where('periode_aktif', 1)->first(),
+            'tahun_pendataan' => HelperModel::tahun_pendataan(),
         ];
         return response()->json($respone);
     }
@@ -95,7 +93,7 @@ class RaporController extends Controller
         $user = User::with(['sekolah'])->find($request->user_id);
         $data['sekolah'] = $user->sekolah;
         $data['now'] = HelperModel::TanggalIndo(Carbon::now());
-        $data['tahun_pendataan'] = Tahun_pendataan::where('periode_aktif', 1)->first();
+        $data['tahun_pendataan'] = HelperModel::tahun_pendataan();
         //return view('cetak.pakta_integritas', $data);
         $pdf = PDF::loadView('cetak.pakta_integritas', $data);
         //return $pdf->stream('instrumen.pdf');

@@ -82,16 +82,12 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
-                        axios.get(`/api/rapor-mutu/pra-cetak-pakta`, {
-                            params: {
-                                user_id: user.user_id,
-                            },
+                        axios.post(`/api/rapor-mutu/pra-cetak-pakta`, {
+                            user_id: user.user_id,
                         }).then((response) => {
                             this.loadPostsData()
-                            axios.get(`/api/rapor-mutu/cetak-pakta`, {
-                                params: {
-                                    user_id: user.user_id,
-                                },
+                            axios.post(`/api/rapor-mutu/cetak-pakta`, {
+                                user_id: user.user_id,
                                 responseType: 'arraybuffer'
                             }).then((response) => {
                                 let blob = new Blob([response.data], { type: 'application/pdf' })
@@ -116,10 +112,8 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
-                        axios.get(`/api/rapor-mutu/batal-pakta`, {
-                            params : {
-                                user_id: user.user_id,
-                            }
+                        axios.post(`/api/rapor-mutu/batal-pakta`, {
+                            user_id: user.user_id,
                         }).then((response) => {
                             Swal.fire(
                                 'Berhasil!',
@@ -133,30 +127,82 @@
                 })
             },
             loadPostsData() {
-                /*axios.post(`/api/kuisioner/progres`, {
-                    //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
-                    komponen_id: this.$route.params.id,
+                axios.post(`/api/rapor-mutu/pakta`, {
                     user_id: user.user_id,
-                })*/
-                axios.get(`/api/rapor-mutu/pakta`, {
-                    params : {
-                        user_id: user.user_id,
-                    }
                 })
                 .then((response) => {
                     let getData = response.data
                     this.nama_sekolah = getData.user.name
                     this.tahun_pendataan = getData.tahun_pendataan.tahun_pendataan_id
-                    this.tanggal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? getData.user.sekolah.pakta_integritas.created_at : '-' : '-'
+                    this.tanggal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.pakta_integritas.created_at) : '-' : '-'
                     this.isBatal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? false : true : true
-                    if(getData.instrumen == getData.user.nilai_instrumen_count){
-                        this.isCheckbox = (getData.user.sekolah.pakta_integritas) ? true : false
+                    console.log(this.isBatal)
+                    if(getData.user.nilai_akhir && this.isBatal){
+                        this.isCheckbox = false
                     } else {
                         this.isCheckbox = true
                     }
                     this.terms = false
                 })
-            }
+            },
+            tanggalIndo(time){
+                if(!time){
+                    return false
+                }
+                let date = new Date(time)
+                let tahun = date.getFullYear()
+                let bulan = date.getMonth()
+                let tanggal = date.getDate()
+                let hari = date.getDay()
+                let jam = date.getHours()
+                let menit = (date.getMinutes()<10?'0':'') + date.getMinutes()
+                let detik = date.getSeconds()
+                switch(hari) {
+                        case 0: hari = "Minggu"
+                    break
+                        case 1: hari = "Senin"
+                    break
+                        case 2: hari = "Selasa"
+                    break
+                        case 3: hari = "Rabu"
+                    break
+                        case 4: hari = "Kamis"
+                    break
+                        case 5: hari = "Jum'at"
+                    break
+                        case 6: hari = "Sabtu"
+                    break
+                }
+                switch(bulan) {
+                    case 0: bulan = "Januari"
+                    break
+                    case 1: bulan = "Februari"
+                        break
+                    case 2: bulan = "Maret"
+                        break
+                    case 3: bulan = "April"
+                        break
+                    case 4: bulan = "Mei"
+                        break
+                    case 5: bulan = "Juni"
+                        break
+                    case 6: bulan = "Juli"
+                        break
+                    case 7: bulan = "Agustus"
+                        break
+                    case 8: bulan = "September"
+                        break
+                    case 9: bulan = "Oktober"
+                        break
+                    case 10: bulan = "November"
+                        break
+                    case 11: bulan = "Desember"
+                    break
+                }
+                let result =  hari + ", " + tanggal + " " + bulan + " " + tahun+ " " + jam + ":" + menit + ":" + detik;
+                return result
+                //var tampilWaktu = "Jam: " + jam + ":" + menit + ":" + detik;
+            },
         }
     }
 </script>
