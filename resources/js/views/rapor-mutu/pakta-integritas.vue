@@ -73,7 +73,7 @@
             cetak_pakta : function (event) {
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
-                    text: "Jika ada kesalahan pengisian instrumen, Anda dapat membatalkan Pakta Integritas ini!",
+                    text: "Jika ada kesalahan pengisian instrumen, Anda dapat membatalkan Pakta Integritas ini sebelum di validasi oleh Tim Verifikator!",
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
