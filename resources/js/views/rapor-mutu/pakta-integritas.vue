@@ -147,8 +147,8 @@
                     let getData = response.data
                     this.nama_sekolah = getData.user.name
                     this.tahun_pendataan = getData.tahun_pendataan.tahun_pendataan_id
-                    this.tanggal = (getData.user.sekolah.pakta_integritas) ? getData.user.sekolah.pakta_integritas.created_at : '-'
-                    this.isBatal = (getData.user.sekolah.pakta_integritas) ? false : true
+                    this.tanggal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? getData.user.sekolah.pakta_integritas.created_at : '-' : '-'
+                    this.isBatal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? false : true : true
                     if(getData.instrumen == getData.user.nilai_instrumen_count){
                         this.isCheckbox = (getData.user.sekolah.pakta_integritas) ? true : false
                     } else {
