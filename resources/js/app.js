@@ -55,8 +55,9 @@ Vue.component('v-select', vSelect)
     //import { VclFacebook, VclInstagram } from 'vue-content-loading';
     //Vue.component('vcl-facebook', VclFacebook);
     //Vue.component('vcl-instagram', VclInstagram);
-import Loader from './utilities/Loader';
-Vue.use(Loader);
+
+import { SpinnerPlugin } from 'bootstrap-vue'
+Vue.use(SpinnerPlugin)
 Vue.mixin({
     data: function() {
         return {
@@ -76,9 +77,17 @@ Vue.mixin({
         },
     }
 })
+import loader from "vue-ui-preloader";
+Vue.use(loader);
+import myLoader from './utilities/Loader';
+Vue.component('my-loader', myLoader)
 new Vue({
     el: '#pmp_smk',
     router,
+    components: {
+        loader: loader,
+        'my-loader': myLoader
+    },
     //detilUser: user
     /*data: {
         loading: true,

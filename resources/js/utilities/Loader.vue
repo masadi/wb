@@ -1,15 +1,12 @@
 <template>
-    <vcl-facebook></vcl-facebook>
-    <!--vcl-instagram></vcl-instagram-->
+  <loader object="#ff9633" color1="#ffffff" color2="#17fd3d" size="5" speed="2" bg="#343a40" objectbg="#999793" opacity="80" name="circular"></loader>
 </template>
 <script>
-//import VueContentLoading from 'vue-content-loading';
-import { VclFacebook, VclInstagram } from 'vue-content-loading';
 export default {
-    components: {
-        //VueContentLoading,
-        VclFacebook,
-        VclInstagram,
+    //KETIKA COMPONENT INI DILOAD
+    mounted() {
+        var vm = this;
+        $(vm.$el).hide()
     },
 }
 </script>

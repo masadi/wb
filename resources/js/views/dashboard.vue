@@ -137,6 +137,7 @@
                 </div>
             </div>
         </section>
+        <my-loader/>
     </div>
 </template>
 <script>
