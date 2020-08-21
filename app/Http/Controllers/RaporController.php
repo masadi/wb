@@ -66,6 +66,7 @@ class RaporController extends Controller
                 'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
                 'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
                 'pakta_integritas' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
+                'pakta' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
                 'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
                 'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
                 'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
