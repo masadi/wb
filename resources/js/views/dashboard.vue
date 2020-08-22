@@ -7,7 +7,7 @@
         </div>
         <section class="content">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row" style="display:none;">
                     <div v-show="!user.sekolah_id" class="col-md-3 col-sm-6 col-12">
                         <div class="info-box">
                             <span class="info-box-icon bg-info"><i class="fas fa-university"></i></span>
@@ -78,7 +78,7 @@
                                                 <div class="ps-top">
                                                     <p>Proses pengisian instrumen</p>
                                                 </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.kuisioner, 'fa-times text-danger': !rapor.kuisioner }"></i></span>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.instrumen, 'fa-times text-danger': !rapor.instrumen }"></i></span>
                                             </li>
                                             <li>
                                                 <div class="img-handler-top">
@@ -159,7 +159,7 @@ export default {
             grade_sekolah: 0,
             sekolah_id: user.sekolah_id,
             rapor:{
-                kuisioner : 0,
+                instrumen : 0,
                 hitung : 0,
                 pakta : 0,
                 verval : 0,
@@ -185,7 +185,7 @@ export default {
                 this.nilai = getData.nilai
                 this.grade_personal = getData.grade_personal
                 this.grade_sekolah = getData.grade_sekolah
-                this.rapor.kuisioner = getData.kuisioner
+                this.rapor.instrumen = getData.instrumen
                 this.rapor.hitung = getData.hitung
                 this.rapor.pakta = getData.pakta
                 this.rapor.verval = getData.verval
