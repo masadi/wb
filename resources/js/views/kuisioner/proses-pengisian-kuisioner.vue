@@ -61,14 +61,12 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Petunjuk Pengisian</h5>
+                        <h5 class="modal-title">Keterangan</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <nl2br :text="text" />
-                    </div>
+                    <div class="modal-body" v-html="parse"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                     </div>
@@ -78,7 +76,7 @@
     </div>
 </template>
 <script>
-    import Nl2brComponent from './../components/Nl2brComponent';
+    //import Nl2brComponent from './../components/Nl2brComponent';
     import axios from 'axios' //IMPORT AXIOS
     export default {
         data() {
@@ -107,11 +105,12 @@
                 text: `myLine1\nmyLine2`,
                 content:{},
                 pakta_integritas: false,
+                parse:'',
             }
         },
-        components: {
+        /*components: {
             'nl2br': Nl2brComponent
-        },
+        },*/
         methods: {
             newPage(new_page, intern = false){
                 if(new_page){
@@ -123,9 +122,14 @@
                 }
             },
             petunjuk(instrumen_id){
-                this.text = this.content[instrumen_id]
-                console.log(this.text);
-                $('#modalPetunjuk').modal('show');
+                axios.post(`/api/kuisioner/parse-json`, {
+                    //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                    obj: this.contentPetunjuk[instrumen_id]
+                }).then((response) => {
+                    this.parse = response.data
+                    console.log(this.parse)
+                    $('#modalPetunjuk').modal('show');
+                })
             },
             updatePaginationData(event) {
                 let getData = event.data
@@ -146,8 +150,10 @@
                 var tempAspek = {};
                 var tempKomponen = {};
                 var tempPetunjuk = {};
+                var tempDetilPetunjuk = {};
                 $.each(getData.data, function(key, value) {
                     $.each(value, function(index, val) {
+                        //console.log(val.indikator)
                         tempIndikator[val.instrumen_id] = val.indikator_id; 
                         tempAtribut[val.instrumen_id] = val.indikator.atribut_id; 
                         tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id; 
@@ -158,8 +164,15 @@
                              //tempData[val.instrumen_id] = 4; 
                         }
                         tempPetunjuk[val.instrumen_id] = val.petunjuk_pengisian; 
+                        tempDetilPetunjuk[val.instrumen_id] = {
+                            'petunjuk_pengisian' : val.petunjuk_pengisian,
+                            'indikator' : val.indikator.nama,
+                            'atribut' : val.indikator.atribut.nama
+                        }
+                        //tempDetilPetunjuk[val.instrumen_id]['atribut'] = val.indikator.atribut.nama
                     });
                 });
+                //console.log(tempDetilPetunjuk)
                 this.form.indikator_id = tempIndikator;
                 this.form.atribut_id = tempAtribut;
                 this.form.aspek_id = tempAspek;
@@ -168,6 +181,7 @@
                 this.previous = getData.previous
                 this.next = getData.next
                 this.content = tempPetunjuk
+                this.contentPetunjuk = tempDetilPetunjuk
                 window.scrollTo(0,100);
             },
             /*loadPostsData() {

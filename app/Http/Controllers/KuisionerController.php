@@ -127,4 +127,8 @@ class KuisionerController extends Controller
         }
         return response()->json(['status' => 'success', 'data' => $output, 'output_aspek' => $output_aspek, 'nilai' => $output_nilai]);
     }
+    public function parse_json(Request $request){
+        $obj = $request->obj;
+        return view('parse_json', compact('obj'))->render();
+    }
 }

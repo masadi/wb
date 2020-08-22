@@ -37,6 +37,7 @@ Route::group(['prefix' => 'kuisioner'], function(){
     Route::post('/', 'KuisionerController@index');
     Route::get('/', 'KuisionerController@index');
     Route::get('/progres', 'KuisionerController@progres');
+    Route::post('/parse-json', 'KuisionerController@parse_json');
     //Route::get('/{query?}/{id?}', 'KuisionerController@index');
 });
 Route::group(['prefix' => 'verifikasi'], function(){
