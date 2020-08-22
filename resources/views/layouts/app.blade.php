@@ -17,7 +17,7 @@
         .header{
             background-image: url('{{asset('vendor/img/bgheader-min.png')}}');
             background-repeat: no-repeat;
-            background-size: 100% 100%;
+            background-size: cover;
         }
     </style>
 </head>
@@ -94,13 +94,23 @@
                 </ul>
             </div>
         </nav>
+        <?php
+        /*$class = 'container-fluid';
+        $params = request()->route()->parameters();
+        if($params){
+            if($params['query'] != 'home'){
+                $class = 'container';
+            }
+        }*/
+        $class = 'container';
+        ?>
         <div class="content-wrapper ">
             <div class="content-header">
                 <div class="container">
                 </div>
             </div>
             <div class="content">
-                <div class="container">
+                <div class="{{$class}}">
                     @yield('content')
                 </div>
             </div>

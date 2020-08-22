@@ -17,8 +17,11 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-Route::get('/{query}', function () {
-    return view('welcome');
+Route::get('/{query}', function ($query) {
+    if($query == 'home'){
+        return view('welcome');
+    }
+    return view('page');
 });
 #Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/app/{vue_capture?}', function () {
