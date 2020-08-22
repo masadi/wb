@@ -213,12 +213,12 @@ class ReferensiController extends Controller
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
         $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
         $progres = [
-            'instrumen' => 1,//($instrumen == $nilai_instrumen),
-            'hitung' => 1,//($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
-            'pakta' => 1,//($pakta) ? HelperModel::TanggalIndo($pakta->updated_at) : NULL,
-            'verval' => 1,//($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
-            'verifikasi' => 1,//($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
-            'pengesahan' => 1,//($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
+            'instrumen' => ($instrumen == $nilai_instrumen),
+            'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
+            'pakta' => ($pakta) ? HelperModel::TanggalIndo($pakta->updated_at) : NULL,
+            'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
+            'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
+            'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
         ];
         $data = $data->merge($progres);
         return response()->json(['status' => 'success', 'data' => $data]);

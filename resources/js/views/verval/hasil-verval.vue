@@ -30,7 +30,7 @@
                                 <div class="form-group row">
                                     <label for="komponen_id" class="col-sm-2 col-form-label">Sekolah</label>
                                     <div class="col-sm-10">
-                                        <v-select :options="form.sekolah" label="text" index="value"
+                                        <v-select :options="sekolah" label="text" index="value"
                                             @input="getInstrumen" v-model="form.sekolah_id"
                                             placeholder="== Pilih Sekolah == "></v-select>
                                     </div>
@@ -88,7 +88,7 @@
                                         <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
                                         {{keterangan}}
                                     </div>
-                                    <div v-show="progress=='waiting'">
+                                    <div v-show="progress=='waiting' || progress==''">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input :disabled='isCheckbox' class="custom-control-input" type="checkbox"
@@ -126,8 +126,8 @@
                 form: new Form({
                     verifikator_id:user.user_id,
                     sekolah_id: '',
-                    sekolah: [],
                 }),
+                sekolah: [],
                 simpan:false,
                 komponen: [],
                 progress: 'waiting',
@@ -172,6 +172,8 @@
                         this.isCheckbox = false
                         this.isBatal = true
                         this.terms = ''
+                        this.progress = ''
+                        this.keterangan = ''
                     }
                     
                 })
@@ -250,10 +252,11 @@
             loadPostsData() {
                 axios.post(`/api/verifikasi/sekolah`, {
                     verifikator_id: user.user_id,
+                    supervisi:0,
                 })
                 .then((response) => {
                     let getData = response.data
-                    this.form.sekolah = getData.result
+                    this.sekolah = getData.result
                 })
             }
         }

@@ -163,6 +163,13 @@ class VerifikasiController extends Controller
         $all_data = Sekolah::where(function($query) use ($request){
             $query->whereHas('sekolah_sasaran', function($query) use ($request){
                 $query->where('verifikator_id', $request->verifikator_id);
+                if($request->supervisi){
+                    $query->whereHas('rapor_mutu', function($query){
+                        $query->whereHas('status_rapor', function($query){
+                            $query->where('status', 'waiting');
+                        });
+                    });
+                }
             });
         })->with(['sekolah_sasaran' => function($query) use ($request){
             $query->where('verifikator_id', $request->verifikator_id);
@@ -211,16 +218,18 @@ class VerifikasiController extends Controller
         return response()->json($respone);
     }
     public function get_batal_verval(Request $request){
-        $jenis = Jenis_rapor::where('jenis', 'verval')->first();
-        $status = Status_rapor::where('status', 'waiting')->first();
-        $kirim_verval = Rapor_mutu::where(function($query) use ($jenis, $status, $request){
-            $query->where('jenis_rapor_id', $jenis->id);
-            $query->where('status_rapor_id', $status->id);
+        $delete_rapor = Rapor_mutu::where(function($query) use ($request){
+            $query->whereHas('status_rapor', function($query){
+                $query->where('status', 'waiting');
+            });
+            $query->whereHas('jenis_rapor', function($query){
+                $query->where('jenis', 'verval');
+            });
             $query->where('verifikator_id', $request->user_id);
             $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
         })->first();
-        if($kirim_verval){
-            if($kirim_verval->delete()){
+        if($delete_rapor){
+            if($delete_rapor->delete()){
                 $respone = [
                     'title' => 'Berhasil',
                     'text' => 'Laporan hasil verifikasi dan validasi berhasil dihapus!',
@@ -238,6 +247,46 @@ class VerifikasiController extends Controller
                 'title' => 'Gagal',
                 'text' => 'Laporan hasil verifikasi dan validasi tidak ditemukan di database!',
                 'icon' => 'error',
+            ];
+        }
+        return response()->json($respone);
+    }
+    public function get_laporan(Request $request){
+        $rapor = Rapor_mutu::where(function($query) use ($request){
+            $query->whereHas('status_rapor', function($query){
+                $query->where('status', 'waiting');
+            });
+            $query->whereHas('jenis_rapor', function($query){
+                $query->where('jenis', 'verval');
+            });
+            $query->where('verifikator_id', $request->verifikator_id);
+            $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
+        })->first();
+        $respone = [
+            'status' => 'success',
+            'data' => $rapor,
+        ];
+        return response()->json($respone);
+    }
+    public function get_kirim(Request $request){
+        $rapor = Rapor_mutu::find($request->rapor_mutu_id);
+        if($rapor){
+            $rapor->keterangan = $request->keterangan;
+            if($rapor->save()){
+                $respone = [
+                    'icon' => 'success',
+                    'message' => 'Laporan hasil supervisi berhasil dikirim'
+                ];
+            } else {
+                $respone = [
+                    'icon' => 'error',
+                    'message' => 'Laporan hasil supervisi gagal dikirim'
+                ];
+            }
+        } else {
+            $respone = [
+                'icon' => 'error',
+                'message' => 'Laporan hasil supervisi tidak ditemukan di database'
             ];
         }
         return response()->json($respone);

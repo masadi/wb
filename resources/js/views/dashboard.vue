@@ -68,7 +68,16 @@
                                 </h3>
                             </div>
                             <div class="card-body">
-                                <section class="ps-timeline-sec">
+                                <section v-show="hasRole('admin')">
+                                    Content akses admin
+                                </section>
+                                <section v-show="hasRole('direktorat')">
+                                    Content akses direktorat
+                                </section>
+                                <section v-show="hasRole('verifikator')">
+                                    Content akses verifikator
+                                </section>
+                                <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
                                     <div class="container">
                                         <ol class="ps-timeline">
                                             <li>
