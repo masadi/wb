@@ -51,7 +51,8 @@ Route::group(['prefix' => 'rapor-mutu'], function(){
     //Route::get('/hasil', 'RaporController@index');
     Route::post('/pakta', 'RaporController@pakta');
     Route::post('/pra-cetak-pakta', 'RaporController@pra_cetak_pakta');
-    Route::post('/cetak-pakta', 'RaporController@cetak_pakta');
+    //Route::post('/cetak-pakta', 'RaporController@cetak_pakta');
+    Route::get('/cetak-pakta', 'RaporController@cetak_pakta');
     Route::post('/batal-pakta', 'RaporController@batal_pakta');
 });
 Route::resource('users', 'UsersController');

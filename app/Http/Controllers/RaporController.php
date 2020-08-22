@@ -96,8 +96,8 @@ class RaporController extends Controller
         $data['tahun_pendataan'] = HelperModel::tahun_pendataan();
         //return view('cetak.pakta_integritas', $data);
         $pdf = PDF::loadView('cetak.pakta_integritas', $data);
-        //return $pdf->stream('instrumen.pdf');
-		return $pdf->download('instrumen.pdf');
+        return $pdf->stream('pakta-integritas.pdf');
+		//return $pdf->download('pakta-integritas.pdf');
     }
     public function batal_pakta(Request $request){
         $delete = Pakta_integritas::where('user_id', $request->user_id);

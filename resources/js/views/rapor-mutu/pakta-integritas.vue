@@ -86,8 +86,10 @@
                             user_id: user.user_id,
                         }).then((response) => {
                             this.loadPostsData()
-                            axios.post(`/api/rapor-mutu/cetak-pakta`, {
-                                user_id: user.user_id,
+                            axios.get(`/api/rapor-mutu/cetak-pakta`, {
+                                params : {
+                                    user_id: user.user_id,
+                                },
                                 responseType: 'arraybuffer'
                             }).then((response) => {
                                 let blob = new Blob([response.data], { type: 'application/pdf' })
