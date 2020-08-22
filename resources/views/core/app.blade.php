@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet">
     <!--link href="{{ asset('css/loader.css') }}" rel="stylesheet"-->
     <style>
         nav ul li ul:not(.dropdown-menu) {padding-left: 30px !important;}
@@ -44,7 +44,7 @@
     <!-- ./wrapper -->
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset(mix('js/app.js')) }}" defer></script>
 </body>
 
 </html>
