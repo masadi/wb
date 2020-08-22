@@ -109,6 +109,7 @@ export default {
             $('#modalAdd').modal('show');
         },
         loadPostsData() {
+            console.log(user)
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
             axios.get(`/api/referensi/sekolah`, {

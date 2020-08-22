@@ -74,8 +74,8 @@
                                 <section v-show="hasRole('direktorat')">
                                     Content akses direktorat
                                 </section>
-                                <section v-show="hasRole('verifikator')">
-                                    Content akses verifikator
+                                <section v-show="hasRole('penjamin_mutu')">
+                                    Content akses tim penjamin mutu
                                 </section>
                                 <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
                                     <div class="container">

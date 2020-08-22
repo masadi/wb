@@ -82,9 +82,9 @@ $user = auth()->user();
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link tag="a" to="/verifikator" class="nav-link">
+                            <router-link tag="a" to="/penjamin-mutu" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Verifikator</p>
+                                <p>Penjamin Mutu</p>
                             </router-link>
                         </li>
                         <li class="nav-item">

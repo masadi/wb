@@ -38,9 +38,7 @@ class KuisionerController extends Controller
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
             }
         }
-        $pakta_integritas = User::with(['pakta_integritas', 'sekolah.sekolah_sasaran' => function($query){
-            $query->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
-        }])->find($request->user_id);
+        $pakta_integritas = User::with(['sekolah.sekolah_sasaran.pakta_integritas'])->find($request->user_id);
         //Pakta_integritas::where('user_id', $request->user_id)->first();
         return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next, 'pakta_integritas' => ($pakta_integritas) ? TRUE : FALSE, 'user' => $pakta_integritas]);
     }

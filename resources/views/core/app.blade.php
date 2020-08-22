@@ -29,7 +29,7 @@
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->username,
-            'verifikator_id' => ($user->hasRole('verifikator')) ? $user->user_id : NULL,
+            'verifikator_id' => ($user->hasRole('penjamin_mutu')) ? $user->user_id : NULL,
             'roles' => $user->roles,
         ]) !!};
     </script>

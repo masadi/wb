@@ -88,6 +88,8 @@
                                         <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
                                         {{keterangan}}
                                     </div>
+                                    {{progress}}
+                                    {{isBatal}}
                                     <div v-show="progress=='waiting' || progress==''">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
@@ -161,7 +163,6 @@
                     this.nama_sekolah = getData.sekolah.nama
                     this.tahun_pendataan = getData.tahun_pendataan
                     let raporMutu = getData.sekolah.sekolah_sasaran.rapor_mutu
-                    console.log(raporMutu)
                     if(raporMutu){
                         this.isCheckbox = true
                         this.isBatal = false

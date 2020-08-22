@@ -30,23 +30,23 @@
                                     <div class="form-group row">
                                         <label for="komponen_id" class="col-sm-2 col-form-label">Komponen</label>
                                         <div class="col-sm-10">
-                                            <v-select :options="form.komponen" label="text" index="value" @input="getAspek" v-model="form.komponen_id" placeholder="== Pilih Komponen == "></v-select>
+                                            <v-select :options="komponen" label="text" index="value" @input="getAspek" v-model="form.komponen_id" placeholder="== Pilih Komponen == "></v-select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="aspek_id" class="col-sm-2 col-form-label">Aspek</label>
                                         <div class="col-sm-10">
-                                            <v-select :options="form.aspek" label="text" index="value" @input="getInstrumen" v-model="form.aspek_id" placeholder="== Pilih Aspek == "></v-select>
+                                            <v-select :options="aspek" label="text" index="value" @input="getInstrumen" v-model="form.aspek_id" placeholder="== Pilih Aspek == "></v-select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="instrumen_id" class="col-sm-2 col-form-label">Instrumen</label>
                                         <div class="col-sm-10">
-                                            <v-select :options="form.instrumen" label="text" index="value" @input="getSub" v-model="form.instrumen_id" placeholder="== Pilih Instrumen == "></v-select>
+                                            <v-select :options="instrumen" label="text" index="value" @input="getSub" v-model="form.instrumen_id" placeholder="== Pilih Instrumen == "></v-select>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="custom-control custom-radio mt-1" v-for="sub in form.jawaban">
+                                        <div class="custom-control custom-radio mt-1" v-for="sub in jawaban">
                                             <input class="custom-control-input" type="radio" v-bind:id="sub.ins_id+sub.urut" v-bind:name="`instrumen_id.${sub.ins_id}`" v-model="form.nilai" v-bind:value="sub.urut">
                                             <label v-bind:for="sub.ins_id+sub.urut" class="custom-control-label" style="font-weight: normal;">{{sub.urut}}. {{sub.pertanyaan}}</label>
                                         </div>
@@ -73,7 +73,10 @@ export default {
     },
     data() {
         return {
-            options: [],
+            komponen: [],
+            aspek: [],
+            instrumen: [],
+            jawaban: [],
             form: new Form({
                 user_id: this.$route.params.sekolah_id,
                 verifikator_id:user.user_id,
@@ -81,10 +84,6 @@ export default {
                 aspek_id: 0,
                 instrumen_id: 0,
                 nilai: 0,
-                komponen: [],
-                aspek: [],
-                instrumen: [],
-                jawaban: [],
             }),
             simpan:false,
         }
@@ -100,16 +99,7 @@ export default {
     methods: {
         insertData(){
             this.form.post('/api/verifikasi/simpan').then((response)=>{
-                /*this.form.verifikator_id = 0;
-                this.form.user_id = 0
-                this.form.komponen_id = 0
-                this.form.aspek_id = 0
-                this.form.instrumen_id = 0
-                this.form.nilai = 0
-                this.form.komponen = []
-                this.form.aspek = []
-                this.form.instrumen = []
-                this.form.jawaban = []*/
+                this.jawaban = []
                 Toast.fire({
                     icon: 'success',
                     title: 'Jawaban berhasil disimpan',
@@ -126,10 +116,10 @@ export default {
                 komponen_id: e.value,
             })
             .then((response) => {
-                this.form.aspek = response.data.result
+                this.aspek = response.data.result
                 this.form.aspek_id = 0
-                this.form.instrumen = []
-                this.form.jawaban = []
+                this.instrumen = []
+                this.jawaban = []
             })
         },
         getInstrumen(e){
@@ -140,9 +130,9 @@ export default {
                 aspek_id: e.value,
             })
             .then((response) => {
-                this.form.instrumen = response.data.result
+                this.instrumen = response.data.result
                 this.form.instrumen_id = 0
-                this.form.jawaban = []
+                this.jawaban = []
             })
         },
         getSub(e){
@@ -156,7 +146,7 @@ export default {
             })
             .then((response) => {
                 let getData = response.data
-                this.form.jawaban = getData.subs
+                this.jawaban = getData.subs
                 if(getData.jawaban){
                     this.form.nilai = getData.jawaban.nilai
                 }
@@ -175,10 +165,10 @@ export default {
                 this.form.aspek_id = 0
                 this.form.instrumen_id = 0
                 this.form.nilai = 0
-                this.form.komponen = response.data.result //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
-                this.form.aspek = []
-                this.form.instrumen = []
-                this.form.jawaban = []
+                this.komponen = response.data.result //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                this.aspek = []
+                this.instrumen = []
+                this.jawaban = []
             })
         }
     }

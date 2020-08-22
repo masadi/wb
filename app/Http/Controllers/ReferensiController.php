@@ -77,9 +77,10 @@ class ReferensiController extends Controller
             if(request()->verifikasi_id){
                 $query->whereHas('sekolah_sasaran', function ($query) {
                     $query->where('verifikator_id', request()->verifikasi_id);
+                    $query->with('pakta_integritas');
                 });
             }
-        })->with(['pakta_integritas', 'user'])->orderBy(request()->sortby, request()->sortbydesc)
+        })->with(['user', 'sekolah_sasaran.pakta_integritas'])->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('npsn', 'ilike', '%' . request()->q . '%')
@@ -209,7 +210,9 @@ class ReferensiController extends Controller
             $query->whereNull('verifikator_id');
         })->count();
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
-        $pakta = Pakta_integritas::where('user_id', $request->user_id)->first();
+        $pakta = Pakta_integritas::whereHas('sekolah_sasaran', function($query) use ($user){
+            $query->where('sekolah_id', $user->sekolah_id);
+        })->first();
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
         $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
         $progres = [
@@ -239,9 +242,9 @@ class ReferensiController extends Controller
         //return $pdf->stream('instrumen.pdf');
 		return $pdf->download('instrumen.pdf');
     }
-    public function get_verifikator(){
+    public function get_penjamin_mutu(){
         $users = User::where(function($query){
-            $query->whereRoleIs('verifikator');
+            $query->whereRoleIs('penjamin_mutu');
         })->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {

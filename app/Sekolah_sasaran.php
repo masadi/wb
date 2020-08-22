@@ -15,4 +15,7 @@ class Sekolah_sasaran extends Model
     public function rapor_mutu(){
         return $this->hasOne('App\Rapor_mutu', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
     }
+    public function pakta_integritas(){
+        return $this->hasOne('App\Pakta_integritas', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
+    }
 }

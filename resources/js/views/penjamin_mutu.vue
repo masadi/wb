@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Data Verifikator</h1>
+                        <h1 class="m-0 text-dark">Data Penjamin Mutu</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Data Verifikator</li>
+                            <li class="breadcrumb-item active">Data Penjamin Mutu</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -23,11 +23,11 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-th mr-1"></i>
-                                    Data Verifikator
+                                    Data Penjamin Mutu
                                 </h3>
                             </div>
                             <div class="card-body">
-                                <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Verifikator'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
+                                <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Penjamin Mutu'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import Datatable from './components/Verifikator.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './components/PenjaminMutu.vue' //IMPORT COMPONENT DATATABLENYA
     export default {
         data() {
             return {
@@ -69,7 +69,7 @@
             loadPostsData() {
                 let current_page = this.search == '' ? this.current_page:1
                 //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-                axios.get(`/api/referensi/verifikator`, {
+                axios.get(`/api/referensi/penjamin-mutu`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                     params: {
                         sekolah_id: this.sekolah_id,

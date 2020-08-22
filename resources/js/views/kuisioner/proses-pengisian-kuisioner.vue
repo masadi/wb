@@ -132,7 +132,7 @@
                 this.form.verifikator_id = (getData.user.sekolah.sekolah_sasaran) ? getData.user.sekolah.sekolah_sasaran.verifikator_id : null
                 if(!getData.user.sekolah.sekolah_sasaran){
                     this.pakta_integritas = true
-                } else if(getData.user.pakta_integritas){
+                } else if(getData.user.sekolah.sekolah_sasaran.pakta_integritas){
                     this.pakta_integritas = true
                 }
                 this.current_page = getData.aspek.current_page

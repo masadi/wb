@@ -81,7 +81,7 @@ return [
             'pengawas' => 'r,c,u,d',
             'jawaban' => 'c,r,u,d',
         ],
-        'verifikator' => [
+        'penjamin_mutu' => [
             'profile' => 'r,u',
             'referensi' => 'r',
             'verifikasi' => 'r,c,u,d',

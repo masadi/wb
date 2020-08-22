@@ -38,7 +38,7 @@ class RaporController extends Controller
         }])->get();
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
-        }])->with(['sekolah.sekolah_sasaran'])->find($request->user_id);
+        }])->with(['sekolah.sekolah_sasaran.pakta_integritas'])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
@@ -53,7 +53,11 @@ class RaporController extends Controller
             $query->whereNull('verifikator_id');
         })->orderBy('updated_at', 'DESC')->first();
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
-        $pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
+        //$pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
+        $pakta_integritas = NULL;
+        if($user->sekolah->sekolah_sasaran){
+            $pakta_integritas = $user->sekolah->sekolah_sasaran->pakta_integritas;
+        }
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
         $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
         $respone = [
@@ -75,7 +79,7 @@ class RaporController extends Controller
     }
     public function pakta(Request $request){
         $respone = [
-            'user' => User::with(['sekolah.pakta_integritas'])->with(['nilai_akhir' => function($query){
+            'user' => User::with(['sekolah.sekolah_sasaran.pakta_integritas'])->with(['nilai_akhir' => function($query){
                 $query->whereNull('verifikator_id');
             }])->find($request->user_id),
             'tahun_pendataan' => HelperModel::tahun_pendataan(),
@@ -83,10 +87,9 @@ class RaporController extends Controller
         return response()->json($respone);
     }
     public function pra_cetak_pakta(Request $request){
-        $user = User::with(['sekolah'])->find($request->user_id);
+        $user = User::with(['sekolah.sekolah_sasaran'])->find($request->user_id);
         Pakta_integritas::updateOrCreate([
-            'user_id' => $request->user_id,
-            'sekolah_id' => $user->sekolah_id,
+            'sekolah_sasaran_id' => $user->sekolah->sekolah_sasaran->sekolah_sasaran_id,
         ]);
     }
     public function cetak_pakta(Request $request){

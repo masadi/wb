@@ -12,4 +12,7 @@ class Pakta_integritas extends Model
 	protected $table = 'pakta_integritas';
 	protected $primaryKey = 'pakta_integritas_id';
     protected $guarded = [];
+    public function sekolah_sasaran(){
+        return $this->belongsTo('App\Sekolah_sasaran', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
+    }
 }

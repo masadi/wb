@@ -36,7 +36,7 @@
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
                     <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button>
-                    <button v-show="hasRole('verifikator')" :disabled='!row.item.pakta_integritas' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button>
+                    <button v-show="hasRole('penjamin_mutu')" :disabled='!row.item.sekolah_sasaran.pakta_integritas' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button>
                 </template>
             </b-table>   
       

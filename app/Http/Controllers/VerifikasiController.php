@@ -163,22 +163,24 @@ class VerifikasiController extends Controller
         $all_data = Sekolah::where(function($query) use ($request){
             $query->whereHas('sekolah_sasaran', function($query) use ($request){
                 $query->where('verifikator_id', $request->verifikator_id);
+                $query->whereHas('pakta_integritas');
                 if($request->supervisi){
                     $query->whereHas('rapor_mutu', function($query){
                         $query->whereHas('status_rapor', function($query){
                             $query->where('status', 'waiting');
                         });
                     });
+                } else {
+                    //$query->whereDoesntHave('rapor_mutu');
                 }
             });
         })->with(['sekolah_sasaran' => function($query) use ($request){
             $query->where('verifikator_id', $request->verifikator_id);
-            $query->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
         }])->get();
         if($all_data->count()){
 			foreach($all_data as $data){
-				$record= [];
-				$record['value'] 	= $data->sekolah_id;
+                $record= [];
+                $record['value'] 	= $data->sekolah_id;
                 $record['text'] 	= $data->nama;
                 $record['sekolah_sasaran_id'] 	= $data->sekolah_sasaran->sekolah_sasaran_id;
                 $output['result'][] = $record;

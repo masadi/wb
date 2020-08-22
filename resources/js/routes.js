@@ -67,9 +67,9 @@ let routes = [{
         component: require('./views/users').default
     },
     {
-        path: '/verifikator',
-        name: 'verifikator',
-        component: require('./views/verifikator').default
+        path: '/penjamin-mutu',
+        name: 'penjamin_mutu',
+        component: require('./views/penjamin_mutu').default
     },
     {
         path: '/kuisioner/pengisian',
