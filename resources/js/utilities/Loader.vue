@@ -3,10 +3,11 @@
 </template>
 <script>
 export default {
-    //KETIKA COMPONENT INI DILOAD
     mounted() {
         var vm = this;
         $(vm.$el).hide()
+        //nav-item has-treeview menu-open
+        //console.log(vm.$root.$children.querySelector('.nav-item'));
     },
 }
 </script>

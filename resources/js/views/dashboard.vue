@@ -7,57 +7,6 @@
         </div>
         <section class="content">
             <div class="container-fluid">
-                <div class="row" style="display:none;">
-                    <div v-show="!user.sekolah_id" class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-info"><i class="fas fa-university"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Sekolah</span>
-                                <span class="info-box-number">{{sekolah}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-info"><i class="fas fa-user-tie"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">PTK</span>
-                                <span class="info-box-number">{{ptk}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-show="user.sekolah_id" class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-success"><i class="fas fa-user-friends"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">Peserta Didik</span>
-                                <span class="info-box-number">{{pd}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-warning"><i class="fas fa-certificate"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Grade Personal</span>
-                                <span class="info-box-number">{{grade_personal}}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-12">
-                        <div class="info-box">
-                            <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Grade Sekolah</span>
-                                <span class="info-box-number">{{grade_sekolah}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -114,7 +63,7 @@
                                                         style="margin-bottom:80px;" />
                                                 </div>
                                                 <div class="ps-bot">
-                                                    <p>Verifikasi dan Validasi oleh verifikator</p>
+                                                    <p>Verifikasi dan Validasi oleh Tim Penjamin Mutu</p>
                                                 </div>
                                                 <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verval, 'fa-times text-danger': !rapor.verval }"></i></i></span>
                                             </li>
@@ -123,7 +72,7 @@
                                                     <img src="/images/icon_progres/5.png" width="150" alt="" />
                                                 </div>
                                                 <div class="ps-top">
-                                                    <p>Input hasil verifikasi rapor mutu sekolah</p>
+                                                    <p>Verifikasi oleh Direktorat</p>
                                                 </div>
                                                 <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verifikasi, 'fa-times text-danger': !rapor.verifikasi }"></i></i></span>
                                             </li>
@@ -179,11 +128,8 @@ export default {
     },
     methods: {
         loadPostsData() {
-            axios.get(`/api/referensi/detil-sekolah`, {
-                params: {
-                    sekolah_id: this.sekolah_id,
-                    user_id: user.user_id,
-                }
+            axios.post(`/api/sekolah`, {
+                user_id: user.user_id,
             })
             .then((response) => {
                 this.loading=false

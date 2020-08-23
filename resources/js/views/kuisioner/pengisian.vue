@@ -53,6 +53,7 @@
                 </div>
             </div>
         </div>
+        <my-loader/>
     </div>
 </template>
 

@@ -26,52 +26,52 @@
                                 </div>
                                 <div class="row">
                                     <ul class="timeline" id="timeline">
-                                        <li class="li" v-bind:class="{ complete: rapor.kuisioner.lengkap }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.instrumen }">
                                             <div class="timestamp">
-                                                <span class="date">{{rapor.kuisioner.tgl}}</span>
+                                                <span class="date">{{(rapor_mutu.instrumen) ? rapor_mutu.instrumen : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor.kuisioner.lengkap }"> Mengisi Kuisioner </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.instrumen }"> Mengisi Kuisioner </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor.hitung.lengkap }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.hitung }">
                                             <div class="timestamp">
-                                                <span class="date">{{rapor.hitung.tgl}}</span>
+                                                <span class="date">{{(rapor_mutu.hitung) ? rapor_mutu.hitung : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor.hitung.lengkap }"> Mengitung Rapor Mutu Sekolah </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.hitung }"> Mengitung Rapor Mutu Sekolah </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor.pakta.lengkap }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.pakta }">
                                             <div class="timestamp">
-                                                <span class="date">{{rapor.pakta.tgl}}</span>
+                                                <span class="date">{{(rapor_mutu.pakta) ? rapor_mutu.pakta : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor.pakta.lengkap }"> Cetak Pakta Integritas Sekolah </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.pakta }"> Cetak Pakta Integritas Sekolah </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor.verval.lengkap }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.verval }">
                                             <div class="timestamp">
-                                                <span class="date">{{rapor.verval.tgl}}</span>
+                                                <span class="date">{{(rapor_mutu.verval) ? rapor_mutu.verval : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor.verval.lengkap }"> Verval oleh Verifikator </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.verval }"> Verval oleh Tim Penjamin Mutu </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor.verifikasi.lengkap }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.verifikasi }">
                                             <div class="timestamp">
-                                                <span class="date">{{rapor.verifikasi.tgl}}</span>
+                                                <span class="date">{{(rapor_mutu.verifikasi) ? rapor_mutu.verifikasi : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor.verifikasi.lengkap }"> Verifikasi oleh Direktorat </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.verifikasi }"> Verifikasi oleh Direktorat </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor.pengesahan.lengkap }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.pengesahan }">
                                             <div class="timestamp">
-                                                <span class="date">{{rapor.pengesahan.tgl}}</span>
+                                                <span class="date">{{(rapor_mutu.pengesahan) ? rapor_mutu.pengesahan : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor.pengesahan.lengkap }"> Pengesahan oleh Direktorat </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.pengesahan }"> Pengesahan oleh Direktorat </h4>
                                             </div>
                                         </li>
                                     </ul> 
@@ -181,6 +181,7 @@
                 </div>
             </div>
         </section>
+        <my-loader/>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -196,6 +197,14 @@ export default {
     data() {
         return {
             user: user,
+            rapor_mutu:{
+                instrumen : 0,
+                hitung : 0,
+                pakta : 0,
+                verval : 0,
+                verifikasi : 0,
+                pengesahan : 0
+            },
             rapor:{
                 kuisioner : {
                     lengkap: 0,
@@ -250,6 +259,14 @@ export default {
                 user_id: user.user_id,
             }).then((response) => {
                 let getData = response.data
+                this.rapor_mutu = {
+                    instrumen : getData.rapor_mutu.instrumen,
+                    hitung : getData.rapor_mutu.hitung,
+                    pakta : getData.rapor_mutu.pakta,
+                    verval : getData.rapor_mutu.verval,
+                    verifikasi : getData.rapor_mutu.verifikasi,
+                    pengesahan : getData.rapor_mutu.pengesahan,
+                }
                 let tempBintangKomponen = {};
                 let tempBintangAspek = {};
                 let tempBintangInstrumen = {};

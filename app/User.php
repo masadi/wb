@@ -46,6 +46,12 @@ class User extends Authenticatable
     public function nilai_instrumen(){
         return $this->hasMany('App\Nilai_instrumen', 'user_id', 'user_id');
     }
+    public function sekolah_sasaran(){
+        return $this->hasMany('App\Sekolah_sasaran', 'verifikator_id', 'user_id');
+    }
+    public function last_nilai_instrumen(){
+        return $this->hasOne('App\Nilai_instrumen', 'user_id', 'user_id')->orderBy('updated_at', 'DESC');
+    }
     public function nilai_akhir(){
         return $this->hasOne('App\Nilai_akhir', 'user_id', 'user_id');
     }

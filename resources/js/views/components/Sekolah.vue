@@ -30,13 +30,19 @@
             <!-- :FIELDS AKAN MENJADI HEADER DARI TABLE, MAKA BERISI FIELD YANG SALING BERKORELASI DENGAN ITEMS -->
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
+                <template v-slot:table-busy>
+                    <div class="text-center text-danger my-2">
+                        <b-spinner class="align-middle"></b-spinner>
+                        <strong>Loading...</strong>
+                    </div>
+                </template>
                 <template v-slot:cell(actions)="row">
                     <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
                     <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button>
-                    <button v-show="hasRole('penjamin_mutu')" :disabled='!row.item.sekolah_sasaran.pakta_integritas' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button>
+                    <button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button>
                 </template>
             </b-table>   
       
@@ -195,7 +201,8 @@ export default {
             showModal: false,
             editModal: false,
             modalText: {},
-            selected: null 
+            selected: null,
+            sasaran:false,
         }
     },
     watch: {
@@ -218,12 +225,37 @@ export default {
             })
         }
     },
+    /*computed: {
+        isDisabled: function(){
+            return this.sasaran
+        }
+    },*/
     methods: {
+        isDisabled(row){
+            if(row){
+                if(row.pakta_integritas){
+                    return false
+                }
+                return true
+            }
+            return true
+        },
         openVerifikasi(sekolah_id){
             this.$router.push({ path: `proses-verifikasi/${sekolah_id}/${user.user_id}`})
         },
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
+            /*
+            let sasaran = row.item.sekolah_sasaran
+            if(sasaran){
+                if(sasaran.pakta_integritas){
+                    return false
+                }
+                return true
+            }
+            return true
+            */
+            console.log(val)
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
             this.$emit('per_page', this.meta.per_page)
         },

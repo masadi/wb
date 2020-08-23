@@ -74,6 +74,7 @@ class RaporController extends Controller
                 'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
                 'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
             ],
+            'rapor_mutu' => HelperModel::rapor_mutu($request->user_id),
         ];
         return response()->json($respone);
     }
@@ -103,8 +104,30 @@ class RaporController extends Controller
 		//return $pdf->download('pakta-integritas.pdf');
     }
     public function batal_pakta(Request $request){
-        $delete = Pakta_integritas::where('user_id', $request->user_id);
-        $respone = $delete->delete();
+        $delete = Pakta_integritas::whereHas('sekolah_sasaran.sekolah.user', function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+        })->first();
+        if($delete){
+            if($delete->delete()){
+                $respone = [
+                    'title' => 'Berhasil',
+                    'text' => 'Pakta Integritas dibatalkan',
+                    'icon' => 'success',
+                ];
+            } else {
+                $respone = [
+                    'title' => 'Gagal',
+                    'text' => 'Pakta Integritas gagal dibatalkan. Silahkan coba beberapa saat lagi!',
+                    'icon' => 'error',
+                ];
+            }
+        } else {
+            $respone = [
+                'title' => 'Gagal',
+                'text' => 'Pakta Integritas tidak ditemukan di database!',
+                'icon' => 'error',
+            ];
+        }
         return response()->json($respone);
     }
 }

@@ -50,37 +50,38 @@ $user = auth()->user();
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @if($user->isAbleTo('users-create'))
-                        <li class="nav-item">
-                            <router-link tag="a" to="/komponen" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Komponen</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link tag="a" to="/aspek" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Aspek</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link tag="a" to="/atribut" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Atribut</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link tag="a" to="/indikator" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Indikator Kinerja</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link tag="a" to="/instrumen" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Instrumen</p>
-                            </router-link>
-                        </li>
+                        @if($user->isAbleTo('referensi-create'))
+                            <li class="nav-item">
+                                <router-link tag="a" to="/komponen" class="nav-link">
+                                    <i class="nav-icon fas fa-hand-point-right"></i>
+                                    <p>Komponen</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link tag="a" to="/aspek" class="nav-link">
+                                    <i class="nav-icon fas fa-hand-point-right"></i>
+                                    <p>Aspek</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link tag="a" to="/atribut" class="nav-link">
+                                    <i class="nav-icon fas fa-hand-point-right"></i>
+                                    <p>Atribut</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link tag="a" to="/indikator" class="nav-link">
+                                    <i class="nav-icon fas fa-hand-point-right"></i>
+                                    <p>Indikator Kinerja</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link tag="a" to="/instrumen" class="nav-link">
+                                    <i class="nav-icon fas fa-hand-point-right"></i>
+                                    <p>Instrumen</p>
+                                </router-link>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <router-link tag="a" to="/penjamin-mutu" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
@@ -88,31 +89,18 @@ $user = auth()->user();
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link tag="a" to="/pengguna" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Pengguna</p>
-                            </router-link>
-                        </li>
-                        @endif
-                        @if($user->isAbleTo('referensi-read'))
-                        <li class="nav-item">
                             <router-link tag="a" to="/sekolah" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Sekolah</p>
                             </router-link>
                         </li>
-                        <!--li class="nav-item">
-                            <router-link tag="a" to="/ptk" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>PTK</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link tag="a" to="/pd" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Peserta Didik</p>
-                            </router-link>
-                        </li-->
+                        @if($user->isAbleTo('users-create'))
+                            <li class="nav-item">
+                                <router-link tag="a" to="/pengguna" class="nav-link">
+                                    <i class="nav-icon fas fa-hand-point-right"></i>
+                                    <p>Pengguna</p>
+                                </router-link>
+                            </li>
                         @endif
                     </ul>
                 </li>
@@ -124,29 +112,6 @@ $user = auth()->user();
                         <p>Kuisioner</p>
                     </router-link>
                 </li>
-                @endif
-                {{--
-                @if($user->isAbleTo('jawaban-read'))
-                <li class="nav-item has-treeview">
-                    <a class="nav-link" href="javascript:{}">
-                        <i class="nav-icon fas fa-check-double"></i>
-                        <p>Kuisioner
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        
-                        <li class="nav-item">
-                            <router-link tag="a" to="/kuisioner/progres" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Progres Pengisian</p>
-                            </router-link>
-                        </li>
-                    </ul>
-                </li>
-                @endif
-                --}}
-                @if($user->isAbleTo('jawaban-create'))
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-check-double"></i>
@@ -155,12 +120,6 @@ $user = auth()->user();
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <!--li class="nav-item">
-                            <router-link tag="a" to="/rapor-mutu/hitung" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hitung Rapor Mutu</p>
-                            </router-link>
-                        </li-->
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/hasil" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
@@ -180,7 +139,7 @@ $user = auth()->user();
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-user-edit"></i>
-                        <p>Verval dan Supervisi
+                        <p>Verifikasi dan Supervisi
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -188,13 +147,37 @@ $user = auth()->user();
                         <li class="nav-item">
                             <router-link tag="a" to="/hasil-verval" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Verval</p>
+                                <p>Hasil Verifikasi</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/hasil-supervisi" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Hasil Supervisi</p>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                @endif
+                @if($user->isAbleTo('pengesahan-create'))
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="javascript:{}">
+                        <i class="nav-icon fas fa-edit"></i>
+                        <p>Validasi dan Pengesahan
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link tag="a" to="/hasil-validasi" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Validasi</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/hasil-pengesahan" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Pengesahan</p>
                             </router-link>
                         </li>
                     </ul>

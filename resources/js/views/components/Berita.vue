@@ -203,19 +203,19 @@ export default {
             app.$destroy();
         },
         onEditorReady( editor ) {
-            console.log( 'Editor is ready.', { editor } );
+            //console.log( 'Editor is ready.', { editor } );
         },
         onEditorFocus( event, editor ) {
-            console.log( 'Editor focused.', { event, editor } );
+            //console.log( 'Editor focused.', { event, editor } );
         },
         onEditorBlur( event, editor ) {
-            console.log( 'Editor blurred.', { event, editor } );
+            //console.log( 'Editor blurred.', { event, editor } );
         },
         onEditorInput( data, event, editor ) {
-            console.log( 'Editor data input.', { event, editor, data } );
+            //console.log( 'Editor data input.', { event, editor, data } );
         },
         onEditorDestroy( editor ) {
-            console.log( 'Editor destroyed.', { editor } );
+            //console.log( 'Editor destroyed.', { editor } );
         },
         //CKEDITOR END
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN

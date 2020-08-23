@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Sekolah;
+use App\HelperModel;
 class SekolahController extends Controller
 {
     /**
@@ -41,7 +42,8 @@ class SekolahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = HelperModel::rapor_mutu($request->user_id);
+        return response()->json(['status' => 'success', 'data' => $data]);
     }
 
     /**

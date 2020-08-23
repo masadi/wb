@@ -37,14 +37,23 @@
                                         <label for="terms" class="custom-control-label">Saya setuju dengan pakta integritas sekolah di atas</label>
                                     </div>
                                 </div>
-                                <button :disabled='isDisabled' class="btn btn-warning btn-lg btn-flat" v-on:click="cetak_pakta">CETAK PAKTA INTEGRITAS</button>
-                                <button :disabled='isBatal' class="btn btn-danger btn-lg btn-flat" v-on:click="batal_pakta">BATALKAN PAKTA INTEGRITAS</button>
+                                <b-button squared variant="warning" size="lg" :disabled='isDisabled' v-on:click="cetak_pakta">
+                                    <b-spinner small v-show="show_spinner_cetak"></b-spinner>
+                                    <span class="sr-only" v-show="show_spinner_cetak">Loading...</span>
+                                    <span v-show="show_text_cetak">CETAK PAKTA INTEGRITAS</span>
+                                </b-button>
+                                <b-button squared variant="danger" size="lg" :disabled='isBatal' v-on:click="batal_pakta">
+                                    <b-spinner small v-show="show_spinner_batal"></b-spinner>
+                                    <span class="sr-only" v-show="show_spinner_batal">Loading...</span>
+                                    <span v-show="show_text_batal">BATALKAN PAKTA INTEGRITAS</span>
+                                </b-button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        <my-loader/>
     </div>
 </template>
 <script>
@@ -59,6 +68,10 @@
                 tahun_pendataan: null,
                 isBatal : true,
                 isCheckbox : false,
+                show_text_cetak:true,
+                show_text_batal:true,
+                show_spinner_cetak:false,
+                show_spinner_batal: false,
             }
         },
         computed: {
@@ -82,6 +95,8 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
+                        this.show_text_cetak = false
+                        this.show_spinner_cetak = true
                         axios.post(`/api/rapor-mutu/pra-cetak-pakta`, {
                             user_id: user.user_id,
                         }).then((response) => {
@@ -97,6 +112,9 @@
                                 link.href = window.URL.createObjectURL(blob)
                                 link.download = 'Pakta Integritas Penjaminan Mutu SMK.pdf'
                                 link.click()
+                                this.show_text_cetak = true
+                                this.show_spinner_cetak = false
+                                this.isBatal = false
                             })
                         })
                     }
@@ -114,13 +132,15 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
+                        this.show_spinner_batal = true
+                        this.show_text_batal = false
                         axios.post(`/api/rapor-mutu/batal-pakta`, {
                             user_id: user.user_id,
                         }).then((response) => {
                             Swal.fire(
-                                'Berhasil!',
-                                'Pakta Integritas dibatalkan',
-                                'success'
+                                response.data.title,
+                                response.data.text,
+                                response.data.icon
                             ).then(()=>{
                                 this.loadPostsData()
                             });
@@ -136,15 +156,16 @@
                     let getData = response.data
                     this.nama_sekolah = getData.user.name
                     this.tahun_pendataan = getData.tahun_pendataan.tahun_pendataan_id
-                    this.tanggal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.pakta_integritas.created_at) : '-' : '-'
-                    this.isBatal = (getData.user.sekolah) ? (getData.user.sekolah.pakta_integritas) ? false : true : true
-                    console.log(this.isBatal)
+                    this.tanggal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at) : '-' : '-'
+                    this.isBatal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? false : true : true
                     if(getData.user.nilai_akhir && this.isBatal){
                         this.isCheckbox = false
                     } else {
                         this.isCheckbox = true
                     }
                     this.terms = false
+                    this.show_spinner_batal = false
+                    this.show_text_batal = true
                 })
             },
             tanggalIndo(time){

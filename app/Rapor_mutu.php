@@ -20,4 +20,20 @@ class Rapor_mutu extends Model
     {
         return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id');
     }
+    public function waiting()
+    {
+        return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id')->where('status', 'waiting');
+    }
+    public function proses()
+    {
+        return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id')->where('status', 'proses');
+    }
+    public function terima()
+    {
+        return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id')->where('status', 'terima');
+    }
+    public function tolak()
+    {
+        return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id')->where('status', 'tolak');
+    }
 }

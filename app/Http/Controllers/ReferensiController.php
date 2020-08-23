@@ -186,7 +186,7 @@ class ReferensiController extends Controller
         return response()->json($data);
     }
     public function get_detil_sekolah($request){
-        if($request->sekolah_id){
+        /*if($request->sekolah_id){
             $sekolah = Sekolah::withCount(['ptk', 'pd'])->find($request->sekolah_id);
             $nilai = [
                 'grade_personal' => 10,
@@ -202,10 +202,14 @@ class ReferensiController extends Controller
                 'grade_sekolah' => 1,
             ];
             $data = collect($nilai);
-        }
-        $user = User::find($request->user_id);
+        }*/
+        $user = User::withCount(['nilai_instrumen' => function($query){
+            $query->whereNull('verifikator_id');
+        }])->with(['nilai_akhir', 'sekolah.sekolah_sasaran' => function($query){
+            $query->with(['pakta_integritas', 'rapor_mutu.status_rapor']);
+        }])->find($request->user_id);
         $instrumen = Instrumen::where('urut', 0)->count();
-        $nilai_instrumen = Nilai_instrumen::where(function($query) use ($request){
+        /*$nilai_instrumen = Nilai_instrumen::where(function($query) use ($request){
             $query->where('user_id', $request->user_id);
             $query->whereNull('verifikator_id');
         })->count();
@@ -214,16 +218,33 @@ class ReferensiController extends Controller
             $query->where('sekolah_id', $user->sekolah_id);
         })->first();
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
-        $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
-        $progres = [
-            'instrumen' => ($instrumen == $nilai_instrumen),
-            'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
+        $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();*/
+        /*$pakta = NULL;
+        $verval = NULL;
+        $verifikasi = NULL;
+        $pengesahan = NULL;
+        $sasaran = $user->sekolah->sekolah_sasaran;
+        if($sasaran){
+            $pakta = $sasaran->pakta_integritas;
+            $verval = $sasaran->rapor_mutu;
+            if($verval){
+                if($verval->status_rapor->status != 'waiting'){
+                    $verifikasi = $verval;
+                }
+                if($verval->status_rapor->status != 'terima'){
+                    $pengesahan = $verval;
+                }
+            }
+        }
+        $data = [
+            'instrumen' => ($instrumen == $user->nilai_instrumen_count),
+            'hitung' => ($user->nilai_akhir) ? HelperModel::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
             'pakta' => ($pakta) ? HelperModel::TanggalIndo($pakta->updated_at) : NULL,
             'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
             'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
-            'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
-        ];
-        $data = $data->merge($progres);
+            'pengesahan' => ($pengesahan) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL,
+        ];*/
+        $data = HelperModel::rapor_mutu($request->user_id);
         return response()->json(['status' => 'success', 'data' => $data]);
     }
     public function cetak(Request $request){
@@ -245,6 +266,11 @@ class ReferensiController extends Controller
     public function get_penjamin_mutu(){
         $users = User::where(function($query){
             $query->whereRoleIs('penjamin_mutu');
+            if(request()->sekolah_id){
+                $query->whereHas('sekolah_sasaran', function($query){
+                    $query->where('sekolah_id', request()->sekolah_id);
+                });
+            }
         })->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {

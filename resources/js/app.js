@@ -64,6 +64,7 @@ Vue.mixin({
             get detilUser() {
                 return user;
             },
+            user: user,
         }
     },
     methods: {

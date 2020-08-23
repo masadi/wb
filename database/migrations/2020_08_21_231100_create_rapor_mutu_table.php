@@ -15,7 +15,7 @@ class CreateRaporMutuTable extends Migration
     {
         Schema::create('rapor_mutu', function (Blueprint $table) {
             $table->uuid('rapor_mutu_id');
-            $table->uuid('verifikator_id');
+            $table->uuid('verifikator_id')->nullable();
             $table->uuid('sekolah_sasaran_id');
             $table->uuid('user_direktorat_id')->nullable();
             $table->foreignId('status_rapor_id')->constrained('status_rapor')->onDelete('cascade');

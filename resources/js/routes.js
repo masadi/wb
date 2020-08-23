@@ -7,79 +7,64 @@ let routes = [{
         component: require('./views/dashboard').default
     },
     {
-        path: '/komponen',
-        name: 'komponen',
-        component: require('./views/komponen').default
-    },
-    {
         path: '/berita',
         name: 'berita',
-        component: require('./views/berita').default
+        component: require('./views/news/berita').default
     },
     {
         path: '/galeri',
         name: 'galeri',
-        component: require('./views/galeri').default
+        component: require('./views/news/galeri').default
     },
     {
         path: '/faq',
         name: 'faq',
-        component: require('./views/faq').default
+        component: require('./views/news/faq').default
+    },
+    {
+        path: '/komponen',
+        name: 'komponen',
+        component: require('./views/referensi/komponen').default
     },
     {
         path: '/aspek',
         name: 'aspek',
-        component: require('./views/aspek').default
+        component: require('./views/referensi/aspek').default
     },
     {
         path: '/atribut',
         name: 'atribut',
-        component: require('./views/atribut').default
+        component: require('./views/referensi/atribut').default
     },
     {
         path: '/indikator',
         name: 'indikator',
-        component: require('./views/indikator').default
-    },
-    {
-        path: '/sekolah',
-        name: 'sekolah',
-        component: require('./views/sekolah').default
-    },
-    {
-        path: '/ptk',
-        name: 'ptk',
-        component: require('./views/ptk').default
-    },
-    {
-        path: '/pd',
-        name: 'pd',
-        component: require('./views/pd').default
+        component: require('./views/referensi/indikator').default
     },
     {
         path: '/instrumen',
         name: 'instrumen',
-        component: require('./views/instrumen').default
-    },
-    {
-        path: '/pengguna',
-        name: 'pengguna',
-        component: require('./views/users').default
+        component: require('./views/referensi/instrumen').default
     },
     {
         path: '/penjamin-mutu',
         name: 'penjamin_mutu',
-        component: require('./views/penjamin_mutu').default
+        component: require('./views/referensi/penjamin_mutu').default
+    },
+    {
+        path: '/sekolah',
+        name: 'sekolah',
+        component: require('./views/referensi/sekolah').default
+    },
+    {
+        path: '/pengguna',
+        name: 'pengguna',
+        component: require('./views/referensi/users').default
     },
     {
         path: '/kuisioner/pengisian',
         name: 'pengisian_kuisioner',
         component: require('./views/kuisioner/pengisian').default
-    },
-    {
-        path: '/kuisioner/progres',
-        name: 'progres_pengisian',
-        component: require('./views/kuisioner/progres').default
     },
     {
         path: '/detil-pengisian-kuisioner/:id',
@@ -103,7 +88,7 @@ let routes = [{
     },
     {
         path: '/hasil-verval',
-        name: 'hasil_survey',
+        name: 'hasil_verval',
         component: require('./views/verval/hasil-verval').default
     },
     {
@@ -115,6 +100,16 @@ let routes = [{
         path: '/proses-verifikasi/:sekolah_id/:verifikator_id',
         name: 'proses_verifikasi',
         component: require('./views/verval/proses-verifikasi').default
+    },
+    {
+        path: '/hasil-validasi',
+        name: 'hasil_validasi',
+        component: require('./views/pengesahan/validasi').default
+    },
+    {
+        path: '/hasil-pengesahan',
+        name: 'hasil_pengesahan',
+        component: require('./views/pengesahan/pengesahan').default
     },
 ];
 

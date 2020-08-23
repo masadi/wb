@@ -31,11 +31,12 @@
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
-                    <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
+                    <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success" v-show="hasRole('admin')">
                         <b-dropdown-item href="javascript:" @click="addSekolah(row.item.user_id)"><i class="fas fa-folder-plus"></i> Sekolah Sasaran</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.user_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
+                    <button v-show="!hasRole('admin')" class="btn btn-warning btn-sm" @click="openShowModal(row)">Detil</button>
                 </template>
             </b-table>   
       
@@ -58,8 +59,37 @@
             ></b-pagination>
         </div>
         </div>
-        <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Pengguna">
-            {{ modalText }}
+        <b-modal id="modal-lg" size="lg" v-model="showModal" title="Detil Penjamin Mutu">
+            <table class="table">
+                <tr>
+                    <td width="20%">Nama</td>
+                    <td width="80%">: {{modalText.name}}</td>
+                </tr>
+                <tr>
+                    <td>NIK</td>
+                    <td>: {{modalText.name}}</td>
+                </tr>
+                <tr>
+                    <td>NUPTK</td>
+                    <td>: {{modalText.name}}</td>
+                </tr>
+                <tr>
+                    <td>Asal Institusi</td>
+                    <td>: {{modalText.name}}</td>
+                </tr>
+                <tr>
+                    <td>Alamat Institusi</td>
+                    <td>: {{modalText.name}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>: {{modalText.name}}</td>
+                </tr>
+                <tr>
+                    <td>No. Handphone</td>
+                    <td>: {{modalText.name}}</td>
+                </tr>
+            </table>
             <template v-slot:modal-footer>
                 <div class="w-100 float-right">
                     <b-button
@@ -196,6 +226,10 @@ export default {
                     });
                 }
             })
+        },
+        openShowModal(row) {
+            this.showModal = true
+            this.modalText = row.item
         },
         editData(row) {
             //console.log(row);

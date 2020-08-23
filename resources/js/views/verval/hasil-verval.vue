@@ -88,8 +88,6 @@
                                         <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
                                         {{keterangan}}
                                     </div>
-                                    {{progress}}
-                                    {{isBatal}}
                                     <div v-show="progress=='waiting' || progress==''">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
@@ -99,10 +97,20 @@
                                                     pernyataan di atas</label>
                                             </div>
                                         </div>
-                                        <button type="button" :disabled='isDisabled' class="btn btn-primary btn-lg btn-flat"
+                                        <!--button type="button" :disabled='isDisabled' class="btn btn-primary btn-lg btn-flat"
                                             v-on:click="kirim_verval">KIRIM LAPORAN</button>
                                         <button type="button" :disabled='isBatal' class="btn btn-danger btn-lg btn-flat"
-                                            v-on:click="batal_verval">BATALKAN LAPORAN</button>
+                                            v-on:click="batal_verval">BATALKAN LAPORAN</button-->
+                                        <b-button squared variant="primary" size="lg" :disabled='isDisabled' v-on:click="kirim_verval">
+                                            <b-spinner small v-show="show_spinner_kirim"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
+                                            <span v-show="show_text_kirim">KIRIM LAPORAN</span>
+                                        </b-button>
+                                        <b-button squared variant="danger" size="lg" :disabled='isBatal' v-on:click="batal_verval">
+                                            <b-spinner small v-show="show_spinner_batal"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner_batal">Loading...</span>
+                                            <span v-show="show_text_batal">BATALKAN LAPORAN</span>
+                                        </b-button>
                                     </div>
                                 </div>
                             </div>
@@ -111,6 +119,7 @@
                 </div>
             </div>
         </section>
+        <my-loader/>
     </div>
 </template>
 <script>
@@ -134,6 +143,10 @@
                 komponen: [],
                 progress: 'waiting',
                 keterangan: '',
+                show_spinner_kirim: false,
+                show_text_kirim: true,
+                show_spinner_batal: false,
+                show_text_batal: true
             }
         },
         computed: {
@@ -191,6 +204,8 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
+                        this.show_spinner_kirim = true
+                        this.show_text_kirim = false
                         axios.post(`/api/verifikasi/kirim-verval`, {
                             user_id: user.user_id,
                             sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
@@ -227,6 +242,8 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.value) {
+                        this.show_spinner_batal = true
+                        this.show_text_batal = false
                         axios.post(`/api/verifikasi/batal-verval`, {
                             user_id: user.user_id,
                             sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
@@ -258,6 +275,10 @@
                 .then((response) => {
                     let getData = response.data
                     this.sekolah = getData.result
+                    this.show_spinner_kirim = false
+                    this.show_text_kirim = true
+                    this.show_spinner_batal = false
+                    this.show_text_batal = true
                 })
             }
         }

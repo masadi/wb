@@ -6,8 +6,48 @@ use App\Nilai_aspek;
 use App\Nilai_komponen;
 use App\Nilai_akhir;
 use App\Tahun_pendataan;
+use App\User;
+use App\Instrumen;
 class HelperModel
 {
+    public static function rapor_mutu($user_id){
+        $user = User::withCount(['nilai_instrumen' => function($query){
+            $query->whereNull('verifikator_id');
+        }])->with(['nilai_akhir', 'last_nilai_instrumen' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'sekolah.sekolah_sasaran' => function($query){
+            $query->with(['pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+        }])->find($user_id);
+        if($user->hasRole('sekolah')){
+            $instrumen = Instrumen::where('urut', 0)->count();
+            $pakta = NULL;
+            $verval = NULL;
+            $verifikasi = NULL;
+            $pengesahan = NULL;
+            $sasaran = $user->sekolah->sekolah_sasaran;
+            if($sasaran){
+                $pakta = $sasaran->pakta_integritas;
+                $verval = $sasaran->waiting;
+                $verifikasi = $sasaran->proses;
+                $pengesahan = $sasaran->terima;
+            }
+            $data = [
+                'instrumen' => ($instrumen == $user->nilai_instrumen_count) ? self::TanggalIndo($user->last_nilai_instrumen->updated_at) : NULL,
+                'hitung' => ($user->nilai_akhir) ? self::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
+                'pakta' => ($pakta) ? self::TanggalIndo($pakta->updated_at) : NULL,
+                'verval' => ($verval) ? self::TanggalIndo($verval->updated_at) : NULL,
+                'verifikasi' => ($verifikasi) ? self::TanggalIndo($verifikasi->created_at) : NULL,
+                'pengesahan' => ($pengesahan) ? self::TanggalIndo($pengesahan->updated_at) : NULL,
+            ];
+        } elseif($user->hasRole('penjamin_mutu')){
+            $data = [];
+        } elseif($user->hasRole('direktorat')){
+            $data = [];
+        } elseif($user->hasRole('admin')){
+            $data = [];
+        }
+        return $data;
+    }
 	public static function tahun_pendataan(){
 		$tahun = Tahun_pendataan::where('periode_aktif', 1)->first();
 		return ($tahun) ? $tahun->tahun_pendataan_id : NULL;
