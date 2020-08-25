@@ -46,7 +46,7 @@ class LoginController extends Controller
     {
         $login = request()->input('email');
 		$messages = [
-			'email.required' => 'Email/NPSN tidak boleh kosong',
+			'email.required' => 'Email/NPSN/Nama Pengguna tidak boleh kosong',
 		];
 		$validator = Validator::make(request()->all(), [
 			'email' => 'required|exists:users,username',

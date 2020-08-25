@@ -51,6 +51,10 @@
                                             <label v-bind:for="sub.ins_id+sub.urut" class="custom-control-label" style="font-weight: normal;">{{sub.urut}}. {{sub.pertanyaan}}</label>
                                         </div>
                                     </div>
+                                    <div class="form-group" v-show="form.nilai">
+                                        <label>Keterangan</label>
+                                        <textarea class="form-control" v-model="form.keterangan"></textarea>
+                                    </div>
                                 </div>
                                 <div class="card-footer" v-show="simpan">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -85,6 +89,7 @@ export default {
                 aspek_id: 0,
                 instrumen_id: 0,
                 nilai: 0,
+                keterangan: null,
             }),
             simpan:false,
         }
@@ -150,8 +155,10 @@ export default {
                 this.jawaban = getData.subs
                 if(getData.jawaban){
                     this.form.nilai = getData.jawaban.nilai
+                    this.form.keterangan = getData.nilai_instrumen.keterangan
                 }
                 this.simpan = true
+                console.log(this.form.nilai)
             })
         },
         loadPostsData() {

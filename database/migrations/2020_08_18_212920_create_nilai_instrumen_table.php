@@ -20,6 +20,7 @@ class CreateNilaiInstrumenTable extends Migration
             $table->uuid('instrumen_id');
             $table->integer('nilai')->unsigned();
             $table->string('predikat');
+            $table->text('keterangan')->nullable();
             $table->primary('nilai_instrumen_id');
             $table->timestamps();
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');

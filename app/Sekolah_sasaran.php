@@ -38,4 +38,7 @@ class Sekolah_sasaran extends Model
     {
         return $this->belongsTo('App\Sekolah', 'sekolah_id', 'sekolah_id');
     }
+    public function berita_acara(){
+        return $this->hasOne('App\Berita_acara', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
+    }
 }

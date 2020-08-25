@@ -104,12 +104,12 @@
                                         <b-button squared variant="primary" size="lg" :disabled='isDisabled' v-on:click="kirim_verval">
                                             <b-spinner small v-show="show_spinner_kirim"></b-spinner>
                                             <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
-                                            <span v-show="show_text_kirim">KIRIM LAPORAN</span>
+                                            <span v-show="show_text_kirim">KIRIM HASIL VERIFIKASI &amp; VALIDASI</span>
                                         </b-button>
                                         <b-button squared variant="danger" size="lg" :disabled='isBatal' v-on:click="batal_verval">
                                             <b-spinner small v-show="show_spinner_batal"></b-spinner>
                                             <span class="sr-only" v-show="show_spinner_batal">Loading...</span>
-                                            <span v-show="show_text_batal">BATALKAN LAPORAN</span>
+                                            <span v-show="show_text_batal">BATALKAN KIRIM HASIL VERIFIKASI &amp; VALIDASI</span>
                                         </b-button>
                                     </div>
                                 </div>

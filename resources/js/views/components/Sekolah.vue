@@ -37,12 +37,17 @@
                     </div>
                 </template>
                 <template v-slot:cell(actions)="row">
-                    <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success">
+                    <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
+                    <b-dropdown v-show="hasRole('penjamin_mutu')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
+                        <b-dropdown-item href="javascript:" @click="cetakInstrumen(row.item)"><i class="fas fa-print"></i> Cetak Instrumen</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="openVerifikasi(row.item.user.user_id)"><i class="fas fa-check"></i> Proses Verifikasi</b-dropdown-item>
+                    </b-dropdown>
                     <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button>
-                    <button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button>
+                    <!--button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button-->
+                    <button v-show="hasRole('direktorat')" class="btn btn-warning btn-sm" @click="openShowModal(row)">Detil</button>
                 </template>
             </b-table>   
       
@@ -88,7 +93,7 @@
                     <td>: {{modalText.kecamatan}}</td>
                 </tr>
                 <tr>
-                    <td>Kabupaten</td>
+                    <td>Kabupaten/Kota</td>
                     <td>: {{modalText.kabupaten}}</td>
                 </tr>
                 <tr>
@@ -182,7 +187,7 @@ export default {
         editUrl: {
             type: String,
             default: null
-        }
+        },
     },
     data() {
         return {
@@ -231,10 +236,28 @@ export default {
         }
     },*/
     methods: {
+        cetakInstrumen(row){
+            let nama_sekolah = row.nama
+            axios.get(`/api/cetak-instrumen`, {
+                params : {
+                    user_id: row.user.user_id,
+                },
+                responseType: 'arraybuffer'
+            }).then((response) => {
+                let blob = new Blob([response.data], { type: 'application/pdf' })
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'Instrumen Penjaminan Mutu SMK '+nama_sekolah+'.pdf'
+                link.click()
+            })
+        },
         isDisabled(row){
             if(row){
                 if(row.pakta_integritas){
-                    return false
+                    if(row.pakta_integritas.terkirim == 1){
+                        return false
+                    }
+                    return true
                 }
                 return true
             }
@@ -245,17 +268,6 @@ export default {
         },
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
-            /*
-            let sasaran = row.item.sekolah_sasaran
-            if(sasaran){
-                if(sasaran.pakta_integritas){
-                    return false
-                }
-                return true
-            }
-            return true
-            */
-            console.log(val)
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
             this.$emit('per_page', this.meta.per_page)
         },

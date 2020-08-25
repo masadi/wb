@@ -47,6 +47,11 @@
                                     <span class="sr-only" v-show="show_spinner_batal">Loading...</span>
                                     <span v-show="show_text_batal">BATALKAN PAKTA INTEGRITAS</span>
                                 </b-button>
+                                <b-button squared variant="success" size="lg" :disabled='isKirim' v-on:click="kirim_pakta(pakta_integritas_id)">
+                                    <b-spinner small v-show="show_spinner_kirim"></b-spinner>
+                                    <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
+                                    <span v-show="show_text_kirim">KIRIM RAPOR MUTU SEKOLAH</span>
+                                </b-button>
                             </div>
                         </div>
                     </div>
@@ -67,11 +72,15 @@
                 nama_sekolah : null,
                 tahun_pendataan: null,
                 isBatal : true,
+                isKirim: true,
                 isCheckbox : false,
                 show_text_cetak:true,
                 show_text_batal:true,
+                show_text_kirim: true,
                 show_spinner_cetak:false,
                 show_spinner_batal: false,
+                show_spinner_kirim: false,
+                pakta_integritas_id : null,
             }
         },
         computed: {
@@ -83,6 +92,35 @@
             this.loadPostsData()
         },
         methods: {
+            kirim_pakta : function (pakta_integritas_id) {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Setelah proses KIRIM RAPOR MUTU SEKOLAH, Anda tidak akan diperkenankan lagi untuk membatalkan PAKTA INTEGRITAS!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.value) {
+                        this.show_text_kirim = false
+                        this.show_spinner_kirim = true
+                        axios.post(`/api/rapor-mutu/kirim`, {
+                            user_id: user.user_id,
+                            pakta_integritas_id: this.pakta_integritas_id
+                        }).then((response) => {
+                            Swal.fire(
+                                response.data.title,
+                                response.data.text,
+                                response.data.icon
+                            ).then(()=>{
+                                this.loadPostsData()
+                            });
+                        })
+                    }
+                })
+            },
             cetak_pakta : function (event) {
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -163,9 +201,25 @@
                     } else {
                         this.isCheckbox = true
                     }
+                    if(getData.user.sekolah.sekolah_sasaran){
+                        if(getData.user.sekolah.sekolah_sasaran.pakta_integritas){
+                            this.pakta_integritas_id = getData.user.sekolah.sekolah_sasaran.pakta_integritas.pakta_integritas_id
+                            if(getData.user.sekolah.sekolah_sasaran.pakta_integritas.terkirim == 0){
+                                this.isKirim = false
+                            } else {
+                                this.isKirim = true
+                                this.isBatal = true
+                                this.isCheckbox = true
+                            }
+                        } else {
+                            this.isKirim = true
+                        }
+                    }
                     this.terms = false
                     this.show_spinner_batal = false
                     this.show_text_batal = true
+                    this.show_text_kirim = true
+                    this.show_spinner_kirim = false
                 })
             },
             tanggalIndo(time){

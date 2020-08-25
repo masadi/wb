@@ -8,8 +8,24 @@ use App\Nilai_akhir;
 use App\Tahun_pendataan;
 use App\User;
 use App\Instrumen;
+use App\Status_rapor;
 class HelperModel
 {
+    public static function nilai_komponen($komponen_id, $user_id = NULL, $verifikator_id = NULL){
+        return Nilai_komponen::where(function($query) use ($komponen_id, $user_id, $verifikator_id){
+            $query->where('komponen_id', $komponen_id);
+            $query->where('user_id', $user_id);
+            if($verifikator_id){
+                $query->where('verifikator_id', $verifikator_id);
+            } else {
+                $query->whereNull('verifikator_id');
+            }
+        })->first();
+    }
+    public static function status_rapor_mutu($status){
+        $status_rapor = Status_rapor::where('status', $status)->first();
+        return $status_rapor->id;
+    }
     public static function rapor_mutu($user_id){
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
@@ -31,14 +47,112 @@ class HelperModel
                 $verifikasi = $sasaran->proses;
                 $pengesahan = $sasaran->terima;
             }
+            //$obj1 = new \stdClass;
+            $obj = (object) [
+                'data' => [$user->nilai_instrumen_count, ($instrumen - $user->nilai_instrumen_count)],
+                'backgroundColor' => ['#28a745', '#dc3545'],
+                'borderWidth' => 3,
+                'label' => 'Progres Kemajuan'
+            ];
+            $obj_maksimum_nilai = (object) [
+                'label' => 'Nilai Maksimal',
+                'backgroundColor' => '#dc3545',
+                'data' => [100],
+            ];
+            $obj_nilai_rapor = (object) [
+                /*'barPercentage' => 10,
+                'barThickness' => 100,
+                'maxBarThickness' => 108,
+                'minBarLength' => 2,*/
+                'label' => 'Nilai Terpenuhi',
+                'backgroundColor' => '#28a745',
+                'data' => [($user->nilai_akhir) ? $user->nilai_akhir->nilai : 0],
+            ];
+            $komponen = Komponen::get();
+            foreach($komponen as $k){
+                $values['nama'][] = $k->nama;
+                $values['nilai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+            }
             $data = [
+                'user' => $user,
                 'instrumen' => ($instrumen == $user->nilai_instrumen_count) ? self::TanggalIndo($user->last_nilai_instrumen->updated_at) : NULL,
                 'hitung' => ($user->nilai_akhir) ? self::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
                 'pakta' => ($pakta) ? self::TanggalIndo($pakta->updated_at) : NULL,
                 'verval' => ($verval) ? self::TanggalIndo($verval->updated_at) : NULL,
                 'verifikasi' => ($verifikasi) ? self::TanggalIndo($verifikasi->created_at) : NULL,
-                'pengesahan' => ($pengesahan) ? self::TanggalIndo($pengesahan->updated_at) : NULL,
+                'pengesahan' => ($pengesahan) ? self::TanggalIndo($pengesahan->updated_at) : NULL, 
+                'kemajuan' => [
+                    'type' => 'doughnut',
+                    'data' => [
+                        'labels' => ['Terjawab', 'Belum Terjawab'],
+                        'datasets' => [
+                            $obj
+                        ]
+                    ],
+                ],
+                'nilai_rapor' => [
+                    'type' => 'bar',
+                    'data' => [
+                        'labels' => ['Nilai Rapor Mutu Sekolah'],
+                        'datasets' => [
+                            $obj_nilai_rapor
+                        ]
+                    ],
+                    'options' => [
+                        'tooltips' => (object) [
+                            'mode' =>  'index',
+                            'intersect' => false
+                        ],
+                        'responsive' => true,
+                        'scales' => (object) [
+                            'xAxes' => [ 
+                                (object) ['stacked' => true]
+                            ],
+                            'yAxes' => [
+                                (object) [
+                                    'stacked' => true,
+                                    'ticks' => (object) [
+                                        'suggestedMin' => 50,
+                                        'suggestedMax' => 100
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'nilai_komponen' => [
+                    'type' => 'radar',
+                    'data' => [
+                        'labels' =>  $values['nama'],
+                        'datasets' => [
+                            (object) [
+                                'label' => 'Nilai Komponen',
+                                'backgroundColor' => "transparent",
+                                'borderColor' => "rgba(200,0,0,0.6)",
+                                'fill' => true,
+                                'radius' => 6,
+                                'pointRadius' => 6,
+                                'pointBorderWidth' => 3,
+                                'pointBackgroundColor' => "orange",
+                                'pointBorderColor' => "rgba(200,0,0,0.6)",
+                                'pointHoverRadius' => 10,
+                                'data' => $values['nilai']
+                            ]
+                        ],
+                    ],
+                    'options' => [
+                        'scale' => (object)[
+                            'ticks' => (object)[
+                                'beginAtZero' => true,
+                                'min' => 0,
+                                'max' => 100,
+                                'stepSize' => 20
+                            ],
+                        ],
+                    ],
+                ],
             ];
+            //dd($data);
         } elseif($user->hasRole('penjamin_mutu')){
             $data = [];
         } elseif($user->hasRole('direktorat')){
@@ -137,7 +251,9 @@ class HelperModel
             if($all_nilai_aspek){
                 $all_bobot = $komponen->aspek()->sum('bobot');
                 $nilai_komponen = ($all_nilai_aspek*100)/$all_bobot;
+                $total_nilai_komponen = ($nilai_komponen * $all_bobot) / 100;
                 $nilai_komponen = number_format($nilai_komponen,2,'.','.');
+                $total_nilai_komponen = number_format($total_nilai_komponen,2,'.','.');
                 Nilai_komponen::updateOrCreate(
                     [
                         'user_id' => $user_id,
@@ -146,12 +262,12 @@ class HelperModel
                     ],
                     [
                         'nilai' => $nilai_komponen,
-                        'total_nilai' => $nilai_komponen,
+                        'total_nilai' => $total_nilai_komponen,
                         'predikat' => self::predikat($nilai_komponen, true),
                     ]
                 );
             }
-            $total_nilai += $nilai_komponen;
+            $total_nilai += $total_nilai_komponen;
         }
         Nilai_akhir::updateOrCreate(
             [

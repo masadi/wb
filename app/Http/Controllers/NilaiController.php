@@ -73,7 +73,9 @@ class NilaiController extends Controller
             if($all_nilai_aspek){
                 $all_bobot = $komponen->aspek()->sum('bobot');
                 $nilai_komponen = ($all_nilai_aspek*100)/$all_bobot;
+                $total_nilai_komponen = ($nilai_komponen * $all_bobot) / 100;
                 $nilai_komponen = number_format($nilai_komponen,2,'.','.');
+                $total_nilai_komponen = number_format($total_nilai_komponen,2,'.','.');
                 Nilai_komponen::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
@@ -82,7 +84,7 @@ class NilaiController extends Controller
                     ],
                     [
                         'nilai' => $nilai_komponen,
-                        'total_nilai' => $nilai_komponen,
+                        'total_nilai' => $total_nilai_komponen,
                         'predikat' => HelperModel::predikat($nilai_komponen, true),
                     ]
                 );
@@ -94,12 +96,12 @@ class NilaiController extends Controller
                     ],
                     [
                         'nilai' => $nilai_komponen,
-                        'total_nilai' => $nilai_komponen,
+                        'total_nilai' => $total_nilai_komponen,
                         'predikat' => HelperModel::predikat($nilai_komponen, true),
                     ]
                 );
             }
-            $total_nilai += $nilai_komponen;
+            $total_nilai += $total_nilai_komponen;
         }
         Nilai_akhir::updateOrCreate(
             [

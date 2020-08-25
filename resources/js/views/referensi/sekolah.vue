@@ -134,7 +134,8 @@ export default {
                     current_page: getData.current_page,
                     per_page: getData.per_page,
                     from: getData.from,
-                    to: getData.to
+                    to: getData.to,
+                    isBusy: false,
                 }
             })
         },

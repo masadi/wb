@@ -25,4 +25,26 @@ class Sekolah extends Model
     public function user(){
         return $this->hasOne('App\User', 'sekolah_id', 'sekolah_id');
     }
+    public function nilai_instrumen()
+    {
+        return $this->hasManyThrough(
+            'App\Nilai_instrumen',
+            'App\User',
+            'sekolah_id', // Foreign key on User table...
+            'user_id', // Foreign key on Nilai_instrumen table...
+            'sekolah_id', // Local key on Sekolah table...
+            'user_id' // Local key on User table...
+        );
+    }
+    public function berita_acara()
+    {
+        return $this->hasOneThrough(
+            'App\Berita_acara',
+            'App\Sekolah_sasaran',
+            'sekolah_id', // Foreign key on Sekolah_sasaran table...
+            'berita_acara.sekolah_sasaran_id', // Foreign key on Sekolah table...
+            'sekolah_id', // Local key on Rapor_mutu table...
+            'sekolah_sasaran.sekolah_sasaran_id' // Local key on Sekolah_sasaran table...
+        );
+    }
 }

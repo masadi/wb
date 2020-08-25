@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Data Sekolah</h1>
+                        <h1 class="m-0 text-dark">Data Hasil Validasi</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Data Sekolah</li>
+                            <li class="breadcrumb-item active">Data Hasil Validasi</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -23,10 +23,10 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-th mr-1"></i>
-                                    Data Sekolah
+                                    Data Hasil Validasi
                                 </h3>
                                 <div class="card-tools">
-                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-show="hasRole('admin')" v-on:click="newModal">Tambah Data</button>
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Proses Validasi</button>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -38,26 +38,109 @@
             </div>
         </section>
         <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Sekolah</h5>
+                        <h5 class="modal-title">Proses Validasi</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="insertData()" method="post">
+                    <form @submit.prevent="insertData()" method="post" class="form-horizontal">
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label>NPSN</label>
-                                <input v-model="form.npsn" type="text" name="npsn"
-                                    class="form-control" :class="{ 'is-invalid': form.errors.has('npsn') }">
-                                <has-error :form="form" field="npsn"></has-error>
+                            <div class="form-group row">
+                                <label for="verifikator_id" class="col-sm-2 col-form-label">Tim Penjamin Mutu</label>
+                                <div class="col-sm-10">
+                                    <v-select :options="verifikator" id="verifikator_id" label="text" index="value" @input="getSekolahSasaran" v-model="form.verifikator_id" placeholder="== Pilih Tim Penjamin Mutu == "></v-select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="aspek_id" class="col-sm-2 col-form-label">Sekolah</label>
+                                <div class="col-sm-10">
+                                    <v-select :options="sekolah" label="text" index="value" @input="getRapor" v-model="form.sekolah_sasaran_id" placeholder="== Pilih Sekolah == "></v-select>
+                                </div>
+                            </div>
+                            <input type="hidden" v-model="form.rapor_mutu_id">
+                            <div v-show="table_rapor_mutu">
+                            <h4 class="text-center">Kelengkapan Laporan Tim Penjamin Mutu</h4>
+                            <table class="table">
+                                <tr>
+                                    <th class="text-center">Jenis Dokumen</th>
+                                    <th class="text-center">Isian</th>
+                                    <th class="text-center">Unduh Dokumen</th>
+                                    <th class="text-center">Konfirmasi</th>
+                                </tr>
+                                <tr>
+                                    <td>Berita Acara</td>
+                                    <td class="text-center">{{(rapor_mutu.sekolah.berita_acara) ? 'Ada' : 'Tidak Ada'}}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="term_berita" v-model='form.berita_acara'>
+                                            <label for="term_berita" class="custom-control-label">Lengkap</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Laporan Hasil Supervisi (+ lampiran isian instrumen sekolah dan isian instrumen tim penjamin mutu plus keterangan perubahan)</td>
+                                    <td class="text-center">{{(rapor_mutu.keterangan) ? 'Ada' : 'Tidak Ada'}}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="term_laporan" v-model='form.laporan'>
+                                            <label for="term_laporan" class="custom-control-label">Lengkap</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Isian Instrumen Sekolah</td>
+                                    <td class="text-center">{{rapor_mutu.sekolah.nilai_instrumen_count}}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="term_instrumen_sekolah" v-model='form.instrumen_sekolah'>
+                                            <label for="term_instrumen_sekolah" class="custom-control-label">Lengkap</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Isian Instrumen Tim Penjamin Mutu</td>
+                                    <td class="text-center">{{rapor_mutu.penjamin_mutu.isian_instrumen_count}}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="term_instrumen_penjamin_mutu" v-model='form.instrumen_penjamin_mutu'>
+                                            <label for="term_instrumen_penjamin_mutu" class="custom-control-label">Lengkap</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Isian Instrumen Koreksi</td>
+                                    <td class="text-center">{{rapor_mutu.penjamin_mutu.koreksi_instrumen_count}}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="term_instrumen_koreksi" v-model='form.instrumen_koreksi'>
+                                            <label for="term_instrumen_koreksi" class="custom-control-label">Lengkap</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Sinkronisasi</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -67,7 +150,7 @@
     </div>
 </template>
 <script>
-    import Datatable from './../components/Sekolah.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './../components/Validasi.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
 export default {
     //KETIKA COMPONENT INI DILOAD
@@ -79,11 +162,11 @@ export default {
         return {
             user: user,
             fields: [
-                {key: 'nama', 'label': 'Nama Sekolah', sortable: true},
-                {key: 'npsn', 'label': 'NPSN', sortable: true},
-                {key: 'kecamatan', 'label': 'Kecamatan', sortable: true},
-                {key: 'kabupaten', 'label': 'Kabupaten/Kota', sortable: true},
-                {key: 'provinsi', 'label': 'Provinsi', sortable: true},
+                {key: 'nama_sekolah', 'label': 'Nama Sekolah', sortable: true},
+                {key: 'nama_verifikator', 'label': 'Nama Penjamin Mutu', sortable: true},
+                {key: 'nilai_sekolah', 'label': 'Nilai Sekolah', sortable: true},
+                {key: 'nilai_verifikator', 'label': 'Nilai Verifikasi', sortable: true},
+                {key: 'status', 'label': 'Status', sortable: true},
                 {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
@@ -93,30 +176,85 @@ export default {
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
-            sekolah_id: user.sekolah_id,
             form: new Form({
-                npsn: '',
+                verifikator_id: '',
+                sekolah_sasaran_id : '',
+                berita_acara: false,
+                instrumen_sekolah : false,
+                instrumen_penjamin_mutu: false,
+                instrumen_koreksi : false,
+                laporan: false,
+                rapor_mutu_id : '',
             }),
+            verifikator: [],
+            sekolah : [],
+            table_rapor_mutu: '',
+            rapor_mutu: {
+                sekolah : '',
+                penjamin_mutu : '',
+            },
         }
     },
     components: {
         'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
     },
     methods: {
+        getSekolahSasaran(e){
+            if(!e){
+                this.form.sekolah_sasaran_id = ''
+                return false
+            }
+            axios.post(`/api/validasi/get-data`, {
+                verifikator_id: e.value
+            })
+            .then((response) => {
+                let getData = response.data
+                this.sekolah = getData.data.result
+                this.form.sekolah_sasaran_id = ''
+            })
+        },
+        getRapor(e){
+            if(!e){
+                return false
+            }
+            axios.post(`/api/validasi/get-data`, {
+                verifikator_id: this.form.verifikator_id.value,
+                sekolah_sasaran_id: e.value,
+                user_id: e.user_id
+            })
+            .then((response) => {
+                let getData = response.data
+                this.table_rapor_mutu = 1
+                this.rapor_mutu = getData.data
+                this.form.rapor_mutu_id = getData.data.rapor_mutu_id
+            })
+        },
         newModal(){
-            this.editmode = false;
-            this.form.reset();
-            this.form.user_id = user.user_id;
-            $('#modalAdd').modal('show');
+            //axios.get(`/api/validasi/get-verifikator`)
+            axios.post(`/api/validasi/get-data`)
+            .then((response) => {
+                let getData = response.data
+                this.verifikator = getData.data.result
+                this.form.verifikator_id = ''
+                this.form.sekolah_sasaran_id = ''
+                this.sekolah = []
+                this.form.berita_acara = false
+                this.form.instrumen_sekolah = false
+                this.form.instrumen_penjamin_mutu = false
+                this.form.instrumen_koreksi = false
+                this.form.laporan = false
+                this.form.rapor_mutu_id = ''
+                $('#modalAdd').modal('show');
+            });
         },
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/referensi/sekolah`, {
+            axios.get(`/api/validasi`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
-                    sekolah_id: this.sekolah_id,
-                    verifikasi_id: user.verifikator_id,
+                    data: 'validasi',
+                    user_id: user.user_id,
                     page: current_page,
                     per_page: this.per_page,
                     q: this.search,
@@ -163,18 +301,30 @@ export default {
             }
         },
         insertData(){
-            this.form.post('/api/sinkronisasi').then((response)=>{
-                //console.log(response);
+            this.form.post('/api/validasi/post-data').then((response)=>{
+                console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({
-                    icon: 'success',
+                    icon: response.icon,
                     title: response.message
                 });
                 this.loadPostsData();
             }).catch((e)=>{
-                Toast.fire({
+                var errors = [];
+                $.each(e, function(k, v) {
+                    errors.push(v[0]);
+                })
+                console.log(errors);
+                Swal.fire({
+                    title : 'Validasi Gagal',
+                    html: errors.join('<br>'),
                     icon: 'error',
-                    title: 'Some error occured! Please try again'
+                }).then((result) => {
+                    /*
+                    this.table_rapor_mutu = ''
+                    this.rapor_mutu.sekolah = ''
+                    this.rapor_mutu.penjamin_mutu = ''
+                    */
                 });
             })
         },

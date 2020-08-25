@@ -16,6 +16,7 @@ class CreatePaktaIntegritasTable extends Migration
         Schema::create('pakta_integritas', function (Blueprint $table) {
             $table->uuid('pakta_integritas_id');
             $table->uuid('sekolah_sasaran_id');
+            $table->decimal('terkirim', 1,0)->default(0);
             $table->primary('pakta_integritas_id');
             $table->timestamps();
             $table->foreign('sekolah_sasaran_id')->references('sekolah_sasaran_id')->on('sekolah_sasaran')->onDelete('cascade');

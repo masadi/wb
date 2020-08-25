@@ -17,7 +17,7 @@
         .header{
             background-image: url('{{asset('vendor/img/bgheader-min.png')}}');
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: 100% 100%;
         }
     </style>
 </head>
@@ -28,14 +28,15 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="header-logo float-left my-2 mr-4">
+                        <div class="header-logo float-left my-4 mr-4">
                             <a href="{{url('/')}}"><img src="{{asset('vendor/img/kemdikbud.png')}}" alt=""
                                     class="img-responsive"></a>
                         </div>
                         <div class="header-text">
-                            <h1 class="mb-0">Direktorat Sekolah Menengah Kejuruan</h1>
+                            <h1 class="mb-0">Aplikasi Penjaminan Mutu SMK</h1>
+                            <p class="lead mb-0"><strong>Direktorat Sekolah Menengah Kejuruan</strong></p>
                             <p class="lead mb-0"><strong>Direktorat Jenderal Pendidikan Vokasi</strong></p>
-                            <p class="lead"> Kementerian Pendidikan dan Kebudayaan </p>
+                            <p class="lead">Kementerian Pendidikan dan Kebudayaan</p>
                         </div>
                     </div>
                 </div>

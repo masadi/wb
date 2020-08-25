@@ -38,7 +38,9 @@ class RaporController extends Controller
         }])->get();
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
-        }])->with(['sekolah.sekolah_sasaran.pakta_integritas'])->find($request->user_id);
+        }])->with(['sekolah.sekolah_sasaran.pakta_integritas', 'nilai_akhir' => function($query){
+            $query->whereNull('verifikator_id');
+        }])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
         $output_indikator = $output_atribut->pluck('indikator')->flatten();
@@ -125,6 +127,24 @@ class RaporController extends Controller
             $respone = [
                 'title' => 'Gagal',
                 'text' => 'Pakta Integritas tidak ditemukan di database!',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($respone);
+    }
+    public function kirim(Request $request){
+        $pakta_integritas = Pakta_integritas::find($request->pakta_integritas_id);
+        $pakta_integritas->terkirim = 1;
+        if($pakta_integritas->save()){
+            $respone = [
+                'title' => 'Berhasil',
+                'text' => 'Rapor Mutu terkirim',
+                'icon' => 'success',
+            ];
+        } else {
+            $respone = [
+                'title' => 'Gagal',
+                'text' => 'Rapor Mutu gagal dikirim. Silahkan coba beberapa saat lagi!',
                 'icon' => 'error',
             ];
         }

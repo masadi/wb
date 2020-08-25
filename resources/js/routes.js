@@ -92,9 +92,9 @@ let routes = [{
         component: require('./views/verval/hasil-verval').default
     },
     {
-        path: '/hasil-supervisi',
-        name: 'hasil_supervisi',
-        component: require('./views/verval/hasil-supervisi').default
+        path: '/kirim-laporan',
+        name: 'kirim_laporan',
+        component: require('./views/verval/kirim-laporan').default
     },
     {
         path: '/proses-verifikasi/:sekolah_id/:verifikator_id',

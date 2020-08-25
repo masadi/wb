@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\HelperModel;
 use App\Traits\Uuid;
 class User extends Authenticatable
 {
@@ -46,6 +47,12 @@ class User extends Authenticatable
     public function nilai_instrumen(){
         return $this->hasMany('App\Nilai_instrumen', 'user_id', 'user_id');
     }
+    public function isian_instrumen(){
+        return $this->hasMany('App\Nilai_instrumen', 'verifikator_id', 'user_id');
+    }
+    public function koreksi_instrumen(){
+        return $this->hasMany('App\Nilai_instrumen', 'verifikator_id', 'user_id');
+    }
     public function sekolah_sasaran(){
         return $this->hasMany('App\Sekolah_sasaran', 'verifikator_id', 'user_id');
     }
@@ -53,7 +60,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Nilai_instrumen', 'user_id', 'user_id')->orderBy('updated_at', 'DESC');
     }
     public function nilai_akhir(){
-        return $this->hasOne('App\Nilai_akhir', 'user_id', 'user_id');
+        return $this->hasOne('App\Nilai_akhir', 'user_id', 'user_id');//->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
+    }
+    public function nilai_akhir_penjamin_mutu(){
+        return $this->hasOne('App\Nilai_akhir', 'verifikator_id', 'user_id');//->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
     }
     public function pakta_integritas(){
         return $this->hasOne('App\Pakta_integritas', 'user_id', 'user_id');

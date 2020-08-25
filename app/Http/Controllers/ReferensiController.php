@@ -121,11 +121,11 @@ class ReferensiController extends Controller
     public function upload(Request $request){
         $messages = [
             'file.required'	=> 'File Upload tidak boleh kosong',
-            //'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
+            'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
         ];
         $validator = Validator::make(request()->all(), [
-            //'file' => 'required|mimes:xlsx,csv',
-            'file' => 'required',
+            'file' => 'required|mimes:xlsx',
+            //'file' => 'required',
         ],
         $messages
         )->validate();

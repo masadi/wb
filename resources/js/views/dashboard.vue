@@ -9,13 +9,31 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
+                        <section class="card" v-show="hasRole('sekolah')">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 text-center border-right">
+                                        <div class="text-lg text-center">Kemajuan Pengisian Instrumen</div>
+                                        <center><canvas id="kemajuan" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                                    </div>
+                                    <div class="col-md-3 text-center border-right">
+                                        <div class="text-lg text-center">Nilai Rapor Mutu Sekolah</div>
+                                        <center><canvas id="nilai_rapor" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <div class="text-lg text-center">Nilai Komponen Mutu Sekolah</div>
+                                        <center><canvas id="nilai_komponen"></canvas></center>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                         <div class="card">
-                            <div class="card-header">
+                            <!--div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-user mr-1"></i>
                                     Selamat Datang {{user.name}}
                                 </h3>
-                            </div>
+                            </div-->
                             <div class="card-body">
                                 <section v-show="hasRole('admin')">
                                     Content akses admin
@@ -99,6 +117,7 @@
     </div>
 </template>
 <script>
+import Chart from 'chart.js';
 import axios from 'axios' //IMPORT AXIOS
 export default {
     //KETIKA COMPONENT INI DILOAD
@@ -126,7 +145,22 @@ export default {
             },
         }
     },
+    //mounted() {
+        //this.createChart('kemajuan', this.planetChartData);
+    //},
     methods: {
+        createChart(chartId, chartData) {
+            //console.log(chartData)
+            const ctx = document.getElementById(chartId);
+            const myChart = new Chart(ctx, {
+                type: chartData.type,
+                data: chartData.data,
+                options: chartData.options,
+            });
+        },
+        randomScalingFactor(){
+            return Math.floor(Math.random() * 101);
+        },
         loadPostsData() {
             axios.post(`/api/sekolah`, {
                 user_id: user.user_id,
@@ -146,6 +180,9 @@ export default {
                 this.rapor.verval = getData.verval
                 this.rapor.verifikasi = getData.verifikasi
                 this.rapor.pengesahan = getData.pengesahan
+                this.createChart('kemajuan', getData.kemajuan)
+                this.createChart('nilai_rapor', getData.nilai_rapor)
+                this.createChart('nilai_komponen', getData.nilai_komponen)
             })
         },
     },

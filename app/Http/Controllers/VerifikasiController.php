@@ -13,6 +13,8 @@ use App\HelperModel;
 use App\Jenis_rapor;
 use App\Status_rapor;
 use App\Rapor_mutu;
+use Validator;
+use Carbon\Carbon;
 class VerifikasiController extends Controller
 {
     public function index(Request $request, $query){
@@ -106,7 +108,7 @@ class VerifikasiController extends Controller
 		return response()->json($output);
     }
     public function get_subs(Request $request){
-        return Instrumen::with(['jawaban' => function($query) use ($request){
+        $callback = function($query) use ($request){
             $query->where('user_id', $request->user_id);
             $query->where('verifikator_id', $request->verifikator_id);
             /*$query->whereHas('user', function($query) use ($request){
@@ -115,7 +117,8 @@ class VerifikasiController extends Controller
                 });
                 $query->where('sekolah_id', $request->sekolah_id);
             });*/
-        }, 'subs'])->find($request->instrumen_id);
+        };
+        return Instrumen::with(['jawaban' => $callback, 'nilai_instrumen' => $callback, 'subs'])->find($request->instrumen_id);
     }
     public function get_simpan(Request $request){
         $post = $request->except(['komponen', 'aspek', 'instrumen', 'jawaban']);
@@ -129,6 +132,7 @@ class VerifikasiController extends Controller
             [
                 'nilai' => $request->nilai,
                 'predikat' => HelperModel::predikat($request->nilai),
+                'keterangan' => $request->keterangan,
             ]
         );
         if($save){
@@ -292,5 +296,19 @@ class VerifikasiController extends Controller
             ];
         }
         return response()->json($respone);
+    }
+    public function get_upload(Request $request){
+        $messages = [
+            'file.required'	=> 'Berkas Berita Acara tidak boleh kosong',
+            'file.mimes'	=> 'Berkas Berita Acara harus berekstensi .PDF',
+        ];
+        $validator = Validator::make(request()->all(), [
+            'file' => 'required|mimes:pdf',
+        ],
+        $messages
+        )->validate();
+        $file = $request->file('file');
+        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move('uploads', $fileExcel);
     }
 }

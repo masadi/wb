@@ -87,6 +87,34 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Nama Sekolah</th>
+                                            <th class="text-center" scope="col">Nilai Rapor Mutu</th>
+                                            <th class="text-center" scope="col">Predikat</th>
+                                            <th class="text-center" scope="col">Kategori</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{nama_sekolah}}</td>
+                                            <td class="text-center">{{nilai_rapor_mutu}}</td>
+                                            <td class="text-center">{{predikat_sekolah}}</td>
+                                            <td class="text-center">
+                                                <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 1}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 21}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 41}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 61}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 81}"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
                                             <th class="text-center" scope="col">No</th>
                                             <th class="text-center" scope="col">Komponen</th>
                                             <th class="text-center" scope="col">Nilai</th>
@@ -238,6 +266,9 @@ export default {
             bintangKomponen: {},
             bintangAspek: {},
             bintangInstrumen: {},
+            nama_sekolah: '',
+            nilai_rapor_mutu: 0,
+            predikat_sekolah: '-',
         }
     },
     computed: {
@@ -297,6 +328,9 @@ export default {
                 this.rapor.pengesahan.lengkap = getData.rapor.pengesahan
                 this.rapor.pengesahan.tgl = (getData.rapor.pengesahan) ? getData.rapor.pengesahan : '-'
                 this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null
+                this.nama_sekolah = getData.detil_user.name
+                this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
+                this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
             });
         },
         hitung_rapor_mutu: function (event) {

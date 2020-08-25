@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use App\Tahun_pendataan;
 use App\Jenis_rapor;
 use App\Status_rapor;
+use App\Jenis_dokumen;
+use App\Jenis_berita_acara;
 class TahunSeeder extends Seeder
 {
     /**
@@ -30,6 +32,10 @@ class TahunSeeder extends Seeder
             'terima' => 'Diterima',
             'tolak' => 'Ditolak',
         ];
+        $jenis_berita = [
+            'verifikasi' => 'Verifikasi',
+            'pendukung' => 'Pendukung',
+        ];
         foreach($jenis_rapor as $jenis => $nama){
             Jenis_rapor::create([
                 'jenis' => $jenis,
@@ -40,6 +46,12 @@ class TahunSeeder extends Seeder
             Status_rapor::create([
                 'status' => $status,
                 'nama' => $nama,
+            ]);
+        }
+        foreach($jenis_berita as $berita => $acara){
+            Jenis_berita_acara::create([
+                'jenis' => $berita,
+                'nama' => $acara,
             ]);
         }
     }
