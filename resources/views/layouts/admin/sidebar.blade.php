@@ -185,7 +185,7 @@ $user = auth()->user();
                 @endif
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:{}" onclick="document.getElementById('logout-form-sidebar').submit();">
-                        <i class="nav-icon fas fa-sign-out-alt"></i> Logout
+                        <i class="nav-icon fas fa-sign-out-alt"></i> Keluar Aplikasi
                     </a>
                     <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf

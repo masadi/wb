@@ -5,6 +5,6 @@
         Versi 0.0.1 (BETA)
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; {{ now()->year }} Direktorat SMK</strong>. All rights reserved.
+    <strong>Hak Cipta &copy; {{ now()->year }} Direktorat SMK</strong>. All rights reserved.
 
 </footer>

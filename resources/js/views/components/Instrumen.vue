@@ -18,7 +18,7 @@
         <!-- BLOCK INI AKAN MENG-HANDLE PENCARIAN DATA -->
         <div class="col-md-4 offset-md-4">
             <div class="form-inline float-right">
-                <label class="mr-2">Search</label>
+                <label class="mr-2">Cari</label>
                 <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
                 <input type="text" class="form-control" @input="search">
             </div>
@@ -48,7 +48,7 @@
       	<!-- BAGIAN INI AKAN MENAMPILKAN JUMLAH DATA YANG DI-LOAD -->
           <div class="row">
         <div class="col-md-6">
-            <p>Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} items</p>
+            <p>Menampilkan {{ meta.from }} sampai {{ meta.to }} dari {{ meta.total }} entri</p>
         </div>
       
       	<!-- BLOCK INI AKAN MENJADI PAGINATION DARI DATA YANG DITAMPILKAN -->
