@@ -17,6 +17,14 @@ class InstrumenSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('nilai_akhir')->truncate();
+        DB::table('nilai_instrumen')->truncate();
+        DB::table('jawaban')->truncate();
+        DB::table('nilai_aspek')->truncate();
+        DB::table('nilai_komponen')->truncate();
+        DB::table('instrumen')->truncate();
+        DB::table('aspek')->truncate();
+        DB::table('komponen')->truncate();
         $komponen = (new FastExcel)->import('public/template_instrumen.xlsx', function ($item){
             if($item['Komponen']){
                 $komponen = Komponen::updateOrCreate([

@@ -50,8 +50,8 @@
                 </template>
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
-                        <b-dropdown-item href="javascript:" @click="terima(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="catatan(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="terima(row)"><i class="fas fa-check"></i> Terima Laporan</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="catatan(row.item.sekolah_id)"><i class="fas fa-edit"></i> Kirim Catatan</b-dropdown-item>
                     </b-dropdown>
                 </template>
             </b-table>   
@@ -178,33 +178,7 @@ export default {
             this.$emit('search', e.target.value)
         }, 500),
         catatan(id){
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Tindakan ini tidak dapat dikembalikan!",
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.value) {
-                    return fetch('/api/sekolah/'+id, {
-                        method: 'DELETE',
-                    }).then(()=>{
-                    //this.form.delete('api/komponen/'+id).then(()=>{
-                        Swal.fire(
-                            'Berhasil!',
-                            'Data Sekolah berhasil dihapus',
-                            'success'
-                        ).then(()=>{
-                            this.loadPerPage(10);
-                        });
-                    }).catch((data)=> {
-                        Swal.fire("Failed!", data.message, "warning");
-                    });
-                }
-            })
+            console.log(id);
         },
         openShowModal(row) {
             this.showModal = true

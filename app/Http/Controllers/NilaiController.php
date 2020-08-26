@@ -83,8 +83,8 @@ class NilaiController extends Controller
                         'verifikator_id' => NULL,
                     ],
                     [
-                        'nilai' => $nilai_komponen,
-                        'total_nilai' => $total_nilai_komponen,
+                        'nilai' => $total_nilai_komponen,
+                        'total_nilai' => $nilai_komponen,
                         'predikat' => HelperModel::predikat($nilai_komponen, true),
                     ]
                 );
@@ -95,8 +95,8 @@ class NilaiController extends Controller
                         'verifikator_id' => $request->verifikator_id,
                     ],
                     [
-                        'nilai' => $nilai_komponen,
-                        'total_nilai' => $total_nilai_komponen,
+                        'nilai' => $total_nilai_komponen,
+                        'total_nilai' => $nilai_komponen,
                         'predikat' => HelperModel::predikat($nilai_komponen, true),
                     ]
                 );

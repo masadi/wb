@@ -71,7 +71,7 @@ class HelperModel
             $komponen = Komponen::get();
             foreach($komponen as $k){
                 $values['nama'][] = $k->nama;
-                $values['nilai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+                $values['nilai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->total_nilai : 0;
             }
             $data = [
                 'user' => $user,
@@ -261,8 +261,8 @@ class HelperModel
                         'verifikator_id' => $verifikator_id,
                     ],
                     [
-                        'nilai' => $nilai_komponen,
-                        'total_nilai' => $total_nilai_komponen,
+                        'nilai' => $total_nilai_komponen,
+                        'total_nilai' => $nilai_komponen,
                         'predikat' => self::predikat($nilai_komponen, true),
                     ]
                 );

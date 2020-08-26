@@ -149,7 +149,7 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" scope="col" width="60%" colspan="2">Komponen / Aspek / Indikator</th>
+                                            <th class="text-center" scope="col" width="60%" colspan="4">Komponen / Aspek / Indikator</th>
                                             <th class="text-center" scope="col" width="10%">Nilai</th>
                                             <th class="text-center" scope="col" width="15%">Predikat</th>
                                             <th class="text-center" scope="col" width="15%">Kategori</th>
@@ -157,9 +157,9 @@
                                     </thead>
                                     <tbody>
                                         <template v-for="(kuisioner, key) in kuisioners">
-                                            <tr>
+                                            <tr class="bg-success">
                                                 <td class="text-right">{{key+1}}</td>
-                                                <td>{{kuisioner.nama}}</td>
+                                                <td colspan="3">{{kuisioner.nama}}</td>
                                                 <td class="text-center">{{(kuisioner.nilai_komponen) ? kuisioner.nilai_komponen.total_nilai : 0}}</td>
                                                 <td class="text-center">{{(kuisioner.nilai_komponen) ? kuisioner.nilai_komponen.predikat : '-'}}</td>
                                                 <td class="text-center">
@@ -172,8 +172,9 @@
                                             </tr>
                                             <template v-for="(aspek, sub_key) in kuisioner.aspek">
                                                 <tr>
+                                                    <td class="text-right"></td>
                                                     <td class="text-right">{{key+1}}.{{sub_key+1}}</td>
-                                                    <td>{{aspek.nama}}</td>
+                                                    <td colspan="2">{{aspek.nama}}</td>
                                                     <td class="text-center">{{(aspek.nilai_aspek) ? aspek.nilai_aspek.total_nilai : 0}}</td>
                                                     <td class="text-center">{{(aspek.nilai_aspek) ? aspek.nilai_aspek.predikat : '-'}}</td>
                                                     <td class="text-center">
@@ -186,6 +187,8 @@
                                                 </tr>
                                                 <template v-for="(instrumen, sub_sub_key) in aspek.instrumen">
                                                     <tr>
+                                                        <td class="text-right"></td>
+                                                        <td class="text-right"></td>
                                                         <td style="vertical-align:middle;" class="text-right">{{key+1}}.{{sub_key+1}}.{{sub_sub_key+1}}</td>
                                                         <td>{{instrumen.pertanyaan}}</td>
                                                         <td class="text-center">{{(instrumen.nilai_instrumen) ? instrumen.nilai_instrumen.nilai : 0}}</td>
