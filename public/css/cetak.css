@@ -30,3 +30,8 @@ ol.jawaban {
 li.text-bold {
     font-weight: bold !important;
 }
+
+th,
+td {
+    padding: 5px;
+}

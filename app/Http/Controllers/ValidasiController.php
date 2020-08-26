@@ -7,7 +7,10 @@ use App\Rapor_mutu;
 use App\User;
 use App\Sekolah_sasaran;
 use App\HelperModel;
+use App\Dokumen;
+use App\Komponen;
 use Validator;
+use PDF;
 class ValidasiController extends Controller
 {
     public function index(Request $request){
@@ -28,7 +31,7 @@ class ValidasiController extends Controller
     }
     public function get_data(Request $request){
         if($request->verifikator_id && !$request->sekolah_sasaran_id){
-            $all_data = Sekolah_sasaran::with('sekolah.user')->where('verifikator_id', $request->verifikator_id)->get();
+            $all_data = Sekolah_sasaran::whereHas('rapor_mutu')->with('sekolah.user')->where('verifikator_id', $request->verifikator_id)->get();
             if($all_data->count()){
                 foreach($all_data as $data){
                     $record= [];
@@ -48,10 +51,12 @@ class ValidasiController extends Controller
                 $query->with(['berita_acara' => function($query) use ($request){
                     $query->where('berita_acara.sekolah_sasaran_id', $request->sekolah_sasaran_id);
                     $query->where('berita_acara.verifikator_id', $request->verifikator_id);
+                    $query->with(['dokumen']);
                 }]);
                 $query->withCount(['nilai_instrumen' => function($query){
                     $query->whereNull('verifikator_id');
                 }]);
+                $query->with(['user']);
             }, 'penjamin_mutu' => function($query) use ($request){
                 $query->withCount(['isian_instrumen', 'koreksi_instrumen' => function($query) use ($request){
                     $query->whereNotIn('nilai', function($query) use ($request){
@@ -117,5 +122,105 @@ class ValidasiController extends Controller
             'icon' => 'success',
         ];
         return response()->json($respone);
+    }
+    public function download(Request $request){
+        //dd($request->all());
+        if($request->permintaan == 'berita_acara'){
+            $dokumen = Dokumen::find($request->dokumen_id);
+            $pathToFile = public_path('uploads/'.$dokumen->file_path);
+            return response()->download($pathToFile);
+        } elseif($request->permintaan == 'laporan'){
+            $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query) use ($request){
+                $query->with(['jawaban' => function($query) use ($request){
+                    $query->whereHas('user', function($query) use ($request){
+                        $query->where('sekolah_id', $request->sekolah_id);
+                    });
+                    $query->whereNull('verifikator_id');
+                }]);
+                $query->with(['jawaban_penjamin_mutu' => function($query) use ($request){
+                    $query->whereHas('user', function($query) use ($request){
+                        $query->where('sekolah_id', $request->sekolah_id);
+                    });
+                    $query->where('verifikator_id', $request->verifikator_id);
+                }]);
+                $query->with(['subs']);
+                $query->where('urut', 0);
+            }])->get();
+            $data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
+            //return view('cetak.laporan', $data);
+            $pdf = PDF::loadView('cetak.laporan', $data, [], [
+                'format' => [220, 330],
+                'orientation' => 'L',
+            ]);
+            return $pdf->download('instrumen.pdf');
+        } elseif($request->permintaan == 'instrumen_sekolah'){
+            $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query) use ($request){
+                $query->with(['jawaban' => function($query) use ($request){
+                    $query->whereHas('user', function($query) use ($request){
+                        $query->where('sekolah_id', $request->sekolah_id);
+                    });
+                    $query->whereNull('verifikator_id');
+                }]);
+                $query->with(['subs']);
+                $query->where('urut', 0);
+            }])->get();
+            $data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
+            //return view('cetak.instrumen_sekolah', $data);
+            $pdf = PDF::loadView('cetak.instrumen_sekolah', $data, [], [
+                'format' => [220, 330],
+            ]);
+            return $pdf->download('instrumen.pdf');
+        } elseif($request->permintaan == 'instrumen_penjamin_mutu'){
+            $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query) use ($request){
+                $query->with(['jawaban_penjamin_mutu' => function($query) use ($request){
+                    $query->whereHas('user', function($query) use ($request){
+                        $query->where('sekolah_id', $request->sekolah_id);
+                    });
+                    $query->where('verifikator_id', $request->verifikator_id);
+                }]);
+                $query->with(['subs']);
+                $query->where('urut', 0);
+            }])->get();
+            $data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
+            //return view('cetak.instrumen_penjamin_mutu', $data);
+            $pdf = PDF::loadView('cetak.instrumen_penjamin_mutu', $data, [], [
+                'format' => [220, 330],
+            ]);
+            return $pdf->download('instrumen.pdf');
+        } elseif($request->permintaan == 'instrumen_koreksi'){
+            $data['all_komponen'] = Komponen::whereHas('aspek.instrumen.nilai_instrumen', function($query) use ($request){
+                $query->whereHas('user', function($query) use ($request){
+                    $query->where('sekolah_id', $request->sekolah_id);
+                });
+                $query->where('verifikator_id', $request->verifikator_id);
+                $query->whereNotIn('nilai', function($query) use ($request){
+                    $query->select('nilai')->from('nilai_instrumen')->where(function($query) use ($request){
+                        $query->where('user_id', $request->user_id);
+                        $query->whereNull('verifikator_id');
+                    });
+                });
+            })->with(['aspek.instrumen' => function($query) use ($request){
+                $query->with(['nilai_instrumen' => function($query) use ($request){
+                    $query->whereHas('user', function($query) use ($request){
+                        $query->where('sekolah_id', $request->sekolah_id);
+                    });
+                    $query->where('verifikator_id', $request->verifikator_id);
+                    $query->whereNotIn('nilai', function($query) use ($request){
+                        $query->select('nilai')->from('nilai_instrumen')->where(function($query) use ($request){
+                            $query->where('user_id', $request->user_id);
+                            $query->whereNull('verifikator_id');
+                        });
+                    });
+                }]);
+                $query->with(['subs']);
+                $query->where('urut', 0);
+            }])->get();
+            $data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
+            //return view('cetak.instrumen_koreksi', $data);
+            $pdf = PDF::loadView('cetak.instrumen_koreksi', $data, [], [
+                'format' => [220, 330],
+            ]);
+            return $pdf->download('instrumen.pdf');
+        }
     }
 }

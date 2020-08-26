@@ -27,6 +27,8 @@
                             <form class="needs-validation" novalidate>
                                 <div class="card-body">
                                     <input type="hidden" v-model="form.rapor_mutu_id">
+                                    <input type="hidden" v-model="form.verifikator_id">
+                                    <input type="hidden" v-model="form.sekolah_sasaran_id">
                                     <div class="form-group row">
                                         <label for="komponen_id" class="col-sm-2 col-form-label">Sekolah</label>
                                         <div class="col-sm-10">
@@ -93,6 +95,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                 editorDisabled: false,
                 form: new Form({
                     rapor_mutu_id: '',
+                    sekolah_sasaran_id: '',
+                    verifikator_id : '',
                     keterangan: '',
                 }),
                 sekolah_id: '',
@@ -108,6 +112,9 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                 this.file = event.files[0]
                 this.isLoading = true
                 let formData = new FormData();
+                formData.append('rapor_mutu_id', this.form.rapor_mutu_id);
+                formData.append('verifikator_id', this.form.verifikator_id);
+                formData.append('sekolah_sasaran_id', this.form.sekolah_sasaran_id);
                 formData.append('file', this.file);
                 axios.post('/api/verifikasi/upload', formData, {
                     headers: {
@@ -179,6 +186,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                     let getData = response.data
                     console.log(getData.data.keterangan)
                     this.form.rapor_mutu_id = getData.data.rapor_mutu_id
+                    this.form.sekolah_sasaran_id = getData.data.sekolah_sasaran_id
+                    this.form.verifikator_id = getData.data.verifikator_id
                     if(getData.data.keterangan){
                         this.form.keterangan = getData.data.keterangan
                     }

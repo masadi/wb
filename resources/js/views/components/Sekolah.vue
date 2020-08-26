@@ -43,7 +43,7 @@
                     </b-dropdown>
                     <b-dropdown v-show="hasRole('penjamin_mutu')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                         <b-dropdown-item href="javascript:" @click="cetakInstrumen(row.item)"><i class="fas fa-print"></i> Cetak Instrumen</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="openVerifikasi(row.item.user.user_id)"><i class="fas fa-check"></i> Proses Verifikasi</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" v-show="isDisabled(row.item.sekolah_sasaran)" @click="openVerifikasi(row.item.user.user_id)"><i class="fas fa-check"></i> Proses Verifikasi</b-dropdown-item>
                     </b-dropdown>
                     <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button>
                     <!--button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button-->
@@ -255,13 +255,13 @@ export default {
             if(row){
                 if(row.pakta_integritas){
                     if(row.pakta_integritas.terkirim == 1){
-                        return false
+                        return true
                     }
-                    return true
+                    return false
                 }
-                return true
+                return false
             }
-            return true
+            return false
         },
         openVerifikasi(sekolah_id){
             this.$router.push({ path: `proses-verifikasi/${sekolah_id}/${user.user_id}`})

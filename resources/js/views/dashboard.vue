@@ -150,13 +150,14 @@ export default {
     //},
     methods: {
         createChart(chartId, chartData) {
-            //console.log(chartData)
-            const ctx = document.getElementById(chartId);
-            const myChart = new Chart(ctx, {
-                type: chartData.type,
-                data: chartData.data,
-                options: chartData.options,
-            });
+            if(chartData){
+                const ctx = document.getElementById(chartId);
+                const myChart = new Chart(ctx, {
+                    type: chartData.type,
+                    data: chartData.data,
+                    options: chartData.options,
+                });
+            }
         },
         randomScalingFactor(){
             return Math.floor(Math.random() * 101);

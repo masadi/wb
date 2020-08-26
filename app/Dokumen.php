@@ -14,10 +14,10 @@ class Dokumen extends Model
     protected $guarded = [];
     public function berita_acara()
     {
-        return $this->belongsTo('App\Jenis_berita', 'jenis_berita_id', 'id')->where('jenis', 'berita');
+        return $this->belongsTo('App\Jenis_berita_acara', 'jenis_dokumen_id', 'id')->where('jenis', 'verifikasi');
     }
     public function pendukung()
     {
-        return $this->belongsTo('App\Jenis_berita', 'jenis_berita_id', 'id')->where('jenis', 'pendukung');
+        return $this->belongsTo('App\Jenis_berita_acara', 'jenis_dokumen_id', 'id')->where('jenis', 'pendukung');
     }
 }

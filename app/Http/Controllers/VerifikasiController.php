@@ -13,6 +13,10 @@ use App\HelperModel;
 use App\Jenis_rapor;
 use App\Status_rapor;
 use App\Rapor_mutu;
+use App\Jenis_berita_acara;
+use App\Berita_acara;
+use App\Jenis_dokumen;
+use App\Dokumen;
 use Validator;
 use Carbon\Carbon;
 class VerifikasiController extends Controller
@@ -167,7 +171,9 @@ class VerifikasiController extends Controller
         $all_data = Sekolah::where(function($query) use ($request){
             $query->whereHas('sekolah_sasaran', function($query) use ($request){
                 $query->where('verifikator_id', $request->verifikator_id);
-                $query->whereHas('pakta_integritas');
+                $query->whereHas('pakta_integritas', function($query){
+                    $query->where('terkirim', 1);
+                });
                 if($request->supervisi){
                     $query->whereHas('rapor_mutu', function($query){
                         $query->whereHas('status_rapor', function($query){
@@ -308,7 +314,21 @@ class VerifikasiController extends Controller
         $messages
         )->validate();
         $file = $request->file('file');
-        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move('uploads', $fileExcel);
+        $filePdf = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move('uploads', $filePdf);
+        $jenis_berita_cara = Jenis_berita_acara::where('jenis', 'verifikasi')->first();
+        Berita_acara::updateOrCreate([
+            'jenis_berita_id' => $jenis_berita_cara->id,
+            'rapor_mutu_id' => $request->rapor_mutu_id,
+            'verifikator_id' => $request->verifikator_id,
+            'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
+        ]);
+        $jenis_dokumen = Jenis_dokumen::where('jenis', 'berita_acara')->first();
+        Dokumen::updateOrCreate([
+            'jenis_dokumen_id' => $jenis_dokumen->id,
+            'verifikator_id' => $request->verifikator_id,
+            'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
+            'file_path' => $filePdf,
+        ]);
     }
 }

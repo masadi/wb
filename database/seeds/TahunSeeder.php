@@ -28,12 +28,16 @@ class TahunSeeder extends Seeder
         ];
         $status_rapor = [
             'waiting' => 'Menunggu',
-            'proses' => 'Sedang Proses',
+            'proses' => 'Telah di Proses',
             'terima' => 'Diterima',
             'tolak' => 'Ditolak',
         ];
         $jenis_berita = [
             'verifikasi' => 'Verifikasi',
+            'pendukung' => 'Pendukung',
+        ];
+        $jenis_dokumen = [
+            'berita_acara' => 'Berita Acara',
             'pendukung' => 'Pendukung',
         ];
         foreach($jenis_rapor as $jenis => $nama){
@@ -52,6 +56,12 @@ class TahunSeeder extends Seeder
             Jenis_berita_acara::create([
                 'jenis' => $berita,
                 'nama' => $acara,
+            ]);
+        }
+        foreach($jenis_dokumen as $jenis => $dokumen){
+            Jenis_dokumen::create([
+                'jenis' => $jenis,
+                'nama' => $dokumen,
             ]);
         }
     }

@@ -74,7 +74,11 @@
                                     <td>Berita Acara</td>
                                     <td class="text-center">{{(rapor_mutu.sekolah.berita_acara) ? 'Ada' : 'Tidak Ada'}}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                        <b-button squared variant="success" size="sm" v-on:click="unduh('berita_acara', rapor_mutu)">
+                                            <b-spinner small v-show="show_spinner.berita_acara"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner.berita_acara">Loading...</span>
+                                            <i v-show="show_text.berita_acara" class="fas fa-download"></i>
+                                        </b-button>
                                     </td>
                                     <td class="text-center">
                                         <div class="custom-control custom-checkbox">
@@ -84,10 +88,14 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Laporan Hasil Supervisi (+ lampiran isian instrumen sekolah dan isian instrumen tim penjamin mutu plus keterangan perubahan)</td>
+                                    <td>Laporan Hasil Supervisi</td>
                                     <td class="text-center">{{(rapor_mutu.keterangan) ? 'Ada' : 'Tidak Ada'}}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                        <b-button squared variant="success" size="sm" v-on:click="unduh('laporan', rapor_mutu)">
+                                            <b-spinner small v-show="show_spinner.laporan"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner.laporan">Loading...</span>
+                                            <i v-show="show_text.laporan" class="fas fa-download"></i>
+                                        </b-button>
                                     </td>
                                     <td class="text-center">
                                         <div class="custom-control custom-checkbox">
@@ -100,7 +108,11 @@
                                     <td>Isian Instrumen Sekolah</td>
                                     <td class="text-center">{{rapor_mutu.sekolah.nilai_instrumen_count}}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                        <b-button squared variant="success" size="sm" v-on:click="unduh('instrumen_sekolah', rapor_mutu)">
+                                            <b-spinner small v-show="show_spinner.instrumen_sekolah"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner.instrumen_sekolah">Loading...</span>
+                                            <i v-show="show_text.instrumen_sekolah" class="fas fa-download"></i>
+                                        </b-button>
                                     </td>
                                     <td class="text-center">
                                         <div class="custom-control custom-checkbox">
@@ -113,7 +125,11 @@
                                     <td>Isian Instrumen Tim Penjamin Mutu</td>
                                     <td class="text-center">{{rapor_mutu.penjamin_mutu.isian_instrumen_count}}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                        <b-button squared variant="success" size="sm" v-on:click="unduh('instrumen_penjamin_mutu', rapor_mutu)">
+                                            <b-spinner small v-show="show_spinner.instrumen_penjamin_mutu"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner.instrumen_penjamin_mutu">Loading...</span>
+                                            <i v-show="show_text.instrumen_penjamin_mutu" class="fas fa-download"></i>
+                                        </b-button>
                                     </td>
                                     <td class="text-center">
                                         <div class="custom-control custom-checkbox">
@@ -126,7 +142,11 @@
                                     <td>Isian Instrumen Koreksi</td>
                                     <td class="text-center">{{rapor_mutu.penjamin_mutu.koreksi_instrumen_count}}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-success btn-flat"><i class="fas fa-download"></i></button>
+                                        <b-button squared variant="success" size="sm" v-on:click="unduh('instrumen_koreksi', rapor_mutu)">
+                                            <b-spinner small v-show="show_spinner.instrumen_koreksi"></b-spinner>
+                                            <span class="sr-only" v-show="show_spinner.instrumen_koreksi">Loading...</span>
+                                            <i v-show="show_text.instrumen_koreksi" class="fas fa-download"></i>
+                                        </b-button>
                                     </td>
                                     <td class="text-center">
                                         <div class="custom-control custom-checkbox">
@@ -193,12 +213,86 @@ export default {
                 sekolah : '',
                 penjamin_mutu : '',
             },
+            show_spinner: {
+                berita_acara : false,
+                laporan : false,
+                instrumen_sekolah : false,
+                instrumen_penjamin_mutu : false,
+                instrumen_koreksi : false,
+            },
+            show_text: {
+                berita_acara : true,
+                laporan : true,
+                instrumen_sekolah : true,
+                instrumen_penjamin_mutu : true,
+                instrumen_koreksi : true,
+            }
         }
     },
     components: {
         'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
     },
     methods: {
+        unduh(val, data){
+            console.log(data);
+            let nama_sekolah = data.sekolah.nama
+            let nama_penjamin_mutu = data.penjamin_mutu.name
+            let dokumen_id = data.sekolah.berita_acara.dokumen.dokumen_id
+            let nama_pdf = 'Dokumen.pdf';
+            if(val == 'berita_acara'){
+                this.show_spinner.berita_acara = true
+                this.show_text.berita_acara = false
+                nama_pdf = 'Berita Acara '+nama_sekolah+' - '+nama_penjamin_mutu+'.pdf'
+            } else if(val == 'laporan'){
+                this.show_spinner.laporan = true
+                this.show_text.laporan = false
+                nama_pdf = 'Laporan Hasil Supervisi '+nama_penjamin_mutu+' - '+nama_sekolah+'.pdf'
+            } else if(val == 'instrumen_sekolah'){
+                this.show_spinner.instrumen_sekolah = true
+                this.show_text.instrumen_sekolah = false
+                nama_pdf = 'Isian Instrumen Sekolah '+nama_sekolah+'.pdf'
+            } else if(val == 'instrumen_penjamin_mutu'){
+                this.show_spinner.instrumen_penjamin_mutu = true
+                this.show_text.instrumen_penjamin_mutu = false
+                nama_pdf = 'Isian Instrumen Tim Penjaminan Mutu '+nama_penjamin_mutu+' di Sekolah '+nama_sekolah+'.pdf'
+            } else if(val == 'instrumen_koreksi'){
+                this.show_spinner.instrumen_koreksi = true
+                this.show_text.instrumen_koreksi = false
+                nama_pdf = 'Isian Perubahan Instrumen Tim Penjaminan Mutu '+nama_penjamin_mutu+' di Sekolah '+nama_sekolah+'.pdf'
+            }
+            axios.get(`/api/validasi/download`, {
+                params : {
+                    permintaan: val,
+                    dokumen_id: dokumen_id,
+                    sekolah_id:data.sekolah.sekolah_id,
+                    sekolah_sasaran_id: this.form.sekolah_sasaran_id.value,
+                    verifikator_id: this.form.verifikator_id.value,
+                    rapor_mutu_id: this.form.rapor_mutu_id,
+                    user_id: data.sekolah.user.user_id,
+                },
+                responseType: 'arraybuffer'
+            }).then((response) => {
+                //console.log(val);
+                //console.log(nama_pdf);
+                //console.log(response);
+                //return false;
+                let blob = new Blob([response.data], { type: 'application/pdf' })
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = nama_pdf
+                link.click()
+                this.show_spinner.berita_acara = false
+                this.show_spinner.laporan = false
+                this.show_spinner.instrumen_sekolah = false
+                this.show_spinner.instrumen_penjamin_mutu = false
+                this.show_spinner.instrumen_koreksi = false
+                this.show_text.berita_acara = true
+                this.show_text.laporan = true
+                this.show_text.instrumen_sekolah = true
+                this.show_text.instrumen_penjamin_mutu = true
+                this.show_text.instrumen_koreksi = true
+            })
+        },
         getSekolahSasaran(e){
             if(!e){
                 this.form.sekolah_sasaran_id = ''
