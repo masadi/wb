@@ -43,7 +43,7 @@ class HelperModel
             $sasaran = $user->sekolah->sekolah_sasaran;
             if($sasaran){
                 $pakta = $sasaran->pakta_integritas;
-                $verval = $sasaran->waiting;
+                $verval = ($sasaran->waiting) ? $sasaran->waiting : $sasaran->proses;
                 $verifikasi = $sasaran->proses;
                 $pengesahan = $sasaran->terima;
             }

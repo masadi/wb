@@ -71,7 +71,7 @@ class LaratrustSeeder extends Seeder
                 } else if($key == 'sekolah'){
                     $user = \App\User::create([
                         'name' => $sekolah->nama,
-                        'username' => strtolower(str_replace(' ', '_', $key)),
+                        'username' => $sekolah->npsn,
                         'sekolah_id' => $sekolah->sekolah_id,
                         'email' => $key.'@apmsmk.net',
                         'password' => bcrypt('12345678')
