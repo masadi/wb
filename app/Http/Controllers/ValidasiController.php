@@ -17,10 +17,13 @@ class ValidasiController extends Controller
         $data = Rapor_mutu::with(['status_rapor', 'sekolah' => function($query){
             $query->with(['sekolah_sasaran', 'user.nilai_akhir']);
         }, 'penjamin_mutu.nilai_akhir_penjamin_mutu'])->where(function($query){
-            if(request()->data == 'validasi'){
-                $query->whereHas('proses');
+            $query->whereHas('jenis_rapor', function($query){
+                $query->where('jenis', request()->data);
+            });
+            /*if(request()->data == 'validasi'){
+                
                 //$query->orWhereHas('');
-            }
+            }*/
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($data) {
                 $data = $data->where('name', 'LIKE', '%' . request()->q . '%')
@@ -116,6 +119,7 @@ class ValidasiController extends Controller
         )->validate();
         $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
         $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('proses');
+        $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('validasi');
         $rapor_mutu->save();
         $respone = [
             'message' => 'Validasi berhasil disimpan',
@@ -221,6 +225,49 @@ class ValidasiController extends Controller
                 'format' => [220, 330],
             ]);
             return $pdf->download('instrumen.pdf');
+        }
+    }
+    public function proses(Request $request){
+        if($request->permintaan == 'detil'){
+            $output = Rapor_mutu::with(['sekolah' => function($query) use ($request){
+                $query->with(['berita_acara' => function($query) use ($request){
+                    $query->where('berita_acara.sekolah_sasaran_id', $request->sekolah_sasaran_id);
+                    $query->where('berita_acara.verifikator_id', $request->verifikator_id);
+                    $query->with(['dokumen']);
+                }]);
+                $query->withCount(['nilai_instrumen' => function($query){
+                    $query->whereNull('verifikator_id');
+                }]);
+                $query->with(['user']);
+            }, 'penjamin_mutu' => function($query) use ($request){
+                $query->withCount(['isian_instrumen', 'koreksi_instrumen' => function($query) use ($request){
+                    $query->whereNotIn('nilai', function($query) use ($request){
+                        $query->select('nilai')->from('nilai_instrumen')->where(function($query) use ($request){
+                            $query->where('user_id', $request->user_id);
+                            $query->whereNull('verifikator_id');
+                        });
+                    });
+                }]);
+            }])->find($request->rapor_mutu_id);
+            return response()->json(['status' => 'success', 'data' => $output]);
+        } elseif($request->permintaan == 'terima'){
+            $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('terima');
+            $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
+            $rapor_mutu->user_direktorat_id = $request->user_id;
+            $rapor_mutu->save();
+        } elseif($request->permintaan == 'afirmasi'){
+            $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('afirmasi');
+            $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
+            $rapor_mutu->user_direktorat_id = $request->user_id;
+            $rapor_mutu->save();
+        } elseif($request->permintaan == 'tolak'){
+            $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('tolak');
+            $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
+            $rapor_mutu->user_direktorat_id = $request->user_id;
+            $rapor_mutu->save();
         }
     }
 }

@@ -9,6 +9,7 @@ use App\Tahun_pendataan;
 use App\User;
 use App\Instrumen;
 use App\Status_rapor;
+use App\Jenis_rapor;
 class HelperModel
 {
     public static function nilai_komponen($komponen_id, $user_id = NULL, $verifikator_id = NULL){
@@ -22,9 +23,16 @@ class HelperModel
             }
         })->first();
     }
+    public static function bobot_komponen($komponen_id){
+        return Aspek::where('komponen_id', $komponen_id)->sum('bobot');
+    }
     public static function status_rapor_mutu($status){
         $status_rapor = Status_rapor::where('status', $status)->first();
         return $status_rapor->id;
+    }
+    public static function jenis_rapor_mutu($jenis){
+        $jenis_rapor = Jenis_rapor::where('jenis', $jenis)->first();
+        return $jenis_rapor->id;
     }
     public static function rapor_mutu($user_id){
         $user = User::withCount(['nilai_instrumen' => function($query){
@@ -71,7 +79,11 @@ class HelperModel
             $komponen = Komponen::get();
             foreach($komponen as $k){
                 $values['nama'][] = $k->nama;
-                $values['nilai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->total_nilai : 0;
+                $values['nilai_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->total_nilai : 0;
+                //$values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::nilai_komponen($k->id, $user->user_id)->total_nilai - (self::bobot_komponen($k->id) * 100 / self::bobot_komponen($k->id))) : 0;
+                $values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (100 - self::nilai_komponen($k->id, $user->user_id)->total_nilai) : 0;
+                $values['bobot_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+                $values['bobot_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::nilai_komponen($k->id, $user->user_id)->nilai - self::bobot_komponen($k->id)) : 0;
             }
             $data = [
                 'user' => $user,
@@ -120,7 +132,7 @@ class HelperModel
                         ],
                     ],
                 ],
-                'nilai_komponen' => [
+                /*'nilai_komponen' => [
                     'type' => 'radar',
                     'data' => [
                         'labels' =>  $values['nama'],
@@ -150,6 +162,13 @@ class HelperModel
                             ],
                         ],
                     ],
+                ],*/
+                'nilai_komponen' => [
+                    'nilai_tercapai' => $values['nilai_tercapai'],
+                    'nilai_belum_tercapai' => $values['nilai_belum_tercapai'],
+                    'labels' =>  $values['nama'],
+                    'bobot_tercapai' =>  $values['bobot_tercapai'],
+                    'bobot_belum_tercapai' =>  $values['bobot_belum_tercapai'],
                 ],
             ];
             //dd($data);

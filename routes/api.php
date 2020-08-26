@@ -53,6 +53,7 @@ Route::group(['prefix' => 'rapor-mutu'], function(){
     Route::post('/pra-cetak-pakta', 'RaporController@pra_cetak_pakta');
     //Route::post('/cetak-pakta', 'RaporController@cetak_pakta');
     Route::get('/cetak-pakta', 'RaporController@cetak_pakta');
+    Route::get('/cetak-rapor', 'RaporController@cetak_rapor');
     Route::post('/batal-pakta', 'RaporController@batal_pakta');
     Route::post('/kirim', 'RaporController@kirim');
 });
@@ -60,6 +61,7 @@ Route::group(['prefix' => 'validasi'], function(){
     Route::get('/', 'ValidasiController@index');
     Route::post('/get-data', 'ValidasiController@get_data');
     Route::post('/post-data', 'ValidasiController@post_data');
+    Route::post('/proses', 'ValidasiController@proses');
     Route::get('/download', 'ValidasiController@download');
 });
 Route::resource('users', 'UsersController');

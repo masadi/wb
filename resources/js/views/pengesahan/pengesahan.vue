@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Data Sekolah</h1>
+                        <h1 class="m-0 text-dark">Data Hasil Pengesahan</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Data Sekolah</li>
+                            <li class="breadcrumb-item active">Data Hasil Pengesahan</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -23,7 +23,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <i class="fas fa-th mr-1"></i>
-                                    Data Sekolah
+                                    Data Hasil Pengesahan
                                 </h3>
                                 <div class="card-tools">
                                     <button class="btn btn-success btn-sm btn-block btn-flat" v-show="hasRole('admin')" v-on:click="newModal">Tambah Data</button>
@@ -67,7 +67,7 @@
     </div>
 </template>
 <script>
-    import Datatable from './../components/Sekolah.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './../components/Validasi.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
 export default {
     //KETIKA COMPONENT INI DILOAD
@@ -79,12 +79,11 @@ export default {
         return {
             user: user,
             fields: [
-                {key: 'nama', 'label': 'Nama Sekolah', sortable: true},
-                {key: 'npsn', 'label': 'NPSN', sortable: true},
-                {key: 'kecamatan', 'label': 'Kecamatan', sortable: true},
-                {key: 'kabupaten', 'label': 'Kabupaten/Kota', sortable: true},
-                {key: 'provinsi', 'label': 'Provinsi', sortable: true},
-                {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
+                {key: 'nama_sekolah', 'label': 'Nama Sekolah', sortable: true},
+                {key: 'nama_verifikator', 'label': 'Nama Penjamin Mutu', sortable: true},
+                {key: 'nilai_sekolah', 'label': 'Nilai Sekolah', sortable: true},
+                {key: 'nilai_verifikator', 'label': 'Nilai Verifikasi', sortable: true},
+                {key: 'status', 'label': 'Status', sortable: true},
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META
@@ -112,11 +111,11 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/referensi/sekolah`, {
+            axios.get(`/api/validasi`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
-                    sekolah_id: this.sekolah_id,
-                    verifikasi_id: user.verifikator_id,
+                    data: 'pengesahan',
+                    user_id: user.user_id,
                     page: current_page,
                     per_page: this.per_page,
                     q: this.search,

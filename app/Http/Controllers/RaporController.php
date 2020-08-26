@@ -150,4 +150,32 @@ class RaporController extends Controller
         }
         return response()->json($respone);
     }
+    public function cetak_rapor(Request $request){
+        $komponen = Komponen::with(['nilai_komponen' => function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+        }, 'aspek' => function($query) use ($request){
+            $query->with(['atribut' => function($query) use ($request){
+                $query->with(['indikator' => function($query) use ($request){
+                    $query->with(['atribut.aspek.komponen', 'instrumen' => function($query) use ($request){
+                        $query->where('urut', 0);
+                    }]);
+                }]);
+            }, 'nilai_aspek' => function($query) use ($request){
+                $query->where('user_id', $request->user_id);
+            }, 'instrumen' => function($query) use ($request){
+                $query->where('urut', 0);
+                $query->with(['nilai_instrumen' => function($query) use ($request){
+                    $query->where('user_id', $request->user_id);
+                    $query->whereNull('verifikator_id');
+                }]);
+            }]);
+        }])->get();
+        $user = User::withCount(['nilai_instrumen' => function($query){
+            $query->whereNull('verifikator_id');
+        }])->with(['sekolah.sekolah_sasaran.pakta_integritas', 'nilai_akhir' => function($query){
+            $query->whereNull('verifikator_id');
+        }])->find($request->user_id);
+        $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
+        dd($request->all());
+    }
 }

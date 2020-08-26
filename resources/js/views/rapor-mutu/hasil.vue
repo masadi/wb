@@ -80,6 +80,15 @@
                         </div>
                     </div>
                 </div>
+                <b-row class="mb-3">
+                    <b-col lg="12" class="text-center">
+                        <b-button squared :disabled='!rapor.kuisioner.lengkap' v-on:click="cetak_rapor_mutu(data_lengkap)" size="lg" variant="primary">
+                            <b-spinner small v-show="show_spinner_cetak" style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
+                            <span class="sr-only" v-show="show_spinner_cetak">Loading...</span>
+                            <span class="h4" v-show="show_text_cetak"><i class="fas fa-print"></i> CETAK RAPOR MUTU SEKOLAH</span>
+                        </b-button>
+                    </b-col>
+                </b-row>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -272,6 +281,9 @@ export default {
             nama_sekolah: '',
             nilai_rapor_mutu: 0,
             predikat_sekolah: '-',
+            data_lengkap : null,
+            show_spinner_cetak: false,
+            show_text_cetak: true,
         }
     },
     computed: {
@@ -293,6 +305,7 @@ export default {
                 user_id: user.user_id,
             }).then((response) => {
                 let getData = response.data
+                this.data_lengkap = getData.detil_user
                 this.rapor_mutu = {
                     instrumen : getData.rapor_mutu.instrumen,
                     hitung : getData.rapor_mutu.hitung,
@@ -335,6 +348,31 @@ export default {
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
             });
+        },
+        cetak_rapor_mutu(data){
+            console.log(data);
+            this.show_spinner_cetak = true
+            this.show_text_cetak = false
+            axios.get(`/api/rapor-mutu/cetak-rapor`, {
+                params : {
+                    user_id: data.user_id,
+                    sekolah_id : data.sekolah.sekolah_id,
+                    sekolah_sasaran_id: data.sekolah.sekolah_sasaran.sekolah_sasaran_id
+                },
+                responseType: 'arraybuffer'
+            }).then((response) => {
+                console.log(response)
+                this.show_text_cetak = true
+                this.show_spinner_cetak = false
+                return false;
+                let blob = new Blob([response.data], { type: 'application/pdf' })
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'Pakta Integritas Penjaminan Mutu SMK.pdf'
+                link.click()
+                this.show_text_cetak = true
+                this.show_spinner_cetak = false
+            })
         },
         hitung_rapor_mutu: function (event) {
             Swal.fire({

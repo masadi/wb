@@ -31,6 +31,7 @@ class TahunSeeder extends Seeder
             'proses' => 'Telah di Proses',
             'terima' => 'Diterima',
             'tolak' => 'Ditolak',
+            'afirmasi' => 'Afirmasi',
         ];
         $jenis_berita = [
             'verifikasi' => 'Verifikasi',
