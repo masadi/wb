@@ -69,6 +69,7 @@ class HelperModel
             ];
             $nilai = 0;
             $nilai_belum_tercapai = 0;
+            $backgroundColor = '#dc3545';
             if($user->nilai_akhir){
                 $nilai = $user->nilai_akhir->nilai;
                 $nilai_belum_tercapai = (100 - $nilai);
