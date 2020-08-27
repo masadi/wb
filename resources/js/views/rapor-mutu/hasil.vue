@@ -456,7 +456,7 @@ export default {
                                         var meta = chartInstance.controller.getDatasetMeta(i);
                                         var atas = 90;
                                         Chart.helpers.each(meta.data.forEach(function (bar, index) {
-                                            var nilai_per_komponen = dataset.data[index]
+                                            var nilai_per_komponen = parseInt(dataset.data[index])
                                             if(i==0){
                                                 ctx.fillText(nilai_per_komponen.toFixed(2), bar._model.x, height - ((height - bar._model.y) / 2 - 10));
                                             } else {
