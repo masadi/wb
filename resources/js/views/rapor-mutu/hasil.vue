@@ -526,10 +526,12 @@ export default {
                                                 sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             }
                                         });
-                                        var _return = 'Bobot tercapai:'+bobot_tercapai+'\n'
-                                        var total = 100 - sum
-                                        _return += 'Bobot belum tercapai:'+bobot_belum_tercapai+'\n'
-                                        _return += 'Persentase Ketidaktercapaian: ' + total.toFixed(2)+'%'
+                                        var total_persentase = 100 - sum
+                                        var total_tercapai = bobot_tercapai
+                                        var total_belum_tercapai = bobot_belum_tercapai
+                                        var _return = 'Bobot tercapai:'+total_tercapai.toFixed(2)+'\n'
+                                        _return += 'Bobot belum tercapai:'+total_belum_tercapai.toFixed(2)+'\n'
+                                        _return += 'Persentase Ketidaktercapaian: ' + total_persentase.toFixed(2)+'%'
                                         return _return;
                                     },
                                 },
