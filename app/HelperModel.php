@@ -68,20 +68,21 @@ class HelperModel
                 'data' => [100],
             ];
             $nilai = 0;
-            $nilai_belum_tercapai = 0;
+            $nilai_rapor_mutu_tercapai = 0;
+            $nilai_rapor_mutu_belum_tercapai = 0;
             $backgroundColor = '#dc3545';
             if($user->nilai_akhir){
-                $nilai = $user->nilai_akhir->nilai;
-                $nilai_belum_tercapai = (100 - $nilai);
-                if($nilai < 21){
+                $nilai_rapor_mutu_tercapai = $user->nilai_akhir->nilai;
+                $nilai_rapor_mutu_belum_tercapai = (100 - $nilai_rapor_mutu_tercapai);
+                if($nilai_rapor_mutu_tercapai < 21){
                     $backgroundColor = '#dc3545';
-                } elseif($nilai < 41){
+                } elseif($nilai_rapor_mutu_tercapai < 41){
                     $backgroundColor = '#ffc107';
-                } elseif($nilai < 61){
+                } elseif($nilai_rapor_mutu_tercapai < 61){
                     $backgroundColor = '#ff851b';
-                } elseif($nilai < 81){
+                } elseif($nilai_rapor_mutu_tercapai < 81){
                     $backgroundColor = '#39cccc';
-                } elseif($nilai >= 81){
+                } elseif($nilai_rapor_mutu_tercapai >= 81){
                     $backgroundColor = '#28a745';
                 }
             }
@@ -199,11 +200,11 @@ class HelperModel
                     'bobot_belum_tercapai' =>  $values['bobot_belum_tercapai'],
                 ],
                 'nilai_rapor_mutu' => [
-                    'nilai_tercapai' => array_merge($values['nilai_tercapai'], [$nilai]),
-                    'nilai_belum_tercapai' => array_merge($values['nilai_belum_tercapai'], [$nilai_belum_tercapai]),
+                    'nilai_tercapai' => array_merge($values['nilai_tercapai'], [$nilai_rapor_mutu_tercapai]),
+                    'nilai_belum_tercapai' => array_merge($values['nilai_belum_tercapai'], [$nilai_rapor_mutu_belum_tercapai]),
                     'labels' =>  array_merge($values['nama'], ['Rapor Mutu Sekolah']),
-                    'bobot_tercapai' =>  array_merge($values['bobot_tercapai'], [$nilai]),
-                    'bobot_belum_tercapai' =>  array_merge($values['bobot_belum_tercapai'], [$nilai_belum_tercapai]),
+                    'bobot_tercapai' =>  array_merge($values['bobot_tercapai'], [$nilai_rapor_mutu_tercapai]),
+                    'bobot_belum_tercapai' =>  array_merge($values['bobot_belum_tercapai'], [$nilai_rapor_mutu_belum_tercapai]),
                     'varian' => ['success', 'warning', 'danger', 'indigo', 'fuchsia', 'primary'],
                 ],
             ];
