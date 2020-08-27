@@ -111,6 +111,11 @@ let routes = [{
         name: 'hasil_pengesahan',
         component: require('./views/pengesahan/pengesahan').default
     },
+    {
+        path: '/profil',
+        name: 'profil',
+        component: require('./views/profile').default
+    },
 ];
 
 const router = new VueRouter({

@@ -20,15 +20,15 @@ class ValidasiController extends Controller
             $query->whereHas('jenis_rapor', function($query){
                 $query->where('jenis', request()->data);
             });
-            /*if(request()->data == 'validasi'){
-                
-                //$query->orWhereHas('');
-            }*/
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($data) {
-                $data = $data->where('name', 'LIKE', '%' . request()->q . '%')
-                    ->orWhere('email', 'LIKE', '%' . request()->q . '%')
-                    ->orWhere('username', 'LIKE', '%' . request()->q . '%');
+                $data = $data->whereHas('sekolah', function($query){
+                    $query->where('nama', 'ILIKE', '%' . request()->q . '%');
+                })->orWhereHas('penjamin_mutu', function($query){
+                    $query->where('name', 'ILIKE', '%' . request()->q . '%');
+                })->orWhereHas('status_rapor', function($query){
+                    $query->where('nama', 'ILIKE', '%' . request()->q . '%');
+                });
         })->paginate(request()->per_page);
         return response()->json(['status' => 'success', 'data' => $data]);
     }

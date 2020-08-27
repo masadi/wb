@@ -45,7 +45,7 @@
             return {
                 fields: [
                     {key: 'name', 'label': 'Nama Lengkap', sortable: true},
-                    {key: 'username', 'label': 'Username', sortable: true},
+                    {key: 'nomor_hp', 'label': 'Nomor HP', sortable: true},
                     {key: 'email', 'label': 'Email', sortable: true},
                     {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
                 ],

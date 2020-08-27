@@ -79,11 +79,11 @@ export default {
         return {
             user: user,
             fields: [
-                {key: 'nama_sekolah', 'label': 'Nama Sekolah', sortable: true},
-                {key: 'nama_verifikator', 'label': 'Nama Penjamin Mutu', sortable: true},
-                {key: 'nilai_sekolah', 'label': 'Nilai Sekolah', sortable: true},
-                {key: 'nilai_verifikator', 'label': 'Nilai Verifikasi', sortable: true},
-                {key: 'status', 'label': 'Status', sortable: true},
+                {key: 'sekolah_sasaran_id', 'label': 'Nama Sekolah', sortable: true},
+                {key: 'verifikator_id', 'label': 'Nama Penjamin Mutu', sortable: true},
+                {key: 'nilai_sekolah', 'label': 'Nilai Sekolah', sortable: false},
+                {key: 'nilai_verifikator', 'label': 'Nilai Verifikasi', sortable: false},
+                {key: 'status_rapor_id', 'label': 'Status', sortable: true},
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META

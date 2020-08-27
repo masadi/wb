@@ -22,6 +22,12 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('nuptk', 16)->nullable();
+            $table->string('nip', 26)->nullable();
+            $table->string('asal_institusi')->nullable();
+            $table->string('alamat_institusi')->nullable();
+            $table->string('nomor_hp', 16)->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
             $table->primary('user_id');
         });

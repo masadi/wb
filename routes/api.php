@@ -65,6 +65,8 @@ Route::group(['prefix' => 'validasi'], function(){
     Route::get('/download', 'ValidasiController@download');
 });
 Route::resource('users', 'UsersController');
+Route::post('/profile', 'UsersController@profile');
+Route::post('/update-profile', 'UsersController@update_profile');
 Route::resource('sekolah', 'SekolahController');
 Route::resource('komponen', 'KomponenController');
 Route::resource('berita', 'BeritaController');

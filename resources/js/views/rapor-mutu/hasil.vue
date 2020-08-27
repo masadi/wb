@@ -80,7 +80,16 @@
                         </div>
                     </div>
                 </div>
-                <b-row class="mb-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="nilai_komponen"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--b-row class="mb-3">
                     <b-col lg="12" class="text-center">
                         <b-button squared :disabled='!rapor.kuisioner.lengkap' v-on:click="cetak_rapor_mutu(data_lengkap)" size="lg" variant="primary">
                             <b-spinner small v-show="show_spinner_cetak" style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
@@ -88,7 +97,7 @@
                             <span class="h4" v-show="show_text_cetak"><i class="fas fa-print"></i> CETAK RAPOR MUTU SEKOLAH</span>
                         </b-button>
                     </b-col>
-                </b-row>
+                </b-row-->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -228,7 +237,7 @@
   @import './../../../../public/css/timeline_simple.scss'; /* injected */
 </style>
 <script>
-
+import Chart from 'chart.js';
 import axios from 'axios' //IMPORT AXIOS
 export default {
     created() {
@@ -300,6 +309,16 @@ export default {
         }
     },
     methods: {
+        createChart(chartId, chartData) {
+            if(chartData){
+                const ctx = document.getElementById(chartId);
+                const myChart = new Chart(ctx, {
+                    type: chartData.type,
+                    data: chartData.data,
+                    options: chartData.options,
+                });
+            }
+        },
         loadPostsData() {
             axios.post(`/api/rapor-mutu/hasil`, {
                 user_id: user.user_id,
@@ -347,6 +366,102 @@ export default {
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
+                console.log(getData.rapor_mutu.nilai_komponen);
+                if(getData.rapor_mutu.nilai_komponen){
+                    var barChartData = {
+                        //labels: ['Input', 'Proses', 'Output', 'Outcome', 'Impact'],
+                        labels: getData.rapor_mutu.nilai_komponen.labels,
+                        datasets: [{
+                            label: 'Nilai Komponen Terpenuhi',
+                            backgroundColor: ['#d9434e', '#1fac4d', '#48cfc1', '#9398ec', '#d27b25'],
+                            borderColor: '#f4f7ec',
+                            borderWidth: 1,
+                            data: getData.rapor_mutu.nilai_komponen.nilai_tercapai,
+                            bobot: getData.rapor_mutu.nilai_komponen.bobot_tercapai
+                        },
+                        {
+                            label: 'Nilai Komponen Ideal',
+                            backgroundColor: ['#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3'],
+                            borderColor: '#f4f7ec',
+                            borderWidth: 1,
+                            data: getData.rapor_mutu.nilai_komponen.nilai_belum_tercapai,
+                            bobot: getData.rapor_mutu.nilai_komponen.bobot_belum_tercapai
+                        }]
+                    }
+                    let ctx_bar = document.getElementById('nilai_komponen')
+                    new Chart(ctx_bar, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: {
+                            responsive: true,
+                            legend: {
+                                display: false,
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: false,
+                                text: 'Chart.js Bar Chart'
+                            },
+                            scales: {
+                                xAxes: [{
+                                    stacked: true
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true,
+                                        max:100
+                                    },
+                                    stacked: true
+                                }]
+                            },
+                            onClick: function (e) {
+                                //console.log(e);
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                callbacks: {
+                                    title: function(tooltipItems, data) {
+                                        var title = '';
+                                        tooltipItems.forEach(function(tooltipItem) {
+                                            title = tooltipItem.xLabel
+                                        })
+                                        return 'Ketercapaian Komponen '+title
+                                    },
+                                    label: function(tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if(tooltipItem.datasetIndex == 1){
+                                            label += '100'
+                                        } else {
+                                            label += Math.round(tooltipItem.yLabel * 100) / 100;
+                                        }
+                                        return label+'%';
+                                    },
+                                    footer: function(tooltipItems, data) {
+                                        var sum = 0;
+                                        var bobot_tercapai = 0;
+                                        var bobot_belum_tercapai = 0;
+                                        tooltipItems.forEach(function(tooltipItem) {
+                                            bobot_tercapai = data.datasets[0].bobot[tooltipItem.index];
+                                            bobot_belum_tercapai = data.datasets[1].bobot[tooltipItem.index];
+                                            if(tooltipItem.datasetIndex == 0){
+                                                sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                            }
+                                        });
+                                        var _return = 'Bobot tercapai:'+bobot_tercapai+'\n'
+                                        _return += 'Bobot belum tercapai:'+bobot_belum_tercapai+'\n'
+                                        _return += 'Persentase Ketidaktercapaian: ' + (100 - sum)+'%'
+                                        return _return;
+                                    },
+                                },
+                                footerFontStyle: 'normal'
+                            },
+                        }
+                    });
+                }
             });
         },
         cetak_rapor_mutu(data){

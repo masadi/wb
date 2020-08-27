@@ -67,13 +67,27 @@ class HelperModel
                 'backgroundColor' => '#dc3545',
                 'data' => [100],
             ];
+            if($user->nilai_akhir){
+                $nilai = $user->nilai_akhir->nilai;
+                if($nilai < 21){
+                    $backgroundColor = '#dc3545';
+                } elseif($nilai < 41){
+                    $backgroundColor = '#ffc107';
+                } elseif($nilai < 61){
+                    $backgroundColor = '#ff851b';
+                } elseif($nilai < 81){
+                    $backgroundColor = '#39cccc';
+                } elseif($nilai >= 81){
+                    $backgroundColor = '#28a745';
+                }
+            }
             $obj_nilai_rapor = (object) [
                 /*'barPercentage' => 10,
                 'barThickness' => 100,
                 'maxBarThickness' => 108,
                 'minBarLength' => 2,*/
                 'label' => 'Nilai Terpenuhi',
-                'backgroundColor' => '#28a745',
+                'backgroundColor' => $backgroundColor,
                 'data' => [($user->nilai_akhir) ? $user->nilai_akhir->nilai : 0],
             ];
             $komponen = Komponen::get();
@@ -83,9 +97,12 @@ class HelperModel
                 //$values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::nilai_komponen($k->id, $user->user_id)->total_nilai - (self::bobot_komponen($k->id) * 100 / self::bobot_komponen($k->id))) : 0;
                 $values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (100 - self::nilai_komponen($k->id, $user->user_id)->total_nilai) : 0;
                 $values['bobot_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
-                $values['bobot_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::nilai_komponen($k->id, $user->user_id)->nilai - self::bobot_komponen($k->id)) : 0;
+                $values['bobot_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::bobot_komponen($k->id) - self::nilai_komponen($k->id, $user->user_id)->nilai) : 0;
+                $values['nilai_komponen'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+                $values['bobot_komponen'][] = self::bobot_komponen($k->id);
             }
             $data = [
+                'asd' => $values,
                 'user' => $user,
                 'instrumen' => ($instrumen == $user->nilai_instrumen_count) ? self::TanggalIndo($user->last_nilai_instrumen->updated_at) : NULL,
                 'hitung' => ($user->nilai_akhir) ? self::TanggalIndo($user->nilai_akhir->updated_at) : NULL,

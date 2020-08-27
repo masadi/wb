@@ -15,7 +15,7 @@
     <!--link rel="shortcut icon" href="{{asset('favicons/favicon.ico')}}" /-->
     <style>
         .header{
-            background-image: url('{{asset('vendor/img/bgheader-min.png')}}');
+            background-image: url('{{asset('vendor/img/bgheader-min.jpg')}}');
             background-repeat: no-repeat;
             background-size: 100% 100%;
         }
@@ -32,6 +32,7 @@
                             <a href="{{url('/')}}"><img src="{{asset('vendor/img/kemdikbud.png')}}" alt=""
                                     class="img-responsive"></a>
                         </div>
+                        <img style="max-width: 200px;" src="{{asset('vendor/img/smk-bisa-smk-hebat.png')}}" alt="" class="img-responsive float-right my-4">
                         <div class="header-text">
                             <h1 class="mb-0">Aplikasi Penjaminan Mutu SMK</h1>
                             <p class="lead mb-0"><strong>Direktorat Sekolah Menengah Kejuruan</strong></p>

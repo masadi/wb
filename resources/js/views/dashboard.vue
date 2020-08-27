@@ -261,7 +261,7 @@ export default {
                                                 sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             }
                                         });
-                                        var _return = 'Bobot tercapai:'+(bobot_tercapai - bobot_belum_tercapai)+'\n'
+                                        var _return = 'Bobot tercapai:'+bobot_tercapai+'\n'
                                         _return += 'Bobot belum tercapai:'+bobot_belum_tercapai+'\n'
                                         _return += 'Persentase Ketidaktercapaian: ' + (100 - sum)+'%'
                                         return _return;

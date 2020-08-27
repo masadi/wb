@@ -32,10 +32,10 @@
             <template v-slot:empty="scope">
                 <div class="text-center">Tidak ada data untuk ditampilkan</div>
             </template>
-            <template v-slot:cell(nama_sekolah)="row">
+            <template v-slot:cell(sekolah_sasaran_id)="row">
                 {{row.item.sekolah.nama}}
             </template>
-            <template v-slot:cell(nama_verifikator)="row">
+            <template v-slot:cell(verifikator_id)="row">
                 {{row.item.penjamin_mutu.name}}
             </template>
             <template v-slot:cell(nilai_sekolah)="row">
@@ -44,7 +44,7 @@
             <template v-slot:cell(nilai_verifikator)="row">
                 {{row.item.penjamin_mutu.nilai_akhir_penjamin_mutu.nilai}}
             </template>
-            <template v-slot:cell(status)="row">
+            <template v-slot:cell(status_rapor_id)="row">
                 {{row.item.status_rapor.nama}}
             </template>
             <template v-slot:cell(actions)="row">
