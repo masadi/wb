@@ -84,7 +84,43 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <canvas id="nilai_komponen"></canvas>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <canvas id="nilai_komponen" style="min-height: 250px; height: 250px;"></canvas>
+                                    </div>
+                                    <div class="col-4">
+                                        <b-progress v-for="item_keterangan in data_keterangan" :key="item_keterangan.message" height="2rem" class="mt-1" :max="100" show-value>
+                                            <b-progress-bar :label="item_keterangan.tercapai" :precision="2" :value="item_keterangan.value_1" :variant="item_keterangan.varian"></b-progress-bar>
+                                            <b-progress-bar :label="item_keterangan.tak_tercapai" :precision="2" :value="item_keterangan.value_2" variant="secondary">
+                                            </b-progress-bar>
+                                        </b-progress>
+                                        <!--b-progress height="2rem" class="mt-1" :max="100" show-value>
+                                            <b-progress-bar :label="tercapai.input" :value="50" variant="warning"></b-progress-bar>
+                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
+                                            </b-progress-bar>
+                                        </b-progress>
+                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
+                                            <b-progress-bar :label="tercapai.input" :value="50" variant="danger"></b-progress-bar>
+                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
+                                            </b-progress-bar>
+                                        </b-progress>
+                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
+                                            <b-progress-bar :label="tercapai.input" :value="50" variant="indigo"></b-progress-bar>
+                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
+                                            </b-progress-bar>
+                                        </b-progress>
+                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
+                                            <b-progress-bar :label="tercapai.input" :value="50" variant="fuchsia"></b-progress-bar>
+                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
+                                            </b-progress-bar>
+                                        </b-progress>
+                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
+                                            <b-progress-bar :label="tercapai.input" :value="50" variant="primary"></b-progress-bar>
+                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
+                                            </b-progress-bar>
+                                        </b-progress-->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -238,6 +274,7 @@
 </style>
 <script>
 import Chart from 'chart.js';
+//import RaporMutu from './../components/RaporMutu.vue'
 import axios from 'axios' //IMPORT AXIOS
 export default {
     created() {
@@ -245,6 +282,9 @@ export default {
     },
     data() {
         return {
+            data_keterangan: [],
+            value: 45,
+            max: 100,
             user: user,
             rapor_mutu:{
                 instrumen : 0,
@@ -366,26 +406,36 @@ export default {
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
-                console.log(getData.rapor_mutu.nilai_komponen);
-                if(getData.rapor_mutu.nilai_komponen){
+                let DataKeterangan = {};
+                $.each(getData.rapor_mutu.nilai_rapor_mutu.labels, function(key, valua) {
+                    DataKeterangan[key] = {
+                        tercapai: 'Tercapai : '+getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
+                        value_1: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
+                        varian: getData.rapor_mutu.nilai_rapor_mutu.varian[key],
+                        value_2: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
+                    }
+                })
+                this.data_keterangan = DataKeterangan
+                console.log(getData.rapor_mutu.nilai_rapor_mutu);
+                if(getData.rapor_mutu.nilai_rapor_mutu){
                     var barChartData = {
                         //labels: ['Input', 'Proses', 'Output', 'Outcome', 'Impact'],
-                        labels: getData.rapor_mutu.nilai_komponen.labels,
+                        labels: getData.rapor_mutu.nilai_rapor_mutu.labels,
                         datasets: [{
-                            label: 'Nilai Komponen Terpenuhi',
-                            backgroundColor: ['#d9434e', '#1fac4d', '#48cfc1', '#9398ec', '#d27b25'],
+                            label: 'Nilai Komponen Tercapai',
+                            backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6610f2', '#f012be', '#007bff'],
                             borderColor: '#f4f7ec',
                             borderWidth: 1,
-                            data: getData.rapor_mutu.nilai_komponen.nilai_tercapai,
-                            bobot: getData.rapor_mutu.nilai_komponen.bobot_tercapai
+                            data: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai,
+                            bobot: getData.rapor_mutu.nilai_rapor_mutu.bobot_tercapai
                         },
                         {
                             label: 'Nilai Komponen Ideal',
-                            backgroundColor: ['#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3'],
+                            backgroundColor: ['#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d'],
                             borderColor: '#f4f7ec',
                             borderWidth: 1,
-                            data: getData.rapor_mutu.nilai_komponen.nilai_belum_tercapai,
-                            bobot: getData.rapor_mutu.nilai_komponen.bobot_belum_tercapai
+                            data: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai,
+                            bobot: getData.rapor_mutu.nilai_rapor_mutu.bobot_belum_tercapai
                         }]
                     }
                     let ctx_bar = document.getElementById('nilai_komponen')
@@ -394,6 +444,30 @@ export default {
                         data: barChartData,
                         options: {
                             responsive: true,
+                            maintainAspectRatio: false,
+                            animation: {
+                                onComplete: function () {
+                                    var chartInstance = this.chart;
+                                    var ctx = chartInstance.ctx;
+                                    //console.log(chartInstance);
+                                    var height = chartInstance.controller.boxes[0].bottom;
+                                    ctx.textAlign = "center";
+                                    Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                                        var meta = chartInstance.controller.getDatasetMeta(i);
+                                        var atas = 90;
+                                        Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                                            if(i==0){
+                                                ctx.fillText(dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2 - 10));
+                                            } else {
+                                                ctx.fillText(dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2 + 80));
+                                            }
+                                                //bar._model.x, height - ((height - bar._model.y) / 2)
+                                            //ctx.fillText('a:'+dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2));
+                                            
+                                        }),this)
+                                    }),this);
+                                }
+                            },
                             legend: {
                                 display: false,
                                 position: 'bottom',
@@ -415,10 +489,11 @@ export default {
                                 }]
                             },
                             onClick: function (e) {
-                                //console.log(e);
+                                //
                             },
                             tooltips: {
                                 mode: 'index',
+                                display: false,
                                 callbacks: {
                                     title: function(tooltipItems, data) {
                                         var title = '';
@@ -452,8 +527,9 @@ export default {
                                             }
                                         });
                                         var _return = 'Bobot tercapai:'+bobot_tercapai+'\n'
+                                        var total = 100 - sum
                                         _return += 'Bobot belum tercapai:'+bobot_belum_tercapai+'\n'
-                                        _return += 'Persentase Ketidaktercapaian: ' + (100 - sum)+'%'
+                                        _return += 'Persentase Ketidaktercapaian: ' + total.toFixed(2)+'%'
                                         return _return;
                                     },
                                 },
@@ -465,7 +541,6 @@ export default {
             });
         },
         cetak_rapor_mutu(data){
-            console.log(data);
             this.show_spinner_cetak = true
             this.show_text_cetak = false
             axios.get(`/api/rapor-mutu/cetak-rapor`, {
@@ -476,7 +551,6 @@ export default {
                 },
                 responseType: 'arraybuffer'
             }).then((response) => {
-                console.log(response)
                 this.show_text_cetak = true
                 this.show_spinner_cetak = false
                 return false;
@@ -505,7 +579,6 @@ export default {
                         user_id: user.user_id,
                         verifikator_id: this.rapor.verifikator_id
                     }).then((response) => {
-                        console.log(response)
                         Swal.fire(
                             'Selesai',
                             'Hitung Nilai Instrumen Berhasil!',

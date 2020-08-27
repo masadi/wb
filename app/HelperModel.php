@@ -67,8 +67,11 @@ class HelperModel
                 'backgroundColor' => '#dc3545',
                 'data' => [100],
             ];
+            $nilai = 0;
+            $nilai_belum_tercapai = 0;
             if($user->nilai_akhir){
                 $nilai = $user->nilai_akhir->nilai;
+                $nilai_belum_tercapai = (100 - $nilai);
                 if($nilai < 21){
                     $backgroundColor = '#dc3545';
                 } elseif($nilai < 41){
@@ -86,23 +89,30 @@ class HelperModel
                 'barThickness' => 100,
                 'maxBarThickness' => 108,
                 'minBarLength' => 2,*/
-                'label' => 'Nilai Terpenuhi',
+                'label' => 'Nilai Tercapai',
                 'backgroundColor' => $backgroundColor,
                 'data' => [($user->nilai_akhir) ? $user->nilai_akhir->nilai : 0],
             ];
             $komponen = Komponen::get();
             foreach($komponen as $k){
+                $bobot_belum_tercapai = 0;
+                if(self::nilai_komponen($k->id, $user->user_id)){
+                    $bobot_belum_tercapai = number_format((self::bobot_komponen($k->id) - self::nilai_komponen($k->id, $user->user_id)->nilai),2,'.','.');
+                }
+                $nilai_belum_tercapai = 0;
+                if(self::nilai_komponen($k->id, $user->user_id)){
+                    $nilai_belum_tercapai = number_format((100 - self::nilai_komponen($k->id, $user->user_id)->total_nilai),2,'.','.');
+                }
                 $values['nama'][] = $k->nama;
                 $values['nilai_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->total_nilai : 0;
                 //$values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::nilai_komponen($k->id, $user->user_id)->total_nilai - (self::bobot_komponen($k->id) * 100 / self::bobot_komponen($k->id))) : 0;
-                $values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (100 - self::nilai_komponen($k->id, $user->user_id)->total_nilai) : 0;
+                $values['nilai_belum_tercapai'][] = $nilai_belum_tercapai;
                 $values['bobot_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
-                $values['bobot_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::bobot_komponen($k->id) - self::nilai_komponen($k->id, $user->user_id)->nilai) : 0;
+                $values['bobot_belum_tercapai'][] = $bobot_belum_tercapai;
                 $values['nilai_komponen'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
                 $values['bobot_komponen'][] = self::bobot_komponen($k->id);
             }
             $data = [
-                'asd' => $values,
                 'user' => $user,
                 'instrumen' => ($instrumen == $user->nilai_instrumen_count) ? self::TanggalIndo($user->last_nilai_instrumen->updated_at) : NULL,
                 'hitung' => ($user->nilai_akhir) ? self::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
@@ -186,6 +196,14 @@ class HelperModel
                     'labels' =>  $values['nama'],
                     'bobot_tercapai' =>  $values['bobot_tercapai'],
                     'bobot_belum_tercapai' =>  $values['bobot_belum_tercapai'],
+                ],
+                'nilai_rapor_mutu' => [
+                    'nilai_tercapai' => array_merge($values['nilai_tercapai'], [$nilai]),
+                    'nilai_belum_tercapai' => array_merge($values['nilai_belum_tercapai'], [$nilai_belum_tercapai]),
+                    'labels' =>  array_merge($values['nama'], ['Rapor Mutu Sekolah']),
+                    'bobot_tercapai' =>  array_merge($values['bobot_tercapai'], [$nilai]),
+                    'bobot_belum_tercapai' =>  array_merge($values['bobot_belum_tercapai'], [$nilai_belum_tercapai]),
+                    'varian' => ['success', 'warning', 'danger', 'indigo', 'fuchsia', 'primary'],
                 ],
             ];
             //dd($data);

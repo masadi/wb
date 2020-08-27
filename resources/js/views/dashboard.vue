@@ -182,7 +182,7 @@ export default {
                         //labels: ['Input', 'Proses', 'Output', 'Outcome', 'Impact'],
                         labels: getData.nilai_komponen.labels,
                         datasets: [{
-                            label: 'Nilai Komponen Terpenuhi',
+                            label: 'Nilai Komponen Tercapai',
                             backgroundColor: ['#d9434e', '#1fac4d', '#48cfc1', '#9398ec', '#d27b25'],
                             borderColor: '#f4f7ec',
                             borderWidth: 1,
@@ -272,132 +272,6 @@ export default {
                         }
                     });
                 }
-                /*var config = {
-                    type: 'pie',
-                    data: {
-                        datasets: [{
-                            data: [
-                                20,
-                                5,
-                                30,
-                                5,
-                                25,
-                                5,
-                                4,
-                                1,
-                                3,
-                                2,
-                            ],
-                            backgroundColor: [
-                                "#ff0000","#fcaeae",
-                                "#13fc00","#8bf782",
-                                "#0000fc","#8a8af3",
-                                "#e6f900","#eff97e",
-                                "#fa039d","#f874c6"
-                            ],
-                            label: 'Nilai Komponen'
-                        }],
-                        labels: [
-                            "Komponen Input Terpenuhi", "Komponen Input Tidak Terpenuhi",
-                            "Komponen Proses Terpenuh", "Komponen Proses Tidak Terpenuhi",
-                            "Komponen Output Terpenuh", "Komponen Output Tidak Terpenuhi",
-                            "Komponen Outcome Terpenuh", "Komponen Outcome Tidak Terpenuhi",
-                            "Komponen Impact Terpenuh", "Komponen Impact Tidak Terpenuhi",
-                        ]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                };
-                var ctx = document.getElementById('pie_chart').getContext('2d');
-                new Chart(ctx, config);
-                var variasiWarna = [
-                    "#ff0000", "#fbbebe",
-                    "#04ff00", "#a1f99f",
-                    "#0008ff", "#b0b3fc",
-                    '#00f3ff', '#a6f9fd',
-                    '#ff00aa', '#fda9e1',
-                ];
-                var resourceChartElement = document.getElementById("doughnut_chart");
-                new Chart(resourceChartElement, {
-                    "type": "doughnut",
-                    "data": {
-                        "datasets": [{
-                            "backgroundColor": variasiWarna,
-                            "hoverBackgroundColor": variasiWarna,
-                            "data": [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                80,
-                                20,
-                            ]
-                        }, {
-                            "backgroundColor": variasiWarna,
-                            "hoverBackgroundColor": variasiWarna,
-                            "data": [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                70,
-                                30,
-                            ]
-                        },
-                        {
-                            "backgroundColor": variasiWarna,
-                            "hoverBackgroundColor": variasiWarna,
-                            "data": [
-                                0,
-                                0,
-                                0,
-                                0,
-                                60,
-                                40,
-                            ]
-                        },
-                        {
-                            "backgroundColor": variasiWarna,
-                            "hoverBackgroundColor": variasiWarna,
-                            "data": [
-                                0,
-                                0,
-                                50,
-                                50,
-                            ]
-                        },
-                        {
-                            "backgroundColor": variasiWarna,
-                            "hoverBackgroundColor": variasiWarna,
-                            "data": [
-                                40,
-                                60,
-                            ]
-                        }],
-                        "labels": [
-                            "Komponen Proses Terpenuhi",
-                            "Komponen Proses tidak Terpenuhi",
-                            "Komponen Input Terpenuhi",
-                            "Komponen Input tidak Terpenuhi",
-                            "Komponen Output Terpenuhi",
-                            "Komponen Output tidak Terpenuhi",
-                            "Komponen Outcome Terpenuhi",
-                            "Komponen Outcome tidak Terpenuhi",
-                            "Komponen Impact Terpenuhi",
-                            "Komponen Impact tidak Terpenuhi",
-                        ]
-                    },
-                    "options" : {
-                        showAllTooltips: true
-                    }
-                });*/
             })
         },
     },
