@@ -452,6 +452,7 @@ export default {
                                     //console.log(chartInstance);
                                     var height = chartInstance.controller.boxes[0].bottom;
                                     ctx.textAlign = "center";
+                                    ctx.fillStyle = "#ffffff";
                                     Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
                                         var meta = chartInstance.controller.getDatasetMeta(i);
                                         var atas = 90;
