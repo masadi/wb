@@ -456,10 +456,11 @@ export default {
                                         var meta = chartInstance.controller.getDatasetMeta(i);
                                         var atas = 90;
                                         Chart.helpers.each(meta.data.forEach(function (bar, index) {
+                                            var nilai_per_komponen = dataset.data[index]
                                             if(i==0){
-                                                ctx.fillText(dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2 - 10));
+                                                ctx.fillText(nilai_per_komponen.toFixed(2), bar._model.x, height - ((height - bar._model.y) / 2 - 10));
                                             } else {
-                                                ctx.fillText(dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2 + 80));
+                                                ctx.fillText(nilai_per_komponen.toFixed(2), bar._model.x, height - ((height - bar._model.y) / 2 + 80));
                                             }
                                                 //bar._model.x, height - ((height - bar._model.y) / 2)
                                             //ctx.fillText('a:'+dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2));
