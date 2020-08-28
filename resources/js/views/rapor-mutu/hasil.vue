@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Raport Mutu Sekolah</h1>
+                        <h1 class="m-0 text-dark">Rapor Mutu Sekolah</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Raport Mutu Sekolah</li>
+                            <li class="breadcrumb-item active">Rapor Mutu Sekolah</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -84,16 +84,26 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-8">
+                                <div class="hello" ref="chartdiv" style="width: 100%;height: 500px;"></div>
+                                <div class="row" style="display:none">
+                                    <div class="col-6">
                                         <canvas id="nilai_komponen" style="min-height: 250px; height: 250px;"></canvas>
                                     </div>
-                                    <div class="col-4">
-                                        <b-progress v-for="item_keterangan in data_keterangan" :key="item_keterangan.message" height="2rem" class="mt-1" :max="100" show-value>
-                                            <b-progress-bar :label="item_keterangan.tercapai" :precision="2" :value="item_keterangan.value_1" :variant="item_keterangan.varian"></b-progress-bar>
-                                            <b-progress-bar :label="item_keterangan.tak_tercapai" :precision="2" :value="item_keterangan.value_2" variant="secondary">
-                                            </b-progress-bar>
-                                        </b-progress>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p v-for="komponen in nama_komponen" :key="komponen.message">
+                                                    {{komponen}}
+                                                </p>
+                                            </div>
+                                            <div class="col-9">
+                                                <b-progress v-for="item_keterangan in data_keterangan" :key="item_keterangan.message" height="2rem" class="mt-1" :max="100" show-value>
+                                                    <b-progress-bar :label="item_keterangan.tercapai" :precision="2" :value="item_keterangan.value_1" :variant="item_keterangan.varian"></b-progress-bar>
+                                                    <b-progress-bar :label="item_keterangan.tak_tercapai" :precision="2" :value="item_keterangan.value_2" variant="secondary">
+                                                    </b-progress-bar>
+                                                </b-progress>
+                                            </div>
+                                        </div>
                                         <!--b-progress height="2rem" class="mt-1" :max="100" show-value>
                                             <b-progress-bar :label="tercapai.input" :value="50" variant="warning"></b-progress-bar>
                                             <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
@@ -273,7 +283,12 @@
   @import './../../../../public/css/timeline_simple.scss'; /* injected */
 </style>
 <script>
-import Chart from 'chart.js';
+//import Chart from 'chart.js';
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+
+am4core.useTheme(am4themes_animated);
 //import RaporMutu from './../components/RaporMutu.vue'
 import axios from 'axios' //IMPORT AXIOS
 export default {
@@ -282,6 +297,8 @@ export default {
     },
     data() {
         return {
+            chart: null,
+            nama_komponen: [],
             data_keterangan: [],
             value: 45,
             max: 100,
@@ -333,6 +350,37 @@ export default {
             data_lengkap : null,
             show_spinner_cetak: false,
             show_text_cetak: true,
+            chartData: [],
+        }
+    },
+    mounted() {
+        //let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
+        /*chart.data = [{
+            "komponen": "USA",
+            "tercapai": 90,
+            "belum_tercapai": 100
+        }, {
+            "komponen": "UK",
+            "tercapai": 80,
+            "belum_tercapai": 100
+        }, {
+            "komponen": "Canada",
+            "tercapai": 70,
+            "belum_tercapai": 100
+        }, {
+            "komponen": "Japan",
+            "tercapai": 60,
+            "belum_tercapai": 100
+        }, {
+            "komponen": "France",
+            "tercapai": 50,
+            "belum_tercapai": 100
+        }];*/
+    },
+
+    beforeDestroy() {
+        if (this.chart) {
+            this.chart.dispose();
         }
     },
     computed: {
@@ -349,14 +397,65 @@ export default {
         }
     },
     methods: {
-        createChart(chartId, chartData) {
+        createChart(chartData) {
             if(chartData){
-                const ctx = document.getElementById(chartId);
-                const myChart = new Chart(ctx, {
-                    type: chartData.type,
-                    data: chartData.data,
-                    options: chartData.options,
+                let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart3D);
+                chart.colors.list = [
+                    am4core.color("#33bec0"),
+                    am4core.color("#D3D3D3"),
+                    //am4core.color("#FF6F91"),
+                    //am4core.color("#FF9671"),
+                    //am4core.color("#FFC75F")
+                ];
+                chart.tooltip.label.fill = am4core.color("#ffffff");
+                chart.data = chartData;
+                // Create axes
+                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "komponen";
+                categoryAxis.renderer.grid.template.location = 0;
+                categoryAxis.renderer.minGridDistance = 30;
+
+                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis.title.text = "Ketercapaian Komponen";
+                valueAxis.min = 0;
+                valueAxis.max = 100;
+                valueAxis.strictMinMax = true; 
+                valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+                    return text + "%";
                 });
+                // Create series
+                var series = chart.series.push(new am4charts.ColumnSeries3D());
+                series.dataFields.valueY = "tercapai";
+                series.dataFields.categoryX = "komponen";
+                series.name = "Komponen Tercapai";
+                series.clustered = false;
+                //series.columns.template.tooltipText = "Komponen {category} tercapai: [bold]{valueY}[/]";
+                series.columns.template.tooltipHTML = "<center>Komponen tercapai: <br> <strong>{valueY}</strong></center>";
+                series.columns.template.fillOpacity = 0.9;
+                series.columns.template.showTooltipOn = "always";
+                series.tooltip.pointerOrientation = "top";
+                var bullet = series.bullets.push(new am4charts.LabelBullet())
+                bullet.interactionsEnabled = false
+                bullet.dy = 90;
+                bullet.label.text = '{valueY}%'
+                bullet.label.fill = am4core.color('#ffffff')
+                console.log(bullet);
+                var series2 = chart.series.push(new am4charts.ColumnSeries3D());
+                series2.dataFields.valueY = "total";
+                series2.dataFields.setTitle = "belum_tercapai";
+                series2.dataFields.categoryX = "komponen";
+                series2.name = "Komponen belum Tercapai";
+                series2.clustered = false;
+                series2.columns.template.tooltipHTML = "<center>Komponen belum tercapai: <br> <strong>{setTitle}</strong></center>";
+                series2.columns.template.fillOpacity = 0.9;
+                series2.columns.template.showTooltipOn = "always";
+                series2.columns.template.tooltipY = 10;
+                series2.tooltip.pointerOrientation = "down";
+                var bullet2 = series2.bullets.push(new am4charts.LabelBullet())
+                bullet2.interactionsEnabled = false
+                bullet2.dy = 10;
+                bullet2.label.text = '{setTitle}%'
+                bullet2.label.fill = am4core.color('red')
             }
         },
         loadPostsData() {
@@ -406,24 +505,24 @@ export default {
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
-                let DataKeterangan = {};
+                let DataKeterangan = [];
                 $.each(getData.rapor_mutu.nilai_rapor_mutu.labels, function(key, valua) {
                     DataKeterangan[key] = {
-                        tercapai: 'Tercapai : '+getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
-                        value_1: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
-                        varian: getData.rapor_mutu.nilai_rapor_mutu.varian[key],
-                        value_2: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
+                        komponen: valua,
+                        tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
+                        belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
+                        total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
                 })
-                this.data_keterangan = DataKeterangan
-                console.log(getData.rapor_mutu.nilai_rapor_mutu);
+                this.createChart(DataKeterangan)
                 if(getData.rapor_mutu.nilai_rapor_mutu){
                     var barChartData = {
                         //labels: ['Input', 'Proses', 'Output', 'Outcome', 'Impact'],
                         labels: getData.rapor_mutu.nilai_rapor_mutu.labels,
                         datasets: [{
                             label: 'Nilai Komponen Tercapai',
-                            backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6610f2', '#f012be', '#007bff'],
+                            //backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6610f2', '#f012be', '#007bff'],
+                            backgroundColor: ['#33bec0', '#1ba68c', '#97bf3f', '#f2b035', '#f2522e'],
                             borderColor: '#f4f7ec',
                             borderWidth: 1,
                             data: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai,
@@ -431,7 +530,8 @@ export default {
                         },
                         {
                             label: 'Nilai Komponen Ideal',
-                            backgroundColor: ['#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d'],
+                            //backgroundColor: ['#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d'],
+                            backgroundColor: ['#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3'],
                             borderColor: '#f4f7ec',
                             borderWidth: 1,
                             data: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai,
@@ -449,7 +549,6 @@ export default {
                                 onComplete: function () {
                                     var chartInstance = this.chart;
                                     var ctx = chartInstance.ctx;
-                                    //console.log(chartInstance);
                                     var height = chartInstance.controller.boxes[0].bottom;
                                     ctx.textAlign = "center";
                                     ctx.fillStyle = "#ffffff";
@@ -529,8 +628,8 @@ export default {
                                             }
                                         });
                                         var total_persentase = 100 - sum
-                                        var total_tercapai = bobot_tercapai
-                                        var total_belum_tercapai = bobot_belum_tercapai
+                                        var total_tercapai = parseFloat(bobot_tercapai)
+                                        var total_belum_tercapai = parseFloat(bobot_belum_tercapai)
                                         var _return = 'Bobot tercapai:'+total_tercapai.toFixed(2)+'\n'
                                         _return += 'Bobot belum tercapai:'+total_belum_tercapai.toFixed(2)+'\n'
                                         _return += 'Persentase Ketidaktercapaian: ' + total_persentase.toFixed(2)+'%'
