@@ -83,54 +83,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="hello" ref="chartdiv" style="width: 100%;height: 500px;"></div>
-                                <div class="row" style="display:none">
-                                    <div class="col-6">
-                                        <canvas id="nilai_komponen" style="min-height: 250px; height: 250px;"></canvas>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <p v-for="komponen in nama_komponen" :key="komponen.message">
-                                                    {{komponen}}
-                                                </p>
-                                            </div>
-                                            <div class="col-9">
-                                                <b-progress v-for="item_keterangan in data_keterangan" :key="item_keterangan.message" height="2rem" class="mt-1" :max="100" show-value>
-                                                    <b-progress-bar :label="item_keterangan.tercapai" :precision="2" :value="item_keterangan.value_1" :variant="item_keterangan.varian"></b-progress-bar>
-                                                    <b-progress-bar :label="item_keterangan.tak_tercapai" :precision="2" :value="item_keterangan.value_2" variant="secondary">
-                                                    </b-progress-bar>
-                                                </b-progress>
-                                            </div>
-                                        </div>
-                                        <!--b-progress height="2rem" class="mt-1" :max="100" show-value>
-                                            <b-progress-bar :label="tercapai.input" :value="50" variant="warning"></b-progress-bar>
-                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
-                                            </b-progress-bar>
-                                        </b-progress>
-                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
-                                            <b-progress-bar :label="tercapai.input" :value="50" variant="danger"></b-progress-bar>
-                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
-                                            </b-progress-bar>
-                                        </b-progress>
-                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
-                                            <b-progress-bar :label="tercapai.input" :value="50" variant="indigo"></b-progress-bar>
-                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
-                                            </b-progress-bar>
-                                        </b-progress>
-                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
-                                            <b-progress-bar :label="tercapai.input" :value="50" variant="fuchsia"></b-progress-bar>
-                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
-                                            </b-progress-bar>
-                                        </b-progress>
-                                        <b-progress height="2rem" class="mt-1" :max="100" show-value>
-                                            <b-progress-bar :label="tercapai.input" :value="50" variant="primary"></b-progress-bar>
-                                            <b-progress-bar :label="tak_tercapai.input" :value="50" variant="secondary">
-                                            </b-progress-bar>
-                                        </b-progress-->
-                                    </div>
-                                </div>
+                            <div class="card-body">                               
+                                <div class="chartdiv" id="chartdiv" ref="chartdiv" style="width: 100%;height: 500px;"></div>
                             </div>
                         </div>
                     </div>
@@ -234,6 +188,11 @@
                                                     <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 81}"></span>
                                                 </td>
                                             </tr>
+                                            <!--tr>
+                                                <td colspan="7">
+                                                    asd
+                                                </td>
+                                            </tr-->
                                             <template v-for="(aspek, sub_key) in kuisioner.aspek">
                                                 <tr>
                                                     <td class="text-right"></td>
@@ -297,11 +256,8 @@ export default {
     },
     data() {
         return {
-            chart: null,
-            nama_komponen: [],
-            data_keterangan: [],
-            value: 45,
-            max: 100,
+            all_komponen: [1, 2, 3, 4, 5, 6],
+            id_komponen: [],
             user: user,
             rapor_mutu:{
                 instrumen : 0,
@@ -353,31 +309,6 @@ export default {
             chartData: [],
         }
     },
-    mounted() {
-        //let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
-        /*chart.data = [{
-            "komponen": "USA",
-            "tercapai": 90,
-            "belum_tercapai": 100
-        }, {
-            "komponen": "UK",
-            "tercapai": 80,
-            "belum_tercapai": 100
-        }, {
-            "komponen": "Canada",
-            "tercapai": 70,
-            "belum_tercapai": 100
-        }, {
-            "komponen": "Japan",
-            "tercapai": 60,
-            "belum_tercapai": 100
-        }, {
-            "komponen": "France",
-            "tercapai": 50,
-            "belum_tercapai": 100
-        }];*/
-    },
-
     beforeDestroy() {
         if (this.chart) {
             this.chart.dispose();
@@ -397,66 +328,76 @@ export default {
         }
     },
     methods: {
-        createChart(chartData) {
+        createChart(chartID, chartData) {
+            //console.log(this.$refs[chartID]);
             if(chartData){
-                let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart3D);
-                chart.colors.list = [
-                    am4core.color("#33bec0"),
-                    am4core.color("#D3D3D3"),
-                    //am4core.color("#FF6F91"),
-                    //am4core.color("#FF9671"),
-                    //am4core.color("#FFC75F")
-                ];
-                chart.tooltip.label.fill = am4core.color("#ffffff");
-                chart.data = chartData;
-                // Create axes
-                var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-                categoryAxis.dataFields.category = "komponen";
-                categoryAxis.renderer.grid.template.location = 0;
-                categoryAxis.renderer.minGridDistance = 30;
+                (function () {
+                    var chart = am4core.create(
+                        document.getElementById(chartID),
+                        am4charts.XYChart3D
+                    );
+                    //let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart3D);
+                    chart.colors.list = [
+                        am4core.color("#33bec0"),
+                        am4core.color("#D3D3D3"),
+                        //am4core.color("#FF6F91"),
+                        //am4core.color("#FF9671"),
+                        //am4core.color("#FFC75F")
+                    ];
+                    chart.tooltip.label.fill = am4core.color("#ffffff");
+                    chart.data = chartData;
+                    // Create axes
+                    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                    categoryAxis.dataFields.category = "komponen";
+                    categoryAxis.renderer.grid.template.location = 0;
+                    categoryAxis.renderer.minGridDistance = 30;
 
-                var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-                valueAxis.title.text = "Ketercapaian Komponen";
-                valueAxis.min = 0;
-                valueAxis.max = 100;
-                valueAxis.strictMinMax = true; 
-                valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-                    return text + "%";
-                });
-                // Create series
-                var series = chart.series.push(new am4charts.ColumnSeries3D());
-                series.dataFields.valueY = "tercapai";
-                series.dataFields.categoryX = "komponen";
-                series.name = "Komponen Tercapai";
-                series.clustered = false;
-                //series.columns.template.tooltipText = "Komponen {category} tercapai: [bold]{valueY}[/]";
-                series.columns.template.tooltipHTML = "<center>Komponen tercapai: <br> <strong>{valueY}</strong></center>";
-                series.columns.template.fillOpacity = 0.9;
-                series.columns.template.showTooltipOn = "always";
-                series.tooltip.pointerOrientation = "top";
-                series.columns.template.width = am4core.percent(50);
-                var bullet = series.bullets.push(new am4charts.LabelBullet())
-                bullet.interactionsEnabled = false
-                bullet.dy = 90;
-                bullet.label.text = '{valueY}%'
-                bullet.label.fill = am4core.color('#ffffff')
-                var series2 = chart.series.push(new am4charts.ColumnSeries3D());
-                series2.dataFields.valueY = "total";
-                series2.dataFields.setTitle = "belum_tercapai";
-                series2.dataFields.categoryX = "komponen";
-                series2.name = "Komponen belum Tercapai";
-                series2.clustered = false;
-                series2.columns.template.tooltipHTML = "<center>Komponen belum tercapai: <br> <strong>{setTitle}</strong></center>";
-                series2.columns.template.fillOpacity = 0.9;
-                series2.columns.template.showTooltipOn = "always";
-                series2.columns.template.tooltipY = 10;
-                series2.columns.template.width = am4core.percent(60);
-                series2.tooltip.pointerOrientation = "down";
-                var bullet2 = series2.bullets.push(new am4charts.LabelBullet())
-                bullet2.interactionsEnabled = false
-                bullet2.dy = 10;
-                bullet2.label.text = '{setTitle}%'
-                bullet2.label.fill = am4core.color('red')
+                    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis.title.text = "Ketercapaian Komponen";
+                    valueAxis.min = 0;
+                    valueAxis.max = 100;
+                    valueAxis.strictMinMax = true; 
+                    valueAxis.renderer.labels.template.adapter.add("text", function(text) {
+                        return text + "%";
+                    });
+                    // Create series
+                    var series = chart.series.push(new am4charts.ColumnSeries3D());
+                    series.dataFields.valueY = "tercapai";
+                    series.dataFields.categoryX = "komponen";
+                    series.name = "Komponen Tercapai";
+                    series.clustered = false;
+                    //series.columns.template.tooltipText = "Komponen {category} tercapai: [bold]{valueY}[/]";
+                    series.columns.template.tooltipHTML = "<center>Komponen tercapai: <br> <strong>{valueY}</strong></center>";
+                    series.columns.template.fillOpacity = 0.9;
+                    series.columns.template.showTooltipOn = "always";
+                    series.tooltip.pointerOrientation = "top";
+                    series.columns.template.width = am4core.percent(50);
+                    series.columns.template.events.on("hit", function(ev) {
+                        console.log("clicked on ", ev.target);
+                    }, this);
+                    var bullet = series.bullets.push(new am4charts.LabelBullet())
+                    bullet.interactionsEnabled = false
+                    bullet.dy = 90;
+                    bullet.label.text = '{valueY}%'
+                    bullet.label.fill = am4core.color('#ffffff')
+                    var series2 = chart.series.push(new am4charts.ColumnSeries3D());
+                    series2.dataFields.valueY = "total";
+                    series2.dataFields.setTitle = "belum_tercapai";
+                    series2.dataFields.categoryX = "komponen";
+                    series2.name = "Komponen belum Tercapai";
+                    series2.clustered = false;
+                    series2.columns.template.tooltipHTML = "<center>Komponen belum tercapai: <br> <strong>{setTitle}</strong></center>";
+                    series2.columns.template.fillOpacity = 0.9;
+                    series2.columns.template.showTooltipOn = "always";
+                    series2.columns.template.tooltipY = 10;
+                    series2.columns.template.width = am4core.percent(60);
+                    series2.tooltip.pointerOrientation = "down";
+                    var bullet2 = series2.bullets.push(new am4charts.LabelBullet())
+                    bullet2.interactionsEnabled = false
+                    bullet2.dy = 10;
+                    bullet2.label.text = '{setTitle}%'
+                    bullet2.label.fill = am4core.color('red')
+                })();
             }
         },
         loadPostsData() {
@@ -507,7 +448,9 @@ export default {
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
                 let DataKeterangan = [];
+                let vm = this
                 $.each(getData.rapor_mutu.nilai_rapor_mutu.labels, function(key, valua) {
+                    vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua,
                         tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
@@ -515,133 +458,7 @@ export default {
                         total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
                 })
-                this.createChart(DataKeterangan)
-                if(getData.rapor_mutu.nilai_rapor_mutu){
-                    var barChartData = {
-                        //labels: ['Input', 'Proses', 'Output', 'Outcome', 'Impact'],
-                        labels: getData.rapor_mutu.nilai_rapor_mutu.labels,
-                        datasets: [{
-                            label: 'Nilai Komponen Tercapai',
-                            //backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6610f2', '#f012be', '#007bff'],
-                            backgroundColor: ['#33bec0', '#1ba68c', '#97bf3f', '#f2b035', '#f2522e'],
-                            borderColor: '#f4f7ec',
-                            borderWidth: 1,
-                            data: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai,
-                            bobot: getData.rapor_mutu.nilai_rapor_mutu.bobot_tercapai
-                        },
-                        {
-                            label: 'Nilai Komponen Ideal',
-                            //backgroundColor: ['#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d', '#6c757d'],
-                            backgroundColor: ['#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3', '#D3D3D3'],
-                            borderColor: '#f4f7ec',
-                            borderWidth: 1,
-                            data: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai,
-                            bobot: getData.rapor_mutu.nilai_rapor_mutu.bobot_belum_tercapai
-                        }]
-                    }
-                    let ctx_bar = document.getElementById('nilai_komponen')
-                    new Chart(ctx_bar, {
-                        type: 'bar',
-                        data: barChartData,
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            animation: {
-                                onComplete: function () {
-                                    var chartInstance = this.chart;
-                                    var ctx = chartInstance.ctx;
-                                    var height = chartInstance.controller.boxes[0].bottom;
-                                    ctx.textAlign = "center";
-                                    ctx.fillStyle = "#ffffff";
-                                    Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
-                                        var meta = chartInstance.controller.getDatasetMeta(i);
-                                        var atas = 90;
-                                        Chart.helpers.each(meta.data.forEach(function (bar, index) {
-                                            var nilai_per_komponen = parseFloat(dataset.data[index])
-                                            if(i==0){
-                                                ctx.fillText(nilai_per_komponen.toFixed(2), bar._model.x, height - ((height - bar._model.y) / 2 - 10));
-                                            } else {
-                                                ctx.fillText(nilai_per_komponen.toFixed(2), bar._model.x, height - ((height - bar._model.y) / 2 + 80));
-                                            }
-                                                //bar._model.x, height - ((height - bar._model.y) / 2)
-                                            //ctx.fillText('a:'+dataset.data[index], bar._model.x, height - ((height - bar._model.y) / 2));
-                                            
-                                        }),this)
-                                    }),this);
-                                }
-                            },
-                            legend: {
-                                display: false,
-                                position: 'bottom',
-                            },
-                            title: {
-                                display: false,
-                                text: 'Chart.js Bar Chart'
-                            },
-                            scales: {
-                                xAxes: [{
-                                    stacked: true
-                                }],
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true,
-                                        max:100
-                                    },
-                                    stacked: true
-                                }]
-                            },
-                            onClick: function (e) {
-                                //
-                            },
-                            tooltips: {
-                                mode: 'index',
-                                display: false,
-                                callbacks: {
-                                    title: function(tooltipItems, data) {
-                                        var title = '';
-                                        tooltipItems.forEach(function(tooltipItem) {
-                                            title = tooltipItem.xLabel
-                                        })
-                                        return 'Ketercapaian Komponen '+title
-                                    },
-                                    label: function(tooltipItem, data) {
-                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if(tooltipItem.datasetIndex == 1){
-                                            label += '100'
-                                        } else {
-                                            label += Math.round(tooltipItem.yLabel * 100) / 100;
-                                        }
-                                        return label+'%';
-                                    },
-                                    footer: function(tooltipItems, data) {
-                                        var sum = 0;
-                                        var bobot_tercapai = 0;
-                                        var bobot_belum_tercapai = 0;
-                                        tooltipItems.forEach(function(tooltipItem) {
-                                            bobot_tercapai = data.datasets[0].bobot[tooltipItem.index];
-                                            bobot_belum_tercapai = data.datasets[1].bobot[tooltipItem.index];
-                                            if(tooltipItem.datasetIndex == 0){
-                                                sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                                            }
-                                        });
-                                        var total_persentase = 100 - sum
-                                        var total_tercapai = parseFloat(bobot_tercapai)
-                                        var total_belum_tercapai = parseFloat(bobot_belum_tercapai)
-                                        var _return = 'Bobot tercapai:'+total_tercapai.toFixed(2)+'\n'
-                                        _return += 'Bobot belum tercapai:'+total_belum_tercapai.toFixed(2)+'\n'
-                                        _return += 'Persentase Ketidaktercapaian: ' + total_persentase.toFixed(2)+'%'
-                                        return _return;
-                                    },
-                                },
-                                footerFontStyle: 'normal'
-                            },
-                        }
-                    });
-                }
+                vm.createChart('chartdiv', DataKeterangan)
             });
         },
         cetak_rapor_mutu(data){
