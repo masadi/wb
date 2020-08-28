@@ -14,18 +14,33 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img class="d-block w-100"
-                                src="{{asset('vendor/img/apm-1.jpg')}}"
-                                alt="First slide">
+                                src="{{asset('vendor/img/apm-1.png')}}"
+                                alt="Alur Aplikasi Penjaminan Mutu">
                         </div>
                         <div class="carousel-item">
                             <img class="d-block w-100"
-                                src="{{asset('vendor/img/apm-2.jpg')}}"
-                                alt="Second slide">
+                                src="{{asset('vendor/img/apm-2.png')}}"
+                                alt="Alur Aplikasi Akses Sekolah">
                         </div>
                         <div class="carousel-item">
                             <img class="d-block w-100"
-                                src="{{asset('vendor/img/apm-3.jpg')}}"
-                                alt="Third slide">
+                                src="{{asset('vendor/img/apm-3.png')}}"
+                                alt="Alur Aplikasi Akses Tim Penjamin Mutu">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100"
+                                src="{{asset('vendor/img/apm-4.png')}}"
+                                alt="Alur Aplikasi Akses Direktorat">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100"
+                                src="{{asset('vendor/img/apm-5.jpg')}}"
+                                alt="Domain Aplikasi Penjaminan Mutu">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100"
+                                src="{{asset('vendor/img/apm-6.jpg')}}"
+                                alt="Launching Aplikasi Penjaminan Mutu">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

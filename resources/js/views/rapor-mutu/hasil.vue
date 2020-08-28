@@ -440,7 +440,6 @@ export default {
                 bullet.dy = 90;
                 bullet.label.text = '{valueY}%'
                 bullet.label.fill = am4core.color('#ffffff')
-                console.log(bullet);
                 var series2 = chart.series.push(new am4charts.ColumnSeries3D());
                 series2.dataFields.valueY = "total";
                 series2.dataFields.setTitle = "belum_tercapai";
