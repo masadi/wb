@@ -434,6 +434,7 @@ export default {
                 series.columns.template.fillOpacity = 0.9;
                 series.columns.template.showTooltipOn = "always";
                 series.tooltip.pointerOrientation = "top";
+                series.columns.template.width = am4core.percent(50);
                 var bullet = series.bullets.push(new am4charts.LabelBullet())
                 bullet.interactionsEnabled = false
                 bullet.dy = 90;
@@ -450,6 +451,7 @@ export default {
                 series2.columns.template.fillOpacity = 0.9;
                 series2.columns.template.showTooltipOn = "always";
                 series2.columns.template.tooltipY = 10;
+                series2.columns.template.width = am4core.percent(60);
                 series2.tooltip.pointerOrientation = "down";
                 var bullet2 = series2.bullets.push(new am4charts.LabelBullet())
                 bullet2.interactionsEnabled = false
