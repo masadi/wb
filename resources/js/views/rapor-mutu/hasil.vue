@@ -366,15 +366,14 @@ export default {
                     series.dataFields.categoryX = "komponen";
                     series.name = "Komponen Tercapai";
                     series.clustered = false;
-                    //series.columns.template.tooltipText = "Komponen {category} tercapai: [bold]{valueY}[/]";
                     series.columns.template.tooltipHTML = "<center>Komponen tercapai: <br> <strong>{valueY}</strong></center>";
                     series.columns.template.fillOpacity = 0.9;
                     series.columns.template.showTooltipOn = "always";
                     series.tooltip.pointerOrientation = "top";
                     series.columns.template.width = am4core.percent(50);
-                    series.columns.template.events.on("hit", function(ev) {
+                    /*series.columns.template.events.on("hit", function(ev) {
                         console.log("clicked on ", ev.target);
-                    }, this);
+                    }, this);*/
                     var bullet = series.bullets.push(new am4charts.LabelBullet())
                     bullet.interactionsEnabled = false
                     bullet.dy = 90;
