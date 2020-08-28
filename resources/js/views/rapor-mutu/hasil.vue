@@ -143,7 +143,7 @@
                                     <tbody>
                                         <tr v-for="(kuisioner, key) in kuisioners">
                                             <td class="text-center">{{key + 1}}</td>
-                                            <td>{{kuisioner.nama}}</td>
+                                            <td><span @click="batang(kuisioner.id)">{{kuisioner.nama}}</span></td>
                                             <td class="text-center">{{(kuisioner.nilai_komponen) ? kuisioner.nilai_komponen.total_nilai : 0}}</td>
                                             <td class="text-center">{{(kuisioner.nilai_komponen) ? kuisioner.nilai_komponen.predikat : '-'}}</td>
                                             <td class="text-center">
@@ -236,6 +236,14 @@
             </div>
         </section>
         <my-loader/>
+        <b-modal ref="my-modal" hide-footer title="Using Component Methods">
+            <template v-slot:modal-title>
+            Using <code>$bvModal</code> Methods
+            </template>
+            <div class="d-block text-center">
+                <batang :isi_batang="isi_batang"></batang>
+            </div>
+        </b-modal>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -249,6 +257,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
 am4core.useTheme(am4themes_animated);
 //import RaporMutu from './../components/RaporMutu.vue'
+import Batang from './../components/Batang.vue'
 import axios from 'axios' //IMPORT AXIOS
 export default {
     created() {
@@ -307,7 +316,11 @@ export default {
             show_spinner_cetak: false,
             show_text_cetak: true,
             chartData: [],
+            isi_batang: null,
         }
+    },
+    components: {
+        'batang' : Batang,
     },
     beforeDestroy() {
         if (this.chart) {
@@ -328,6 +341,10 @@ export default {
         }
     },
     methods: {
+        batang(id){
+            this.isi_batang = id
+            this.$refs['my-modal'].show()
+        },
         createChart(chartID, chartData) {
             //console.log(this.$refs[chartID]);
             if(chartData){
