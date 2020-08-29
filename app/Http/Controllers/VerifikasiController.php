@@ -177,7 +177,8 @@ class VerifikasiController extends Controller
                 if($request->supervisi){
                     $query->whereHas('rapor_mutu', function($query){
                         $query->whereHas('status_rapor', function($query){
-                            $query->where('status', 'waiting');
+                            $query->where('status', 'terkirim');
+                            $query->orWhere('status', 'waiting');
                         });
                     });
                 } else {
@@ -205,7 +206,7 @@ class VerifikasiController extends Controller
     }
     public function get_kirim_verval(Request $request){
         $jenis = Jenis_rapor::where('jenis', 'verval')->first();
-        $status = Status_rapor::where('status', 'waiting')->first();
+        $status = Status_rapor::where('status', 'terkirim')->first();
         $kirim_verval = Rapor_mutu::updateOrCreate(
             [
                 'jenis_rapor_id' => $jenis->id,
@@ -217,13 +218,13 @@ class VerifikasiController extends Controller
         if($kirim_verval){
             $respone = [
                 'title' => 'Berhasil',
-                'text' => 'Hasil verifikasi dan validasi berhasil dilaporkan!',
+                'text' => 'Hasil verifikasi dan validasi berhasil disimpan!',
                 'icon' => 'success',
             ];
         } else {
             $respone = [
                 'title' => 'Gagal',
-                'text' => 'Hasil verifikasi dan validasi gagal dilaporkan. Silahkan coba beberapa saat lagi!',
+                'text' => 'Hasil verifikasi dan validasi gagal disimpan. Silahkan coba beberapa saat lagi!',
                 'icon' => 'error',
             ];
         }
@@ -241,16 +242,29 @@ class VerifikasiController extends Controller
             $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
         })->first();
         if($delete_rapor){
-            if($delete_rapor->delete()){
+            $status = Status_rapor::where('status', 'terkirim')->first();
+            $delete_rapor->status_rapor_id = $status->id;
+            if($delete_rapor->save()){
+                $jenis_berita_acara = Jenis_berita_acara::where('jenis', 'verifikasi')->first();
+                Berita_acara::where(function($query) use ($request, $jenis_berita_acara){
+                    $query->where('jenis_berita_id', $jenis_berita_acara->id);
+                    $query->where('verifikator_id', $request->user_id);
+                    $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
+                })->delete();
+                $jenis_dokumen = Jenis_dokumen::where('jenis', 'berita_acara')->first();
+                Dokumen::where(function($query) use ($request, $jenis_dokumen){
+                    $query->where('jenis_dokumen_id', $jenis_dokumen->id);
+                    $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
+                })->delete();
                 $respone = [
                     'title' => 'Berhasil',
-                    'text' => 'Laporan hasil verifikasi dan validasi berhasil dihapus!',
+                    'text' => 'Laporan hasil verifikasi dan validasi berhasil dibatalkan!',
                     'icon' => 'success',
                 ];
             } else {
                 $respone = [
                     'title' => 'Gagal',
-                    'text' => 'Laporan verifikasi dan validasi gagal dihapus. Silahkan coba beberapa saat lagi!',
+                    'text' => 'Laporan verifikasi dan validasi gagal dibatalkan. Silahkan coba beberapa saat lagi!',
                     'icon' => 'error',
                 ];
             }
@@ -264,9 +278,10 @@ class VerifikasiController extends Controller
         return response()->json($respone);
     }
     public function get_laporan(Request $request){
-        $rapor = Rapor_mutu::where(function($query) use ($request){
+        $rapor = Rapor_mutu::with(['status_rapor', 'sekolah.tahun_pendataan'])->where(function($query) use ($request){
             $query->whereHas('status_rapor', function($query){
-                $query->where('status', 'waiting');
+                $query->where('status', 'terkirim');
+                $query->orWhere('status', 'waiting');
             });
             $query->whereHas('jenis_rapor', function($query){
                 $query->where('jenis', 'verval');
@@ -281,9 +296,19 @@ class VerifikasiController extends Controller
         return response()->json($respone);
     }
     public function get_kirim(Request $request){
+        $messages = [
+            'rapor_mutu_id.exists'	=> 'Berkas berita acara tidak boleh kosong',
+        ];
+        $validator = Validator::make(request()->all(), [
+            'rapor_mutu_id' => 'exists:berita_acara',
+        ],
+        $messages
+        )->validate();
+        $status = Status_rapor::where('status', 'waiting')->first();
         $rapor = Rapor_mutu::find($request->rapor_mutu_id);
         if($rapor){
             $rapor->keterangan = $request->keterangan;
+            $rapor->status_rapor_id = $status->id;
             if($rapor->save()){
                 $respone = [
                     'icon' => 'success',

@@ -46,7 +46,7 @@
                                     <div class="form-group  row" v-show="simpan">
                                         <label class="col-sm-2 col-form-label">Unggah Berita Acara</label>
                                         <div class="col-sm-10">
-                                            <input type="file" name="file" @change="fileUpload($event.target)"
+                                            <input type="file" ref="fileupload" name="file" @change="fileUpload($event.target)"
                                             class="form-control" :class="{ 'is-invalid': form.errors.has('file') }">
                                             <div class="invalid-feedback" v-bind:style="{ display: displayError }">
                                                 {{errorText}}
@@ -63,10 +63,63 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div v-show="simpan">
+                                        <h3>PERNYATAAN PENGIRIMAN LAPORAN HASIL VERIFIKASI DAN VALIDASI</h3>
+                                        <p>Dengan ini Saya sebagai Tim Verifikator menyatakan bahwa data yang diisi oleh
+                                            sekolah <strong>{{nama_sekolah}}</strong> pada kuesioner Penjaminan Mutu SMK
+                                            <strong>tahun pendataan {{tahun_pendataan}}</strong> telah diperiksa
+                                            kebenarannya dan telah sesuai dengan fakta yang ada di lapangan.</p>
+
+                                        <p>Saya sepenuhnya siap bertanggung jawab apabila di kemudian hari ditemukan
+                                            ketidaksesuaian antara data yang diisi di kuesioner Penjaminan Mutu SMK dengan
+                                            fakta yang ada di lapangan, dan Saya siap menerima sanksi moral, sanksi
+                                            administrasi, dan sanksi hukum sesuai dengan peraturan dan perundang-undangan
+                                            yang berlaku.</p>
+
+                                        <p>Tim Verifikator</p>
+
+                                        <p class="text-bold">{{detilUser.name}}</p>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input :disabled='isCheckbox' class="custom-control-input" type="checkbox"
+                                                    id="terms" v-model='terms'>
+                                                <label for="terms" class="custom-control-label">Saya setuju dengan
+                                                    pernyataan di atas</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3" v-show="simpan">
+                                        <div v-show="progress_rapor_mutu=='waiting'" class="alert alert-warning">
+                                            <h5><i class="icon fas fa-exclamation-triangle"></i> LAPORAN MENUNGGU DIPROSES!</h5>
+                                            Laporan hasil verifikasi dan validasi sedang dalam antrian.
+                                        </div>
+                                        <div v-show="progress_rapor_mutu=='proses'" class="alert alert-info">
+                                            <h5><i class="icon fas fa-info"></i> LAPORAN SEDANG DIPROSES!</h5>
+                                            Laporan hasil verifikasi dan validasi saat ini sedang dalam proses pemeriksaan
+                                        </div>
+                                        <div v-show="progress_rapor_mutu=='terima'" class="alert alert-success">
+                                            <h5><i class="icon fas fa-check"></i> LAPORAN DITERIMA</h5>
+                                            {{keterangan}}
+                                        </div>
+                                        <div v-show="progress_rapor_mutu=='tolak'" class="alert alert-danger">
+                                            <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
+                                            {{keterangan}}
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                             <div class="card-footer" v-show="simpan">
-                                <button type="button" class="btn btn-lg btn-primary btn-flat" v-on:click="kirimLaporan">KIRIM LAPORAN SUPERVISI</button>
+                                <!--button type="button" class="btn btn-lg btn-primary btn-flat" v-on:click="kirimLaporan">KIRIM LAPORAN SUPERVISI</button-->
+                                <b-button squared variant="primary" size="lg" :disabled='isDisabled' v-on:click="kirimLaporan">
+                                    <b-spinner small v-show="show_spinner_kirim"></b-spinner>
+                                    <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
+                                    <span v-show="show_text_kirim">KIRIM LAPORAN SUPERVISI HASIL VERIFIKASI &amp; VALIDASI</span>
+                                </b-button>
+                                <b-button squared variant="danger" size="lg" :disabled='isBatal' v-on:click="batalLaporan">
+                                    <b-spinner small v-show="show_spinner_batal"></b-spinner>
+                                    <span class="sr-only" v-show="show_spinner_batal">Loading...</span>
+                                    <span v-show="show_text_batal">BATALKAN KIRIM LAPORAN HASIL VERIFIKASI &amp; VALIDASI</span>
+                                </b-button>
                             </div>
                         </div>
                     </div>
@@ -83,10 +136,18 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     //KETIKA COMPONENT INI DILOAD
         data() {
             return {
+                isCheckbox : false,
+                terms: false,
+                isBatal : true,
+                isShow : false,
+                nama_sekolah : null,
+                tahun_pendataan: null,
                 displayError: 'none',
                 displaySuccess: 'none',
                 errorText: '',
                 progressBar: 0,
+                progress_rapor_mutu: '',
+                keterangan: '',
                 editor: ClassicEditor,
                 editorData: '',
                 editorConfig: { 
@@ -102,6 +163,15 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                 sekolah_id: '',
                 sekolah: [],
                 simpan:false,
+                show_spinner_kirim: false,
+                show_text_kirim: true,
+                show_spinner_batal: false,
+                show_text_batal: true
+            }
+        },
+        computed: {
+            isDisabled: function(){
+                return !this.terms;
             }
         },
         created() {
@@ -167,12 +237,12 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
             //CKEDITOR END
             getLaporan(e){
                 if(!e){
-                    this.sekolah = []
+                    //this.sekolah = []
                     this.simpan = false
                     return false
                 }
                 if(!e.value){
-                    this.sekolah = []
+                    //this.sekolah = []
                     this.simpan = false
                     return false;
                 }
@@ -184,28 +254,92 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                 })
                 .then((response) => {
                     let getData = response.data
-                    console.log(getData.data.keterangan)
+                    console.log(getData.data)
                     this.form.rapor_mutu_id = getData.data.rapor_mutu_id
                     this.form.sekolah_sasaran_id = getData.data.sekolah_sasaran_id
                     this.form.verifikator_id = getData.data.verifikator_id
                     if(getData.data.keterangan){
                         this.form.keterangan = getData.data.keterangan
                     }
+                    if(getData.data.status_rapor.status !== 'terkirim'){
+                        this.isCheckbox = true
+                        this.isBatal = false
+                    } else {
+                        this.isBatal = true
+                    }
+                    this.progress_rapor_mutu = getData.data.status_rapor.status
+                    this.terms = false
                     this.simpan = true
+                    this.isShow = true
+                    this.nama_sekolah = getData.data.sekolah.nama
+                    this.tahun_pendataan = getData.data.sekolah.tahun_pendataan.tahun_pendataan_id
+                    const input = this.$refs.fileupload;
+                    input.type = 'text'
+                    input.type = 'file'
+                    this.displayError = 'none'
+                    this.displaySuccess = 'none'
                 })
             },
             kirimLaporan(){
                 this.form.post('/api/verifikasi/kirim').then((response)=>{
                     Toast.fire({
-                        icon: 'success',
+                        icon: response.icon,
                         title: response.message
                     });
+                    this.simpan = false
                     this.loadPostsData();
-                }).catch((e)=>{
-                    Toast.fire({
+                }).catch((error)=>{
+                    console.log(error);
+                    var errors = [];
+                    $.each(error, function(i, item){
+                        errors.push(item[0]);
+                    })
+                    //this.errorText = errors.join('<br>')
+                    /*Toast.fire({
                         icon: 'error',
-                        title: 'Some error occured! Please try again'
-                    });
+                        title: errors.join('<br>')
+                    });*/
+                    Swal.fire({
+                        title: 'Gagal',
+                        html: errors.join('<br>'),
+                        icon: 'error'
+                    })
+                })
+            },
+            batalLaporan : function (event) {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Proses pembatalan laporan hasil verifikasi dan validasi!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.value) {
+                        this.show_spinner_batal = true
+                        this.show_text_batal = false
+                        axios.post(`/api/verifikasi/batal-verval`, {
+                            user_id: user.user_id,
+                            sekolah_sasaran_id: this.form.sekolah_sasaran_id
+                        }).then((response) => {
+                            Swal.fire(
+                                response.data.title,
+                                response.data.text,
+                                response.data.icon
+                            ).then(()=>{
+                                /*this.isShow = false
+                                this.komponen = []
+                                this.form.sekolah_id = ''
+                                this.loadPostsData()*/
+                                this.isBatal = true
+                                this.isCheckbox = false
+                                this.simpan = false
+                                this.loadPostsData();
+                            });
+                        })
+                    }
                 })
             },
             loadPostsData() {
@@ -219,6 +353,11 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                     this.form.rapor_mutu_id = ''
                     this.sekolah_id = ''
                     this.form.keterangan = ''
+                    this.terms = false
+                    this.show_spinner_kirim = false
+                    this.show_text_kirim = true
+                    this.show_spinner_batal = false
+                    this.show_text_batal = true
                 })
             }
         }

@@ -27,6 +27,7 @@ class TahunSeeder extends Seeder
             'pengesahan' => 'Pengesahan Pusat',
         ];
         $status_rapor = [
+            'terkirim' => 'Terkirim',
             'waiting' => 'Menunggu',
             'proses' => 'Telah di Proses',
             'terima' => 'Diterima',

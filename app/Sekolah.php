@@ -47,4 +47,16 @@ class Sekolah extends Model
             'sekolah_sasaran.sekolah_sasaran_id' // Local key on Sekolah_sasaran table...
         );
     }
+    public function tahun_pendataan()
+    {
+        //return $this->belongsTo('App\Tahun_pendataan', 'tahun_pendataan_id', 'tahun_pendataan_id');
+        return $this->hasOneThrough(
+            'App\Tahun_pendataan',
+            'App\Sekolah_sasaran',
+            'sekolah_id', // Foreign key on Sekolah_sasaran table...
+            'tahun_pendataan_id', // Foreign key on Sekolah table...
+            'sekolah_id', // Local key on Rapor_mutu table...
+            'tahun_pendataan_id' // Local key on Sekolah_sasaran table...
+        );
+    }
 }

@@ -57,38 +57,12 @@
                                     </tbody>
                                 </table>
                                 <div class="mt-3" v-show="isShow">
-                                    <h3>PERNYATAAN PENGIRIMAN LAPORAN HASIL VERIFIKASI DAN VALIDASI</h3>
-                                    <p>Dengan ini Saya sebagai Tim Verifikator menyatakan bahwa data yang diisi oleh
-                                        sekolah <strong>{{nama_sekolah}}</strong> pada kuesioner Penjaminan Mutu SMK
-                                        <strong>tahun pendataan {{tahun_pendataan}}</strong> telah diperiksa
-                                        kebenarannya dan telah sesuai dengan fakta yang ada di lapangan.</p>
-
-                                    <p>Saya sepenuhnya siap bertanggung jawab apabila di kemudian hari ditemukan
-                                        ketidaksesuaian antara data yang diisi di kuesioner Penjaminan Mutu SMK dengan
-                                        fakta yang ada di lapangan, dan Saya siap menerima sanksi moral, sanksi
-                                        administrasi, dan sanksi hukum sesuai dengan peraturan dan perundang-undangan
-                                        yang berlaku.</p>
-
-                                    <p>Tim Verifikator</p>
-
-                                    <p class="text-bold">{{detilUser.name}}</p>
-                                    <div v-show="progress=='waiting'" class="alert alert-warning">
-                                        <h5><i class="icon fas fa-exclamation-triangle"></i> LAPORAN MENUNGGU DIPROSES!</h5>
-                                        Laporan hasil verifikasi dan validasi sedang dalam proses antrian. Anda masih diperkenankan untuk membatalkan laporan
-                                    </div>
-                                    <div v-show="progress=='proses'" class="alert alert-info">
-                                        <h5><i class="icon fas fa-info"></i> LAPORAN SEDANG DIPROSES!</h5>
-                                        Laporan hasil verifikasi dan validasi saat ini sedang dalam proses pemeriksaan
-                                    </div>
-                                    <div v-show="progress=='terima'" class="alert alert-success">
-                                        <h5><i class="icon fas fa-check"></i> LAPORAN DITERIMA</h5>
-                                        {{keterangan}}
-                                    </div>
-                                    <div v-show="progress=='tolak'" class="alert alert-danger">
-                                        <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
-                                        {{keterangan}}
-                                    </div>
-                                    <div v-show="progress=='waiting' || progress==''">
+                                    <b-button squared variant="primary" size="lg" v-on:click="simpan_verval">
+                                        <b-spinner small v-show="show_spinner_kirim"></b-spinner>
+                                        <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
+                                        <span v-show="show_text_kirim">SIMPAN HASIL VERIFIKASI &amp; VALIDASI</span>
+                                    </b-button>
+                                    <!--div v-show="progress=='waiting' || progress==''">
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
                                                 <input :disabled='isCheckbox' class="custom-control-input" type="checkbox"
@@ -97,11 +71,7 @@
                                                     pernyataan di atas</label>
                                             </div>
                                         </div>
-                                        <!--button type="button" :disabled='isDisabled' class="btn btn-primary btn-lg btn-flat"
-                                            v-on:click="kirim_verval">KIRIM LAPORAN</button>
-                                        <button type="button" :disabled='isBatal' class="btn btn-danger btn-lg btn-flat"
-                                            v-on:click="batal_verval">BATALKAN LAPORAN</button-->
-                                        <b-button squared variant="primary" size="lg" :disabled='isDisabled' v-on:click="kirim_verval">
+                                        <b-button squared variant="primary" size="lg" :disabled='isDisabled' v-on:click="kirim_Sverval">
                                             <b-spinner small v-show="show_spinner_kirim"></b-spinner>
                                             <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
                                             <span v-show="show_text_kirim">KIRIM HASIL VERIFIKASI &amp; VALIDASI</span>
@@ -111,7 +81,7 @@
                                             <span class="sr-only" v-show="show_spinner_batal">Loading...</span>
                                             <span v-show="show_text_batal">BATALKAN KIRIM HASIL VERIFIKASI &amp; VALIDASI</span>
                                         </b-button>
-                                    </div>
+                                    </div-->
                                 </div>
                             </div>
                         </div>
@@ -128,11 +98,6 @@
     //KETIKA COMPONENT INI DILOAD
         data() {
             return {
-                terms: false,
-                nama_sekolah : null,
-                tahun_pendataan: null,
-                isBatal : true,
-                isCheckbox : false,
                 isShow : false,
                 form: new Form({
                     verifikator_id:user.user_id,
@@ -141,23 +106,39 @@
                 sekolah: [],
                 simpan:false,
                 komponen: [],
-                progress: 'waiting',
-                keterangan: '',
                 show_spinner_kirim: false,
                 show_text_kirim: true,
                 show_spinner_batal: false,
                 show_text_batal: true
             }
         },
-        computed: {
-            isDisabled: function(){
-                return !this.terms;
-            }
-        },
         created() {
             this.loadPostsData()
         },
         methods: {
+            simpan_verval : function (event) {
+                this.show_spinner_kirim = true
+                this.show_text_kirim = false
+                axios.post(`/api/verifikasi/kirim-verval`, {
+                    user_id: user.user_id,
+                    sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
+                }).then((response) => {
+                    console.log(response)
+                    Swal.fire({
+                        title: response.data.title,
+                        text: response.data.text,
+                        icon: response.data.icon
+                    }).then(()=>{
+                        this.isShow = false
+                        this.komponen = []
+                        this.form.sekolah_id = ''
+                        this.isCheckbox = true
+                        this.isBatal = false
+                        this.terms = ''
+                        this.loadPostsData()
+                    });
+                })
+            },
             getInstrumen(e){
                 if(!e){
                     this.komponen = []
@@ -173,8 +154,6 @@
                     let getData = response.data
                     this.komponen = getData.data
                     this.isShow = true
-                    this.nama_sekolah = getData.sekolah.nama
-                    this.tahun_pendataan = getData.tahun_pendataan
                     let raporMutu = getData.sekolah.sekolah_sasaran.rapor_mutu
                     if(raporMutu){
                         this.isCheckbox = true
@@ -190,81 +169,6 @@
                         this.keterangan = ''
                     }
                     
-                })
-            },
-            kirim_verval : function (event) {
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Jika ada kesalahan laporan hasil verifikasi dan validasi, Anda dapat membatalkan Pernyataan ini sebelum di validasi oleh Tim Direktorat!",
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.value) {
-                        this.show_spinner_kirim = true
-                        this.show_text_kirim = false
-                        axios.post(`/api/verifikasi/kirim-verval`, {
-                            user_id: user.user_id,
-                            sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
-                        }).then((response) => {
-                            console.log(response)
-                            Swal.fire(
-                                response.data.title,
-                                response.data.text,
-                                response.data.icon
-                            ).then(()=>{
-                                this.isShow = false
-                                this.komponen = []
-                                this.form.sekolah_id = ''
-                                this.nama_sekolah = ''
-                                this.tahun_pendataan = ''
-                                this.isCheckbox = true
-                                this.isBatal = false
-                                this.terms = ''
-                                this.loadPostsData()
-                            });
-                        })
-                    }
-                })
-            },
-            batal_verval : function (event) {
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Proses pembatalan laporan hasil verifikasi dan validasi!",
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.value) {
-                        this.show_spinner_batal = true
-                        this.show_text_batal = false
-                        axios.post(`/api/verifikasi/batal-verval`, {
-                            user_id: user.user_id,
-                            sekolah_sasaran_id: this.form.sekolah_id.sekolah_sasaran_id
-                        }).then((response) => {
-                            Swal.fire(
-                                response.data.title,
-                                response.data.text,
-                                response.data.icon
-                            ).then(()=>{
-                                this.isShow = false
-                                this.komponen = []
-                                this.form.sekolah_id = ''
-                                this.nama_sekolah = ''
-                                this.tahun_pendataan = ''
-                                this.isCheckbox = true
-                                this.isBatal = false
-                                this.terms = ''
-                                this.loadPostsData()
-                            });
-                        })
-                    }
                 })
             },
             loadPostsData() {
