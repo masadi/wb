@@ -96,10 +96,36 @@ class RaporController extends Controller
         ]);
     }
     public function cetak_pakta(Request $request){
-        $user = User::with(['sekolah'])->find($request->user_id);
-        $data['sekolah'] = $user->sekolah;
+        $user = User::with(['sekolah', 'nilai_akhir'])->find($request->user_id);
+        /*$data['sekolah'] = $user->sekolah;
         $data['now'] = HelperModel::TanggalIndo(Carbon::now());
-        $data['tahun_pendataan'] = HelperModel::tahun_pendataan();
+        $data['tahun_pendataan'] = HelperModel::tahun_pendataan();*/
+        $data = [
+            'sekolah' => $user->sekolah,
+            'now' => HelperModel::TanggalIndo(Carbon::now()),
+            'tahun_pendataan' => HelperModel::tahun_pendataan(),
+            'nilai_rapor_mutu' => ($user->nilai_akhir) ? $user->nilai_akhir->nilai : 0,
+            'predikat_sekolah' => ($user->nilai_akhir) ? $user->nilai_akhir->predikat : '-',
+            'nilai_komponen' => $komponen = Komponen::with(['nilai_komponen' => function($query) use ($request){
+                $query->where('user_id', $request->user_id);
+            }, 'aspek' => function($query) use ($request){
+                $query->with(['atribut' => function($query) use ($request){
+                    $query->with(['indikator' => function($query) use ($request){
+                        $query->with(['atribut.aspek.komponen', 'instrumen' => function($query) use ($request){
+                            $query->where('urut', 0);
+                        }]);
+                    }]);
+                }, 'nilai_aspek' => function($query) use ($request){
+                    $query->where('user_id', $request->user_id);
+                }, 'instrumen' => function($query) use ($request){
+                    $query->where('urut', 0);
+                    $query->with(['nilai_instrumen' => function($query) use ($request){
+                        $query->where('user_id', $request->user_id);
+                        $query->whereNull('verifikator_id');
+                    }]);
+                }]);
+            }])->get(),
+        ];
         //return view('cetak.pakta_integritas', $data);
         $pdf = PDF::loadView('cetak.pakta_integritas', $data);
         return $pdf->stream('pakta-integritas.pdf');

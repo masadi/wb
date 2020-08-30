@@ -34,6 +34,41 @@ class HelperModel
         $jenis_rapor = Jenis_rapor::where('jenis', $jenis)->first();
         return $jenis_rapor->id;
     }
+    public static function bintang_pdf($nilai){
+        $html = '';
+        if($nilai < 20){
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+        } elseif($nilai < 40) {
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+        } elseif($nilai < 60) {
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+        } elseif($nilai < 80) {
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+        } else {
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+        }
+        return $html;
+    }
     public static function rapor_mutu($user_id){
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');

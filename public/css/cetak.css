@@ -4,6 +4,7 @@ body {
     font-family: Times;
     font-size: 12px;
     text-align: justify;
+    color: #000;
 }
 
 ol.componen {
@@ -34,4 +35,8 @@ li.text-bold {
 th,
 td {
     padding: 5px;
+}
+
+.bintang {
+    color: orange;
 }

@@ -23,7 +23,7 @@
                             <div class="card-body">
                                 <h3>PAKTA INTEGRITAS SEKOLAH</h3>
                                 <span class="text-muted"><i class="fas fa-clock"></i> {{tanggal}}</span>
-
+                                <!--
                                 <p>Dengan ini Saya sebagai Kepala Sekolah {{nama_sekolah}} menyatakan bahwa data yang diisi pada kuesioner Penjaminan Mutu SMK tahun pendataan {{tahun_pendataan}} telah diperiksa kebenarannya dan telah sesuai dengan fakta yang ada di lapangan.</p>
 
                                 <p>Saya sepenuhnya siap bertanggung jawab apabila di kemudian hari ditemukan ketidaksesuaian antara data yang diisi di kuesioner Penjaminan Mutu SMK dengan fakta yang ada di lapangan, dan Saya siap menerima sanksi moral, sanksi administrasi, dan sanksi hukum sesuai dengan peraturan dan perundang-undangan yang berlaku.</p>
@@ -31,6 +31,40 @@
                                 <p>Penanggungjawab</p>
 
                                 <p>Kepala Sekolah {{nama_sekolah}}</p>
+                                -->
+                                <p>Yang bertanda tangan di bawah ini :</p>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="10%">Nama</td>
+                                        <td width="1%">:</td>
+                                        <td width="89%">{{nama_kepsek}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NIP</td>
+                                        <td>:</td>
+                                        <td>{{nip_kepsek}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jabatan</td>
+                                        <td>:</td>
+                                        <td>Kepala Sekolah</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Unit Kerja</td>
+                                        <td>:</td>
+                                        <td>{{nama_sekolah}}</td>
+                                    </tr>
+                                </table>
+                                <p>Menyatakan bahwa seluruh data yang diisikan dalam instrumen Aplikasi Penjaminan Mutu SMK (APM SMK) sudah sesuai dengan data yang sebenarnya.</p>
+                                <p>Jika dikemudian hari ditemukan ketidaksesuaian antara data yang dikirimkan dengan data yang ada, saya siap menerima sanksi baik secara moral atau  administrasi.</p>
+
+                                <p>{{kabupaten_kota}}, {{tanggal_ttd}}<br>
+                                Kepala Sekolah</p>
+                                <p></p>
+                                <p></p>
+                                <p>{{nama_kepsek}}<br>
+                                NIP. {{nip_kepsek}}</p>
+
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
                                         <input :disabled='isCheckbox' class="custom-control-input" type="checkbox" id="terms" v-model='terms'>
@@ -67,6 +101,10 @@
     //KETIKA COMPONENT INI DILOAD
         data() {
             return {
+                nama_kepsek: null,
+                nip_kepsek: null,
+                kabupaten_kota: null,
+                tanggal_ttd: null,
                 terms: false,
                 tanggal : null,
                 nama_sekolah : null,
@@ -191,10 +229,16 @@
                     user_id: user.user_id,
                 })
                 .then((response) => {
+                    var currentDate = new Date();
+                    var formatted_date = new Date().toJSON().slice(0,10).replace(/-/g,'-');
                     let getData = response.data
                     this.nama_sekolah = getData.user.name
+                    this.nama_kepsek = getData.user.sekolah.nama_kepsek
+                    this.nip_kepsek = (getData.user.sekolah.nip_kepsek) ? getData.user.sekolah.nip_kepsek : '-'
+                    this.kabupaten_kota = getData.user.sekolah.kabupaten
                     this.tahun_pendataan = getData.tahun_pendataan.tahun_pendataan_id
                     this.tanggal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at) : '-' : '-'
+                    this.tanggal_ttd = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at, false) : this.tanggalIndo(formatted_date, false) : this.tanggalIndo(formatted_date, false)
                     this.isBatal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? false : true : true
                     if(getData.user.nilai_akhir && this.isBatal){
                         this.isCheckbox = false
@@ -222,7 +266,7 @@
                     this.show_spinner_kirim = false
                 })
             },
-            tanggalIndo(time){
+            tanggalIndo(time, full = true){
                 if(!time){
                     return false
                 }
@@ -277,6 +321,9 @@
                     break
                 }
                 let result =  hari + ", " + tanggal + " " + bulan + " " + tahun+ " " + jam + ":" + menit + ":" + detik;
+                if(!full){
+                    result =  tanggal + " " + bulan + " " + tahun;
+                }
                 return result
                 //var tampilWaktu = "Jam: " + jam + ":" + menit + ":" + detik;
             },

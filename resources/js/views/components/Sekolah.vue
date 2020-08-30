@@ -45,7 +45,11 @@
                         <b-dropdown-item href="javascript:" @click="cetakInstrumen(row.item)"><i class="fas fa-print"></i> Cetak Instrumen</b-dropdown-item>
                         <b-dropdown-item href="javascript:" v-show="isDisabled(row.item.sekolah_sasaran)" @click="openVerifikasi(row.item.user.user_id)"><i class="fas fa-check"></i> Proses Verifikasi</b-dropdown-item>
                     </b-dropdown>
-                    <button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button>
+                    <!--button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button-->
+                    <b-dropdown v-show="user.sekolah_id" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
+                        <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
+                    </b-dropdown>
                     <!--button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button-->
                     <button v-show="hasRole('direktorat')" class="btn btn-warning btn-sm" @click="openShowModal(row)">Detil</button>
                 </template>
@@ -124,6 +128,10 @@
                     <td>Status Sekolah</td>
                     <td>: {{(modalText.status_sekolah == 1) ? 'Negeri' : 'Swasta'}}</td>
                 </tr>
+                <tr>
+                    <td>Nama Kepala Sekolah</td>
+                    <td>: {{modalText.nama_kepsek}}</td>
+                </tr>
             </table>
             <template v-slot:modal-footer>
                 <div class="w-100 float-right">
@@ -146,10 +154,20 @@
             </template>
             <template v-slot:default="{ hide }">
                 <div class="form-group">
-                    <label>NPSN</label>
+                    <label>Nama Sekolah</label>
                     <input v-model="form.id" type="hidden" name="id" class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
                     <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('npsn') }">
                     <has-error :form="form" field="npsn"></has-error>
+                </div>
+                <div class="form-group">
+                    <label>Nama Kepala Sekolah</label>
+                    <input v-model="form.nama_kepsek" type="text" name="nama_kepsek" class="form-control" :class="{ 'is-invalid': form.errors.has('nama_kepsek') }">
+                    <has-error :form="form" field="nama_kepsek"></has-error>
+                </div>
+                <div class="form-group">
+                    <label>NIP Kepala Sekolah</label>
+                    <input v-model="form.nip_kepsek" type="text" name="nip_kepsek" class="form-control" :class="{ 'is-invalid': form.errors.has('nip_kepsek') }">
+                    <has-error :form="form" field="nip_kepsek"></has-error>
                 </div>
             </template>
             <template v-slot:modal-footer="{ hide }">
@@ -196,7 +214,8 @@ export default {
             form: new Form({
                 id : '',
                 nama: '',
-                //npsn: '',
+                nama_kepsek: '',
+                nip_kepsek: '',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -322,7 +341,8 @@ export default {
             this.editModal = true
             this.form.id = row.item.sekolah_id
             this.form.nama = row.item.nama
-            //this.form.npsn = row.item.npsn
+            this.form.nama_kepsek = row.item.nama_kepsek
+            this.form.nip_kepsek = row.item.nip_kepsek
             $('#modalEdit').modal('show');
         },
         updateData(){

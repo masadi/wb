@@ -31,7 +31,9 @@ class CreateSekolahTable extends Migration
 			$table->string('no_fax')->nullable();
 			$table->string('email')->nullable();
 			$table->string('website')->nullable();
-			$table->integer('status_sekolah');
+            $table->integer('status_sekolah');
+            $table->string('nama_kepsek')->nullable();
+            $table->string('nip_kepsek')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 			$table->primary('sekolah_id');

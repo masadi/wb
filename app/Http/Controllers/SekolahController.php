@@ -79,6 +79,8 @@ class SekolahController extends Controller
     {
         $sekolah = Sekolah::with(['user'])->find($id);
         $sekolah->nama = $request->nama;
+        $sekolah->nama_kepsek = $request->nama_kepsek;
+        $sekolah->nip_kepsek = $request->nip_kepsek;
         $sekolah->save();
         $user = $sekolah->user;
         $user->name = $request->nama;
