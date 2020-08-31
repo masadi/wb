@@ -58,20 +58,21 @@
                                                 <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.verval }"> Verval oleh Tim Penjamin Mutu </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor_mutu.verifikasi }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.proses }">
                                             <div class="timestamp">
-                                                <span class="date">{{(rapor_mutu.verifikasi) ? rapor_mutu.verifikasi : '-'}}</span>
+                                                <span class="date">{{(rapor_mutu.proses) ? rapor_mutu.proses : '-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.verifikasi }"> Verifikasi oleh Direktorat </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.proses }"> Verifikasi oleh Direktorat </h4>
                                             </div>
                                         </li>
-                                        <li class="li" v-bind:class="{ complete: rapor_mutu.pengesahan }">
+                                        <li class="li" v-bind:class="{ complete: rapor_mutu.terima }">
                                             <div class="timestamp">
-                                                <span class="date">{{(rapor_mutu.pengesahan) ? rapor_mutu.pengesahan : '-'}}</span>
+                                                <span class="date" v-show="rapor_mutu.terima">{{(rapor_mutu.terima) ? rapor_mutu.terima :'-'}}</span>
+                                                <span class="date" v-show="rapor_mutu.tolak">{{(rapor_mutu.tolak) ? rapor_mutu.tolak :'-'}}</span>
                                             </div>
                                             <div class="status">
-                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.pengesahan }"> Pengesahan oleh Direktorat </h4>
+                                                <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.terima, unchecklist : rapor_mutu.tolak }"> Pengesahan oleh Direktorat </h4>
                                             </div>
                                         </li>
                                     </ul> 
@@ -293,11 +294,15 @@ export default {
                     lengkap: 0,
                      tgl : '-'
                 },
-                verifikasi : {
+                proses : {
                     lengkap: 0,
                      tgl : '-'
                 },
-                pengesahan : {
+                terima : {
+                    lengkap: 0,
+                     tgl : '-'
+                },
+                tolak : {
                     lengkap: 0,
                      tgl : '-'
                 },
@@ -427,8 +432,9 @@ export default {
                     hitung : getData.rapor_mutu.hitung,
                     pakta : getData.rapor_mutu.pakta,
                     verval : getData.rapor_mutu.verval,
-                    verifikasi : getData.rapor_mutu.verifikasi,
-                    pengesahan : getData.rapor_mutu.pengesahan,
+                    proses : getData.rapor_mutu.proses,
+                    terima : getData.rapor_mutu.terima,
+                    tolak : getData.rapor_mutu.tolak,
                 }
                 let tempBintangKomponen = {};
                 let tempBintangAspek = {};
@@ -455,10 +461,12 @@ export default {
                 this.rapor.pakta.tgl = (getData.rapor.pakta_integritas) ? getData.rapor.pakta_integritas : '-'
                 this.rapor.verval.lengkap = getData.rapor.verval
                 this.rapor.verval.tgl = (getData.rapor.verval) ? getData.rapor.verval : '-'
-                this.rapor.verifikasi.lengkap = getData.rapor.verifikasi
-                this.rapor.verifikasi.tgl = (getData.rapor.verifikasi) ? getData.rapor.verifikasi : '-'
-                this.rapor.pengesahan.lengkap = getData.rapor.pengesahan
-                this.rapor.pengesahan.tgl = (getData.rapor.pengesahan) ? getData.rapor.pengesahan : '-'
+                this.rapor.proses.lengkap = getData.rapor.proses
+                this.rapor.proses.tgl = (getData.rapor.proses) ? getData.rapor.proses : '-'
+                this.rapor.terima.lengkap = getData.rapor.terima
+                this.rapor.terima.tgl = (getData.rapor.terima) ? getData.rapor.terima : '-'
+                this.rapor.tolak.lengkap = getData.rapor.tolak
+                this.rapor.tolak.tgl = (getData.rapor.tolak) ? getData.rapor.tolak : '-'
                 this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0

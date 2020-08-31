@@ -81,14 +81,16 @@ class HelperModel
             $instrumen = Instrumen::where('urut', 0)->count();
             $pakta = NULL;
             $verval = NULL;
-            $verifikasi = NULL;
-            $pengesahan = NULL;
+            $proses = NULL;
+            $terima = NULL;
+            $tolak = NULL;
             $sasaran = $user->sekolah->sekolah_sasaran;
             if($sasaran){
                 $pakta = $sasaran->pakta_integritas;
-                $verval = ($sasaran->waiting) ? $sasaran->waiting : $sasaran->proses;
-                $verifikasi = $sasaran->proses;
-                $pengesahan = $sasaran->terima;
+                $verval = $sasaran->waiting;
+                $proses = $sasaran->proses;
+                $terima = $sasaran->terima;
+                $tolak = $sasaran->tolak;
             }
             //$obj1 = new \stdClass;
             $obj = (object) [
@@ -155,8 +157,9 @@ class HelperModel
                 'hitung' => ($user->nilai_akhir) ? self::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
                 'pakta' => ($pakta) ? self::TanggalIndo($pakta->updated_at) : NULL,
                 'verval' => ($verval) ? self::TanggalIndo($verval->updated_at) : NULL,
-                'verifikasi' => ($verifikasi) ? self::TanggalIndo($verifikasi->created_at) : NULL,
-                'pengesahan' => ($pengesahan) ? self::TanggalIndo($pengesahan->updated_at) : NULL, 
+                'proses' => ($proses) ? self::TanggalIndo($proses->created_at) : NULL,
+                'terima' => ($terima) ? self::TanggalIndo($terima->updated_at) : NULL, 
+                'tolak' => ($tolak) ? self::TanggalIndo($tolak->updated_at) : NULL, 
                 'kemajuan' => [
                     'type' => 'doughnut',
                     'data' => [

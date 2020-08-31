@@ -49,7 +49,7 @@
                                                 <div class="ps-top">
                                                     <p>Proses pengisian instrumen</p>
                                                 </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.instrumen, 'fa-times text-danger': !rapor.instrumen }"></i></span>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.instrumen }"></i></span>
                                             </li>
                                             <li>
                                                 <div class="img-handler-top">
@@ -59,7 +59,7 @@
                                                 <div class="ps-bot">
                                                     <p>Perhitungan rapor mutu sekolah</p>
                                                 </div>
-                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.hitung, 'fa-times text-danger': !rapor.hitung }"></i></i></span>
+                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.hitung }"></i></i></span>
                                             </li>
                                             <li>
                                                 <div class="img-handler-bot">
@@ -68,7 +68,7 @@
                                                 <div class="ps-top">
                                                     <p>Cetak pakta integritas sekolah</p>
                                                 </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pakta, 'fa-times text-danger': !rapor.pakta }"></i></i></span>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pakta }"></i></i></span>
                                             </li>
                                             <li>
                                                 <div class="img-handler-top">
@@ -78,7 +78,7 @@
                                                 <div class="ps-bot">
                                                     <p>Verifikasi dan Validasi oleh Tim Penjamin Mutu</p>
                                                 </div>
-                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verval, 'fa-times text-danger': !rapor.verval }"></i></i></span>
+                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verval }"></i></i></span>
                                             </li>
                                             <li>
                                                 <div class="img-handler-bot">
@@ -87,7 +87,7 @@
                                                 <div class="ps-top">
                                                     <p>Verifikasi oleh Direktorat</p>
                                                 </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verifikasi, 'fa-times text-danger': !rapor.verifikasi }"></i></i></span>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.proses }"></i></i></span>
                                             </li>
                                             <li>
                                                 <div class="img-handler-top">
@@ -97,7 +97,7 @@
                                                 <div class="ps-bot">
                                                     <p>Hasil Rapor Mutu Sekolah dan Pengesahan</p>
                                                 </div>
-                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pengesahan, 'fa-times text-danger': !rapor.pengesahan }"></i></i></span>
+                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.terima, 'fa-times text-danger': rapor.tolak }"></i></i></span>
                                             </li>
                                         </ol>
                                     </div>
@@ -135,8 +135,9 @@ export default {
                 hitung : 0,
                 pakta : 0,
                 verval : 0,
-                verifikasi : 0,
-                pengesahan : 0
+                proses : 0,
+                terima : 0,
+                tolak: 0,
             },
         }
     },
@@ -174,8 +175,9 @@ export default {
                 this.rapor.hitung = getData.hitung
                 this.rapor.pakta = getData.pakta
                 this.rapor.verval = getData.verval
-                this.rapor.verifikasi = getData.verifikasi
-                this.rapor.pengesahan = getData.pengesahan
+                this.rapor.proses = getData.proses
+                this.rapor.terima = getData.terima
+                this.rapor.tolak = getData.tolak
                 this.createChart('kemajuan', getData.kemajuan)
                 this.createChart('nilai_rapor', getData.nilai_rapor)
                 if(getData.nilai_komponen){
