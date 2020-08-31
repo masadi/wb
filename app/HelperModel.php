@@ -36,37 +36,6 @@ class HelperModel
     }
     public static function bintang_pdf($nilai, $satuan = false){
         $html = '';
-        if($nilai < 20){
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-        } elseif($nilai < 40) {
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-        } elseif($nilai < 60) {
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-        } elseif($nilai < 80) {
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-        } else {
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-            $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-        }
         if($satuan){
             if($nilai == 1){
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
@@ -87,6 +56,38 @@ class HelperModel
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
             } elseif($nilai == 4) {
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            } else {
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+            }
+        } else {
+            if($nilai < 20){
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            } elseif($nilai < 40) {
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            } elseif($nilai < 60) {
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            } elseif($nilai < 80) {
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
