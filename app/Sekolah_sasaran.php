@@ -15,6 +15,10 @@ class Sekolah_sasaran extends Model
     public function rapor_mutu(){
         return $this->hasOne('App\Rapor_mutu', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
     }
+    public function terkirim()
+    {
+        return $this->hasOne('App\Rapor_mutu', 'sekolah_sasaran_id', 'sekolah_sasaran_id')->whereHas('terkirim');
+    }
     public function waiting()
     {
         return $this->hasOne('App\Rapor_mutu', 'sekolah_sasaran_id', 'sekolah_sasaran_id')->whereHas('waiting');

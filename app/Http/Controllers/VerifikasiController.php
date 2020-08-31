@@ -293,8 +293,13 @@ class VerifikasiController extends Controller
             'status' => 'success',
             'data' => $rapor,
         ];*/
-        $sekolah = Sekolah::with(['sekolah_sasaran' => function($query){
-            $query->with(['waiting', 'proses', 'terima', 'tolak']);
+        $callback = function($query){
+            $query->whereHas('jenis_rapor', function($query){
+                $query->where('jenis', 'verval');
+            });
+        };
+        $sekolah = Sekolah::with(['sekolah_sasaran' => function($query) use ($callback){
+            $query->with(['terkirim' => $callback, 'waiting' => $callback, 'proses', 'terima', 'tolak']);
         }])->find($request->sekolah_id);
         $respone = [
             'status' => 'success',

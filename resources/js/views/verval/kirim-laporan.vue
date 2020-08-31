@@ -256,27 +256,42 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                     let getData = response.data
                     //console.log(getData.data)
                     //return false
-                    this.form.rapor_mutu_id = getData.data.sekolah_sasaran.waiting.rapor_mutu_id
                     this.form.sekolah_sasaran_id = getData.data.sekolah_sasaran.sekolah_sasaran_id
-                    this.form.verifikator_id = getData.data.sekolah_sasaran.verifikator_id
-                    if(getData.data.sekolah_sasaran.waiting.keterangan){
-                        this.form.keterangan = getData.data.sekolah_sasaran.waiting.keterangan
-                    }
-                    var status_rapor = 'waiting'
-                    if(getData.data.sekolah_sasaran.proses){
-                        this.toggleEditorDisabled()
-                        this.isCheckbox = true
+                    var status_rapor = ''
+                    if(getData.data.sekolah_sasaran.terkirim){
+                        status_rapor = 'terkirim'
+                        this.form.rapor_mutu_id = getData.data.sekolah_sasaran.terkirim.rapor_mutu_id
+                        this.form.verifikator_id = getData.data.sekolah_sasaran.verifikator_id
+                        this.isCheckbox = false
                         this.isBatal = true
-                        status_rapor = 'proses'
-                    } else {
+                    }
+                    if(getData.data.sekolah_sasaran.waiting){
+                        status_rapor = 'waiting'
+                        this.form.rapor_mutu_id = getData.data.sekolah_sasaran.waiting.rapor_mutu_id
+                        this.form.verifikator_id = getData.data.sekolah_sasaran.verifikator_id
+                        if(getData.data.sekolah_sasaran.waiting.keterangan){
+                            this.form.keterangan = getData.data.sekolah_sasaran.waiting.keterangan
+                        }
                         this.isCheckbox = true
                         this.isBatal = false
                     }
+                    if(getData.data.sekolah_sasaran.proses){
+                        this.toggleEditorDisabled()
+                        this.isCheckbox = true
+                        this.isBatal = false
+                        status_rapor = 'proses'
+                    }
                     if(getData.data.sekolah_sasaran.terima){
                         status_rapor = 'terima'
+                        this.toggleEditorDisabled()
+                        this.isCheckbox = true
+                        this.isBatal = false
                     }
                     if(getData.data.sekolah_sasaran.tolak){
                         status_rapor = 'tolak'
+                        this.toggleEditorDisabled()
+                        this.isCheckbox = true
+                        this.isBatal = false
                     }
                     this.progress_rapor_mutu = status_rapor
                     this.terms = false

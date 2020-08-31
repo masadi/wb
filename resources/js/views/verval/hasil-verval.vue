@@ -57,7 +57,7 @@
                                     </tbody>
                                 </table>
                                 <div class="mt-3" v-show="isShow">
-                                    <b-button squared variant="primary" size="lg" v-on:click="simpan_verval">
+                                    <b-button squared variant="primary" size="lg" v-on:click="simpan_verval" :disabled='isDisabled'>
                                         <b-spinner small v-show="show_spinner_kirim"></b-spinner>
                                         <span class="sr-only" v-show="show_spinner_kirim">Loading...</span>
                                         <span v-show="show_text_kirim">SIMPAN HASIL VERIFIKASI &amp; VALIDASI</span>
@@ -109,7 +109,8 @@
                 show_spinner_kirim: false,
                 show_text_kirim: true,
                 show_spinner_batal: false,
-                show_text_batal: true
+                show_text_batal: true,
+                isDisabled: false,
             }
         },
         created() {

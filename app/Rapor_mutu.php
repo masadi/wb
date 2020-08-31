@@ -20,6 +20,10 @@ class Rapor_mutu extends Model
     {
         return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id');
     }
+    public function terkirim()
+    {
+        return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id')->where('status', 'terkirim');
+    }
     public function waiting()
     {
         return $this->belongsTo('App\Status_rapor', 'status_rapor_id', 'id')->where('status', 'waiting');

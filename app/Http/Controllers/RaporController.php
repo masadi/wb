@@ -165,7 +165,7 @@ class RaporController extends Controller
         $pakta_integritas = Pakta_integritas::find($request->pakta_integritas_id);
         $pakta_integritas->terkirim = 1;
         if($pakta_integritas->save()){
-            $jenis = Jenis_rapor::where('jenis', 'verval')->first();
+            /*$jenis = Jenis_rapor::where('jenis', 'pakta')->first();
             $status = Status_rapor::where('status', 'terkirim')->first();
             $kirim_verval = Rapor_mutu::updateOrCreate(
                 [
@@ -173,7 +173,7 @@ class RaporController extends Controller
                     'status_rapor_id' => $status->id,
                     'sekolah_sasaran_id' => $pakta_integritas->sekolah_sasaran_id
                 ]
-            );
+            );*/
             $respone = [
                 'title' => 'Berhasil',
                 'text' => 'Rapor Mutu terkirim',
