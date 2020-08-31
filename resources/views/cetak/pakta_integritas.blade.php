@@ -137,7 +137,7 @@
                 </td>
                 <td class="text-center">
                     @if($instrumen->nilai_instrumen)
-                    {!! Helper::bintang_pdf($instrumen->nilai_instrumen->total_nilai) !!}
+                    {!! Helper::bintang_pdf($instrumen->nilai_instrumen->nilai, true) !!}
                     @endif
                 </td>
             </tr>
