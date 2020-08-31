@@ -40,8 +40,8 @@
                                         <tr>
                                             <th class="text-center" scope="col">No</th>
                                             <th class="text-center" scope="col">Komponen</th>
-                                            <th class="text-center" scope="col">Nilai Asli</th>
-                                            <th class="text-center" scope="col">Nilai Perubahan</th>
+                                            <th class="text-center" scope="col">Nilai Sekolah</th>
+                                            <th class="text-center" scope="col">Nilai Verifikasi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
