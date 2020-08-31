@@ -21,6 +21,7 @@ class TahunSeeder extends Seeder
             'periode_aktif' => 1,
         ]);
         $jenis_rapor = [
+            'pakta' => 'Pakta Integritas',
             'verval' => 'Hasil Verifikasi dan Validasi',
             'supervisi' => 'Hasil Supervisi',
             'validasi' => 'Validasi Pusat',

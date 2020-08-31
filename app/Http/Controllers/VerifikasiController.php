@@ -278,7 +278,7 @@ class VerifikasiController extends Controller
         return response()->json($respone);
     }
     public function get_laporan(Request $request){
-        $rapor = Rapor_mutu::with(['status_rapor', 'sekolah.tahun_pendataan'])->where(function($query) use ($request){
+        /*$rapor = Rapor_mutu::with(['status_rapor', 'sekolah.tahun_pendataan'])->where(function($query) use ($request){
             $query->whereHas('status_rapor', function($query){
                 $query->where('status', 'terkirim');
                 $query->orWhere('status', 'waiting');
@@ -292,6 +292,13 @@ class VerifikasiController extends Controller
         $respone = [
             'status' => 'success',
             'data' => $rapor,
+        ];*/
+        $sekolah = Sekolah::with(['sekolah_sasaran' => function($query){
+            $query->with(['waiting', 'proses', 'terima', 'tolak']);
+        }])->find($request->sekolah_id);
+        $respone = [
+            'status' => 'success',
+            'data' => $sekolah,
         ];
         return response()->json($respone);
     }

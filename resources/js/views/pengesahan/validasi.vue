@@ -197,6 +197,7 @@ export default {
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
             form: new Form({
+                user_direktorat_id: user.user_id,
                 verifikator_id: '',
                 sekolah_sasaran_id : '',
                 berita_acara: false,

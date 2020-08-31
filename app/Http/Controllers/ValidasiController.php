@@ -117,10 +117,19 @@ class ValidasiController extends Controller
 		 ],
 		$messages
         )->validate();
-        $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+        Rapor_mutu::updateOrCreate(
+            [
+                'jenis_rapor_id' => HelperModel::jenis_rapor_mutu('validasi'),
+                'status_rapor_id' => HelperModel::status_rapor_mutu('proses'),
+                'verifikator_id' => $request->verifikator_id['value'],
+                'sekolah_sasaran_id' => $request->sekolah_sasaran_id['value'],
+                'user_direktorat_id' => $request->user_direktorat_id,
+            ]
+        );
+        /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
         $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('proses');
         $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('validasi');
-        $rapor_mutu->save();
+        $rapor_mutu->save();*/
         $respone = [
             'message' => 'Validasi berhasil disimpan',
             'icon' => 'success',
@@ -251,23 +260,50 @@ class ValidasiController extends Controller
             }])->find($request->rapor_mutu_id);
             return response()->json(['status' => 'success', 'data' => $output]);
         } elseif($request->permintaan == 'terima'){
-            $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
             $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('terima');
             $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
             $rapor_mutu->user_direktorat_id = $request->user_id;
-            $rapor_mutu->save();
+            $rapor_mutu->save();*/
+            Rapor_mutu::updateOrCreate(
+                [
+                    'jenis_rapor_id' => HelperModel::jenis_rapor_mutu('pengesahan'),
+                    'status_rapor_id' => HelperModel::status_rapor_mutu('terima'),
+                    'verifikator_id' => $request->verifikator_id,
+                    'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
+                    'user_direktorat_id' => $request->user_id,
+                ]
+            );
         } elseif($request->permintaan == 'afirmasi'){
-            $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
             $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('afirmasi');
             $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
             $rapor_mutu->user_direktorat_id = $request->user_id;
-            $rapor_mutu->save();
+            $rapor_mutu->save();*/
+            Rapor_mutu::updateOrCreate(
+                [
+                    'jenis_rapor_id' => HelperModel::jenis_rapor_mutu('pengesahan'),
+                    'status_rapor_id' => HelperModel::status_rapor_mutu('afirmasi'),
+                    'verifikator_id' => $request->verifikator_id,
+                    'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
+                    'user_direktorat_id' => $request->user_id,
+                ]
+            );
         } elseif($request->permintaan == 'tolak'){
-            $rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
             $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('tolak');
             $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
             $rapor_mutu->user_direktorat_id = $request->user_id;
-            $rapor_mutu->save();
+            $rapor_mutu->save();*/
+            Rapor_mutu::updateOrCreate(
+                [
+                    'jenis_rapor_id' => HelperModel::jenis_rapor_mutu('pengesahan'),
+                    'status_rapor_id' => HelperModel::status_rapor_mutu('tolak'),
+                    'verifikator_id' => $request->verifikator_id,
+                    'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
+                    'user_direktorat_id' => $request->user_id,
+                ]
+            );
         }
     }
 }

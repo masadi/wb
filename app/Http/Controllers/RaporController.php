@@ -12,6 +12,9 @@ use App\Nilai_instrumen;
 use App\Pakta_integritas;
 use App\Verval;
 use App\Verifikasi;
+use App\Jenis_rapor;
+use App\Status_rapor;
+use App\Rapor_mutu;
 use Carbon\Carbon;
 use PDF;
 class RaporController extends Controller
@@ -162,6 +165,15 @@ class RaporController extends Controller
         $pakta_integritas = Pakta_integritas::find($request->pakta_integritas_id);
         $pakta_integritas->terkirim = 1;
         if($pakta_integritas->save()){
+            $jenis = Jenis_rapor::where('jenis', 'verval')->first();
+            $status = Status_rapor::where('status', 'terkirim')->first();
+            $kirim_verval = Rapor_mutu::updateOrCreate(
+                [
+                    'jenis_rapor_id' => $jenis->id,
+                    'status_rapor_id' => $status->id,
+                    'sekolah_sasaran_id' => $pakta_integritas->sekolah_sasaran_id
+                ]
+            );
             $respone = [
                 'title' => 'Berhasil',
                 'text' => 'Rapor Mutu terkirim',

@@ -47,7 +47,7 @@
                                         <label class="col-sm-2 col-form-label">Unggah Berita Acara</label>
                                         <div class="col-sm-10">
                                             <input type="file" ref="fileupload" name="file" @change="fileUpload($event.target)"
-                                            class="form-control" :class="{ 'is-invalid': form.errors.has('file') }">
+                                            class="form-control" :disabled="editorDisabled" :class="{ 'is-invalid': form.errors.has('file') }">
                                             <div class="invalid-feedback" v-bind:style="{ display: displayError }">
                                                 {{errorText}}
                                             </div>
@@ -99,11 +99,11 @@
                                         </div>
                                         <div v-show="progress_rapor_mutu=='terima'" class="alert alert-success">
                                             <h5><i class="icon fas fa-check"></i> LAPORAN DITERIMA</h5>
-                                            {{keterangan}}
+                                            Laporan hasil verifikasi dan validasi {{nama_sekolah}} diterima
                                         </div>
                                         <div v-show="progress_rapor_mutu=='tolak'" class="alert alert-danger">
                                             <h5><i class="icon fas fa-ban"></i> LAPORAN DITOLAK!</h5>
-                                            {{keterangan}}
+                                            Laporan hasil verifikasi dan validasi {{nama_sekolah}} ditolak
                                         </div>
                                     </div>
                                 </div>
@@ -254,25 +254,36 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                 })
                 .then((response) => {
                     let getData = response.data
-                    console.log(getData.data)
-                    this.form.rapor_mutu_id = getData.data.rapor_mutu_id
-                    this.form.sekolah_sasaran_id = getData.data.sekolah_sasaran_id
-                    this.form.verifikator_id = getData.data.verifikator_id
-                    if(getData.data.keterangan){
-                        this.form.keterangan = getData.data.keterangan
+                    //console.log(getData.data)
+                    //return false
+                    this.form.rapor_mutu_id = getData.data.sekolah_sasaran.waiting.rapor_mutu_id
+                    this.form.sekolah_sasaran_id = getData.data.sekolah_sasaran.sekolah_sasaran_id
+                    this.form.verifikator_id = getData.data.sekolah_sasaran.verifikator_id
+                    if(getData.data.sekolah_sasaran.waiting.keterangan){
+                        this.form.keterangan = getData.data.sekolah_sasaran.waiting.keterangan
                     }
-                    if(getData.data.status_rapor.status !== 'terkirim'){
+                    var status_rapor = 'waiting'
+                    if(getData.data.sekolah_sasaran.proses){
+                        this.toggleEditorDisabled()
+                        this.isCheckbox = true
+                        this.isBatal = true
+                        status_rapor = 'proses'
+                    } else {
                         this.isCheckbox = true
                         this.isBatal = false
-                    } else {
-                        this.isBatal = true
                     }
-                    this.progress_rapor_mutu = getData.data.status_rapor.status
+                    if(getData.data.sekolah_sasaran.terima){
+                        status_rapor = 'terima'
+                    }
+                    if(getData.data.sekolah_sasaran.tolak){
+                        status_rapor = 'tolak'
+                    }
+                    this.progress_rapor_mutu = status_rapor
                     this.terms = false
                     this.simpan = true
                     this.isShow = true
-                    this.nama_sekolah = getData.data.sekolah.nama
-                    this.tahun_pendataan = getData.data.sekolah.tahun_pendataan.tahun_pendataan_id
+                    this.nama_sekolah = getData.data.nama
+                    this.tahun_pendataan = getData.data.sekolah_sasaran.tahun_pendataan_id
                     const input = this.$refs.fileupload;
                     input.type = 'text'
                     input.type = 'file'
