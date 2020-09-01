@@ -17,8 +17,10 @@ use App\Jenis_berita_acara;
 use App\Berita_acara;
 use App\Jenis_dokumen;
 use App\Dokumen;
+use App\User;
 use Validator;
 use Carbon\Carbon;
+use PDF;
 class VerifikasiController extends Controller
 {
     public function index(Request $request, $query){
@@ -367,5 +369,26 @@ class VerifikasiController extends Controller
             'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
             'file_path' => $filePdf,
         ]);
+    }
+    public function download(Request $request){
+        //dd($request->all());
+        if($request->permintaan == 'berita_acara'){
+            //$dokumen = Dokumen::find($request->dokumen_id);
+            //$pathToFile = public_path('uploads/'.$dokumen->file_path);
+            //return response()->download($pathToFile);
+            $data = [
+                'now' => Carbon::now(),
+                'sekolah' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
+                    $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
+                })->first(),
+                'verifikator' => User::find($request->verifikator_id),
+            ];
+            //return view('cetak.berita_acara', $data);
+            $pdf = PDF::loadView('cetak.berita_acara', $data, [], [
+                'format' => [220, 330],
+                'orientation' => 'P',
+            ]);
+            return $pdf->download('instrumen.pdf');
+        }
     }
 }

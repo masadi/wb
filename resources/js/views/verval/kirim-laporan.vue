@@ -45,9 +45,18 @@
                                     </div>
                                     <div class="form-group  row" v-show="simpan">
                                         <label class="col-sm-2 col-form-label">Unggah Berita Acara</label>
-                                        <div class="col-sm-10">
-                                            <input type="file" ref="fileupload" name="file" @change="fileUpload($event.target)"
-                                            class="form-control" :disabled="editorDisabled" :class="{ 'is-invalid': form.errors.has('file') }">
+                                        <div class="col-sm-3">
+                                            <!--b-button block squared variant="success" size="lg">Unduh Format Berita Acara</b-button-->
+                                            <b-button block squared variant="success" size="lg" v-on:click="unduhBerita">
+                                                <b-spinner small v-show="show_spinner_unduh"></b-spinner>
+                                                <span class="sr-only" v-show="show_spinner_unduh">Loading...</span>
+                                                <span v-show="show_text_unduh">Unduh Format Berita Acara</span>
+                                            </b-button>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <!--input type="file" ref="fileupload" name="file" @change="fileUpload($event.target)"
+                                            class="form-control" :disabled="editorDisabled" :class="{ 'is-invalid': form.errors.has('file') }"-->
+                                            <b-form-file v-model="file" @change="fileUpload($event.target)" :state="Boolean(file)" ref="fileupload" placeholder="Pilih berkas berita acara..."></b-form-file>
                                             <div class="invalid-feedback" v-bind:style="{ display: displayError }">
                                                 {{errorText}}
                                             </div>
@@ -136,6 +145,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     //KETIKA COMPONENT INI DILOAD
         data() {
             return {
+                file: null,
                 isCheckbox : false,
                 terms: false,
                 isBatal : true,
@@ -166,7 +176,9 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                 show_spinner_kirim: false,
                 show_text_kirim: true,
                 show_spinner_batal: false,
-                show_text_batal: true
+                show_text_batal: true,
+                show_spinner_unduh: false,
+                show_text_unduh: true,
             }
         },
         computed: {
@@ -299,12 +311,34 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                     this.isShow = true
                     this.nama_sekolah = getData.data.nama
                     this.tahun_pendataan = getData.data.sekolah_sasaran.tahun_pendataan_id
-                    const input = this.$refs.fileupload;
-                    input.type = 'text'
-                    input.type = 'file'
+                    this.$refs.fileupload.reset();
+                    //input.type = 'text'
+                    //input.type = 'file'
                     this.displayError = 'none'
                     this.displaySuccess = 'none'
                 })
+            },
+            unduhBerita(){
+                this.show_spinner_unduh = true
+                this.show_text_unduh = false
+                axios.get(`/api/verifikasi/download`, {
+                params : {
+                    permintaan: 'berita_acara',
+                    sekolah_sasaran_id: this.form.sekolah_sasaran_id,
+                    verifikator_id: this.form.verifikator_id,
+                },
+                responseType: 'arraybuffer'
+            }).then((response) => {
+                //console.log(response);
+                //return false;
+                let blob = new Blob([response.data], { type: 'application/pdf' })
+                let link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = 'Berita Acara Verifikasi '+this.nama_sekolah+'.pdf'
+                link.click()
+                this.show_spinner_unduh = false
+                this.show_text_unduh = true
+            })
             },
             kirimLaporan(){
                 this.form.post('/api/verifikasi/kirim').then((response)=>{

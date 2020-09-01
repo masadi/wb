@@ -42,7 +42,7 @@ Route::group(['prefix' => 'kuisioner'], function(){
 });
 Route::group(['prefix' => 'verifikasi'], function(){
     Route::post('/{query}', 'VerifikasiController@index');
-    //Route::post('/aspek', 'VerifikasiController@get_aspek');
+    Route::get('/download', 'VerifikasiController@download');
     //Route::post('/instrumen', 'VerifikasiController@get_instrumen');
     //Route::post('/subs', 'VerifikasiController@get_subs');
 });

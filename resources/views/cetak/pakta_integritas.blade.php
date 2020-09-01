@@ -31,14 +31,20 @@
         dengan data yang sebenarnya.</p>
     <p>Jika dikemudian hari ditemukan ketidaksesuaian antara data yang dikirimkan dengan data yang ada, saya siap
         menerima sanksi baik secara moral atau administrasi.</p>
-
-    <p>{{$sekolah->kabupaten}}, {{$now}}<br>
-        Kepala Sekolah</p>
-    <p></p>
-    <p></p>
-    <p></p>
-    <p>{{$sekolah->nama_kepsek}}<br>
-        NIP. {{$sekolah->nip_kepsek}}</p>
+        <table width="100%" style="margin-left: -5px;">
+            <tr>
+                <td width="60%">&nbsp;</td>
+                <td width="40%">
+                    <p>{{$sekolah->kabupaten}}, {{$now}}<br>
+                        Kepala Sekolah</p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p>{{$sekolah->nama_kepsek}}<br>
+                        NIP. {{$sekolah->nip_kepsek}}</p>
+                </td>
+            </tr>
+        </table>
     <p style="page-break-before: always"></p>
     <h3 class="text-center">NILAI RAPOR MUTU SEKOLAH</h3>
     <table class="table table-bordered" style="width: 100%">
