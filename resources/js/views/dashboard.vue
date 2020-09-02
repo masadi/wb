@@ -264,9 +264,11 @@ export default {
                                                 sum += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             }
                                         });
+                                        var persentase = (100 - sum);
+                                        persentase = persentase.toFixed(2)
                                         var _return = 'Bobot tercapai:'+bobot_tercapai+'\n'
                                         _return += 'Bobot belum tercapai:'+bobot_belum_tercapai+'\n'
-                                        _return += 'Persentase Ketidaktercapaian: ' + (100 - sum)+'%'
+                                        _return += 'Persentase Ketidaktercapaian: ' + persentase+'%'
                                         return _return;
                                     },
                                 },

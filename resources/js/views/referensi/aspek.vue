@@ -53,6 +53,7 @@ export default {
             fields: [
                 {key: 'id', 'label': 'ID Aspek', sortable: true},
                 {key: 'nama', 'label': 'Nama Aspek', sortable: true},
+                {key: 'bobot', 'label': 'Bobot Aspek', sortable: true},
                 {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
@@ -60,7 +61,7 @@ export default {
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
             per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
             search: '',
-            sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
+            sortBy: 'komponen_id', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
             isLoading: false,
         }

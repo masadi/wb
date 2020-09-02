@@ -170,19 +170,21 @@ class HelperModel
             foreach($komponen as $k){
                 $bobot_belum_tercapai = 0;
                 if(self::nilai_komponen($k->id, $user->user_id)){
-                    $bobot_belum_tercapai = number_format((self::bobot_komponen($k->id) - self::nilai_komponen($k->id, $user->user_id)->nilai),2,'.','.');
+                    $bobot_belum_tercapai = (self::bobot_komponen($k->id) - self::nilai_komponen($k->id, $user->user_id)->nilai);
                 }
                 $nilai_belum_tercapai = 0;
                 if(self::nilai_komponen($k->id, $user->user_id)){
-                    $nilai_belum_tercapai = number_format((100 - self::nilai_komponen($k->id, $user->user_id)->total_nilai),2,'.','.');
+                    $nilai_belum_tercapai = (100 - self::nilai_komponen($k->id, $user->user_id)->total_nilai);
                 }
                 $values['nama'][] = $k->nama;
                 $values['nilai_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->total_nilai : 0;
                 //$values['nilai_belum_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? (self::nilai_komponen($k->id, $user->user_id)->total_nilai - (self::bobot_komponen($k->id) * 100 / self::bobot_komponen($k->id))) : 0;
-                $values['nilai_belum_tercapai'][] = $nilai_belum_tercapai;
-                $values['bobot_tercapai'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
-                $values['bobot_belum_tercapai'][] = $bobot_belum_tercapai;
-                $values['nilai_komponen'][] = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+                $bobot_tercapai = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+                $nilai_komponen = (self::nilai_komponen($k->id, $user->user_id)) ? self::nilai_komponen($k->id, $user->user_id)->nilai : 0;
+                $values['nilai_belum_tercapai'][] = number_format($nilai_belum_tercapai,2,'.','.');
+                $values['bobot_tercapai'][] = number_format($bobot_tercapai,2,'.','.');
+                $values['bobot_belum_tercapai'][] = number_format($bobot_belum_tercapai,2,'.','.');
+                $values['nilai_komponen'][] = number_format($nilai_komponen,2,'.','.');
                 $values['bobot_komponen'][] = self::bobot_komponen($k->id);
             }
             $data = [
