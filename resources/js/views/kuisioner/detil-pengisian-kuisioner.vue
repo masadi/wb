@@ -96,7 +96,10 @@
                     var tempBobot = {}
                     $.each(getNilai, function(key, value) {
                         tempNilai[value.aspek.nama] = value.total_nilai
-                        tempBobot[value.aspek.nama] = value.aspek.bobot
+                        //tempBobot[value.aspek.nama] = value.aspek.bobot
+                    });
+                    $.each(getData.output_bobot, function(key, value) {
+                        tempBobot[key] = value
                     });
                     this.bobot = tempBobot
                     var tempJumlahSoal = {}

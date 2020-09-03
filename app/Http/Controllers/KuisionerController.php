@@ -110,6 +110,7 @@ class KuisionerController extends Controller
         $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek.komponen', $callback)->with(['aspek.nilai_aspek' => $callback_jawaban])->withCount(['jawaban' => $callback_jawaban])->get();
         $output = [];
         $output_aspek = [];
+        $output_bobot = [];
         $output_nilai = Nilai_aspek::whereHas('aspek', function($query) use ($request){
             $query->where('komponen_id', $request->komponen_id);
             $query->where('user_id', $request->user_id);
@@ -124,8 +125,9 @@ class KuisionerController extends Controller
         $i=1;
         foreach($komponen->aspek as $aspek){
             $output_aspek[$aspek->nama] = $i++;
+            $output_bobot[$aspek->nama] = $aspek->bobot;
         }
-        return response()->json(['status' => 'success', 'data' => $output, 'output_aspek' => $output_aspek, 'nilai' => $output_nilai]);
+        return response()->json(['status' => 'success', 'data' => $output, 'output_aspek' => $output_aspek, 'nilai' => $output_nilai, 'output_bobot' => $output_bobot]);
     }
     public function parse_json(Request $request){
         $obj = $request->obj;
