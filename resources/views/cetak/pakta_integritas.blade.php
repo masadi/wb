@@ -37,9 +37,10 @@
                 <td width="40%">
                     <p>{{$sekolah->kabupaten}}, {{$now}}<br>
                         Kepala Sekolah</p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
                     <p>{{$sekolah->nama_kepsek}}<br>
                         NIP. {{$sekolah->nip_kepsek}}</p>
                 </td>
