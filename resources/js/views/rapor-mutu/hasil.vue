@@ -70,6 +70,7 @@
                                             <div class="timestamp">
                                                 <span class="date" v-show="rapor_mutu.terima">{{(rapor_mutu.terima) ? rapor_mutu.terima :'-'}}</span>
                                                 <span class="date" v-show="rapor_mutu.tolak">{{(rapor_mutu.tolak) ? rapor_mutu.tolak :'-'}}</span>
+                                                <span class="date" v-show="!rapor_mutu.tolak || !rapor_mutu.terima">-</span>
                                             </div>
                                             <div class="status">
                                                 <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.terima, unchecklist : rapor_mutu.tolak }"> Pengesahan oleh Direktorat </h4>
