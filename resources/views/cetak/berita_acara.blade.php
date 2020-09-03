@@ -93,7 +93,8 @@
     <p></p>
     <table width="100%" style="margin-left: -5px;">
         <tr>
-            <td colspan="2" class="text-right" style="padding-bottom: 0px;">
+            <td style="padding-bottom: 0px;">&nbsp;</td>
+            <td class="text-center" style="padding-bottom: 0px;">
                 {{$sekolah->kabupaten}}, {{Helper::TanggalIndo($now)}}
             </td>
         </tr>
