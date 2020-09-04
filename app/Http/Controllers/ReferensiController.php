@@ -70,9 +70,13 @@ class ReferensiController extends Controller
                 $query->where('sekolah_id', request()->sekolah_id);
             }
             if(request()->verifikator_id){
-                $query->whereDoesntHave('sekolah_sasaran', function ($query) {
-                    $query->where('verifikator_id', request()->verifikator_id);
-                });
+                if(request()->permintaan == 'add'){
+                    $query->whereDoesntHave('sekolah_sasaran');
+                } else {
+                    $query->whereHas('sekolah_sasaran', function ($query) {
+                        $query->where('verifikator_id', request()->verifikator_id);
+                    });
+                }
             }
             if(request()->verifikasi_id){
                 $query->whereHas('sekolah_sasaran', function ($query) {
@@ -283,23 +287,44 @@ class ReferensiController extends Controller
     }
     public function sekolah_sasaran(Request $request){
         $tahun = Tahun_pendataan::where('periode_aktif', 1)->first();
-        $insert = Sekolah_sasaran::updateOrCreate([
-            'sekolah_id' => $request->sekolah_id,
-            'verifikator_id' => $request->verifikator_id,
-            'tahun_pendataan_id' => $tahun->tahun_pendataan_id,
-        ]);
-        if($insert){
-            $response = [
-                'title' => 'Berhasil',
-                'text' => 'Sekolah sasaran berhasil ditambahkan',
-                'icon' => 'success',
-            ];
+        if($request->permintaan == 'add'){
+            $insert = Sekolah_sasaran::updateOrCreate([
+                'sekolah_id' => $request->sekolah_id,
+                'verifikator_id' => $request->verifikator_id,
+                'tahun_pendataan_id' => $tahun->tahun_pendataan_id,
+            ]);
+            if($insert){
+                $response = [
+                    'title' => 'Berhasil',
+                    'text' => 'Sekolah sasaran berhasil ditambahkan',
+                    'icon' => 'success',
+                ];
+            } else {
+                $response = [
+                    'title' => 'Gagal',
+                    'text' => 'Sekolah sasaran gagal ditambahkan',
+                    'icon' => 'error',
+                ];
+            }
         } else {
-            $response = [
-                'title' => 'Gagal',
-                'text' => 'Sekolah sasaran gagal ditambahkan',
-                'icon' => 'error',
-            ];
+            $delete = Sekolah_sasaran::where(function($query) use ($request, $tahun){
+                $query->where('sekolah_id', $request->sekolah_id);
+                $query->where('verifikator_id', $request->verifikator_id);
+                $query->where('tahun_pendataan_id', $tahun->tahun_pendataan_id);
+            })->delete();
+            if($delete){
+                $response = [
+                    'title' => 'Berhasil',
+                    'text' => 'Sekolah sasaran berhasil dihapus',
+                    'icon' => 'success',
+                ];
+            } else {
+                $response = [
+                    'title' => 'Gagal',
+                    'text' => 'Sekolah sasaran gagal dihapus',
+                    'icon' => 'error',
+                ];
+            }
         }
         return response()->json($response);
     }

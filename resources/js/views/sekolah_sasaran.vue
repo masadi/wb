@@ -1,10 +1,10 @@
 <template>
     <div>
-        <app-datatable :verifikator_id="verifikator_id" :items="items" :fields="fields" :meta="meta" :title="'Hapus Sekolah'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
+        <app-datatable :permintaan="permintaan" :verifikator_id="verifikator_id" :items="items" :fields="fields" :meta="meta" :title="'Hapus Sekolah'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
     </div>
 </template>
 <script>
-    import Datatable from './components/ListSekolahSasaran.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './components/SekolahSasaran.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
 export default {
     //KETIKA COMPONENT INI DILOAD
@@ -12,6 +12,10 @@ export default {
         verifikator_id: {
             type: String,
             default: "Delete Modal"
+        },
+        permintaan : {
+            type: String,
+            default: "-"
         },
     },
     created() {
@@ -21,12 +25,12 @@ export default {
     data() {
         return {
             fields: [
-                {key: 'nama', sortable: true},
-                {key: 'npsn', sortable: true},
-                {key: 'kecamatan', sortable: true},
-                {key: 'kabupaten', sortable: true},
-                {key: 'provinsi', sortable: true},
-                {key: 'actions', sortable: false}, //TAMBAHKAN CODE INI
+                {key: 'nama', 'label': 'Nama Sekolah', sortable: true},
+                {key: 'npsn', 'label': 'NPSN', sortable: true},
+                {key: 'kecamatan', 'label': 'Kecamatan', sortable: true},
+                {key: 'kabupaten', 'label': 'Kabupaten/Kota', sortable: true},
+                {key: 'provinsi', 'label': 'Provinsi', sortable: true},
+                {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META
@@ -39,15 +43,19 @@ export default {
         }
     },
     components: {
-        'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
+        'app-datatable': Datatable,
     },
     methods: {
+        hideModal(){
+            this.$refs.entahlah.hide();
+        },
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
             axios.get(`/api/referensi/sekolah-sasaran`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
+                    permintaan: this.permintaan,
                     verifikator_id: this.verifikator_id,
                     page: current_page,
                     per_page: this.per_page,

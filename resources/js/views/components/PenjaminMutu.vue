@@ -32,7 +32,8 @@
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" size="sm" variant="success" v-show="hasRole('admin') || hasRole('direktorat')">
-                        <b-dropdown-item href="javascript:" @click="addSekolah(row.item.user_id)"><i class="fas fa-folder-plus"></i> Sekolah Sasaran</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="listSekolah(row.item.user_id)"><i class="fas fa-folder"></i> List Sekolah Sasaran</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="addSekolah(row.item.user_id)"><i class="fas fa-folder-plus"></i> Tambah Sekolah Sasaran</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.user_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
@@ -102,13 +103,15 @@
                 </div>
             </template>
         </b-modal>
-        <SekolahSasaran ref="modalComponent"></SekolahSasaran>
+        <TambahSekolahSasaran ref="TambahSekolahSasaran"></TambahSekolahSasaran>
+        <ListSekolahSasaran ref="ListSekolahSasaran"></ListSekolahSasaran>
     </div>
 </template>
 
 <script>
 import _ from 'lodash' //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
-import SekolahSasaran from "./SekolahSasaran";
+import TambahSekolahSasaran from "./TambahSekolahSasaran";
+import ListSekolahSasaran from "./ListSekolahSasaran";
 export default {
     //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
     props: {
@@ -136,7 +139,8 @@ export default {
         }
     },
     components: {
-        SekolahSasaran
+        TambahSekolahSasaran,
+        ListSekolahSasaran
     },
     data() {
         return {
@@ -180,7 +184,10 @@ export default {
     methods: {
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         addSekolah(id){
-            this.$refs.modalComponent.show(id);
+            this.$refs.TambahSekolahSasaran.show(id);
+        },
+        listSekolah(id){
+            this.$refs.ListSekolahSasaran.show(id);
         },
         loadPerPage(val) {
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
