@@ -66,32 +66,81 @@ class ReferensiController extends Controller
     public function get_sekolah($request)
     {
         $all_data = Sekolah::where(function($query){
-            if(request()->sekolah_id){
-                $query->where('sekolah_id', request()->sekolah_id);
-            }
-            if(request()->verifikator_id){
-                if(request()->permintaan == 'add'){
-                    $query->doesntHave('sekolah_sasaran');
-                } else {
+            if(request()->q){
+                $query->where(function($query){
+                    $query->where('nama', 'ilike', '%' . request()->q . '%');
+                    if(request()->sekolah_id){
+                        $query->where('sekolah_id', request()->sekolah_id);
+                    }
+                    if(request()->verifikator_id){
+                        if(request()->permintaan == 'add'){
+                            $query->doesntHave('sekolah_sasaran');
+                        } else {
+                            $query->whereHas('sekolah_sasaran', function ($query){
+                                $query->where('verifikator_id', request()->verifikator_id);
+                            });
+                        }
+                    }
+                    if(request()->verifikasi_id){
+                        $query->whereHas('sekolah_sasaran', function ($query) {
+                            $query->where('verifikator_id', request()->verifikasi_id);
+                            $query->with('pakta_integritas');
+                        });
+                    }
+                });
+                $query->orWhere(function($query){
+                    $query->where('npsn', 'ilike', '%' . request()->q . '%');
+                    if(request()->sekolah_id){
+                        $query->where('sekolah_id', request()->sekolah_id);
+                    }
+                    if(request()->verifikator_id){
+                        if(request()->permintaan == 'add'){
+                            $query->doesntHave('sekolah_sasaran');
+                        } else {
+                            $query->whereHas('sekolah_sasaran', function ($query){
+                                $query->where('verifikator_id', request()->verifikator_id);
+                            });
+                        }
+                    }
+                    if(request()->verifikasi_id){
+                        $query->whereHas('sekolah_sasaran', function ($query) {
+                            $query->where('verifikator_id', request()->verifikasi_id);
+                            $query->with('pakta_integritas');
+                        });
+                    }
+                });
+                //$query->orWhere('npsn', 'ilike', '%' . request()->q . '%');
+                //$query->orWhere('kecamatan', 'ilike', '%' . request()->q . '%');
+                //$query->orWhere('kabupaten', 'ilike', '%' . request()->q . '%');
+                //$query->orWhere('provinsi', 'ilike', '%' . request()->q . '%');
+            } else {
+                if(request()->sekolah_id){
+                    $query->where('sekolah_id', request()->sekolah_id);
+                }
+                if(request()->verifikator_id){
+                    if(request()->permintaan == 'add'){
+                        $query->doesntHave('sekolah_sasaran');
+                    } else {
+                        $query->whereHas('sekolah_sasaran', function ($query){
+                            $query->where('verifikator_id', request()->verifikator_id);
+                        });
+                    }
+                }
+                if(request()->verifikasi_id){
                     $query->whereHas('sekolah_sasaran', function ($query) {
-                        $query->where('verifikator_id', request()->verifikator_id);
+                        $query->where('verifikator_id', request()->verifikasi_id);
+                        $query->with('pakta_integritas');
                     });
                 }
             }
-            if(request()->verifikasi_id){
-                $query->whereHas('sekolah_sasaran', function ($query) {
-                    $query->where('verifikator_id', request()->verifikasi_id);
-                    $query->with('pakta_integritas');
-                });
-            }
         })->with(['user', 'sekolah_sasaran.pakta_integritas'])->orderBy(request()->sortby, request()->sortbydesc)
-            ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
-                ->orWhere('npsn', 'ilike', '%' . request()->q . '%')
-                ->orWhere('kecamatan', 'ilike', '%' . request()->q . '%')
-                ->orWhere('kabupaten', 'ilike', '%' . request()->q . '%')
-                ->orWhere('provinsi', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+            /*->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
+                $all_data->orWhere('npsn', 'ilike', '%' . request()->q . '%');
+                $all_data->orWhere('kecamatan', 'ilike', '%' . request()->q . '%');
+                $all_data->orWhere('kabupaten', 'ilike', '%' . request()->q . '%');
+                $all_data->orWhere('provinsi', 'ilike', '%' . request()->q . '%');
+        })*/->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_ptk($request)
