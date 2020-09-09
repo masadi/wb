@@ -259,7 +259,7 @@ export default {
                 rapor_mutu_id: data.item.rapor_mutu_id,
                 sekolah_sasaran_id : data.item.sekolah_sasaran_id,
                 verifikator_id: data.item.verifikator_id,
-                user_id: user.user_id,
+                user_id: data.item.sekolah.user.user_id,
             }).then((response) => {
                 let getData = response.data
                 this.table_rapor_mutu = 1

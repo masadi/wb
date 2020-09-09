@@ -258,6 +258,32 @@ class ValidasiController extends Controller
                     });
                 }]);
             }])->find($request->rapor_mutu_id);
+            /*
+            $output = Rapor_mutu::with(['sekolah' => function($query) use ($request){
+                $query->with(['berita_acara' => function($query) use ($request){
+                    $query->where('berita_acara.sekolah_sasaran_id', $request->sekolah_sasaran_id);
+                    $query->where('berita_acara.verifikator_id', $request->verifikator_id);
+                    $query->with(['dokumen']);
+                }]);
+                $query->withCount(['nilai_instrumen' => function($query){
+                    $query->whereNull('verifikator_id');
+                }]);
+                $query->with(['user']);
+            }, 'penjamin_mutu' => function($query) use ($request){
+                $query->withCount(['isian_instrumen', 'koreksi_instrumen' => function($query) use ($request){
+                    $query->whereNotIn('nilai', function($query) use ($request){
+                        $query->select('nilai')->from('nilai_instrumen')->where(function($query) use ($request){
+                            $query->where('user_id', $request->user_id);
+                            $query->whereNull('verifikator_id');
+                        });
+                    });
+                }]);
+            }])->where(function($query) use ($request){
+                $query->whereHas('waiting');
+                $query->where('sekolah_sasaran_id', $request->sekolah_sasaran_id);
+                $query->where('verifikator_id', $request->verifikator_id);
+            })->first();
+            */
             return response()->json(['status' => 'success', 'data' => $output]);
         } elseif($request->permintaan == 'batal'){
             /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
