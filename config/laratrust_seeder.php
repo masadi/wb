@@ -27,7 +27,7 @@ return [
         ],
         'penjamin_mutu' => [
             'referensi' => 'r,u',
-            'news'  => 'c,r,u,d',
+            //'news'  => 'c,r,u,d',
             'verifikasi' => 'c,r,u,d',
         ],
         'sekolah' => [

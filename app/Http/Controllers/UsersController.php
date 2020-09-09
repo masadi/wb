@@ -71,7 +71,7 @@ class UsersController extends Controller
 			'name'					=> 'required',
             'email'					=> 'required|email|unique:users,email,' . $id .',user_id',
 			'current_password'		=> 'nullable',
-			'password'				=> 'required_with_all:current_password,email|min:8',
+			'password'				=> 'nullable|required_with_all:current_password,email|min:8',
 			'password_confirmation'	=> 'confirmed',
 		],
 		$messages
