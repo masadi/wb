@@ -71,7 +71,7 @@ class ReferensiController extends Controller
             }
             if(request()->verifikator_id){
                 if(request()->permintaan == 'add'){
-                    $query->whereDoesntHave('sekolah_sasaran');
+                    $query->doesntHave('sekolah_sasaran');
                 } else {
                     $query->whereHas('sekolah_sasaran', function ($query) {
                         $query->where('verifikator_id', request()->verifikator_id);
