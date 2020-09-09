@@ -42,7 +42,7 @@
                                             <input v-model="form.email" type="email" id="email" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                                             <has-error :form="form" field="email"></has-error>
                                         </div>
-                                        <template v-if="hasRole('sekolah')">
+                                        <template v-if="hasRole('penjamin_mutu')">
                                             <label for="nuptk" class="col-form-label">NUPTK</label>
                                             <div class="form-group">
                                                 <input v-model="form.nuptk" type="text" id="nuptk" name="nuptk" class="form-control" :class="{ 'is-invalid': form.errors.has('nuptk') }">
@@ -198,9 +198,10 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 },
             }).then((response) => {
+                console.log(response);
                 Toast.fire({
                     icon: 'success',
-                    title: response.message
+                    title: response.data.message
                 });
                 this.loadPostsData();
             })
