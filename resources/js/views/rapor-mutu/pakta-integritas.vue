@@ -20,9 +20,18 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <div class="card-tools">
+                                    <b-button squared variant="primary" size="lg" v-show='isDisabled' v-on:click="cetak_pakta_no_alert">
+                                        <b-spinner small v-show="show_spinner_cetak_no_alert"></b-spinner>
+                                        <span class="sr-only" v-show="show_spinner_cetak_no_alert">Loading...</span>
+                                        <span v-show="show_text_cetak_no_alert">CETAK PAKTA INTEGRITAS</span>
+                                    </b-button>
+                                </div>
+                                <h3 class="card-title">PAKTA INTEGRITAS SEKOLAH</h3>
+                                <br><div class="text-muted"><i class="fas fa-clock"></i> {{tanggal}}</div>
+                            </div>
                             <div class="card-body">
-                                <h3>PAKTA INTEGRITAS SEKOLAH</h3>
-                                <span class="text-muted"><i class="fas fa-clock"></i> {{tanggal}}</span>
                                 <!--
                                 <p>Dengan ini Saya sebagai Kepala Sekolah {{nama_sekolah}} menyatakan bahwa data yang diisi pada kuesioner Penjaminan Mutu SMK tahun pendataan {{tahun_pendataan}} telah diperiksa kebenarannya dan telah sesuai dengan fakta yang ada di lapangan.</p>
 
@@ -113,9 +122,11 @@
                 isKirim: true,
                 isCheckbox : false,
                 show_text_cetak:true,
+                show_text_cetak_no_alert:true,
                 show_text_batal:true,
                 show_text_kirim: true,
                 show_spinner_cetak:false,
+                show_spinner_cetak_no_alert:false,
                 show_spinner_batal: false,
                 show_spinner_kirim: false,
                 pakta_integritas_id : null,
@@ -223,6 +234,29 @@
                         })
                     }
                 })
+            },
+            cetak_pakta_no_alert : function (event) {
+                this.show_text_cetak_no_alert = false
+                        this.show_spinner_cetak_no_alert = true
+                        axios.post(`/api/rapor-mutu/pra-cetak-pakta`, {
+                            user_id: user.user_id,
+                        }).then((response) => {
+                            this.loadPostsData()
+                            axios.get(`/api/rapor-mutu/cetak-pakta`, {
+                                params : {
+                                    user_id: user.user_id,
+                                },
+                                responseType: 'arraybuffer'
+                            }).then((response) => {
+                                let blob = new Blob([response.data], { type: 'application/pdf' })
+                                let link = document.createElement('a')
+                                link.href = window.URL.createObjectURL(blob)
+                                link.download = 'Pakta Integritas Penjaminan Mutu SMK.pdf'
+                                link.click()
+                                this.show_text_cetak_no_alert = true
+                                this.show_spinner_cetak_no_alert = false
+                            })
+                        })
             },
             loadPostsData() {
                 axios.post(`/api/rapor-mutu/pakta`, {
