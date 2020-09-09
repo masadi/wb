@@ -6,9 +6,9 @@
     <p>Yang bertanda tangan di bawah ini :</p>
     <table width="100%" style="margin-left: -5px;">
         <tr>
-            <td width="10%">Nama</td>
+            <td width="20%">Nama</td>
             <td width="1%">:</td>
-            <td width="89%">{{$sekolah->nama_kepsek}}</td>
+            <td width="79%">{{$sekolah->nama_kepsek}}</td>
         </tr>
         <tr>
             <td>NIP</td>
@@ -43,6 +43,52 @@
                     <p>&nbsp;</p>
                     <p>{{$sekolah->nama_kepsek}}<br>
                         NIP. {{$sekolah->nip_kepsek}}</p>
+                </td>
+            </tr>
+        </table>
+    <p style="page-break-before: always"></p>
+    <h3 class="text-center">PAKTA INTEGRITAS PENGAWAS PEMBINA SEKOLAH</h3>
+    <p></p>
+    <p>Yang bertanda tangan di bawah ini :</p>
+    <table width="100%" style="margin-left: -5px;">
+        <tr>
+            <td width="20%">Nama</td>
+            <td width="1%">:</td>
+            <td width="79%">{{$sekolah->nama_kepsek}}</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>:</td>
+            <td>{{$sekolah->nip_kepsek}}</td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>:</td>
+            <td>Pengawas Pembina Sekolah</td>
+        </tr>
+        <tr>
+            <td>Nama Sekolah</td>
+            <td>:</td>
+            <td>{{$sekolah->nama}}</td>
+        </tr>
+    </table>
+    <p></p>
+    <p>Menyatakan bahwa seluruh data yang diisikan dalam instrumen Aplikasi Penjaminan Mutu SMK (APM SMK) sudah sesuai
+        dengan data yang sebenarnya.</p>
+    <p>Jika dikemudian hari ditemukan ketidaksesuaian antara data yang dikirimkan dengan data yang ada, saya siap
+        menerima sanksi baik secara moral atau administrasi.</p>
+        <table width="100%" style="margin-left: -5px;">
+            <tr>
+                <td width="60%">&nbsp;</td>
+                <td width="40%">
+                    <p>{{$sekolah->kabupaten}}, {{$now}}<br>
+                        Pengawas Pembina Sekolah</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;<br>
+                        NIP. &nbsp;</p>
                 </td>
             </tr>
         </table>

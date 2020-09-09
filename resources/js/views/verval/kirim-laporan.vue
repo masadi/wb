@@ -290,20 +290,20 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
                     if(getData.data.sekolah_sasaran.proses){
                         this.toggleEditorDisabled()
                         this.isCheckbox = true
-                        this.isBatal = false
+                        this.isBatal = true
                         status_rapor = 'proses'
                     }
                     if(getData.data.sekolah_sasaran.terima){
                         status_rapor = 'terima'
                         this.toggleEditorDisabled()
                         this.isCheckbox = true
-                        this.isBatal = false
+                        this.isBatal = true
                     }
                     if(getData.data.sekolah_sasaran.tolak){
                         status_rapor = 'tolak'
                         this.toggleEditorDisabled()
                         this.isCheckbox = true
-                        this.isBatal = false
+                        this.isBatal = true
                     }
                     this.progress_rapor_mutu = status_rapor
                     this.terms = false

@@ -50,6 +50,7 @@
             <template v-slot:cell(actions)="row">
                 <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                     <b-dropdown-item href="javascript:" @click="detilData(row)"><i class="fas fa-search-plus"></i> Detil</b-dropdown-item>
+                    <b-dropdown-item href="javascript:" @click="batalData(row)"><i class="fas fa-times"></i> Batalkan</b-dropdown-item>
                     <b-dropdown-item href="javascript:" @click="terimaData(row)"><i class="fas fa-check"></i> Sahkan</b-dropdown-item>
                     <b-dropdown-item href="javascript:" @click="afirmasiData(row)"><i class="fas fa-sync-alt"></i> Afirmasi</b-dropdown-item>
                     <b-dropdown-item href="javascript:" @click="tolakData(row)"><i class="fas fa-ban"></i> Tolak</b-dropdown-item>
@@ -265,6 +266,37 @@ export default {
                 this.rapor_mutu = getData.data
                 this.$refs['detil-data'].show()
             });
+        },
+        batalData(data){
+            let nama_sekolah = data.item.sekolah.nama
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Validasi Rapor Mutu Sekolah '+nama_sekolah+ ' akan dibatalkan!',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.value) {
+                    axios.post(`/api/validasi/proses`, {
+                        permintaan: 'batal',
+                        rapor_mutu_id: data.item.rapor_mutu_id,
+                        sekolah_sasaran_id : data.item.sekolah_sasaran_id,
+                        verifikator_id: data.item.verifikator_id,
+                        user_id: user.user_id,
+                    }).then((response) => {
+                        Swal.fire(
+                            'Berhasil!',
+                            'Rapor Mutu sekolah '+nama_sekolah+' berhasil dibatalkan',
+                            'success'
+                        ).then(()=>{
+                            this.loadPerPage(10);
+                        });
+                    });
+                }
+            })
         },
         terimaData(data){
             let nama_sekolah = data.item.sekolah.nama

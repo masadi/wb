@@ -259,6 +259,16 @@ class ValidasiController extends Controller
                 }]);
             }])->find($request->rapor_mutu_id);
             return response()->json(['status' => 'success', 'data' => $output]);
+        } elseif($request->permintaan == 'batal'){
+            /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
+            $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('terima');
+            $rapor_mutu->jenis_rapor_id = HelperModel::jenis_rapor_mutu('pengesahan');
+            $rapor_mutu->user_direktorat_id = $request->user_id;
+            $rapor_mutu->save();*/
+            $delete = Rapor_mutu::find($request->rapor_mutu_id);
+            if($delete){
+                $delete->delete();
+            }
         } elseif($request->permintaan == 'terima'){
             /*$rapor_mutu = Rapor_mutu::find($request->rapor_mutu_id);
             $rapor_mutu->status_rapor_id = HelperModel::status_rapor_mutu('terima');
