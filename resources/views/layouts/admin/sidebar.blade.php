@@ -190,6 +190,12 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link tag="a" to="/unduhan" class="nav-link">
+                        <i class="nav-icon fas fa-download"></i>
+                        <p>Pusat Unduhan</p>
+                    </router-link>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-danger" href="javascript:{}" onclick="document.getElementById('logout-form-sidebar').submit();">
                         <i class="nav-icon fas fa-sign-out-alt"></i> Keluar Aplikasi
                     </a>
