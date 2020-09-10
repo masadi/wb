@@ -16,7 +16,7 @@
     </table>
 </htmlpagefooter>
 <div class="container-fluid">
-    <h3>Isian Instrumen Sekolah {{$laporan->sekolah->nama}}</h3>
+    <h3 class="text-center">Isian Instrumen Sekolah <br> {{$laporan->sekolah->nama}}</h3>
     <ol class="componen">
         @foreach($all_komponen as $komponen)
         <li>Komponen {{$komponen->nama}}
