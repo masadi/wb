@@ -69,12 +69,12 @@
         <tr>
             <td width="20%">Nama</td>
             <td width="1%">:</td>
-            <td width="79%">{{$sekolah->nama_kepsek}}</td>
+            <td width="79%">{{$sekolah->nama_pengawas}}</td>
         </tr>
         <tr>
             <td>NIP</td>
             <td>:</td>
-            <td>{{$sekolah->nip_kepsek}}</td>
+            <td>{{$sekolah->nip_pengawas}}</td>
         </tr>
         <tr>
             <td>Jabatan</td>
