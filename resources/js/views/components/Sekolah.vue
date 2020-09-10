@@ -169,6 +169,16 @@
                     <input v-model="form.nip_kepsek" type="text" name="nip_kepsek" class="form-control" :class="{ 'is-invalid': form.errors.has('nip_kepsek') }">
                     <has-error :form="form" field="nip_kepsek"></has-error>
                 </div>
+                <div class="form-group">
+                    <label>Nama Pengawas Pembina</label>
+                    <input v-model="form.nama_pengawas" type="text" name="nama_pengawas" class="form-control" :class="{ 'is-invalid': form.errors.has('nama_pengawas') }">
+                    <has-error :form="form" field="nama_pengawas"></has-error>
+                </div>
+                <div class="form-group">
+                    <label>NIP Pengawas Pembina</label>
+                    <input v-model="form.nip_pengawas" type="text" name="nip_pengawas" class="form-control" :class="{ 'is-invalid': form.errors.has('nip_pengawas') }">
+                    <has-error :form="form" field="nip_pengawas"></has-error>
+                </div>
             </template>
             <template v-slot:modal-footer="{ hide }">
                 <b-button variant="secondary" size="sm" @click="hide()">Tutup</b-button>
@@ -216,6 +226,8 @@ export default {
                 nama: '',
                 nama_kepsek: '',
                 nip_kepsek: '',
+                nama_pengawas: '',
+                nip_pengawas: '',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -343,6 +355,8 @@ export default {
             this.form.nama = row.item.nama
             this.form.nama_kepsek = row.item.nama_kepsek
             this.form.nip_kepsek = row.item.nip_kepsek
+            this.form.nama_pengawas = row.item.nama_pengawas
+            this.form.nip_pengawas = row.item.nip_pengawas
             $('#modalEdit').modal('show');
         },
         updateData(){

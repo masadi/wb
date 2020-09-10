@@ -81,6 +81,8 @@ class SekolahController extends Controller
         $sekolah->nama = $request->nama;
         $sekolah->nama_kepsek = $request->nama_kepsek;
         $sekolah->nip_kepsek = $request->nip_kepsek;
+        $sekolah->nama_pengawas = $request->nama_pengawas;
+        $sekolah->nip_pengawas = $request->nip_pengawas;
         $sekolah->save();
         $user = $sekolah->user;
         $user->name = $request->nama;

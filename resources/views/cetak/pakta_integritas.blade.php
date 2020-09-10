@@ -62,7 +62,7 @@
             </tr>
         </table>
     <p style="page-break-before: always"></p>
-    <h3 class="text-center">PAKTA INTEGRITAS PENGAWAS PEMBINA SEKOLAH</h3>
+    <h3 class="text-center">PAKTA INTEGRITAS<br>PENGAWAS PEMBINA SEKOLAH</h3>
     <p></p>
     <p>Yang bertanda tangan di bawah ini :</p>
     <table width="100%" style="margin-left: -5px;">
@@ -102,8 +102,8 @@
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
                     <p>&nbsp;</p>
-                    <p>&nbsp;<br>
-                        NIP. &nbsp;</p>
+                    <p>{{$sekolah->nama_pengawas}}<br>
+                        NIP. {{$sekolah->nip_pengawas}}</p>
                 </td>
             </tr>
         </table>

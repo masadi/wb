@@ -6,6 +6,8 @@ use App\Sekolah;
 use App\Ptk;
 use App\User;
 use App\Role;
+use App\Sekolah_sasaran;
+use App\HelperModel;
 class SekolahSeeder extends Seeder
 {
     /**
@@ -202,7 +204,13 @@ class SekolahSeeder extends Seeder
                     $role = Role::where('name', 'sekolah')->first();
                     $user_sekolah->attachRole($role);
                 }
-                foreach($sekolah->ptk as $ptk){
+                $verifikator = User::where('username', 'penjamin_mutu')->first();
+                Sekolah_sasaran::updateOrCreate([
+                    'sekolah_id' => $sekolah->sekolah_id,
+                    'verifikator_id' => $verifikator->user_id,
+                    'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
+                ]);
+                /*foreach($sekolah->ptk as $ptk){
                     $new_ptk = Ptk::updateOrCreate(
                         ['ptk_id' => $ptk->guru_id_dapodik],
                         [
@@ -228,7 +236,7 @@ class SekolahSeeder extends Seeder
                             'email' => $ptk->email,
                         ]
                     );
-                    /*$user = User::updateOrCreate(
+                    $user = User::updateOrCreate(
                         ['email' => $ptk->email],
                         [
                             'sekolah_id' => $ptk->sekolah_id,
@@ -240,8 +248,8 @@ class SekolahSeeder extends Seeder
                     if(!$user->hasRole('ptk')){
                         $role = Role::where('name', 'ptk')->first();
                         $user->attachRole($role);
-                    }*/
-                }
+                    }
+                }*/
             }
         }
     }
