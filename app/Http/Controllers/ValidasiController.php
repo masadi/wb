@@ -165,6 +165,7 @@ class ValidasiController extends Controller
                 'format' => [220, 330],
                 'orientation' => 'L',
             ]);
+            $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         } elseif($request->permintaan == 'instrumen_sekolah'){
             $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query) use ($request){
@@ -182,6 +183,7 @@ class ValidasiController extends Controller
             $pdf = PDF::loadView('cetak.instrumen_sekolah', $data, [], [
                 'format' => [220, 330],
             ]);
+            $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         } elseif($request->permintaan == 'instrumen_penjamin_mutu'){
             $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query) use ($request){
@@ -199,6 +201,7 @@ class ValidasiController extends Controller
             $pdf = PDF::loadView('cetak.instrumen_penjamin_mutu', $data, [], [
                 'format' => [220, 330],
             ]);
+            $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         } elseif($request->permintaan == 'instrumen_koreksi'){
             $data['all_komponen'] = Komponen::whereHas('aspek.instrumen.nilai_instrumen', function($query) use ($request){
@@ -233,6 +236,7 @@ class ValidasiController extends Controller
             $pdf = PDF::loadView('cetak.instrumen_koreksi', $data, [], [
                 'format' => [220, 330],
             ]);
+            $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         }
     }

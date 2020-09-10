@@ -388,6 +388,7 @@ class VerifikasiController extends Controller
                 'format' => [220, 330],
                 'orientation' => 'P',
             ]);
+            $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         }
     }

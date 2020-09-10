@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-tools">
-                                    <b-button squared variant="primary" size="lg" v-show='isDisabled' v-on:click="cetak_pakta_no_alert">
+                                    <b-button squared variant="primary" size="lg" v-show='isCheckbox' v-on:click="cetak_pakta_no_alert">
                                         <b-spinner small v-show="show_spinner_cetak_no_alert"></b-spinner>
                                         <span class="sr-only" v-show="show_spinner_cetak_no_alert">Loading...</span>
                                         <span v-show="show_text_cetak_no_alert">CETAK PAKTA INTEGRITAS</span>
@@ -121,6 +121,7 @@
                 isBatal : true,
                 isKirim: true,
                 isCheckbox : false,
+                isCetak: false,
                 show_text_cetak:true,
                 show_text_cetak_no_alert:true,
                 show_text_batal:true,
@@ -278,6 +279,7 @@
                         this.isCheckbox = false
                     } else {
                         this.isCheckbox = true
+                        //this.isCetak = true
                     }
                     if(getData.user.sekolah.sekolah_sasaran){
                         if(getData.user.sekolah.sekolah_sasaran.pakta_integritas){
@@ -291,6 +293,7 @@
                             }
                         } else {
                             this.isKirim = true
+                            //this.isCetak = true
                         }
                     }
                     this.terms = false

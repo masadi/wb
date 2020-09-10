@@ -6,7 +6,10 @@ body {
     text-align: justify;
     color: #000;
 }
-
+@page {
+	header: page-header;
+	footer: page-footer;
+}
 ol.componen {
     padding: 0px;
     list-style-type: upper-alpha;
