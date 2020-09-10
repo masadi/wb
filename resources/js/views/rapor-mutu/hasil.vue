@@ -419,6 +419,7 @@ export default {
                     bullet2.dy = 10;
                     bullet2.label.text = '{setTitle}%'
                     bullet2.label.fill = am4core.color('red')
+                    chart.exporting.menu = new am4core.ExportMenu();
                 })();
             }
         },
