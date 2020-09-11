@@ -32,7 +32,7 @@
                                         <img src="/vendor/img/pdf.png" width="100">
                                         <div class="inner">Panduan Penggunaan Aplikasi</div>
                                         <div class="small-box-footer bg-primary">
-                                            <a href="/downloads/Panduan APM SMK.pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
+                                            <a href="/downloads/Panduan APM SMK 2020 (Sekolah).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
                                         </div>
                                     </div>
                                     <div class="small-box text-center mr-2">
