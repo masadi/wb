@@ -63,7 +63,7 @@
                                             </div>
                                             <label for="asal_institusi" class="col-form-label">Asal Institusi</label>
                                             <div class="form-group">
-                                                <input v-model="form.nuptk" type="text" id="asal_institusi" name="asal_institusi" class="form-control" :class="{ 'is-invalid': form.errors.has('asal_institusi') }">
+                                                <input v-model="form.asal_institusi" type="text" id="asal_institusi" name="asal_institusi" class="form-control" :class="{ 'is-invalid': form.errors.has('asal_institusi') }">
                                                 <has-error :form="form" field="asal_institusi"></has-error>
                                             </div>
                                             <label for="alamat_institusi" class="col-form-label">Alamat Institusi</label>

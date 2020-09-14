@@ -133,6 +133,11 @@ class UsersController extends Controller
 			}
 			$user->photo = $fileName;
 		}
+		$user->nuptk = $request->nuptk;
+		$user->nip = $request->nip;
+		$user->asal_institusi = $request->asal_institusi;
+		$user->alamat_institusi = $request->alamat_institusi;
+		$user->nomor_hp = $request->nomor_hp;
 		$user->name = $request->input('name');
         $user->email = strtolower($request->input('email'));
 		if($user->save()){
