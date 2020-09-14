@@ -27,6 +27,14 @@
                                 </h3>
                             </div>
                             <div class="card-body">
+                                <div class="alert alert-danger" v-show="errors">
+                                <h5><i class="icon fas fa-ban"></i> Isian Tidak Valid!</h5>
+                                <ul>
+                                    <li v-for="(error, key) in errors">
+                                        {{error}}
+                                    </li>
+                                </ul>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-8">
                                         <label for="name" class="col-form-label">Nama Lengkap</label>
@@ -145,6 +153,7 @@ export default {
                 nomor_hp: '',
                 photo: null,
             }),
+            errors:null,
             photo : '',
             upload_photo: [],
             show_spinner: false,
@@ -180,6 +189,7 @@ export default {
         updateData(){
             this.show_spinner = true
             this.show_text = false
+            this.errors = null
             let formData = new FormData();
             formData.append('image', this.upload_photo);
             formData.append('user_id', this.form.user_id)
@@ -204,7 +214,17 @@ export default {
                     title: response.data.message
                 });
                 this.loadPostsData();
-            })
+            }).catch(error => {
+                console.log(error.response.data)
+                var errors = [];
+                $.each(error.response.data.errors, function(key, value){
+                    errors.push(value[0]);
+                })
+                console.log(errors);
+                this.errors = errors
+                this.show_spinner = false
+                this.show_text = true
+            });
         }
     }
 }

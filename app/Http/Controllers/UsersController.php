@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\MatchOldPassword;
 use Carbon\Carbon;
 use File;
 use Image;
@@ -70,9 +70,10 @@ class UsersController extends Controller
 			'image'					=> 'nullable|image|mimes:jpg,png,jpeg',
 			'name'					=> 'required',
             'email'					=> 'required|email|unique:users,email,' . $id .',user_id',
-			'current_password'		=> 'nullable',
-			'password'				=> 'nullable|required_with_all:current_password,email|min:8',
-			'password_confirmation'	=> 'confirmed',
+			//'current_password'		=> 'nullable',
+			'current_password'		=> ['nullable', new MatchOldPassword($request->user_id)],
+			'password'				=> 'nullable|required_with_all:current_password,email|min:8,confirmed',
+			//'password_confirmation'	=> 'confirmed',
 		],
 		$messages
 		)->validate();
@@ -84,11 +85,11 @@ class UsersController extends Controller
 		$path = public_path('images');
 		//MENGAMBIL FILE IMAGE DARI FORM
         $file = $request->file('image');
-		$current_password_post = $request->current_password;
+		//$current_password_post = $request->current_password;
 		$user = User::findOrFail($id);
-		if($current_password_post){
-			if(Hash::check($current_password_post, $user->password)){       
-				$user->password = Hash::make($request->input('password'));
+		if($request->current_password){
+			if(Hash::check($request->current_password, $user->password)){       
+				$user->password = Hash::make($request->password);
 			}
 		}
 		if($file){
