@@ -36,7 +36,67 @@
                                     Content akses direktorat
                                 </section>
                                 <section v-show="hasRole('penjamin_mutu')">
-                                    Content akses tim penjamin mutu
+                                    <div class="row">
+                                        <div class="col-lg-3 col-6">
+                                            
+                                            <div class="small-box bg-info">
+                                            <div class="inner">
+                                                <h3>{{jml_sekolah_sasaran}}</h3>
+                                                <p>Jumlah Sekolah Sasaran</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ion ion-bag"></i>
+                                            </div>
+                                            <a href="#" class="small-box-footer">&nbsp;</a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-3 col-6">
+                                            
+                                            <div class="small-box bg-warning">
+                                            <div class="inner">
+                                                <h3>{{jml_sekolah_sasaran_no_instrumen}}</h3>
+
+                                                <p>Sekolah Sasaran Belum Mengisi Instrumen</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ion ion-person-add"></i>
+                                            </div>
+                                            <a href="#" class="small-box-footer">&nbsp;</a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-3 col-6">
+                                            
+                                            <div class="small-box bg-success">
+                                            <div class="inner">
+                                                <h3>{{jml_sekolah_sasaran_instrumen}}</h3>
+
+                                                <p>Sekolah Sasaran Telah Mengisi Instrumen</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ion ion-stats-bars"></i>
+                                            </div>
+                                            <a href="#" class="small-box-footer">&nbsp;</a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-lg-3 col-6">
+                                            
+                                            <div class="small-box bg-danger">
+                                            <div class="inner">
+                                                <h3>{{jml_sekolah_sasaran_verval}}</h3>
+
+                                                <p>Sekolah Sasaran Telah di Verval</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ion ion-pie-graph"></i>
+                                            </div>
+                                            <a href="#" class="small-box-footer">&nbsp;</a>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
                                 </section>
                                 <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
                                     <div class="container">
@@ -139,6 +199,10 @@ export default {
                 terima : 0,
                 tolak: 0,
             },
+            jml_sekolah_sasaran: 0,
+            jml_sekolah_sasaran_instrumen: 0,
+            jml_sekolah_sasaran_no_instrumen: 0,
+            jml_sekolah_sasaran_verval: 0,
         }
     },
     //mounted() {
@@ -165,6 +229,10 @@ export default {
             .then((response) => {
                 this.loading=false
                 let getData = response.data.data
+                this.jml_sekolah_sasaran = getData.jml_sekolah_sasaran
+                this.jml_sekolah_sasaran_instrumen = getData.jml_sekolah_sasaran_instrumen
+                this.jml_sekolah_sasaran_no_instrumen = getData.jml_sekolah_sasaran_no_instrumen
+                this.jml_sekolah_sasaran_verval = getData.jml_sekolah_sasaran_verval
                 this.sekolah = getData.sekolah
                 this.ptk = getData.ptk_count
                 this.pd = getData.pd_count

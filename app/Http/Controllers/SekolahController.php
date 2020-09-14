@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Sekolah;
+use App\User;
 use App\HelperModel;
 class SekolahController extends Controller
 {
@@ -42,7 +43,27 @@ class SekolahController extends Controller
      */
     public function store(Request $request)
     {
-        $data = HelperModel::rapor_mutu($request->user_id);
+        $user = User::find($request->user_id);
+        $data = NULL;
+        if($user->hasRole('sekolah')){
+            $data = HelperModel::rapor_mutu($request->user_id);
+        } elseif($user->hasRole('penjamin_mutu')){
+            $data = [
+                'jml_sekolah_sasaran' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
+                    $query->where('verifikator_id', $request->user_id);
+                })->count(),
+                'jml_sekolah_sasaran_instrumen' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
+                    $query->where('verifikator_id', $request->user_id);
+                })->has('berita_acara')->count(),
+                'jml_sekolah_sasaran_no_instrumen' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
+                    $query->where('verifikator_id', $request->user_id);
+                })->doesntHave('berita_acara')->count(),
+                'jml_sekolah_sasaran_verval' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
+                    $query->where('verifikator_id', $request->user_id);
+                    $query->has('rapor_mutu');
+                })->count(),
+            ];
+        }
         return response()->json(['status' => 'success', 'data' => $data]);
     }
 
