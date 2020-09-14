@@ -25,6 +25,9 @@
             font-family: "Titillium Web",sans-serif;
             color: #fff;
         }
+        .header-text h1 {
+            font-size: 30px;
+        }
         .header-text h1, b, strong {
             font-weight: 700;
         }
@@ -50,7 +53,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="header-logo float-left mt-4 mr-4">
+                        <div class="header-logo float-left mt-3 mr-4">
                             <a href="{{url('/')}}"><img src="{{asset('vendor/img/logo.png')}}" alt=""
                                     class="img-responsive"></a>
                         </div>
