@@ -12,27 +12,48 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="{{asset('vendor/adminlte/dist/css/adminlte.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel='stylesheet' type="text/css" href='https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700,300'>
     <!--link rel="shortcut icon" href="{{asset('favicons/favicon.ico')}}" /-->
     <style>
-        .header{
+        /*.header{
             background-image: url('{{asset('vendor/img/bgheader-min.jpg')}}');
             background-repeat: no-repeat;
             background-size: 100% 100%;
+        }*/
+        .header-text{
+            font-family: "Titillium Web",sans-serif;
+            color: #fff;
+        }
+        .header-text h1, b, strong {
+            font-weight: 700;
+        }
+        .bg-custom {
+            background: #4abcb2 !important;
+        }
+        .navbar-custom{
+            background-color: #206d66 !important;
+            color: #fff !important;
+        }
+        .navbar-custom a {
+            color:honeydew;
+        }
+        .navbar-custom a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body class="layout-top-nav">
     <div class="wrapper">
-        <header class="header bg-default">
+        <header class="header bg-custom">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="header-logo float-left my-4 mr-4">
-                            <a href="{{url('/')}}"><img src="{{asset('vendor/img/kemdikbud.png')}}" alt=""
+                        <div class="header-logo float-left mt-4 mr-4">
+                            <a href="{{url('/')}}"><img src="{{asset('vendor/img/logo.png')}}" alt=""
                                     class="img-responsive"></a>
                         </div>
-                        <img style="max-width: 200px;" src="{{asset('vendor/img/smk-bisa-smk-hebat.png')}}" alt="" class="img-responsive float-right my-4">
+                        <img style="max-width: 200px;" src="{{asset('vendor/img/smk-bisa-smk-hebat.png')}}" alt="" class="img-responsive float-right mt-1">
                         <div class="header-text">
                             <h1 class="mb-0">Aplikasi Penjaminan Mutu SMK</h1>
                             <p class="lead mb-0"><strong>Direktorat Sekolah Menengah Kejuruan</strong></p>
@@ -43,7 +64,7 @@
                 </div>
             </div>
         </header>
-        <nav class="main-header navbar navbar-expand-lg navbar-info navbar-dark sticky-top">
+        <nav class="main-header navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
             <div class="container">
                 <a href="{{asset('home')}}" class="navbar-brand ml-2">
                     <span class="brand-text font-weight-light">
@@ -117,7 +138,7 @@
                 </div>
             </div>
         </div>
-        <footer class="main-footer bg-info">
+        <footer class="main-footer navbar-custom">
             Copyright &copy; 2020 <a href="http://psmk.kemdikbud.go.id/" target="_blank">DIREKTORAT SEKOLAH
                 MENENGAH KEJURUAN</a>.
         </footer>
