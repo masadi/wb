@@ -109,7 +109,7 @@ $user = auth()->user();
                 <li class="nav-item">
                     <router-link tag="a" to="/kuisioner/pengisian" class="nav-link">
                         <i class="nav-icon fas fa-tasks"></i>
-                        <p>Kuisioner</p>
+                        <p>Kuesioner</p>
                     </router-link>
                 </li>
                 <li class="nav-item has-treeview">
