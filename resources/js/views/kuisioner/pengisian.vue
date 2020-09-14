@@ -18,7 +18,7 @@
                                 <div class="progress-bar" v-bind:style="'width: '+persen_utama+'%;'"></div>
                                 </div>
                                 <span class="progress-description">
-                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="cetak_kuisioner"><i class="fas fa-print"></i> Cetak Kuisioner</button>
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="cetak_kuisioner"><i class="fas fa-print"></i> Cetak Kuesioner</button>
                                 </span>
                             </div>
                             </div>
