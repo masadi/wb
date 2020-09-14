@@ -47,8 +47,9 @@ class SekolahSeeder extends Seeder
                         'status_sekolah' => $sekolah->status_sekolah,
                     ]
                 );
+                $email = ($sekolah->email) ? $sekolah->email : $sekolah->npsn.'@apmsmk.net';
                 $user_sekolah = User::updateOrCreate(
-                    ['email' => $sekolah->email],
+                    ['email' => $email],
                     [
                         'sekolah_id' => $sekolah->sekolah_id,
                         'username' => $sekolah->npsn,
