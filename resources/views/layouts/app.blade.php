@@ -44,6 +44,9 @@
         .navbar-custom a:hover {
             text-decoration: underline;
         }
+        .main-footer{
+           font-size: 14px; 
+        }
     </style>
 </head>
 
