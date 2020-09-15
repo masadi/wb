@@ -89,36 +89,37 @@ class TahunSeeder extends Seeder
             ]);
             $role = Role::where('name', 'penjamin_mutu')->first();
             $verifikator->attachRole($role);
-            $sekolah = Sekolah::updateOrCreate(
-                ['sekolah_id' => Str::uuid()],
-                [
-                    'npsn' => $item['npsn'],
-                    'nama' => 'SEKOLAH CONTOH',
-                    'status_sekolah' => 2,
-                    'alamat' => $item['alamat_institusi'],
-                    'kabupaten' => $item['kabupaten'],
-                    'provinsi' => $item['provinsi'],
-                ]
-            );
-            Sekolah_sasaran::updateOrCreate([
-                'sekolah_id' => $sekolah->sekolah_id,
-                'verifikator_id' => $verifikator->user_id,
-                'tahun_pendataan_id' => $tahun_pendataan->tahun_pendataan_id,
-            ]);
-            $user_sekolah = User::updateOrCreate(
-                ['email' => $item['npsn'].'@apmsmk.net'],
-                [
+            if($item['npsn']){
+                $sekolah = Sekolah::updateOrCreate(
+                    ['sekolah_id' => Str::uuid()],
+                    [
+                        'npsn' => $item['npsn'],
+                        'nama' => 'SEKOLAH CONTOH',
+                        'status_sekolah' => 2,
+                        'alamat' => $item['alamat_institusi'],
+                        'kabupaten' => $item['kabupaten'],
+                        'provinsi' => $item['provinsi'],
+                    ]
+                );
+                Sekolah_sasaran::updateOrCreate([
                     'sekolah_id' => $sekolah->sekolah_id,
-                    'username' => $sekolah->npsn,
-                    'name' => $sekolah->nama,
-                    'password' => bcrypt(12345678)
-                ]
-            );
-            if(!$user_sekolah->hasRole('sekolah')){
-                $role = Role::where('name', 'sekolah')->first();
-                $user_sekolah->attachRole($role);
+                    'verifikator_id' => $verifikator->user_id,
+                    'tahun_pendataan_id' => $tahun_pendataan->tahun_pendataan_id,
+                ]);
+                $user_sekolah = User::updateOrCreate(
+                    ['email' => $item['npsn'].'@apmsmk.net'],
+                    [
+                        'sekolah_id' => $sekolah->sekolah_id,
+                        'username' => $sekolah->npsn,
+                        'name' => $sekolah->nama,
+                        'password' => bcrypt(12345678)
+                    ]
+                );
+                if(!$user_sekolah->hasRole('sekolah')){
+                    $role = Role::where('name', 'sekolah')->first();
+                    $user_sekolah->attachRole($role);
+                }
             }
-
         });
     }
 }
