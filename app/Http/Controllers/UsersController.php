@@ -156,4 +156,22 @@ class UsersController extends Controller
 		}
 		return response()->json(['status' => 'success', 'message' => 'Profile pengguna berhasil diperbaharui', 'data' => $user]);
 	}
+	public function reset_passsword(Request $request){
+		$user = User::find($request->user_id);
+		$user->password = $user->username;
+		if($user->save()){
+			$response = [
+				'title' => 'Berhasil',
+				'text' => 'Password pengguna berhasil direset',
+				'icon' => 'success',
+			];
+		} else {
+			$response = [
+				'title' => 'Gagal',
+				'text' => 'Password pengguna gagal direset',
+				'icon' => 'error',
+			];
+		}
+		return response()->json($response);
+	}
 }

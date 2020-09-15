@@ -66,6 +66,7 @@ Route::group(['prefix' => 'validasi'], function(){
 });
 Route::resource('users', 'UsersController');
 Route::post('/profile', 'UsersController@profile');
+Route::post('/reset-password', 'UsersController@reset_passsword');
 Route::post('/update-profile', 'UsersController@update_profile');
 Route::resource('sekolah', 'SekolahController');
 Route::resource('komponen', 'KomponenController');

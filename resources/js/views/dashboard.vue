@@ -229,6 +229,9 @@ export default {
             .then((response) => {
                 this.loading=false
                 let getData = response.data.data
+                if(!getData){
+                    return false
+                }
                 this.jml_sekolah_sasaran = getData.jml_sekolah_sasaran
                 this.jml_sekolah_sasaran_instrumen = getData.jml_sekolah_sasaran_instrumen
                 this.jml_sekolah_sasaran_no_instrumen = getData.jml_sekolah_sasaran_no_instrumen

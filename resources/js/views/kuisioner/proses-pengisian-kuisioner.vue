@@ -47,7 +47,12 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-between">
                                     <button v-bind:class="{ disabled: !previous }" type="button" class="btn btn-primary" v-on:click="newPage(previous)">&laquo; Komponen Sebelumnya</button>
-                                    <button type="submit" class="btn btn-danger" :disabled="pakta_integritas">Simpan</button>
+                                    <!--button type="submit" class="btn btn-danger" :disabled="pakta_integritas">Simpan</button-->
+                                    <b-button type="submit" squared variant="danger" :disabled="pakta_integritas">
+                                        <b-spinner small v-show="show_spinner_simpan"></b-spinner>
+                                        <span class="sr-only" v-show="show_spinner_simpan">Loading...</span>
+                                        <span v-show="show_text_simpan">Simpan</span>
+                                    </b-button>
                                     <button v-bind:class="{ disabled: !next }" type="button" class="btn btn-primary" v-on:click="newPage(next)">Komponen Berikutnya &raquo;</button>
                                     </div>
                                 </div>
@@ -106,6 +111,8 @@
                 content:{},
                 pakta_integritas: false,
                 parse:'',
+                show_spinner_simpan:false,
+                show_text_simpan:true,
             }
         },
         /*components: {
@@ -183,6 +190,8 @@
                 this.content = tempPetunjuk
                 this.contentPetunjuk = tempDetilPetunjuk
                 window.scrollTo(0,100);
+                this.show_spinner_simpan = false
+                this.show_text_simpan = true
             },
             /*loadPostsData() {
                 //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
@@ -239,6 +248,8 @@
                 })
             },*/
             insertData(){
+                this.show_spinner_simpan = true
+                this.show_text_simpan = false
                 let page_url = (this.current_page < this.total) ? (this.current_page + 1) : null
                 let next_page = this.next;
                 let new_id = (this.komponen_id + 1)

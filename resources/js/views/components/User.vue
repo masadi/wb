@@ -31,10 +31,11 @@
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
-                    <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
+                    <!--b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.user_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
-                    </b-dropdown>
+                    </b-dropdown-->
+                    <button class="btn btn-warning btn-sm" @click="resetPassword(row.item)">Reset Password</button>
                 </template>
             </b-table>   
       
@@ -179,6 +180,48 @@ export default {
                             'Berhasil!',
                             'Data Pengguna berhasil dihapus',
                             'success'
+                        ).then(()=>{
+                            this.loadPerPage(10);
+                        });
+                    }).catch((data)=> {
+                        Swal.fire("Failed!", data.message, "warning");
+                    });
+                }
+            })
+        },
+        resetPassword(item){
+            console.log(item);
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini tidak dapat dikembalikan!",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Reset Password!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.value) {
+                    return fetch('/api/reset-password', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({user_id: item.user_id})
+                    })
+                    /*.then((response)=>{
+                        console.log(response);
+                        return false
+                    //this.form.delete('api/komponen/'+id).then(()=>{
+                        */
+                    .then(response => response.json()) 
+                    // Displaying results to console 
+                    .then(json => {
+                        Swal.fire(
+                            json.title,
+                            json.text,
+                            json.icon
                         ).then(()=>{
                             this.loadPerPage(10);
                         });
