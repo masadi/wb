@@ -65,7 +65,7 @@ class LaratrustSeeder extends Seeder
                         'name' => 'Achmadi',
                         'username' => 'masadi',
                         'email' => 'masadi.com@gmail.com',
-                        'password' => bcrypt('12345678')
+                        'password' => bcrypt('3l3ktr4&cyber')
                     ]);
                     $user->attachRole($role);
                 } else if($key == 'sekolah'){
