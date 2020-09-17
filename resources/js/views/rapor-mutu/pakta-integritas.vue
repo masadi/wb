@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-tools">
-                                    <b-button squared variant="primary" size="lg" v-show='isCheckbox' v-on:click="cetak_pakta_no_alert">
+                                    <b-button squared variant="primary" size="lg" v-show='!isKirim' v-on:click="cetak_pakta_no_alert">
                                         <b-spinner small v-show="show_spinner_cetak_no_alert"></b-spinner>
                                         <span class="sr-only" v-show="show_spinner_cetak_no_alert">Loading...</span>
                                         <span v-show="show_text_cetak_no_alert">CETAK PAKTA INTEGRITAS</span>

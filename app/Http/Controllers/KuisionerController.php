@@ -127,7 +127,7 @@ class KuisionerController extends Controller
             $output_aspek[$aspek->nama] = $i++;
             $output_bobot[$aspek->nama] = $aspek->bobot;
         }
-        return response()->json(['status' => 'success', 'data' => $output, 'output_aspek' => $output_aspek, 'nilai' => $output_nilai, 'output_bobot' => $output_bobot]);
+        return response()->json(['status' => 'success', 'data' => $output, 'output_aspek' => $output_aspek, 'nilai' => $output_nilai, 'output_bobot' => $output_bobot, 'komponen' => $komponen]);
     }
     public function parse_json(Request $request){
         $obj = $request->obj;

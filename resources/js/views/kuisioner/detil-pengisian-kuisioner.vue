@@ -123,7 +123,7 @@
                     this.jumlah_terjawab = tempJumlahTerjawab
                     this.persen = tempPersen
                     this.nilai = tempNilai
-                    this.title = getData.title
+                    this.title = getData.komponen.nama
                     this.items = getData.data
                     this.aspek = getData.output_aspek
                 })
