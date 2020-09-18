@@ -38,7 +38,7 @@
             background-color: #206d66 !important;
             color: #fff !important;
         }
-        .navbar-custom a {
+        .navbar-custom a:not(.dropdown-item) {
             color:honeydew;
         }
         .navbar-custom a:hover {
