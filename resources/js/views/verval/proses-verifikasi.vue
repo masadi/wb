@@ -45,7 +45,7 @@
                                             <v-select :options="instrumen" label="text" index="value" @input="getSub" v-model="form.instrumen_id" placeholder="== Pilih Instrumen == "></v-select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" v-show="form.nilai">
                                         <div class="custom-control custom-radio mt-1" v-for="sub in jawaban">
                                             <input class="custom-control-input" type="radio" v-bind:id="sub.ins_id+sub.urut" v-bind:name="`instrumen_id.${sub.ins_id}`" v-model="form.nilai" v-bind:value="sub.urut">
                                             <label v-bind:for="sub.ins_id+sub.urut" class="custom-control-label" style="font-weight: normal;">{{sub.urut}}. {{sub.pertanyaan}}</label>
@@ -142,6 +142,7 @@ export default {
             })
         },
         getSub(e){
+            this.form.nilai = 0
             if(!e){
                 return false
             }
@@ -156,6 +157,9 @@ export default {
                 if(getData.jawaban){
                     this.form.nilai = getData.jawaban.nilai
                     this.form.keterangan = getData.nilai_instrumen.keterangan
+                } else {
+                    this.form.nilai = 0
+                    this.form.keterangan = ''
                 }
                 this.simpan = true
                 console.log(this.form.nilai)
