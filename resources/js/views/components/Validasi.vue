@@ -99,7 +99,7 @@
                     </tr>
                     <tr>
                         <td>Laporan Hasil Supervisi</td>
-                        <td class="text-center">{{(rapor_mutu.keterangan) ? 'Ada' : 'Tidak Ada'}}</td>
+                        <td class="text-center">{{(keterangan) ? 'Ada' : 'Tidak Ada'}}</td>
                         <td class="text-center">
                             <b-button squared variant="success" size="sm" v-on:click="unduh('laporan', rapor_mutu)">
                                 <b-spinner small v-show="show_spinner.laporan"></b-spinner>
@@ -183,6 +183,7 @@ export default {
     },
     data() {
         return {
+            keterangan: '',
             user : user,
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -262,6 +263,7 @@ export default {
                 user_id: data.item.sekolah.user.user_id,
             }).then((response) => {
                 let getData = response.data
+                this.keterangan = getData.data.sekolah.sekolah_sasaran.waiting.keterangan
                 this.table_rapor_mutu = 1
                 this.rapor_mutu = getData.data
                 this.$refs['detil-data'].show()

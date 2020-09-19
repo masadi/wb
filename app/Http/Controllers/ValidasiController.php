@@ -159,8 +159,15 @@ class ValidasiController extends Controller
                 $query->with(['subs']);
                 $query->where('urut', 0);
             }])->get();
-            $data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
+            //$data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
             //return view('cetak.laporan', $data);
+            $data['laporan'] = $output = Rapor_mutu::with(['sekolah' => function($query){
+                $query->with(['user', 'sekolah_sasaran.waiting' => function($query){
+                    $query->whereHas('jenis_rapor', function($query){
+                        $query->where('jenis', 'verval');
+                    });
+                }]);
+            }, 'penjamin_mutu'])->find($request->rapor_mutu_id);
             $pdf = PDF::loadView('cetak.laporan', $data, [], [
                 'format' => [220, 330],
                 'orientation' => 'L',
@@ -204,18 +211,7 @@ class ValidasiController extends Controller
             $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         } elseif($request->permintaan == 'instrumen_koreksi'){
-            $data['all_komponen'] = Komponen::whereHas('aspek.instrumen.nilai_instrumen', function($query) use ($request){
-                $query->whereHas('user', function($query) use ($request){
-                    $query->where('sekolah_id', $request->sekolah_id);
-                });
-                $query->where('verifikator_id', $request->verifikator_id);
-                $query->whereNotIn('nilai', function($query) use ($request){
-                    $query->select('nilai')->from('nilai_instrumen')->where(function($query) use ($request){
-                        $query->where('user_id', $request->user_id);
-                        $query->whereNull('verifikator_id');
-                    });
-                });
-            })->with(['aspek.instrumen' => function($query) use ($request){
+            $callback = function($query) use ($request){
                 $query->with(['nilai_instrumen' => function($query) use ($request){
                     $query->whereHas('user', function($query) use ($request){
                         $query->where('sekolah_id', $request->sekolah_id);
@@ -230,7 +226,22 @@ class ValidasiController extends Controller
                 }]);
                 $query->with(['subs']);
                 $query->where('urut', 0);
-            }])->get();
+            };
+            $data['all_komponen'] = Komponen::whereHas('aspek.instrumen.nilai_instrumen', function($query) use ($request){
+                $query->whereHas('user', function($query) use ($request){
+                    $query->where('sekolah_id', $request->sekolah_id);
+                });
+                $query->where('verifikator_id', $request->verifikator_id);
+                $query->whereNotIn('nilai', function($query) use ($request){
+                    $query->select('nilai')->from('nilai_instrumen')->where(function($query) use ($request){
+                        $query->where('user_id', $request->user_id);
+                        $query->whereNull('verifikator_id');
+                    });
+                });
+            })->with(['aspek' => function($query) use ($callback){
+                $query->whereHas('instrumen', $callback);
+                $query->with(['instrumen' => $callback]);
+            }])->with(['aspek.instrumen' => $callback])->get();
             $data['laporan'] = Rapor_mutu::with(['sekolah', 'penjamin_mutu'])->find($request->rapor_mutu_id);
             //return view('cetak.instrumen_koreksi', $data);
             $pdf = PDF::loadView('cetak.instrumen_koreksi', $data, [], [
@@ -251,7 +262,11 @@ class ValidasiController extends Controller
                 $query->withCount(['nilai_instrumen' => function($query){
                     $query->whereNull('verifikator_id');
                 }]);
-                $query->with(['user']);
+                $query->with(['user', 'sekolah_sasaran.waiting' => function($query){
+                    $query->whereHas('jenis_rapor', function($query){
+                        $query->where('jenis', 'verval');
+                    });
+                }]);
             }, 'penjamin_mutu' => function($query) use ($request){
                 $query->withCount(['isian_instrumen', 'koreksi_instrumen' => function($query) use ($request){
                     $query->whereNotIn('nilai', function($query) use ($request){

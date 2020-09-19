@@ -20,7 +20,7 @@
     <p>Nama Sekolah: {{$laporan->sekolah->nama}}</p>
     <p>Nama Tim Penjaminan Mutu: {{$laporan->penjamin_mutu->name}}</p>
     <p>Detil Laporan: </p>
-    {!! $laporan->keterangan !!}
+    {!!$laporan->sekolah->sekolah_sasaran->waiting->keterangan!!}
     <p style="page-break-before: always"></p>
     <table class="table table-bordered">
         <thead>
