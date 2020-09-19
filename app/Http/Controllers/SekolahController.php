@@ -54,10 +54,12 @@ class SekolahController extends Controller
                 })->count(),
                 'jml_sekolah_sasaran_instrumen' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
                     $query->where('verifikator_id', $request->user_id);
-                })->has('berita_acara')->count(),
+                    $query->has('pakta_integritas');
+                })->count(),
                 'jml_sekolah_sasaran_no_instrumen' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
                     $query->where('verifikator_id', $request->user_id);
-                })->doesntHave('berita_acara')->count(),
+                    $query->doesntHave('pakta_integritas');
+                })->count(),
                 'jml_sekolah_sasaran_verval' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){
                     $query->where('verifikator_id', $request->user_id);
                     $query->has('rapor_mutu');
