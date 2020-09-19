@@ -133,7 +133,9 @@ class ReferensiController extends Controller
                     });
                 }
             }
-        })->with(['user', 'sekolah_sasaran.pakta_integritas'])->orderBy(request()->sortby, request()->sortbydesc)
+        })->with(['user', 'sekolah_sasaran' => function($query){
+            $query->with(['pakta_integritas', 'verifikator']);
+        }])->orderBy(request()->sortby, request()->sortbydesc)
             /*->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
                 $all_data->orWhere('npsn', 'ilike', '%' . request()->q . '%');

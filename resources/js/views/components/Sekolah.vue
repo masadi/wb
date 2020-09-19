@@ -77,8 +77,8 @@
         <b-modal id="modal-xl" size="lg" v-model="showModal" title="Detil Sekolah">
             <table class="table">
                 <tr>
-                    <td width="20%">Nama</td>
-                    <td width="80%">: {{modalText.nama}}</td>
+                    <td width="30%">Nama</td>
+                    <td width="70%">: {{modalText.nama}}</td>
                 </tr>
                 <tr>
                     <td>NPSN</td>
@@ -131,6 +131,22 @@
                 <tr>
                     <td>Nama Kepala Sekolah</td>
                     <td>: {{modalText.nama_kepsek}}</td>
+                </tr>
+                <tr>
+                    <td>NIP Kepala Sekolah</td>
+                    <td>: {{modalText.nip_kepsek}}</td>
+                </tr>
+                <tr>
+                    <td>Nama Pengawas Pembina</td>
+                    <td>: {{modalText.nama_pengawas}}</td>
+                </tr>
+                <tr>
+                    <td>NIP Pengawas Pembina</td>
+                    <td>: {{modalText.nip_pengawas}}</td>
+                </tr>
+                <tr>
+                    <td>Penjamin Mutu</td>
+                    <td>: {{(modalText.sekolah_sasaran) ? modalText.sekolah_sasaran.verifikator.name : 'Belum dipilih'}}</td>
                 </tr>
             </table>
             <template v-slot:modal-footer>

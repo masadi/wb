@@ -45,4 +45,7 @@ class Sekolah_sasaran extends Model
     public function berita_acara(){
         return $this->hasOne('App\Berita_acara', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
     }
+    public function verifikator(){
+        return $this->hasOne('App\User', 'user_id', 'verifikator_id');
+    }
 }
