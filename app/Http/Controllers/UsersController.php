@@ -158,7 +158,7 @@ class UsersController extends Controller
 	}
 	public function reset_passsword(Request $request){
 		$user = User::find($request->user_id);
-		$user->password = $user->username;
+		$user->password = Hash::make($user->username);
 		if($user->save()){
 			$response = [
 				'title' => 'Berhasil',
