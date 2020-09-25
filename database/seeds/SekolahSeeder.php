@@ -22,7 +22,7 @@ class SekolahSeeder extends Seeder
             $response = Http::post('http://api.erapor-smk.net/api/v1/sekolah', [
                 'npsn' => $item['npsn'],
             ]);
-            if($response->status()){
+            if($response->status() == 200){
                 $sekolah = json_decode($response->body());
                 $sekolah = $sekolah->data;
                 Sekolah::updateOrCreate(
@@ -107,6 +107,8 @@ class SekolahSeeder extends Seeder
                         $user->attachRole($role);
                     }
                 }*/
+            } else {
+                echo $item['npsn'];
             }
         });
     }
