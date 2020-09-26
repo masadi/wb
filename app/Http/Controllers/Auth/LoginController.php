@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
+
 class LoginController extends Controller
 {
     /*
@@ -54,7 +55,7 @@ class LoginController extends Controller
 		$messages
         );
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        request()->merge([$fieldType => $login]);
+        $auth = request()->merge([$fieldType => $login]);
         return $fieldType;
     }
 }

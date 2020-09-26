@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
 //Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
 Route::get('/get-kategori', 'BeritaController@kategori');
