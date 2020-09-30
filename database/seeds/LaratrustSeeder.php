@@ -76,6 +76,14 @@ class LaratrustSeeder extends Seeder
                         'password' => bcrypt('3l3ktr4&cyber')
                     ]);
                     $user->attachRole($role);
+                } else if($key == 'direktorat'){
+                    $user = \App\User::create([
+                        'name' => 'Direktorat',
+                        'username' => 'direktorat',
+                        'email' => 'direktorat@apmsmk.net',
+                        'password' => bcrypt('3l3ktr4&cyber')
+                    ]);
+                    $user->attachRole($role);
                 } /*else {
                 // Create default user for each role
                     $user = \App\User::create([
