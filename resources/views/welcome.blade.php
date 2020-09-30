@@ -91,6 +91,12 @@
                 <li>Tanggal 26 Oktober 2020: Cut Off pengisian APM SMK, pengiriman terkahir Rapor Mutu Sekolah pada tanggal 26 Oktober 2020 Pukul 24.00 WIB</li>
                 <li>Tanggal 27-31 Oktober 2020: Pencetakan Rapor Mutu Sekolah oleh Verifikator dan Dit.SMK</li>
             </ol>
+            <h3>Helpdesk APM SMK (CoE)</h3>
+            <ol style="padding-left: 20px;">
+                <li>Deni Warsa Setiawan : 0818 624 330</li>
+                <li>Ahmad Aripin : 0812 2999 7730</li>
+                <li>Wahyudin : 0815 6441 864</li>
+            </ol>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
