@@ -21,7 +21,7 @@ Route::get('/{query}', function ($query) {
     if($query == 'home'){
         return view('welcome');
     }
-    return view('page');
+    return view('page.'.$query);
 });
 #Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/app/{vue_capture?}', function () {

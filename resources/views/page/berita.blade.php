@@ -5,9 +5,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                @for($i=0;$i<=10;$i++)
-                <p>Single Page</p>
-                @endfor
+                <img class="d-block w-100" src="{{asset('vendor/img/Under-Construction.png')}}" alt="Sedang Dalam Pengembangan">
             </div>
         </div>
     </div>
