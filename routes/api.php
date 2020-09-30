@@ -77,3 +77,4 @@ Route::post('/get-kuisioner', 'KuisionerController@proses');
 Route::get('/get-kuisioner', 'KuisionerController@proses');
 Route::post('/simpan-jawaban', 'KuisionerController@simpan_jawaban');
 Route::post('/sinkronisasi', 'HomeController@sinkron');
+Route::get('/progress', 'FrontController@progress')->name('api.progres');

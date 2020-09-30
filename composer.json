@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.0",
         "rap2hpoutre/fast-excel": "^2.0",
         "santigarcor/laratrust": "^6.1",
-        "staudenmeir/eloquent-has-many-deep": "^1.12"
+        "staudenmeir/eloquent-has-many-deep": "^1.12",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
