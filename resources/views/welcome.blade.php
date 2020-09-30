@@ -51,4 +51,56 @@
         </div>
     </div>
 </div>
+<div id="modalInfo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">INFORMASI</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2>Jadwal Pengisian APM SMK CoE</h2>
+            <ol style="padding-left: 20px;">
+                <li>Tanggal 1-3 Oktober 2020: Simulasi pengisian APM SMK, sekolah melakukan seluruh tahapan pengisian pada APM SMK:
+                    <ol type="a" style="padding-left: 15px;">
+                        <li>Pengisian capaian kinerja seluruh instrumen/kuesioner (58), diupayakan capaian kinerja yang sesungguhnya atau target yang akan dicapai sekolah</li>
+                        <li>Melakukan hitung Rapor Mutu Sekolah</li>
+                        <li>Melakukan cetak Pakta Integritas</li>
+                        <li>Melakukan Kirim Rapor Mutu Sekolah
+                            <ul style="padding-left: 15px;">
+                                <li>Simulasi pengisian APM SMK ditutup pada tanggal 03 Oktober 2020 Pukul 24.00 WIB</li>
+                                <li>Tanggal 15 Oktober 2020 APM SMK akan dilakukan reset kembali seluruh data isian SMK CoE</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </li>
+                <li>Tanggal 16-26 Oktober 2020: Pengisian Final APM SMK, Sekolah melakukan pengisian kembali capaian kinerja seluruh instrumen/kuesioner (58), dan pada range waktu ini adalah pengisian capaian kinerja final SMK CoE
+                    <ol type="a" style="padding-left: 15px;">
+                        <li>Pengisian instrumen final</li>
+                        <li>Melakukan hitung Rapor Mutu Sekolah</li>
+                        <li>Melakukan cetak Pakta Integritas</li>
+                        <li>Melakukan Kirim Rapor Mutu Sekolah
+                            <br>* Pada tahap ini, ketika sekolah sudah kirim Rapor Mutu Sekolah maka tidak dapat dilakukan reset atau perbaikan kembali
+                        </li>
+                    </ol>
+                </li>
+                <li>Tanggal 26 Oktober 2020: Cut Off pengisian APM SMK, pengiriman terkahir Rapor Mutu Sekolah pada tanggal 26 Oktober 2020 Pukul 24.00 WIB</li>
+                <li>Tanggal 27-31 Oktober 2020: Pencetakan Rapor Mutu Sekolah oleh Verifikator dan Dit.SMK</li>
+            </ol>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          </div>
+      </div>
+    </div>
+  </div>
+@endsection
+@section('js')
+<script>
+    $(window).on('load',function(){
+        $('#modalInfo').modal('show');
+    });
+</script>
 @endsection

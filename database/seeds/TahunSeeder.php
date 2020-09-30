@@ -73,7 +73,7 @@ class TahunSeeder extends Seeder
                 'nama' => $dokumen,
             ]);
         }
-        $komponen = (new FastExcel)->import('public/template_peserta.xlsx', function ($item) use ($tahun_pendataan){
+        /*$komponen = (new FastExcel)->import('public/template_peserta.xlsx', function ($item) use ($tahun_pendataan){
             $username = strtolower(str_replace(' ', '_', $item['nama_lengkap']));
             $username = str_replace(',', '_', $username);
             $username = str_replace('.', '', $username);
@@ -120,6 +120,6 @@ class TahunSeeder extends Seeder
                     $user_sekolah->attachRole($role);
                 }
             }
-        });
+        });*/
     }
 }

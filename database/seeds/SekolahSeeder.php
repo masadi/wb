@@ -61,7 +61,7 @@ class SekolahSeeder extends Seeder
                     $role = Role::where('name', 'sekolah')->first();
                     $user_sekolah->attachRole($role);
                 }
-                $verifikator = User::where('username', 'penjamin_mutu')->first();
+                $verifikator = User::where('username', 'verifikator')->first();
                 Sekolah_sasaran::updateOrCreate([
                     'sekolah_id' => $sekolah->sekolah_id,
                     'verifikator_id' => $verifikator->user_id,

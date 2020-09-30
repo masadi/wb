@@ -15,14 +15,14 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         $this->truncateLaratrustTables();
-        $sekolah = Sekolah::updateOrCreate(
+        /*$sekolah = Sekolah::updateOrCreate(
             ['sekolah_id' => Str::uuid()],
             [
                 'npsn' => 12345678,
                 'nama' => 'SEKOLAH CONTOH',
                 'status_sekolah' => 2,
             ]
-        );
+        );*/
         $config = config('laratrust_seeder.roles_structure');
         $mapPermission = collect(config('laratrust_seeder.permissions_map'));
 
@@ -68,16 +68,15 @@ class LaratrustSeeder extends Seeder
                         'password' => bcrypt('3l3ktr4&cyber')
                     ]);
                     $user->attachRole($role);
-                } else if($key == 'sekolah'){
+                } else if($key == 'penjamin_mutu'){
                     $user = \App\User::create([
-                        'name' => $sekolah->nama,
-                        'username' => $sekolah->npsn,
-                        'sekolah_id' => $sekolah->sekolah_id,
-                        'email' => $key.'@apmsmk.net',
-                        'password' => bcrypt('12345678')
+                        'name' => 'Tim Verifikator',
+                        'username' => 'verifikator',
+                        'email' => 'verifikator@apmsmk.net',
+                        'password' => bcrypt('3l3ktr4&cyber')
                     ]);
                     $user->attachRole($role);
-                } else {
+                } /*else {
                 // Create default user for each role
                     $user = \App\User::create([
                         'name' => ucwords(str_replace('_', ' ', $key)),
@@ -86,7 +85,7 @@ class LaratrustSeeder extends Seeder
                         'password' => bcrypt('12345678')
                     ]);
                     $user->attachRole($role);
-                }
+                }*/
             }
 
         }
