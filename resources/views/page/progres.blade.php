@@ -9,7 +9,7 @@
                 Progres Data Penjaminan Mutu SMK
             </h3></div>
             <div class="card-body">
-                <table id="datatable" class="table table-bordered table-striped table-hover">
+                <table id="datatable" class="table table-bordered table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
                             <th>Nama Sekolah</th>
@@ -36,6 +36,7 @@
         processing: true,
         serverSide: true,
         ajax: '{{ route('api.progres') }}',
+        responsive: true,
         columns: [
             {data: 'nama', name: 'nama'},
             {data: 'npsn', name: 'npsn'},
@@ -91,7 +92,9 @@
 @section('js_file')
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="//cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 @endsection
 @section('css')
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
 @endsection
