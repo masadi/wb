@@ -82,7 +82,9 @@
                         <li>Melakukan hitung Rapor Mutu Sekolah</li>
                         <li>Melakukan cetak Pakta Integritas</li>
                         <li>Melakukan Kirim Rapor Mutu Sekolah
-                            <br>* Pada tahap ini, ketika sekolah sudah kirim Rapor Mutu Sekolah maka tidak dapat dilakukan reset atau perbaikan kembali
+                            <ul style="padding-left: 15px;">
+                                <li>Pada tahap ini, ketika sekolah sudah kirim Rapor Mutu Sekolah maka tidak dapat dilakukan reset atau perbaikan kembali</li>
+                            </ul>
                         </li>
                     </ol>
                 </li>
