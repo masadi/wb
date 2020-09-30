@@ -87,6 +87,7 @@
                     <ul class="nav navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="{{url('/berita')}}">Berita</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{url('/progres')}}">Progres Data</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{url('/rapor-mutu')}}">Rapor Mutu</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{url('/galeri')}}">Galeri</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{url('/faq')}}">FAQ</a></li>
                     </ul>
