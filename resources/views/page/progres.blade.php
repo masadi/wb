@@ -46,6 +46,30 @@
             {data: 'verifikasi', name: 'verifikasi'},
             {data: 'pengesahan', name: 'pengesahan'},
         ],
+        language: {
+            "decimal":        "",
+            "emptyTable":     "Tidak ada data untuk ditampilkan",
+            "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+            "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+            "infoFiltered":   "(difilter dari _MAX_ total data)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Menampilkan _MENU_ data",
+            "loadingRecords": "Loading...",
+            "processing":     "Memperoses data...",
+            "search":         "Cari:",
+            "zeroRecords":    "Tidak ada data yang sesuai dengan pencarian",
+            "paginate": {
+                "first":      "First",
+                "last":       "Last",
+                "next":       "Berikutnya",
+                "previous":   "Sebelumnya"
+            },
+            "aria": {
+                "sortAscending":  ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            }
+        }
 		/*"retrieve": true,
 		"processing": true,
         "serverSide": true,
