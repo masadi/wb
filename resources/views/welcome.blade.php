@@ -71,7 +71,7 @@
                         <li>Melakukan Kirim Rapor Mutu Sekolah
                             <ul style="padding-left: 15px;">
                                 <li>Simulasi pengisian APM SMK ditutup pada tanggal 03 Oktober 2020 Pukul 24.00 WIB</li>
-                                <li>Tanggal 15 Oktober 2020 APM SMK akan dilakukan reset kembali seluruh data isian SMK CoE</li>
+                                <li>Tanggal 15 Oktober 2020 APM SMK akan dilakukan reset kembali seluruh data isian (simulasi) SMK CoE</li>
                             </ul>
                         </li>
                     </ol>
