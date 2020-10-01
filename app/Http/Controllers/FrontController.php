@@ -8,8 +8,11 @@ use App\User;
 class FrontController extends Controller
 {
     public function progress(Request $request){
-        $query = User::query()->whereHas('sekolah.sekolah_sasaran')->with(['last_nilai_instrumen', 'sekolah.sekolah_sasaran' => function($query){
-            $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+        $query = User::query()->whereHas('sekolah.sekolah_sasaran')->with(['last_nilai_instrumen', 'sekolah' => function($query){
+            $query->with(['sekolah_sasaran' => function($query){
+                $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+            }]);
+            $query->with(['user.nilai_akhir']);
         }])->get();
         return DataTables::of($query)
         ->addColumn('nama', function ($item) {
@@ -29,7 +32,7 @@ class FrontController extends Controller
             return $links;
         })
         ->addColumn('rapor_mutu', function ($item) {
-            if($item->sekolah->sekolah_sasaran->rapor_mutu){
+            if($item->sekolah->user->nilai_akhir){
                 $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
             } else {
                 $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
