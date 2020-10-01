@@ -38,7 +38,11 @@ class FrontController extends Controller
         })
         ->addColumn('pakta_integritas', function ($item) {
             if($item->sekolah->sekolah_sasaran->pakta_integritas){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                if($item->sekolah->sekolah_sasaran->pakta_integritas->terkirim){
+                    $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                } else {
+                    $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                }
             } else {
                 $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
             }
