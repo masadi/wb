@@ -33,6 +33,7 @@
 @section('js')
 <script>
     var table = $('#datatable').DataTable( {
+        retrieve: true,
         processing: true,
         serverSide: true,
         ajax: '{{ route('api.progres') }}',

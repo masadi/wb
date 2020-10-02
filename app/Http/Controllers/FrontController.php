@@ -16,7 +16,7 @@ class FrontController extends Controller
             }]);
             $query->with(['user.nilai_akhir']);
             $query->withCount('nilai_instrumen');
-        }]);
+        }])->get();
         return DataTables::of($query)
         ->addColumn('nama', function ($item) {
             $links = $item->sekolah->nama;
