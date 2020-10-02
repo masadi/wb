@@ -59,4 +59,7 @@ class Sekolah extends Model
             'tahun_pendataan_id' // Local key on Sekolah_sasaran table...
         );
     }
+    public function wilayah(){
+        return $this->hasOne('App\Wilayah', 'kode_wilayah', 'kode_wilayah')->with('parrentRecursive');
+    }
 }

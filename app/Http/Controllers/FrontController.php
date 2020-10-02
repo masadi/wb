@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\User;
+use App\Wilayah;
+use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     public function progress(Request $request){
@@ -13,7 +15,7 @@ class FrontController extends Controller
                 $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
             }]);
             $query->with(['user.nilai_akhir']);
-        }])->get();
+        }]);
         return DataTables::of($query)
         ->addColumn('nama', function ($item) {
             $links = $item->sekolah->nama;
@@ -76,6 +78,99 @@ class FrontController extends Controller
             return $links;
         })
         ->rawColumns(['nama', 'npsn', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan'])
+        ->make(true);
+    }
+    public function get_wilayah(Request $request){
+        if(request()->id_level_wilayah == 1){
+            $with = 'sekolah_provinsi';
+        } elseif(request()->id_level_wilayah == 2){
+            $with = 'sekolah_kabupaten';
+        } elseif(request()->id_level_wilayah == 3){
+            $with = 'sekolah_kecamatan';
+        }
+        $query = Wilayah::query()->whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where('id_level_wilayah', request()->id_level_wilayah)->withCount($with)->with([$with => function($query){
+            $query->with(['sekolah_sasaran' => function($query){
+                $query->with(['terkirim', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+            }]);
+            $query->with(['user.nilai_akhir']);
+        }])->orderBy('kode_wilayah');
+        return DataTables::eloquent($query)
+        /*->order(function ($query) {
+            if (request()->has('nama')) {
+                $query->orderBy('nama', 'asc');
+            }
+        })*/
+        ->addColumn('count_sekolah', function ($item) {
+            if(request()->id_level_wilayah == 1){
+                $links = $item->sekolah_provinsi_count;
+            } elseif(request()->id_level_wilayah == 2){
+                $links = $item->sekolah_kabupaten_count;
+            } elseif(request()->id_level_wilayah == 3){
+                $links = $item->sekolah_kecamatan_count;
+            }
+            return $links;
+        })
+        ->addColumn('instrumen', function ($item) use ($with){
+            $count = $item->{$with}->map(function($data){
+                return $data->user->nilai_akhir;
+            })->toArray();
+            $nilai1 = count(array_filter($count));
+            $nilai2 = count($count);
+            $persen= ($nilai2) ? $nilai1 / $nilai2 * 100 : 0;
+            return ($persen) ? number_format($persen,0).'%' : '0%';
+        })
+        ->addColumn('rapor_mutu', function ($item) use ($with){
+            $count = $item->{$with}->map(function($data){
+                return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->terkirim : NULL;
+            })->toArray();
+            $nilai1 = count(array_filter($count));
+            $nilai2 = count($count);
+            $persen= ($nilai2) ? $nilai1 / $nilai2 * 100 : 0;
+            return ($persen) ? number_format($persen,0).'%' : '0%';
+        })
+        ->addColumn('pakta_integritas', function ($item) use ($with){
+            $count = $item->{$with}->map(function($data){
+                //$data->sekolah_sasaran->pakta_integritas;
+                return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->pakta_integritas : NULL;
+            })->toArray();
+            $nilai1 = count(array_filter($count));
+            $nilai2 = count($count);
+            $persen= ($nilai2) ? $nilai1 / $nilai2 * 100 : 0;
+            return ($persen) ? number_format($persen,0).'%' : '0%';
+        })
+        ->addColumn('verval', function ($item) use ($with){
+            $count = $item->{$with}->map(function($data){
+                //$data->sekolah_sasaran->waiting;
+                return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->waiting : NULL;
+            })->toArray();
+            $nilai1 = count(array_filter($count));
+            $nilai2 = count($count);
+            $persen= ($nilai2) ? $nilai1 / $nilai2 * 100 : 0;
+            return ($persen) ? number_format($persen,0).'%' : '0%';
+        })
+        ->addColumn('verifikasi', function ($item) use ($with){
+            $count = $item->{$with}->map(function($data){
+                //$data->sekolah_sasaran->proses;
+                return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->proses : NULL;
+            })->toArray();
+            $nilai1 = count(array_filter($count));
+            $nilai2 = count($count);
+            $persen= ($nilai2) ? $nilai1 / $nilai2 * 100 : 0;
+            return ($persen) ? number_format($persen,0).'%' : '0%';
+        })
+        ->addColumn('pengesahan', function ($item) use ($with){
+            $count = $item->{$with}->map(function($data){
+                //$data->sekolah_sasaran->terima;
+                return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->terima : NULL;
+            })->toArray();
+            $nilai1 = count(array_filter($count));
+            $nilai2 = count($count);
+            $persen= ($nilai2) ? $nilai1 / $nilai2 * 100 : 0;
+            return ($persen) ? number_format($persen,0).'%' : '0%';
+        })
+        ->rawColumns(['nama', 'count_sekolah', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan'])
         ->make(true);
     }
 }

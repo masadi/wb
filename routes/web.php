@@ -21,7 +21,10 @@ Route::get('/{query}', function ($query) {
     if($query == 'home'){
         return view('welcome');
     }
-    return view('page.'.$query);
+    return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+});
+Route::get('progres-wilayah/{id_level_wilayah}', function ($id_level_wilayah) {
+    return view('page.progres-wilayah')->with(['id_level_wilayah' => $id_level_wilayah]);
 });
 #Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/app/{vue_capture?}', function () {
