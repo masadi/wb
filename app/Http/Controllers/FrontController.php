@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     public function progress(Request $request){
-        $query = User::query()->whereHas('sekolah.sekolah_sasaran')->with(['last_nilai_instrumen', 'sekolah' => function($query){
+        $query = User::query()->whereHas('sekolah.sekolah_sasaran')->with(['sekolah' => function($query){
             $query->with(['sekolah_sasaran' => function($query){
                 $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
             }]);
             $query->with(['user.nilai_akhir']);
+            $query->withCount('nilai_instrumen');
         }]);
         return DataTables::of($query)
         ->addColumn('nama', function ($item) {
@@ -26,7 +27,7 @@ class FrontController extends Controller
             return $links;
         })
         ->addColumn('instrumen', function ($item) {
-            if($item->last_nilai_instrumen){
+            if($item->sekolah->nilai_instrumen_count){
                 $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
             } else {
                 $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
@@ -95,6 +96,7 @@ class FrontController extends Controller
                 $query->with(['terkirim', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
             }]);
             $query->with(['user.nilai_akhir']);
+            $query->withCount('nilai_instrumen');
         }])->orderBy('kode_wilayah');
         return DataTables::eloquent($query)
         /*->order(function ($query) {
@@ -114,7 +116,7 @@ class FrontController extends Controller
         })
         ->addColumn('instrumen', function ($item) use ($with){
             $count = $item->{$with}->map(function($data){
-                return $data->user->nilai_akhir;
+                return $data->nilai_instrumen_count;
             })->toArray();
             $nilai1 = count(array_filter($count));
             $nilai2 = count($count);
@@ -123,7 +125,7 @@ class FrontController extends Controller
         })
         ->addColumn('rapor_mutu', function ($item) use ($with){
             $count = $item->{$with}->map(function($data){
-                return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->terkirim : NULL;
+                return $data->user->nilai_akhir;
             })->toArray();
             $nilai1 = count(array_filter($count));
             $nilai2 = count($count);
