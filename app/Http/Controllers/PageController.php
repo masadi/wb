@@ -17,6 +17,10 @@ class PageController extends Controller
         $id_level_wilayah = $request->route('id_level_wilayah');
         return view('page.'.$query)->with(['id_level_wilayah' => $id_level_wilayah, 'kode_wilayah' => $kode_wilayah]);
     }
+    public function home($request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
     public function berita($request){
         $query = $request->route('query');
         return view('page.'.$query)->with(['id_level_wilayah' => 1]);
