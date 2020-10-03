@@ -81,6 +81,7 @@ export default {
             fields: [
                 {key: 'nama', 'label': 'Nama Sekolah', sortable: true},
                 {key: 'npsn', 'label': 'NPSN', sortable: true},
+                {key: 'is_coe', 'label': 'SMK CoE', sortable: true},
                 {key: 'kecamatan', 'label': 'Kecamatan', sortable: true},
                 {key: 'kabupaten', 'label': 'Kabupaten/Kota', sortable: true},
                 {key: 'provinsi', 'label': 'Provinsi', sortable: true},

@@ -36,6 +36,10 @@
                         <strong>Loading...</strong>
                     </div>
                 </template>
+                <template v-slot:cell(is_coe)="row">
+                    <b-badge v-show="row.item.smk_coe" variant="success">Ya</b-badge>
+                    <b-badge v-show="!row.item.smk_coe" variant="danger">Tidak</b-badge>
+                </template>
                 <template v-slot:cell(actions)="row">
                     <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>

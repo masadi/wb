@@ -8,6 +8,7 @@ use App\Ptk;
 use App\User;
 use App\Role;
 use App\Sekolah_sasaran;
+use App\Smk_coe;
 use App\HelperModel;
 class SekolahSeeder extends Seeder
 {
@@ -65,6 +66,10 @@ class SekolahSeeder extends Seeder
                 Sekolah_sasaran::updateOrCreate([
                     'sekolah_id' => $sekolah->sekolah_id,
                     'verifikator_id' => $verifikator->user_id,
+                    'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
+                ]);
+                Smk_coe::updateOrCreate([
+                    'sekolah_id' => $sekolah->sekolah_id,
                     'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
                 ]);
                 /*foreach($sekolah->ptk as $ptk){

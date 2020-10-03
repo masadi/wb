@@ -11,6 +11,7 @@ class FrontController extends Controller
 {
     public function progress(Request $request){
         $query = User::query()->whereHas('sekolah', function($query){
+            //$query->whereHas('smk_coe');
             $query->whereHas('sekolah_sasaran');
             $query->whereIn('kode_wilayah', function($query){
                 $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kode_wilayah."'");

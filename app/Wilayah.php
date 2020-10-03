@@ -62,4 +62,13 @@ class Wilayah extends Model
     public function sekolah_kecamatan(){
         return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah');
     }
+    public function sekolah_coe_provinsi(){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('smk_coe');
+    }
+    public function sekolah_coe_kabupaten(){
+        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->whereHas('smk_coe');
+    }
+    public function sekolah_coe_kecamatan(){
+        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->whereHas('smk_coe');
+    }
 }

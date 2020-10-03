@@ -22,6 +22,9 @@ class Sekolah extends Model
     public function sekolah_sasaran(){
         return $this->hasOne('App\Sekolah_sasaran', 'sekolah_id', 'sekolah_id')->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
     }
+    public function smk_coe(){
+        return $this->hasOne('App\Smk_coe', 'sekolah_id', 'sekolah_id')->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
+    }
     public function user(){
         return $this->hasOne('App\User', 'sekolah_id', 'sekolah_id');
     }

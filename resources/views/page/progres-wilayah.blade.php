@@ -12,19 +12,24 @@
                 <table id="datatable_test" class="table table-bordered table-striped table-hover table-responsive" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Wilayah</th>
-                            <th class="text-center">Jml Sekolah</th>
-                            <th class="text-center" colspan="2">Pengisian Instrumen</th>
-                            <th class="text-center" colspan="2">Hitung Rapor Mutu</th>
-                            <th class="text-center" colspan="2">Pakta Integritas</th>
-                            <th class="text-center" colspan="2">Verval</th>
-                            <th class="text-center" colspan="2">Verifikasi Pusat</th>
-                            <th class="text-center" colspan="2">Pengesahan</th>
+                            <th rowspan="2" style="vertical-align: middle;">Wilayah</th>
+                            <th class="text-center" colspan="2">Jml Sekolah</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pengisian Instrumen</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Hitung Rapor Mutu</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pakta Integritas</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Verval</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Verifikasi Pusat</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pengesahan</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">SMK Non CoE</th>
+                            <th class="text-center">SMK CoE</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $jml_sekolah = 0;
+                        $jml_sekolah_non_coe = 0;
+                        $jml_sekolah_coe = 0;
                         $jml_instrumen = 0;
                         $jml_nilai_akhir = 0;
                         $jml_pakta_integritas = 0;
@@ -40,6 +45,7 @@
                         ?>
                         @forelse ($all_wilayah as $item)
                         <?php
+                        //dd($item);
                         $count_instrumen = $item->{$with}->map(function($data){
                             return $data->nilai_instrumen_count;
                         })->toArray();
@@ -47,7 +53,12 @@
                         $nilai2_instrumen = count($count_instrumen);
                         $persen_instrumen = ($nilai2_instrumen) ? $nilai1_instrumen / $nilai2_instrumen * 100 : 0;
                         $count_nilai_akhir = $item->{$with}->map(function($data){
-                            return $data->user->nilai_akhir;
+                            if(isset($data->user->nilai_akhir)){
+                                $return = 1;
+                            } else {
+                                $return = 0;
+                            }
+                            return $return;
                         })->toArray();
                         $nilai1_nilai_akhir = count(array_filter($count_nilai_akhir));
                         $nilai2_nilai_akhir = count($count_nilai_akhir);
@@ -76,7 +87,8 @@
                         $nilai1_terima = count(array_filter($count_terima));
                         $nilai2_terima = count($count_terima);
                         $persen_terima = ($nilai2_terima) ? $nilai1_terima / $nilai2_terima * 100 : 0;
-                        $jml_sekolah += $item->$data_count;
+                        $jml_sekolah_non_coe += $item->$data_count_non_coe;
+                        $jml_sekolah_coe += $item->$data_count_coe;
                         $jml_instrumen += $nilai1_instrumen;
                         $jml_nilai_akhir += $nilai1_nilai_akhir;
                         $jml_pakta_integritas += $nilai1_pakta_integritas;
@@ -98,7 +110,8 @@
                                 <a href="{{route('page', ['query' => 'progres-data', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => $item->kode_wilayah])}}">{{$item->nama}}</a>
                                 @endif
                             </td>
-                            <td class="text-center">{{$item->$data_count}}</td>
+                            <td class="text-center">{{$item->$data_count_non_coe}}</td>
+                            <td class="text-center">{{$item->$data_count_coe}}</td>
                             <td class="text-center">{{$nilai1_instrumen}}</td>
                             <td class="text-center">{{($persen_instrumen) ? number_format($persen_instrumen,0).'%' : '0%'}}</td>
                             <td class="text-center">{{$nilai1_nilai_akhir}}</td>
@@ -127,7 +140,8 @@
                         ?>
                         <tr>
                             <td class="text-center"><strong>Jumlah</strong></td>
-                            <td class="text-center"><strong>{{$jml_sekolah}}</strong></td>
+                            <td class="text-center"><strong>{{$jml_sekolah_non_coe}}</strong></td>
+                            <td class="text-center"><strong>{{$jml_sekolah_coe}}</strong></td>
                             <td class="text-center"><strong>{{$jml_instrumen}}</strong></td>
                             <td class="text-center"><strong>{{($jml_persen_instrumen) ? number_format($jml_persen_instrumen,0).'%' : '0%'}}</strong></td>
                             <td class="text-center"><strong>{{$jml_nilai_akhir}}</strong></td>

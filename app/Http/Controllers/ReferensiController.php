@@ -21,6 +21,7 @@ use App\User;
 use App\HelperModel;
 use App\Sekolah_sasaran;
 use App\Tahun_pendataan;
+use App\Smk_coe;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -65,6 +66,12 @@ class ReferensiController extends Controller
     }
     public function get_sekolah($request)
     {
+        $sortBy = request()->sortby;
+        if($sortBy == 'is_coe'){
+            $sortBy = Smk_coe::select('sekolah_id')
+            ->whereColumn('sekolah_id', 'sekolah.sekolah_id')
+            ->limit(1);
+        }
         $all_data = Sekolah::where(function($query){
             if(request()->q){
                 $query->where(function($query){
@@ -133,9 +140,9 @@ class ReferensiController extends Controller
                     });
                 }
             }
-        })->with(['user', 'sekolah_sasaran' => function($query){
+        })->with(['smk_coe', 'user', 'sekolah_sasaran' => function($query){
             $query->with(['pakta_integritas', 'verifikator']);
-        }])->orderBy(request()->sortby, request()->sortbydesc)
+        }])->orderBy($sortBy, request()->sortbydesc)
             /*->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
                 $all_data->orWhere('npsn', 'ilike', '%' . request()->q . '%');
