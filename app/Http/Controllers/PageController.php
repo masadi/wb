@@ -33,7 +33,7 @@ class PageController extends Controller
         $query = $request->route('query');
         return view('page.'.$query)->with(['id_level_wilayah' => 1]);
     }
-    public function progres_wilayah($request){
+    public function progres_data($request){
         if(request()->id_level_wilayah){
             $id_level_wilayah = request()->id_level_wilayah;
             if(request()->id_level_wilayah == 2) {
