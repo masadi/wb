@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-Route::get('/{query}', 'PageController@index');
+Route::get('/{query}/{id_level_wilayah?}/{kode_wilayah?}', 'PageController@index')->name('page');
 /*Route::get('/{query}', function ($query) {
     if($query == 'home'){
         return view('welcome');

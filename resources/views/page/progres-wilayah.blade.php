@@ -91,7 +91,13 @@
                         $total_terima += $nilai2_terima;
                         ?>
                         <tr>
-                            <td>{{$item->nama}}</td>
+                            <td>
+                                @if($next_level_wilayah == 4)
+                                <a href="{{route('page', ['query' => 'progres', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => $item->kode_wilayah])}}">{{$item->nama}}</a>
+                                @else
+                                <a href="{{route('page', ['query' => 'progres-wilayah', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => $item->kode_wilayah])}}">{{$item->nama}}</a>
+                                @endif
+                            </td>
                             <td class="text-center">{{$item->$data_count}}</td>
                             <td class="text-center">{{$nilai1_instrumen}}</td>
                             <td class="text-center">{{($persen_instrumen) ? number_format($persen_instrumen,0).'%' : '0%'}}</td>
@@ -108,7 +114,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td class="text-center" colspan="8">Tidak ada data untuk ditampilkan</td>
+                            <td class="text-center" colspan="14">Tidak ada data untuk ditampilkan</td>
                         </tr>
                         @endforelse
                         <?php

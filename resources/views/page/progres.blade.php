@@ -36,7 +36,14 @@
         retrieve: true,
         processing: true,
         serverSide: true,
-        ajax: '{{ route('api.progres') }}',
+        //ajax: '{{ route('api.progres') }}',
+        ajax: {
+            url: '{{ route('api.progres') }}',
+            data: function(d){
+                d.id_level_wilayah = {{$id_level_wilayah}};
+                d.kode_wilayah = '{{$kode_wilayah}}';
+            },
+        },
         responsive: true,
         columns: [
             {data: 'nama', name: 'nama'},

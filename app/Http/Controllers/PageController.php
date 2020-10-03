@@ -11,6 +11,28 @@ class PageController extends Controller
         $query = str_replace('-', '_', $query);
         return $this->{$query}($request);
     }
+    public function progres($request){
+        $query = $request->route('query');
+        $kode_wilayah = $request->route('kode_wilayah');
+        $id_level_wilayah = $request->route('id_level_wilayah');
+        return view('page.'.$query)->with(['id_level_wilayah' => $id_level_wilayah, 'kode_wilayah' => $kode_wilayah]);
+    }
+    public function berita($request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function rapor_mutu($request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function galeri($request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function faq($request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
     public function progres_wilayah($request){
         if(request()->id_level_wilayah){
             $id_level_wilayah = request()->id_level_wilayah;
@@ -29,7 +51,12 @@ class PageController extends Controller
         }
         $all_wilayah = Wilayah::whereHas('negara', function($query){
             $query->where('negara_id', 'ID');
-        })->where('id_level_wilayah', $id_level_wilayah)->withCount($with)->with([$with => function($query){
+        })->where(function($query) use ($id_level_wilayah){
+            $query->where('id_level_wilayah', $id_level_wilayah);
+            if(request()->kode_wilayah){
+                $query->where('mst_kode_wilayah', request()->kode_wilayah);
+            }
+        })->withCount($with)->with([$with => function($query){
             $query->with(['sekolah_sasaran' => function($query){
                 $query->with(['terkirim', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
             }]);
@@ -41,6 +68,7 @@ class PageController extends Controller
             'all_wilayah' => $all_wilayah,
             'data_count' => $data_count,
             'with' => $with,
+            'next_level_wilayah' => $id_level_wilayah + 1,
         ];
         return view('page.progres-wilayah')->with($params);
     }

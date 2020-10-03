@@ -10,7 +10,12 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     public function progress(Request $request){
-        $query = User::query()->whereHas('sekolah.sekolah_sasaran')->with(['sekolah' => function($query){
+        $query = User::query()->whereHas('sekolah', function($query){
+            $query->whereHas('sekolah_sasaran');
+            $query->whereIn('kode_wilayah', function($query){
+                $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kode_wilayah."'");
+            });
+        })->with(['sekolah' => function($query){
             $query->with(['sekolah_sasaran' => function($query){
                 $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
             }]);
