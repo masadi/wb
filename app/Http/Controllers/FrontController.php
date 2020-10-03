@@ -134,7 +134,6 @@ class FrontController extends Controller
         })
         ->addColumn('pakta_integritas', function ($item) use ($with){
             $count = $item->{$with}->map(function($data){
-                //$data->sekolah_sasaran->pakta_integritas;
                 return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->pakta_integritas : NULL;
             })->toArray();
             $nilai1 = count(array_filter($count));
@@ -144,7 +143,6 @@ class FrontController extends Controller
         })
         ->addColumn('verval', function ($item) use ($with){
             $count = $item->{$with}->map(function($data){
-                //$data->sekolah_sasaran->waiting;
                 return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->waiting : NULL;
             })->toArray();
             $nilai1 = count(array_filter($count));
@@ -154,7 +152,6 @@ class FrontController extends Controller
         })
         ->addColumn('verifikasi', function ($item) use ($with){
             $count = $item->{$with}->map(function($data){
-                //$data->sekolah_sasaran->proses;
                 return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->proses : NULL;
             })->toArray();
             $nilai1 = count(array_filter($count));
@@ -164,7 +161,6 @@ class FrontController extends Controller
         })
         ->addColumn('pengesahan', function ($item) use ($with){
             $count = $item->{$with}->map(function($data){
-                //$data->sekolah_sasaran->terima;
                 return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->terima : NULL;
             })->toArray();
             $nilai1 = count(array_filter($count));

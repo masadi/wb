@@ -17,7 +17,8 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-Route::get('/{query}', function ($query) {
+Route::get('/{query}', 'PageController@index');
+/*Route::get('/{query}', function ($query) {
     if($query == 'home'){
         return view('welcome');
     }
@@ -25,7 +26,7 @@ Route::get('/{query}', function ($query) {
 });
 Route::get('progres-wilayah/{id_level_wilayah}', function ($id_level_wilayah) {
     return view('page.progres-wilayah')->with(['id_level_wilayah' => $id_level_wilayah]);
-});
+});*/
 #Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/app/{vue_capture?}', function () {
     if (Auth::check()) {
