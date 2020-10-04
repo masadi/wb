@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36f1416449c518cd92a294bdff683b0c",
+    "content-hash": "27eae334317aeab5bf89bbf2ef607aef",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2654,6 +2654,47 @@
                 }
             ],
             "time": "2020-08-27T06:55:47+00:00"
+        },
+        {
+            "name": "staudenmeir/eloquent-eager-limit",
+            "version": "v1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/eloquent-eager-limit.git",
+                "reference": "aa4a27103cd550d5dfb88e259cb1777c28253c65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-eager-limit/zipball/aa4a27103cd550d5dfb88e259cb1777c28253c65",
+                "reference": "aa4a27103cd550d5dfb88e259cb1777c28253c65",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^7.0",
+                "php": "^7.2.5"
+            },
+            "require-dev": {
+                "laravel/homestead": "^10.0",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Staudenmeir\\EloquentEagerLimit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Laravel Eloquent eager loading with limit",
+            "time": "2020-01-31T12:23:44+00:00"
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",

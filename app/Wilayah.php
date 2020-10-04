@@ -1,13 +1,14 @@
 <?php
 
 namespace App;
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Wilayah extends Model
 {
     use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
     use \Staudenmeir\EloquentHasManyDeep\HasTableAlias;
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
     use SoftDeletes;
     /*
     protected $dates = ['expired_date'];
@@ -61,6 +62,181 @@ class Wilayah extends Model
     }
     public function sekolah_kecamatan(){
         return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah');
+    }
+    public function sekolah_instrumen_provinsi(){
+        return $this->hasManyThrough(
+            'App\User',
+            'App\Sekolah',
+            'provinsi_id', // Foreign key on users table...
+            'sekolah_id', // Foreign key on posts table...
+            'kode_wilayah', // Local key on countries table...
+            'sekolah_id' // Local key on users table...
+        )->whereHas('last_nilai_instrumen');
+        return $this->hasManyDeep(
+            //'App\Nilai_akhir',
+            'App\Sekolah',
+            [
+                'App\Nilai_instrumen',
+                'App\User',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'user_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'sekolah_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'user_id', // Local key on the "Sekolah" table.
+              'sekolah_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        );
+    }
+    public function sekolah_rapor_mutu_provinsi(){
+        return $this->hasManyThrough(
+            'App\User',
+            'App\Sekolah',
+            'provinsi_id', // Foreign key on users table...
+            'sekolah_id', // Foreign key on posts table...
+            'kode_wilayah', // Local key on countries table...
+            'sekolah_id' // Local key on users table...
+        )->whereHas('nilai_akhir', function($query){
+            $query->whereNull('verifikator_id');
+        });
+        return $this->hasManyDeep(
+            'App\Nilai_akhir',
+            [
+                'App\Sekolah',
+                'App\User',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'user_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'sekolah_id', // Local key on the "Sekolah" table.
+              'user_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        );
+    }
+    public function sekolah_pakta_integritas_provinsi(){
+        return $this->hasManyThrough(
+            'App\Sekolah_sasaran',
+            'App\Sekolah',
+            'provinsi_id', // Foreign key on users table...
+            'sekolah_id', // Foreign key on posts table...
+            'kode_wilayah', // Local key on countries table...
+            'sekolah_id' // Local key on users table...
+        )->whereHas('pakta_integritas');
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+            $query->whereHas('pakta_integritas');
+        });
+        return $this->hasManyDeep(
+            'App\Pakta_integritas',
+            [
+                'App\Sekolah',
+                'App\Sekolah_sasaran',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'sekolah_sasaran_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'sekolah_id', // Local key on the "Sekolah" table.
+              'sekolah_sasaran_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        );
+    }
+    public function sekolah_waiting_provinsi(){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+            $query->whereHas('waiting');
+        });
+        return $this->hasManyDeep(
+            'App\Rapor_mutu',
+            [
+                'App\Sekolah',
+                'App\Sekolah_sasaran',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'sekolah_sasaran_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'sekolah_id', // Local key on the "Sekolah" table.
+              'sekolah_sasaran_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        )->whereHas('waiting');
+    }
+    public function sekolah_proses_provinsi(){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+            $query->whereHas('proses');
+        });
+        return $this->hasManyDeep(
+            'App\Rapor_mutu',
+            [
+                'App\Sekolah',
+                'App\Sekolah_sasaran',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'sekolah_sasaran_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'sekolah_id', // Local key on the "Sekolah" table.
+              'sekolah_sasaran_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        )->whereHas('proses');
+    }
+    public function sekolah_terima_provinsi(){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+            $query->whereHas('terima');
+        });
+        return $this->hasManyDeep(
+            'App\Rapor_mutu',
+            [
+                'App\Sekolah',
+                'App\Sekolah_sasaran',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'sekolah_sasaran_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'sekolah_id', // Local key on the "Sekolah" table.
+              'sekolah_sasaran_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        )->whereHas('terima');
+    }
+    public function sekolah_tolak_provinsi(){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+            $query->whereHas('tolak');
+        });
+        return $this->hasManyDeep(
+            'App\Rapor_mutu',
+            [
+                'App\Sekolah',
+                'App\Sekolah_sasaran',
+            ], // Intermediate models, beginning at the far parent (Country).
+            [
+               'provinsi_id', // Foreign key on the "Sekolah" table.
+               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
+               'sekolah_sasaran_id'     // Foreign key on the "Rapor_mutu" table.
+            ],
+            [
+              'kode_wilayah', // Local key on the "Wilayah" table.
+              'sekolah_id', // Local key on the "Sekolah" table.
+              'sekolah_sasaran_id'  // Local key on the "Sekolah_sasaran" table.
+            ]
+        )->whereHas('tolak');
     }
     public function sekolah_coe_provinsi(){
         return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('smk_coe');

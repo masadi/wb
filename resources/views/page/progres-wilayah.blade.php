@@ -28,16 +28,16 @@
                     </thead>
                     <tbody>
                         <?php
-                        $jml_sekolah_non_coe = 0;
+                        $jml_sekolah_nasional = 0;
                         $jml_sekolah_coe = 0;
                         $jml_instrumen = 0;
-                        $jml_nilai_akhir = 0;
                         $jml_pakta_integritas = 0;
+                        $jml_rapor_mutu = 0;
                         $jml_waiting = 0;
                         $jml_proses = 0;
                         $jml_terima = 0;
                         $total_instrumen = 0;
-                        $total_nilai_akhir = 0;
+                        $total_rapor_mutu = 0;
                         $total_pakta_integritas = 0;
                         $total_waiting = 0;
                         $total_proses = 0;
@@ -46,7 +46,7 @@
                         @forelse ($all_wilayah as $item)
                         <?php
                         //dd($item);
-                        $count_instrumen = $item->{$with}->map(function($data){
+                        /*$count_instrumen = $item->{$with}->map(function($data){
                             return $data->nilai_instrumen_count;
                         })->toArray();
                         $nilai1_instrumen = count(array_filter($count_instrumen));
@@ -86,21 +86,27 @@
                         })->toArray();
                         $nilai1_terima = count(array_filter($count_terima));
                         $nilai2_terima = count($count_terima);
-                        $persen_terima = ($nilai2_terima) ? $nilai1_terima / $nilai2_terima * 100 : 0;
-                        $jml_sekolah_non_coe += $item->$data_count_non_coe;
-                        $jml_sekolah_coe += $item->$data_count_coe;
-                        $jml_instrumen += $nilai1_instrumen;
-                        $jml_nilai_akhir += $nilai1_nilai_akhir;
-                        $jml_pakta_integritas += $nilai1_pakta_integritas;
-                        $jml_waiting += $nilai1_waiting;
-                        $jml_proses += $nilai1_proses;
-                        $jml_terima += $nilai1_terima;
-                        $total_instrumen += $nilai2_instrumen;
-                        $total_nilai_akhir += $nilai2_nilai_akhir;
-                        $total_pakta_integritas += $nilai2_pakta_integritas;
-                        $total_waiting += $nilai2_waiting;
-                        $total_proses += $nilai2_proses;
-                        $total_terima += $nilai2_terima;
+                        $persen_terima = ($nilai2_terima) ? $nilai1_terima / $nilai2_terima * 100 : 0;*/
+                        $jml_sekolah_nasional += $item->$count_smk;
+                        $jml_sekolah_coe += $item->$count_smk_coe;
+                        $jml_instrumen += $item->$count_instrumen;
+                        $jml_pakta_integritas += $item->$count_pakta_integritas;
+                        $jml_rapor_mutu += $item->$count_rapor_mutu;
+                        $jml_waiting += $item->$count_waiting;
+                        $jml_proses += $item->$count_proses;
+                        $jml_terima += $item->$count_terima;
+                        $persen_instrumen = ($item->$count_instrumen) ? $item->$count_instrumen / $item->$count_smk_coe * 100 : 0;
+                        $persen_pakta_integritas = ($item->$count_pakta_integritas) ? $item->$count_pakta_integritas / $item->$count_smk_coe * 100 : 0;
+                        $persen_rapor_mutu = ($item->$count_rapor_mutu) ? $item->$count_rapor_mutu / $item->$count_smk_coe * 100 : 0;
+                        $persen_waiting = ($item->$count_waiting) ? $item->$count_waiting / $item->$count_smk_coe * 100 : 0;
+                        $persen_proses = ($item->$count_proses) ? $item->$count_proses / $item->$count_smk_coe * 100 : 0;
+                        $persen_terima = ($item->$count_terima) ? $item->$count_terima / $item->$count_smk_coe * 100 : 0;
+                        //$total_instrumen += 1;//$nilai2_instrumen;
+                        //$total_rapor_mutu += 1;//$nilai2_nilai_akhir;
+                        //$total_pakta_integritas += 1;//$nilai2_pakta_integritas;
+                        //$total_waiting += 1;//$nilai2_waiting;
+                        //$total_proses += 1;//$nilai2_proses;
+                        //$total_terima += 1;//$nilai2_terima;
                         ?>
                         <tr>
                             <td>
@@ -110,19 +116,19 @@
                                 <a href="{{route('page', ['query' => 'progres-data', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => $item->kode_wilayah])}}">{{$item->nama}}</a>
                                 @endif
                             </td>
-                            <td class="text-center">{{$item->$data_count_non_coe}}</td>
-                            <td class="text-center">{{$item->$data_count_coe}}</td>
-                            <td class="text-center">{{$nilai1_instrumen}}</td>
+                            <td class="text-center">{{$item->$count_smk}}</td>
+                            <td class="text-center">{{$item->$count_smk_coe}}</td>
+                            <td class="text-center">{{$item->$count_instrumen}}</td>
                             <td class="text-center">{{($persen_instrumen) ? number_format($persen_instrumen,0).'%' : '0%'}}</td>
-                            <td class="text-center">{{$nilai1_nilai_akhir}}</td>
-                            <td class="text-center">{{($persen_nilai_akhir) ? number_format($persen_nilai_akhir,0).'%' : '0%'}}</td>
-                            <td class="text-center">{{$nilai1_pakta_integritas}}</td>
+                            <td class="text-center">{{$item->$count_rapor_mutu}}</td>
+                            <td class="text-center">{{($persen_rapor_mutu) ? number_format($persen_rapor_mutu,0).'%' : '0%'}}</td>
+                            <td class="text-center">{{$item->$count_pakta_integritas}}</td>
                             <td class="text-center">{{($persen_pakta_integritas) ? number_format($persen_pakta_integritas,0).'%' : '0%'}}</td>
-                            <td class="text-center">{{$nilai1_waiting}}</td>
+                            <td class="text-center">{{$item->$count_waiting}}</td>
                             <td class="text-center">{{($persen_waiting) ? number_format($persen_waiting,0).'%' : '0%'}}</td>
-                            <td class="text-center">{{$nilai1_proses}}</td>
+                            <td class="text-center">{{$item->$count_proses}}</td>
                             <td class="text-center">{{($persen_proses) ? number_format($persen_proses,0).'%' : '0%'}}</td>
-                            <td class="text-center">{{$nilai1_terima}}</td>
+                            <td class="text-center">{{$item->$count_terima}}</td>
                             <td class="text-center">{{($persen_terima) ? number_format($persen_terima,0).'%' : '0%'}}</td>
                         </tr>
                         @empty
@@ -131,21 +137,21 @@
                         </tr>
                         @endforelse
                         <?php
-                        $jml_persen_instrumen = ($jml_instrumen) ? $jml_instrumen / $total_instrumen * 100 : 0;
-                        $jml_persen_nilai_akhir = ($jml_nilai_akhir) ? $jml_nilai_akhir / $total_nilai_akhir * 100 : 0;
-                        $jml_persen_pakta_integritas = ($jml_pakta_integritas) ? $jml_pakta_integritas / $total_pakta_integritas * 100 : 0;
-                        $jml_persen_waiting = ($jml_waiting) ? $jml_waiting / $total_waiting * 100 : 0;
-                        $jml_persen_proses = ($jml_proses) ? $jml_proses / $total_proses * 100 : 0;
-                        $jml_persen_terima = ($jml_terima) ? $jml_terima / $total_terima * 100 : 0;
+                        $jml_persen_instrumen = ($jml_instrumen) ? $jml_instrumen / $jml_sekolah_coe * 100 : 0;
+                        $jml_persen_rapor_mutu = ($jml_rapor_mutu) ? $jml_rapor_mutu / $jml_sekolah_coe * 100 : 0;
+                        $jml_persen_pakta_integritas = ($jml_pakta_integritas) ? $jml_pakta_integritas / $jml_sekolah_coe * 100 : 0;
+                        $jml_persen_waiting = ($jml_waiting) ? $jml_waiting / $jml_sekolah_coe * 100 : 0;
+                        $jml_persen_proses = ($jml_proses) ? $jml_proses / $jml_sekolah_coe * 100 : 0;
+                        $jml_persen_terima = ($jml_terima) ? $jml_terima / $jml_sekolah_coe * 100 : 0;
                         ?>
                         <tr>
                             <td class="text-center"><strong>Jumlah</strong></td>
-                            <td class="text-center"><strong>{{$jml_sekolah_non_coe}}</strong></td>
+                            <td class="text-center"><strong>{{$jml_sekolah_nasional}}</strong></td>
                             <td class="text-center"><strong>{{$jml_sekolah_coe}}</strong></td>
                             <td class="text-center"><strong>{{$jml_instrumen}}</strong></td>
                             <td class="text-center"><strong>{{($jml_persen_instrumen) ? number_format($jml_persen_instrumen,0).'%' : '0%'}}</strong></td>
-                            <td class="text-center"><strong>{{$jml_nilai_akhir}}</strong></td>
-                            <td class="text-center"><strong>{{($jml_persen_nilai_akhir) ? number_format($jml_persen_nilai_akhir,0).'%' : '0%'}}</strong></td>
+                            <td class="text-center"><strong>{{$jml_rapor_mutu}}</strong></td>
+                            <td class="text-center"><strong>{{($jml_persen_rapor_mutu) ? number_format($jml_persen_rapor_mutu,0).'%' : '0%'}}</strong></td>
                             <td class="text-center"><strong>{{$jml_pakta_integritas}}</strong></td>
                             <td class="text-center"><strong>{{($jml_persen_pakta_integritas) ? number_format($jml_persen_pakta_integritas,0).'%' : '0%'}}</strong></td>
                             <td class="text-center"><strong>{{$jml_waiting}}</strong></td>
