@@ -13,7 +13,7 @@
                     <thead>
                         <tr>
                             <th rowspan="2" style="vertical-align: middle;">Wilayah</th>
-                            <th class="text-center" colspan="2">Jml Sekolah</th>
+                            <th class="text-center" colspan="2">Jml SMK</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pengisian Instrumen</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Hitung Rapor Mutu</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pakta Integritas</th>
@@ -22,8 +22,8 @@
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pengesahan</th>
                         </tr>
                         <tr>
-                            <th class="text-center">SMK Non CoE</th>
-                            <th class="text-center">SMK CoE</th>
+                            <th class="text-center">Nasional</th>
+                            <th class="text-center">CoE</th>
                         </tr>
                     </thead>
                     <tbody>

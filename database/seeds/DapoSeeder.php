@@ -38,6 +38,18 @@ class DapoSeeder extends Seeder
                     $sekolah = $sekolah->data;
                     if($sekolah){
                         $wilayah = Wilayah::with('parrentRecursive')->withTrashed()->find($sekolah->kode_wilayah);
+                        $kecamatan_id = NULL;
+                        $kabupaten_id = NULL;
+                        $provinsi_id = NULL;
+                        if($wilayah->parrentRecursive){
+                            $kecamatan_id = $wilayah->parrentRecursive->kode_wilayah;
+                            if($wilayah->parrentRecursive->parrentRecursive){
+                                $kabupaten_id = $wilayah->parrentRecursive->parrentRecursive->kode_wilayah;
+                            }
+                            if($wilayah->parrentRecursive->parrentRecursive->parrentRecursive){
+                                $provinsi_id = $wilayah->parrentRecursive->parrentRecursive->parrentRecursive->kode_wilayah;
+                            }
+                        }
                         Sekolah::updateOrCreate(
                             ['sekolah_id' => $sekolah->sekolah_id],
                             [
@@ -58,9 +70,9 @@ class DapoSeeder extends Seeder
                                 'email' => $sekolah->email,
                                 'website' => $sekolah->website,
                                 'status_sekolah' => $sekolah->status_sekolah,
-                                'kecamatan_id' => $wilayah->parrentRecursive->kode_wilayah,
-                                'kabupaten_id' => $wilayah->parrentRecursive->parrentRecursive->kode_wilayah,
-                                'provinsi_id' => $wilayah->parrentRecursive->parrentRecursive->parrentRecursive->kode_wilayah,
+                                'kecamatan_id' => $kecamatan_id,
+                                'kabupaten_id' => $kabupaten_id,
+                                'provinsi_id' => $provinsi_id,
                             ]
                         );
                         $email = ($sekolah->email) ? $sekolah->email : $sekolah->npsn.'@apmsmk.net';
