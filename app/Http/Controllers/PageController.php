@@ -67,7 +67,7 @@ class PageController extends Controller
                 $query->where('mst_kode_wilayah', request()->kode_wilayah);
             }
         })->withCount([$with, $with_coe])->with([$with => function($query){
-            $query->with(['smk_coe', 'sekolah_sasaran' => function($query){
+            $query->with(['sekolah_sasaran' => function($query){
                 $query->with(['terkirim', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
             }]);
             $query->with(['user.nilai_akhir']);
