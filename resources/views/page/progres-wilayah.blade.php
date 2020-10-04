@@ -144,6 +144,8 @@
                         $jml_persen_proses = ($jml_proses) ? $jml_proses / $jml_sekolah_coe * 100 : 0;
                         $jml_persen_terima = ($jml_terima) ? $jml_terima / $jml_sekolah_coe * 100 : 0;
                         ?>
+                    </tbody>
+                    <tfoot>
                         <tr>
                             <td class="text-center"><strong>Jumlah</strong></td>
                             <td class="text-center"><strong>{{$jml_sekolah_nasional}}</strong></td>
@@ -161,7 +163,7 @@
                             <td class="text-center"><strong>{{$jml_terima}}</strong></td>
                             <td class="text-center"><strong>{{($jml_persen_terima) ? number_format($jml_persen_terima,0).'%' : '0%'}}</strong></td>
                         </tr>
-                    </tbody>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -170,6 +172,9 @@
 @endsection
 @section('js')
 <script>
+    $('#datatable_test').DataTable( {
+        responsive: true
+    } );
     var table = $('#datatable').DataTable( {
         lengthMenu: [[-1, 10, 25, 50], ["Semua", 10, 25, 50]],
         processing: true,
