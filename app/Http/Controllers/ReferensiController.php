@@ -389,4 +389,30 @@ class ReferensiController extends Controller
     public function get_sekolah_sasaran($request){
         return $this->get_sekolah($request);
     }
+    public function status_coe(Request $request){
+        if($request->status_coe){
+            $text = 'Sekolah berhasil ditetapkan sebagai SMK CoE';
+            $coe = Smk_coe::updateOrCreate([
+                'sekolah_id' => $request->sekolah_id,
+                'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
+            ]);
+        } else {
+            $text = 'Sekolah berhasil digagalkan sebagai SMK CoE';
+            $coe = Smk_coe::where('sekolah_id', $request->sekolah_id)->delete();
+        }
+        if($coe){
+            $response = [
+                'title' => 'Berhasil',
+                'text' => $text,
+                'icon' => 'success',
+            ];
+        } else {
+            $response = [
+                'title' => 'Gagal',
+                'text' => 'Permintaan gagal. Silahkan coba beberapa saat lagi!',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($response);
+    }
 }

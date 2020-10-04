@@ -43,7 +43,9 @@
                 <template v-slot:cell(actions)="row">
                     <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                        <b-dropdown-item v-show="!row.item.smk_coe" href="javascript:" @click="tetapkanCoe(row)"><i class="fas fa-check"></i> Tetapkan CoE</b-dropdown-item>
+                        <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="batalkanCoe(row)"><i class="fas fa-times"></i> Batalkan CoE</b-dropdown-item>
+                        <!--b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item-->
                     </b-dropdown>
                     <b-dropdown v-show="hasRole('penjamin_mutu')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                         <b-dropdown-item href="javascript:" @click="cetakInstrumen(row.item)"><i class="fas fa-print"></i> Cetak Instrumen</b-dropdown-item>
@@ -287,6 +289,36 @@ export default {
         }
     },*/
     methods: {
+        tetapkanCoe(row){
+            axios.post(`/api/referensi/status-coe`, {
+                sekolah_id: row.item.sekolah_id,
+                status_coe: 1,
+            }).then((response) => {
+                let getData = response.data
+                Swal.fire(
+                    getData.title,
+                    getData.text,
+                    getData.icon
+                ).then(()=>{
+                    this.loadPerPage(10);
+                });
+            })
+        },
+        batalkanCoe(row){
+            axios.post(`/api/referensi/status-coe`, {
+                sekolah_id: row.item.sekolah_id,
+                status_coe: 0,
+            }).then((response) => {
+                let getData = response.data
+                Swal.fire(
+                    getData.title,
+                    getData.text,
+                    getData.icon
+                ).then(()=>{
+                    this.loadPerPage(10);
+                });
+            })
+        },
         cetakInstrumen(row){
             let nama_sekolah = row.nama
             axios.get(`/api/cetak-instrumen`, {
