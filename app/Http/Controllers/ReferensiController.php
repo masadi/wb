@@ -398,7 +398,7 @@ class ReferensiController extends Controller
             ]);
         } else {
             $text = 'Sekolah berhasil digagalkan sebagai SMK CoE';
-            $coe = Smk_coe::where('sekolah_id', $request->sekolah_id)->delete();
+            $coe = Smk_coe::where('sekolah_id', $request->sekolah_id)->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->delete();
         }
         if($coe){
             $response = [
