@@ -108,11 +108,14 @@ class HelperModel
             $query->whereNull('verifikator_id');
         }])->with(['nilai_akhir', 'last_nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
-        }, 'sekolah.sekolah_sasaran' => function($query){
-            $query->with(['pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+        }, 'sekolah' => function($query){
+            $query->with(['smk_coe', 'sekolah_sasaran' => function($query){
+                $query->with(['pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+            }]);
         }])->find($user_id);
         if($user->hasRole('sekolah')){
             $instrumen = Instrumen::where('urut', 0)->count();
+            $smk_coe = $user->sekolah->smk_coe;
             $pakta = NULL;
             $verval = NULL;
             $proses = NULL;
@@ -189,6 +192,7 @@ class HelperModel
             }
             $data = [
                 'user' => $user,
+                'smk_coe' => $smk_coe,
                 'instrumen' => ($instrumen == $user->nilai_instrumen_count) ? self::TanggalIndo($user->last_nilai_instrumen->updated_at) : NULL,
                 'hitung' => ($user->nilai_akhir) ? self::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
                 'pakta' => ($pakta) ? self::TanggalIndo($pakta->updated_at) : NULL,

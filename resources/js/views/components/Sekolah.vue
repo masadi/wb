@@ -156,7 +156,7 @@
                     <td>: {{modalText.nip_pengawas}}</td>
                 </tr>
                 <tr>
-                    <td>Penjamin Mutu</td>
+                    <td>Verifikator</td>
                     <td>: {{(modalText.sekolah_sasaran) ? modalText.sekolah_sasaran.verifikator.name : 'Belum dipilih'}}</td>
                 </tr>
             </table>

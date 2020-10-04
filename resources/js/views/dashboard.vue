@@ -10,25 +10,93 @@
                 <div class="row">
                     <div class="col-12">
                         <section class="card" v-show="hasRole('sekolah')">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3 text-center border-right">
-                                        <div class="text-lg text-center">Kemajuan Pengisian Instrumen</div>
-                                        <center><canvas id="kemajuan" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                            {{is_coe}}
+                            <div class="card-body" v-show="!is_coe">
+                                <p>Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent</p>
+                            </div>
+                            <div class="card-body" v-show="is_coe">
+                                    <div class="row">
+                                        <div class="col-md-3 text-center border-right">
+                                            <div class="text-lg text-center">Kemajuan Pengisian Instrumen</div>
+                                            <center><canvas id="kemajuan" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                                        </div>
+                                        <div class="col-md-3 text-center border-right">
+                                            <div class="text-lg text-center">Nilai Rapor Mutu Sekolah</div>
+                                            <center><canvas id="nilai_rapor" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                                        </div>
+                                        <div class="col-md-6 text-center">
+                                            <div class="text-lg text-center">Nilai Komponen Mutu Sekolah</div>
+                                            <center><canvas id="nilai_komponen"></canvas></center>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3 text-center border-right">
-                                        <div class="text-lg text-center">Nilai Rapor Mutu Sekolah</div>
-                                        <center><canvas id="nilai_rapor" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        <div class="text-lg text-center">Nilai Komponen Mutu Sekolah</div>
-                                        <center><canvas id="nilai_komponen"></canvas></center>
-                                    </div>
-                                </div>
                             </div>
                         </section>
                         <div class="card">
                             <div class="card-body">
+                                <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
+                                    <div class="container" v-show="is_coe">
+                                        <!--exclamation-->
+                                        <ol class="ps-timeline">
+                                            <li>
+                                                <div class="img-handler-bot">
+                                                    <img src="/images/icon_progres/1.png" width="150" alt="" />
+                                                </div>
+                                                <div class="ps-top">
+                                                    <p>Proses pengisian instrumen</p>
+                                                </div>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.instrumen }"></i></span>
+                                            </li>
+                                            <li>
+                                                <div class="img-handler-top">
+                                                    <img src="/images/icon_progres/2.png" width="150" alt=""
+                                                        style="margin-bottom:80px;" />
+                                                </div>
+                                                <div class="ps-bot">
+                                                    <p>Perhitungan rapor mutu sekolah</p>
+                                                </div>
+                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.hitung }"></i></i></span>
+                                            </li>
+                                            <li>
+                                                <div class="img-handler-bot">
+                                                    <img src="/images/icon_progres/3.png" width="200" alt="" />
+                                                </div>
+                                                <div class="ps-top">
+                                                    <p>Cetak pakta integritas sekolah</p>
+                                                </div>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pakta }"></i></i></span>
+                                            </li>
+                                            <li>
+                                                <div class="img-handler-top">
+                                                    <img src="/images/icon_progres/4.png" width="230" alt=""
+                                                        style="margin-bottom:80px;" />
+                                                </div>
+                                                <div class="ps-bot">
+                                                    <p>Verifikasi dan Validasi oleh Tim Penjamin Mutu</p>
+                                                </div>
+                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verval }"></i></i></span>
+                                            </li>
+                                            <li>
+                                                <div class="img-handler-bot">
+                                                    <img src="/images/icon_progres/5.png" width="150" alt="" />
+                                                </div>
+                                                <div class="ps-top">
+                                                    <p>Verifikasi oleh Direktorat</p>
+                                                </div>
+                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.proses }"></i></i></span>
+                                            </li>
+                                            <li>
+                                                <div class="img-handler-top">
+                                                    <img src="/images/icon_progres/6.png" width="180" alt=""
+                                                        style="margin-bottom:80px;" />
+                                                </div>
+                                                <div class="ps-bot">
+                                                    <p>Hasil Rapor Mutu Sekolah dan Pengesahan</p>
+                                                </div>
+                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.terima, 'fa-times text-danger': rapor.tolak }"></i></i></span>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </section>
                                 <section v-show="hasRole('admin')">
                                     Content akses admin
                                 </section>
@@ -98,70 +166,6 @@
                                     
                                     </div>
                                 </section>
-                                <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
-                                    <div class="container">
-                                        <!--exclamation-->
-                                        <ol class="ps-timeline">
-                                            <li>
-                                                <div class="img-handler-bot">
-                                                    <img src="/images/icon_progres/1.png" width="150" alt="" />
-                                                </div>
-                                                <div class="ps-top">
-                                                    <p>Proses pengisian instrumen</p>
-                                                </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.instrumen }"></i></span>
-                                            </li>
-                                            <li>
-                                                <div class="img-handler-top">
-                                                    <img src="/images/icon_progres/2.png" width="150" alt=""
-                                                        style="margin-bottom:80px;" />
-                                                </div>
-                                                <div class="ps-bot">
-                                                    <p>Perhitungan rapor mutu sekolah</p>
-                                                </div>
-                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.hitung }"></i></i></span>
-                                            </li>
-                                            <li>
-                                                <div class="img-handler-bot">
-                                                    <img src="/images/icon_progres/3.png" width="200" alt="" />
-                                                </div>
-                                                <div class="ps-top">
-                                                    <p>Cetak pakta integritas sekolah</p>
-                                                </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pakta }"></i></i></span>
-                                            </li>
-                                            <li>
-                                                <div class="img-handler-top">
-                                                    <img src="/images/icon_progres/4.png" width="230" alt=""
-                                                        style="margin-bottom:80px;" />
-                                                </div>
-                                                <div class="ps-bot">
-                                                    <p>Verifikasi dan Validasi oleh Tim Penjamin Mutu</p>
-                                                </div>
-                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verval }"></i></i></span>
-                                            </li>
-                                            <li>
-                                                <div class="img-handler-bot">
-                                                    <img src="/images/icon_progres/5.png" width="150" alt="" />
-                                                </div>
-                                                <div class="ps-top">
-                                                    <p>Verifikasi oleh Direktorat</p>
-                                                </div>
-                                                <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.proses }"></i></i></span>
-                                            </li>
-                                            <li>
-                                                <div class="img-handler-top">
-                                                    <img src="/images/icon_progres/6.png" width="180" alt=""
-                                                        style="margin-bottom:80px;" />
-                                                </div>
-                                                <div class="ps-bot">
-                                                    <p>Hasil Rapor Mutu Sekolah dan Pengesahan</p>
-                                                </div>
-                                                <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.terima, 'fa-times text-danger': rapor.tolak }"></i></i></span>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </section>
                             </div>
                         </div>
                     </div>
@@ -183,6 +187,7 @@ export default {
     data() {
         return {
             user: user,
+            is_coe: null,
             sekolah:0,
             ptk: 0,
             pd: 0,
@@ -232,6 +237,7 @@ export default {
                 if(!getData){
                     return false
                 }
+                this.is_coe = getData.smk_coe
                 this.jml_sekolah_sasaran = getData.jml_sekolah_sasaran
                 this.jml_sekolah_sasaran_instrumen = getData.jml_sekolah_sasaran_instrumen
                 this.jml_sekolah_sasaran_no_instrumen = getData.jml_sekolah_sasaran_no_instrumen
