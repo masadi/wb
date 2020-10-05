@@ -14,4 +14,10 @@ class Berita extends Model
     public function user(){
         return $this->belongsTo('App\User', 'user_id');
     }
+    public function get_kategori()
+    {
+        return implode(',', $this->kategori->map(function ($cat) {
+            return $cat->nama;
+        })->toArray());
+    }
 }

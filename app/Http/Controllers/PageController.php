@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Wilayah;
+use App\Berita;
 class PageController extends Controller
 {
     public function index(Request $request){
@@ -23,7 +24,12 @@ class PageController extends Controller
     }
     public function berita($request){
         $query = $request->route('query');
-        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+        $berita = Berita::limit(10)->orderBy('created_at', 'DESC')->get();
+        return view('page.'.$query)->with(['berita' => $berita]);
+    }
+    public function detil_berita($slug){
+        $berita = Berita::whereSlug($slug)->first();
+        return view('page.detil_berita')->with(['post' => $berita]);
     }
     public function rapor_mutu($request){
         $query = $request->route('query');
