@@ -6,7 +6,15 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-refresh mr-1"></i>
-                Progres Data Penjaminan Mutu SMK
+                <?php
+                $wilayah = NULL;
+                if($id_level_wilayah == 1){
+                    $wilayah = 'Nasional';
+                } else {
+                    $wilayah = $nama_wilayah->nama;
+                }
+                ?>
+                Progres Data Penjaminan Mutu SMK - {{$wilayah}}
             </h3></div>
             <div class="card-body">
                 <table id="datatable_test" class="table table-bordered table-striped table-hover table-responsive" style="width:100%">

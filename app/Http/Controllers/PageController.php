@@ -16,7 +16,8 @@ class PageController extends Controller
         $query = $request->route('query');
         $kode_wilayah = $request->route('kode_wilayah');
         $id_level_wilayah = $request->route('id_level_wilayah');
-        return view('page.'.$query)->with(['id_level_wilayah' => $id_level_wilayah, 'kode_wilayah' => $kode_wilayah]);
+        $nama_wilayah = Wilayah::find($kode_wilayah);
+        return view('page.'.$query)->with(['id_level_wilayah' => $id_level_wilayah, 'kode_wilayah' => $kode_wilayah, 'nama_wilayah' => $nama_wilayah]);
     }
     public function home($request){
         $query = $request->route('query');
@@ -67,6 +68,7 @@ class PageController extends Controller
         $with_tolak = 'sekolah_tolak'.$wilayah;
         $data_count = 'sekolah'.$wilayah.'_count';
         $data_count_coe = 'sekolah_coe'.$wilayah.'_count';
+        $nama_wilayah = Wilayah::find(request()->kode_wilayah);
         $all_wilayah = Wilayah::whereHas('negara', function($query){
             $query->where('negara_id', 'ID');
         })->where(function($query) use ($id_level_wilayah){
@@ -99,6 +101,7 @@ class PageController extends Controller
             'count_tolak' => $with_tolak.'_count',
             'with' => $with,
             'next_level_wilayah' => $id_level_wilayah + 1,
+            'nama_wilayah' => $nama_wilayah,
         ];
         //dd($params);
         return view('page.progres-wilayah')->with($params);
