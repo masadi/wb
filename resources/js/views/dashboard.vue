@@ -17,11 +17,11 @@
                                     <div class="row">
                                         <div class="col-md-3 text-center border-right">
                                             <div class="text-lg text-center">Kemajuan Pengisian Instrumen</div>
-                                            <center><canvas id="kemajuan" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                                            <center><canvas id="kemajuan" style="height: 700px; width: 100%;"></canvas></center>
                                         </div>
                                         <div class="col-md-3 text-center border-right">
                                             <div class="text-lg text-center">Nilai Rapor Mutu Sekolah</div>
-                                            <center><canvas id="nilai_rapor" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 250px;"></canvas></center>
+                                            <center><canvas id="nilai_rapor" style="height: 700px; width: 100%;"></canvas></center>
                                         </div>
                                         <div class="col-md-6 text-center">
                                             <div class="text-lg text-center">Nilai Komponen Mutu Sekolah</div>
