@@ -10,7 +10,6 @@
                 <div class="row">
                     <div class="col-12">
                         <section class="card" v-show="hasRole('sekolah')">
-                            {{is_coe}}
                             <div class="card-body" v-show="!is_coe">
                                 <p>Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent</p>
                             </div>
