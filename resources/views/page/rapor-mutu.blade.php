@@ -177,18 +177,23 @@
 <style>
   .card-warna-{{strtolower($komponen[0]->nama)}} {
       background:#d9434e !important;
+      color:white;
   }
   .card-warna-{{strtolower($komponen[1]->nama)}} {
       background:#1fac4d !important;
+      color:white;
   }
   .card-warna-{{strtolower($komponen[2]->nama)}} {
       background:#48cfc1 !important;
+      color:white;
   }
   .card-warna-{{strtolower($komponen[3]->nama)}} {
       background:#9398ec !important;
+      color:white;
   }
   .card-warna-{{strtolower($komponen[4]->nama)}} {
       background:#d27b25 !important;
+      color:white;
   }
 </style> 
 @endsection
