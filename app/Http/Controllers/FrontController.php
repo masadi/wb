@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\User;
 use App\Wilayah;
+use App\Komponen;
+use App\HelperModel;
 use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
@@ -86,6 +88,52 @@ class FrontController extends Controller
         })
         ->rawColumns(['nama', 'npsn', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan'])
         ->make(true);
+    }
+    public function filter_wilayah(Request $request)
+    {
+        //dd($request->all());
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->whereRaw("trim(mst_kode_wilayah) ='".$request->kode_wilayah."'")->orderBy('kode_wilayah')->get();
+        $output = [];
+        foreach($all_wilayah as $wilayah){
+            $record= [];
+			$record['value'] 	= $wilayah->kode_wilayah;
+			$record['text'] 	= $wilayah->nama;
+			$output['result'][] = $record;
+        }
+        $callback = function($query){
+            $query->whereHas('user.sekolah', function($query){
+                $query->has('sekolah_sasaran');
+                if(request()->id_level_wilayah == 1){
+                    $query->whereRaw("trim(provinsi_id) ='".request()->kode_wilayah."'");
+                } elseif(request()->id_level_wilayah == 2){
+                    $query->whereRaw("trim(kabupaten_id) ='".request()->kode_wilayah."'");
+                } elseif(request()->id_level_wilayah == 3){
+                    $query->whereRaw("trim(kecamatan_id) ='".request()->kode_wilayah."'");
+                }
+                //$query->whereIn('kode_wilayah', function($query){
+                    //$query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) ='".request()->kode_wilayah."'");
+                //});
+            });
+        };
+        $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
+        $nilai_komponen = [];
+        $nilai_komponen_chart = [];
+        $nama_komponen_chart = [];
+        foreach($all_komponen as $komponen){
+            $record_komponen= [];
+			$record_komponen['nilai'] 	= number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+            $record_komponen['bintang'] 	= HelperModel::bintang_icon(number_format($komponen->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+            foreach($komponen->aspek as $aspek){
+                $record_komponen['nilai_aspek'][strtolower(HelperModel::clean($aspek->nama))] = number_format($aspek->all_nilai_aspek->avg('total_nilai'),2);
+            }
+            $nilai_komponen[] = $record_komponen;
+            $record_chart = [];
+            $nilai_komponen_chart[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+            $nama_komponen_chart[] 	= $komponen->nama;
+        }
+        return response()->json(['output' => $output, 'nilai_komponen_kotak' => $nilai_komponen, 'nilai_komponen' => $nilai_komponen_chart, 'nama_komponen' => $nama_komponen_chart]);
     }
     public function get_wilayah(Request $request){
         if(request()->id_level_wilayah == 1){

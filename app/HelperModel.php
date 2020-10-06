@@ -66,6 +66,12 @@ class HelperModel
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+        } else {
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
         }
         return $html;
     }
@@ -137,6 +143,11 @@ class HelperModel
             }
         }
         return $html;
+    }
+    public static function clean($string) {
+        $string = trim($string);
+        $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+        return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
     }
     public static function rapor_mutu($user_id){
         $user = User::withCount(['nilai_instrumen' => function($query){

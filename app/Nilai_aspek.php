@@ -15,4 +15,7 @@ class Nilai_aspek extends Model
     public function aspek(){
         return $this->belongsTo('App\Aspek');
     }
+    public function user(){
+        return $this->hasOne('App\User', 'user_id', 'user_id');
+    }
 }

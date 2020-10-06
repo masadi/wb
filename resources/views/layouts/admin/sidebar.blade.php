@@ -2,13 +2,13 @@
 $user = auth()->user();
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!--a href="{{url('/')}}" class="brand-link"-->
-    <router-link tag="a" to="/beranda" class="brand-link">
+    <a href="{{url('/')}}" class="brand-link" target="_blank">
+    <!--router-link tag="a" to="/beranda" class="brand-link"-->
         <img src="/images/AdminLTELogo.png" alt="APM SMK" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">APM SMK</span>
-    </router-link>
-    <!--/a-->
+    <!--/router-link-->
+    </a>
 
     <!-- Sidebar -->
     <div class="sidebar">

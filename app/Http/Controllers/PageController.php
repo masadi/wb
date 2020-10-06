@@ -35,8 +35,14 @@ class PageController extends Controller
     }
     public function rapor_mutu($request){
         $query = $request->route('query');
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->orderBy('kode_wilayah')->get();
         $params = [
             'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
+            'all_wilayah' => $all_wilayah,
         ];
         return view('page.'.$query)->with($params);
     }

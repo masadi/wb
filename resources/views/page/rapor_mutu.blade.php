@@ -1,3 +1,0 @@
-
-    {{$komponen_id}}
-    {{$test}}
