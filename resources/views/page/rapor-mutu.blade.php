@@ -56,11 +56,7 @@
                                 <h3 class="card-title">{{$komponen[0]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[0]->all_nilai_komponen->avg('total_nilai'),2)}}
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star"></i>
+                                    {!! Helper::bintang_icon(number_format($komponen[0]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -89,11 +85,7 @@
                                 <h3 class="card-title">{{$komponen[1]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[1]->all_nilai_komponen->avg('total_nilai'),2)}}
-                                    <i class="fas fa-star text-pink"></i>
-                                    <i class="fas fa-star text-pink"></i>
-                                    <i class="fas fa-star text-pink"></i>
-                                    <i class="fas fa-star text-pink"></i>
-                                    <i class="far fa-star"></i>
+                                    {!! Helper::bintang_icon(number_format($komponen[1]->all_nilai_komponen->avg('total_nilai'),2), 'pink') !!}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -114,11 +106,7 @@
                                 <h3 class="card-title">{{$komponen[2]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[2]->all_nilai_komponen->avg('total_nilai'),2)}}
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star"></i>
+                                    {!! Helper::bintang_icon(number_format($komponen[2]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -141,11 +129,7 @@
                                 <h3 class="card-title">{{$komponen[3]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[3]->all_nilai_komponen->avg('total_nilai'),2)}}
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star"></i>
+                                    {!! Helper::bintang_icon(number_format($komponen[3]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -166,11 +150,7 @@
                                 <h3 class="card-title">{{$komponen[4]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[4]->all_nilai_komponen->avg('total_nilai'),2)}}
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="fas fa-star text-warning"></i>
-                                    <i class="far fa-star"></i>
+                                    {!! Helper::bintang_icon(number_format($komponen[4]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}
                                 </div>
                             </div>
                             <div class="card-body">

@@ -34,6 +34,41 @@ class HelperModel
         $jenis_rapor = Jenis_rapor::where('jenis', $jenis)->first();
         return $jenis_rapor->id;
     }
+    public static function bintang_icon($nilai, $color){
+        $html = '';
+        if ($nilai > 0 && $nilai < 20){
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+        } elseif($nilai > 20 && $nilai < 40) {
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+        } elseif($nilai > 40 && $nilai < 60) {
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="far fa-star"></i>';
+            $html .= '<i class="far fa-star"></i>';
+        } elseif($nilai > 60 && $nilai < 80) {
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="far fa-star"></i>';
+        } elseif($nilai > 80) {
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+            $html .= '<i class="fas fa-star text-'.$color.'"></i>';
+        }
+        return $html;
+    }
     public static function bintang_pdf($nilai, $satuan = false){
         $html = '';
         if($satuan){
