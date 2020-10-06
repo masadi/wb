@@ -51,8 +51,8 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
-                        <div class="card card-danger">
-                            <div class="card-header">
+                        <div class="card">
+                            <div class="card-header card-warna-{{strtolower($komponen[0]->nama)}}">
                                 <h3 class="card-title">{{$komponen[0]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[0]->all_nilai_komponen->avg('total_nilai'),2)}}
@@ -80,12 +80,12 @@
                 {{--dd($komponen[0])--}}
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
-                        <div class="card card-warning">
-                            <div class="card-header">
+                        <div class="card">
+                            <div class="card-header card-warna-{{strtolower($komponen[1]->nama)}}">
                                 <h3 class="card-title">{{$komponen[1]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[1]->all_nilai_komponen->avg('total_nilai'),2)}}
-                                    {!! Helper::bintang_icon(number_format($komponen[1]->all_nilai_komponen->avg('total_nilai'),2), 'pink') !!}
+                                    {!! Helper::bintang_icon(number_format($komponen[1]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}
                                 </div>
                             </div>
                             <div class="card-body">
@@ -101,8 +101,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card card-success">
-                            <div class="card-header">
+                        <div class="card">
+                            <div class="card-header card-warna-{{strtolower($komponen[2]->nama)}}">
                                 <h3 class="card-title">{{$komponen[2]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[2]->all_nilai_komponen->avg('total_nilai'),2)}}
@@ -124,8 +124,8 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
-                        <div class="card card-primary">
-                            <div class="card-header">
+                        <div class="card">
+                            <div class="card-header card-warna-{{strtolower($komponen[3]->nama)}}">
                                 <h3 class="card-title">{{$komponen[3]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[3]->all_nilai_komponen->avg('total_nilai'),2)}}
@@ -145,8 +145,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card card-orange">
-                            <div class="card-header">
+                        <div class="card">
+                            <div class="card-header card-warna-{{strtolower($komponen[4]->nama)}}">
                                 <h3 class="card-title">{{$komponen[4]->nama}}</h3>
                                 <div class="card-tools">
                                     {{number_format($komponen[4]->all_nilai_komponen->avg('total_nilai'),2)}}
@@ -172,6 +172,25 @@
         </div>
     </div>
 </div>
+@endsection
+@section('css')
+<style>
+  .card-warna-{{strtolower($komponen[0]->nama)}} {
+      background:#d9434e !important;
+  }
+  .card-warna-{{strtolower($komponen[1]->nama)}} {
+      background:#1fac4d !important;
+  }
+  .card-warna-{{strtolower($komponen[2]->nama)}} {
+      background:#48cfc1 !important;
+  }
+  .card-warna-{{strtolower($komponen[3]->nama)}} {
+      background:#9398ec !important;
+  }
+  .card-warna-{{strtolower($komponen[4]->nama)}} {
+      background:#d27b25 !important;
+  }
+</style> 
 @endsection
 @section('js_file')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
