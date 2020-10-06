@@ -15,6 +15,9 @@ class Komponen extends Model
     public function nilai_komponen(){
         return $this->hasOne('App\Nilai_komponen', 'komponen_id', 'id');
     }
+    public function all_nilai_komponen(){
+        return $this->hasMany('App\Nilai_komponen', 'komponen_id', 'id');
+    }
     public function nilai_komponen_verifikasi(){
         return $this->hasOne('App\Nilai_komponen', 'komponen_id', 'id');
     }

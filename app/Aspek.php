@@ -24,4 +24,7 @@ class Aspek extends Model
     public function nilai_aspek(){
         return $this->hasOne('App\Nilai_aspek', 'aspek_id', 'id');
     }
+    public function all_nilai_aspek(){
+        return $this->hasMany('App\Nilai_aspek', 'aspek_id', 'id');
+    }
 }

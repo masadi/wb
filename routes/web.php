@@ -19,6 +19,8 @@ Route::get('/', function () {
 Auth::routes(['register' => false]);
 Route::get('/page/{query}/{id_level_wilayah?}/{kode_wilayah?}', 'PageController@index')->name('page');
 Route::get('/berita/{slug}', 'PageController@detil_berita')->name('detil_berita');
+Route::get('/rapor-mutu/{komponen_id}', 'PageController@get_rapor_mutu')->name('get_rapor_mutu');
+Route::get('/get-chart', 'PageController@get_chart')->name('get_chart');
 /*Route::get('/{query}', function ($query) {
     if($query == 'home'){
         return view('welcome');

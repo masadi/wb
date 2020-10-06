@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Wilayah;
 use App\Berita;
+use App\Komponen;
 class PageController extends Controller
 {
     public function index(Request $request){
@@ -34,7 +35,19 @@ class PageController extends Controller
     }
     public function rapor_mutu($request){
         $query = $request->route('query');
-        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+        $params = [
+            'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
+        ];
+        return view('page.'.$query)->with($params);
+    }
+    public function get_chart()
+    {
+        $all_komponen = Komponen::with('all_nilai_komponen')->get();
+        foreach($all_komponen as $komponen){
+            $nilai_komponen[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+            $nama_komponen[] = $komponen->nama;
+        }
+        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen]);
     }
     public function galeri($request){
         $query = $request->route('query');
@@ -105,5 +118,12 @@ class PageController extends Controller
         ];
         //dd($params);
         return view('page.progres-wilayah')->with($params);
+    }
+    public function get_rapor_mutu($komponen_id){
+        $params = [
+            'komponen_id' => $komponen_id,
+            'test' => 'test',
+        ];
+        return view('page.rapor_mutu')->with($params);
     }
 }
