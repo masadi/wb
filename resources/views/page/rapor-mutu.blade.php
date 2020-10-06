@@ -62,7 +62,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     @foreach($komponen[0]->aspek as $aspek)
-                                    <div class="col-4">
+                                    <div class="col-lg-4 col-md-12">
                                         <div class="position-relative p-3 mb-3 bg-gray text-center" style="height:125px">
                                             {{$aspek->nama}} <br>
                                             <h1>{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</h1>
@@ -91,7 +91,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     @foreach($komponen[1]->aspek as $aspek)
-                                    <div class="col-4">
+                                    <div class="col-lg-4 col-md-12">
                                         <div class="position-relative p-3 mb-3 bg-gray text-center" style="height:125px">
                                             {{$aspek->nama}} <br>
                                             <h1>{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</h1>
@@ -112,7 +112,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     @foreach($komponen[2]->aspek as $aspek)
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-12">
                                         <div class="position-relative p-3 mb-3 bg-gray text-center" style="height:125px">
                                             {{$aspek->nama}} <br>
                                             <h1>{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</h1>
@@ -156,7 +156,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     @foreach($komponen[4]->aspek as $aspek)
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-12">
                                         <div class="position-relative p-3 mb-3 bg-gray text-center" style="height:125px">
                                             {{$aspek->nama}} <br>
                                             <h1>{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</h1>
