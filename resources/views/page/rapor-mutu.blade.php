@@ -228,7 +228,7 @@ $.get( "{{route('get_chart')}}", function( data ) {
                 position: 'top',
             },
             title: {
-                display: true,
+                display: false,
                 text: 'Chart.js Outcome Graph'
             },
             scale: {
