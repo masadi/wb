@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_rapor')
 @section('title', 'Progres Data Penjaminan Mutu SMK')
 @section('content')
 <div class="row">

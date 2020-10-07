@@ -26,7 +26,7 @@ if($laman == 'rapor-mutu'){
 }
 $active_progres_data = '';
 $sub_aktif = '';
-if($laman == 'progres-data'){
+if($laman == 'progres-data' || $laman == 'progres'){
     $active_progres_data = ' menu-open';
     $sub_aktif = ' active';
 }
