@@ -12,15 +12,6 @@ class WilayahSekolahSeeder extends Seeder
      */
     public function run()
     {
-        User::has('sekolah.sekolah_sasaran')->chunk(200, function ($data) {
-            foreach ($data as $user) {
-                if(!$user->sekolah->smk_coe){
-                    $user->sekolah->sekolah_sasaran->delete();
-                }
-            }
-        });
-        $a = User::has('sekolah.sekolah_sasaran')->count();
-        dd($a);
         Sekolah::has('sekolah_sasaran')->with(['smk_coe', 'sekolah_sasaran'])->chunk(200, function ($data) {
             foreach ($data as $sekolah) {
                 if(!$sekolah->smk_coe){
