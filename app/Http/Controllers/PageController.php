@@ -53,7 +53,65 @@ class PageController extends Controller
             $nilai_komponen[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
             $nama_komponen[] = $komponen->nama;
         }
-        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen]);
+        $wilayah = '_provinsi';
+        $with = 'sekolah'.$wilayah;
+        $with_coe = 'sekolah_coe'.$wilayah;
+        $with_instrumen = 'sekolah_instrumen'.$wilayah;
+        $with_pakta_integritas = 'sekolah_pakta_integritas'.$wilayah;
+        $with_rapor_mutu = 'sekolah_rapor_mutu'.$wilayah;
+        $with_waiting = 'sekolah_waiting'.$wilayah;
+        $with_proses = 'sekolah_proses'.$wilayah;
+        $with_terima = 'sekolah_terima'.$wilayah;
+        $with_tolak = 'sekolah_tolak'.$wilayah;
+        $data_count = 'sekolah'.$wilayah.'_count';
+        $data_count_coe = 'sekolah_coe'.$wilayah.'_count';
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak])->orderBy('kode_wilayah')->get();
+        $sekolah_coe_count = 0;
+        $sekolah_instrumen_count = 0;
+        $sekolah_rapor_mutu_count = 0;
+        $sekolah_pakta_integritas_count = 0;
+        $sekolah_waiting_count = 0;
+        $sekolah_proses_count = 0;
+        $sekolah_terima_count = 0;
+        $sekolah_tolak_count = 0;
+        $coe_count = $with_coe.'_count';
+        $instrumen_count = $with_instrumen.'_count';
+        $pakta_integritas_count = $with_pakta_integritas.'_count';
+        $rapor_mutu_count = $with_rapor_mutu.'_count';
+        $waiting_count = $with_waiting.'_count';
+        $proses_count = $with_proses.'_count';
+        $terima_count = $with_terima.'_count';
+        $tolak_count = $with_tolak.'_count';
+        foreach($all_wilayah as $wilayah){
+            $sekolah_coe_count += $wilayah->$coe_count;
+            $sekolah_instrumen_count += $wilayah->$instrumen_count;
+            $sekolah_rapor_mutu_count += $wilayah->$rapor_mutu_count;
+            $sekolah_pakta_integritas_count += $wilayah->$pakta_integritas_count;
+            $sekolah_waiting_count += $wilayah->$waiting_count;
+            $sekolah_proses_count += $wilayah->$proses_count;
+            $sekolah_terima_count += $wilayah->$terima_count;
+            $sekolah_tolak_count += $wilayah->$tolak_count;
+        }
+        $counting = [
+            $sekolah_coe_count, 
+            $sekolah_instrumen_count, 
+            $sekolah_coe_count - $sekolah_instrumen_count,
+            $sekolah_rapor_mutu_count, 
+            $sekolah_coe_count - $sekolah_rapor_mutu_count,
+            $sekolah_pakta_integritas_count, 
+            $sekolah_coe_count - $sekolah_pakta_integritas_count,
+            $sekolah_waiting_count, 
+            $sekolah_coe_count - $sekolah_waiting_count,
+            $sekolah_proses_count, 
+            $sekolah_coe_count - $sekolah_proses_count,
+            $sekolah_terima_count, 
+            $sekolah_coe_count - $sekolah_terima_count,
+        ];
+        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'counting' => $counting]);
     }
     public function galeri($request){
         $query = $request->route('query');

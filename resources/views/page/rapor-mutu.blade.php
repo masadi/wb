@@ -43,6 +43,52 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" rowspan="2" style="vertical-align: middle">JML SEKOLAH CoE</th>
+                                    <th class="text-center" colspan="2">PENGISIAN INSTRUMEN</th>
+                                    <th class="text-center" colspan="2">HITUNG RAPOR MUTU</th>
+                                    <th class="text-center" colspan="2">CETAK PAKTA INTEGRITAS</th>
+                                    <th class="text-center" colspan="2">VERVAL VERIFIKATOR</th>
+                                    <th class="text-center" colspan="2">VERVAL PUSAT</th>
+                                    <th class="text-center" colspan="2">PENGESAHAN PUSAT</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Sudah</th>
+                                    <th class="text-center">Belum</th>
+                                    <th class="text-center">Sudah</th>
+                                    <th class="text-center">Belum</th>
+                                    <th class="text-center">Sudah</th>
+                                    <th class="text-center">Belum</th>
+                                    <th class="text-center">Sudah</th>
+                                    <th class="text-center">Belum</th>
+                                    <th class="text-center">Sudah</th>
+                                    <th class="text-center">Belum</th>
+                                    <th class="text-center">Sudah</th>
+                                    <th class="text-center">Belum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                    <td class="text-center rekap">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="col-lg-6 col-md-12">
                         <table class="table">
                             <thead>
@@ -245,6 +291,9 @@ $('.select2').select2();
 $('#provinsi_id').change(function(){
 	var ini = $(this).val();
 	if(ini == ''){
+        $.get( "{{route('get_chart')}}", function( data ) {
+            tampilChart(data)
+        });
 		return false;
 	}
 	$.ajax({
@@ -347,6 +396,10 @@ $.get( "{{route('get_chart')}}", function( data ) {
     tampilChart(data)
 });
 function tampilChart(data){
+    console.log(data.counting);
+    $.each($('td.rekap'), function(i, val) {
+        $(this).html(data.counting[i])
+    });
     var marksCanvas = document.getElementById("marksChart");
     var marksData = {
         labels: data.nama_komponen,
