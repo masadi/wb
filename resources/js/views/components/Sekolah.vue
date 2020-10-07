@@ -58,7 +58,7 @@
                     </b-dropdown>
                     <!--button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button-->
                     <!--button v-show="hasRole('direktorat')" class="btn btn-warning btn-sm" @click="openShowModal(row)">Detil</button-->
-                    <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
+                    <b-dropdown v-show="hasRole('direktorat')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                         <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
                         <b-dropdown-item v-show="!row.item.smk_coe" href="javascript:" @click="tetapkanCoe(row)"><i class="fas fa-check"></i> Tetapkan CoE</b-dropdown-item>
                         <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="batalkanCoe(row)"><i class="fas fa-times"></i> Batalkan CoE</b-dropdown-item>
