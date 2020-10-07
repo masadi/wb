@@ -68,7 +68,7 @@ if($laman == 'progres-data'){
                       </li>
                       <li class="nav-item has-treeview {{$active_progres_data}}">
                         <a href="#" class="nav-link text-white{{$sub_aktif}}">
-                          <i class="nav-icon fas fa-copy"></i>
+                          <i class="nav-icon fas fa-sync"></i>
                           <p>
                             Progres Data
                             <i class="fas fa-angle-left right"></i>
