@@ -63,6 +63,6 @@ class Sekolah extends Model
         );
     }
     public function wilayah(){
-        return $this->hasOne('App\Wilayah', 'kode_wilayah', 'kode_wilayah')->with('parrentRecursive');
+        return $this->hasOne('App\Wilayah', 'kode_wilayah', 'kode_wilayah')->withTrashed()->with('parrentRecursive')->where('id_level_wilayah', 4);
     }
 }

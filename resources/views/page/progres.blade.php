@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-refresh mr-1"></i>
-                Progres Data Penjaminan Mutu SMK - {{$nama_wilayah->nama}}
+                Progres Data Penjaminan Mutu SMK - {{($nama_wilayah) ? $nama_wilayah->nama : ''}}
             </h3></div>
             <div class="card-body">
                 <table id="datatable" class="table table-bordered table-striped table-hover" style="width:100%">
@@ -40,7 +40,7 @@
         ajax: {
             url: '{{ route('api.progres') }}',
             data: function(d){
-                d.id_level_wilayah = {{$id_level_wilayah}};
+                d.id_level_wilayah = {{($id_level_wilayah) ? $id_level_wilayah : 'null'}};
                 d.kode_wilayah = '{{$kode_wilayah}}';
             },
         },

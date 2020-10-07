@@ -288,12 +288,12 @@ class Wilayah extends Model
         });
     }
     public function sekolah_coe_provinsi(){
-        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('smk_coe');
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('smk_coe');//->whereHas('sekolah_sasaran');
     }
     public function sekolah_coe_kabupaten(){
-        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->whereHas('smk_coe');
+        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->whereHas('smk_coe');//->whereHas('sekolah_sasaran');
     }
     public function sekolah_coe_kecamatan(){
-        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->whereHas('smk_coe');
+        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->whereHas('smk_coe');//->whereHas('sekolah_sasaran');
     }
 }
