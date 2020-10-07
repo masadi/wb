@@ -11,7 +11,7 @@
                             <div class="form-group">
                                 <label>Filter Provinsi</label>
                                 <select class="form-control select2" id="provinsi_id" style="width: 100%;">
-                                    <option value="">Nasional</option>
+                                    <option value="">Semua Provinsi</option>
                                     @foreach($all_wilayah as $wilayah)
                                     <option value="{{$wilayah->kode_wilayah}}">{{$wilayah->nama}}</option>
                                     @endforeach

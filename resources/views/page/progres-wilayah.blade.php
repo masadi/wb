@@ -9,7 +9,7 @@
                 <?php
                 $wilayah = NULL;
                 if($id_level_wilayah == 1){
-                    $wilayah = 'Nasional';
+                    $wilayah = 'Semua Provinsi';
                 } else {
                     $wilayah = $nama_wilayah->nama;
                 }
