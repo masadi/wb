@@ -36,31 +36,31 @@ class HelperModel
     }
     public static function bintang_icon($nilai, $color){
         $html = '';
-        if ($nilai > 0 && $nilai < 20){
+        if ($nilai > 0 && $nilai <= 20){
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 20 && $nilai < 40) {
+        } elseif($nilai >= 21 && $nilai <= 40) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 40 && $nilai < 60) {
+        } elseif($nilai >= 41 && $nilai <= 60) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 60 && $nilai < 80) {
+        } elseif($nilai >= 61 && $nilai <= 80) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 80) {
+        } elseif($nilai >= 81) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
