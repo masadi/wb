@@ -53,48 +53,6 @@
                         ?>
                         @forelse ($all_wilayah as $item)
                         <?php
-                        //dd($item);
-                        /*$count_instrumen = $item->{$with}->map(function($data){
-                            return $data->nilai_instrumen_count;
-                        })->toArray();
-                        $nilai1_instrumen = count(array_filter($count_instrumen));
-                        $nilai2_instrumen = count($count_instrumen);
-                        $persen_instrumen = ($nilai2_instrumen) ? $nilai1_instrumen / $nilai2_instrumen * 100 : 0;
-                        $count_nilai_akhir = $item->{$with}->map(function($data){
-                            if(isset($data->user->nilai_akhir)){
-                                $return = 1;
-                            } else {
-                                $return = 0;
-                            }
-                            return $return;
-                        })->toArray();
-                        $nilai1_nilai_akhir = count(array_filter($count_nilai_akhir));
-                        $nilai2_nilai_akhir = count($count_nilai_akhir);
-                        $persen_nilai_akhir = ($nilai2_nilai_akhir) ? $nilai1_nilai_akhir / $nilai2_nilai_akhir * 100 : 0;
-                        $count_pakta_integritas = $item->{$with}->map(function($data){
-                            return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->pakta_integritas : NULL;
-                        })->toArray();
-                        $nilai1_pakta_integritas = count(array_filter($count_pakta_integritas));
-                        $nilai2_pakta_integritas = count($count_pakta_integritas);
-                        $persen_pakta_integritas = ($nilai2_pakta_integritas) ? $nilai1_pakta_integritas / $nilai2_pakta_integritas * 100 : 0;
-                        $count_waiting = $item->{$with}->map(function($data){
-                            return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->waiting : NULL;
-                        })->toArray();
-                        $nilai1_waiting = count(array_filter($count_waiting));
-                        $nilai2_waiting = count($count_waiting);
-                        $persen_waiting = ($nilai2_waiting) ? $nilai1_waiting / $nilai2_waiting * 100 : 0;
-                        $count_proses = $item->{$with}->map(function($data){
-                            return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->proses : NULL;
-                        })->toArray();
-                        $nilai1_proses = count(array_filter($count_proses));
-                        $nilai2_proses = count($count_proses);
-                        $persen_proses = ($nilai2_proses) ? $nilai1_proses / $nilai2_proses * 100 : 0;
-                        $count_terima = $item->{$with}->map(function($data){
-                            return ($data->sekolah_sasaran) ? $data->sekolah_sasaran->terima : NULL;
-                        })->toArray();
-                        $nilai1_terima = count(array_filter($count_terima));
-                        $nilai2_terima = count($count_terima);
-                        $persen_terima = ($nilai2_terima) ? $nilai1_terima / $nilai2_terima * 100 : 0;*/
                         $jml_sekolah_nasional += $item->$count_smk;
                         $jml_sekolah_coe += $item->$count_smk_coe;
                         $jml_instrumen += $item->$count_instrumen;
@@ -109,12 +67,6 @@
                         $persen_waiting = ($item->$count_waiting > 0 && $item->$count_smk_coe > 0) ? $item->$count_waiting / $item->$count_smk_coe * 100 : 0;
                         $persen_proses = ($item->$count_proses > 0 && $item->$count_smk_coe > 0) ? $item->$count_proses / $item->$count_smk_coe * 100 : 0;
                         $persen_terima = ($item->$count_terima > 0 && $item->$count_smk_coe > 0) ? $item->$count_terima / $item->$count_smk_coe * 100 : 0;
-                        //$total_instrumen += 1;//$nilai2_instrumen;
-                        //$total_rapor_mutu += 1;//$nilai2_nilai_akhir;
-                        //$total_pakta_integritas += 1;//$nilai2_pakta_integritas;
-                        //$total_waiting += 1;//$nilai2_waiting;
-                        //$total_proses += 1;//$nilai2_proses;
-                        //$total_terima += 1;//$nilai2_terima;
                         ?>
                         <tr>
                             <td>
