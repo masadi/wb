@@ -44,6 +44,9 @@ class SekolahController extends Controller
     public function store(Request $request)
     {
         $user = User::find($request->user_id);
+        if(!$user){
+            return redirect('login');
+        }
         $data = NULL;
         if($user->hasRole('sekolah')){
             $data = HelperModel::rapor_mutu($request->user_id);
