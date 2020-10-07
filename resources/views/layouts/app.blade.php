@@ -75,7 +75,7 @@
         <nav class="main-header navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
             <div class="container">
                 <a href="{{url('/')}}" class="ml-2">
-                    <span class="brand-text font-weight-light">
+                    <span class="brand-text">
                         Beranda
                     </span>
                 </a>

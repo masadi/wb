@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_rapor')
 @section('title', 'Progres Data Penjaminan Mutu SMK')
 @section('content')
 <div class="row">
@@ -16,8 +16,8 @@
                 ?>
                 Progres Data Penjaminan Mutu SMK - {{$wilayah}}
             </h3></div>
-            <div class="card-body">
-                <table id="datatable_test" class="table table-bordered table-striped table-hover table-responsive" style="width:100%">
+            <div class="card-body table-responsive p-0">
+                <table id="datatable_test" class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th rowspan="2" style="vertical-align: middle;">Wilayah</th>
