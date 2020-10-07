@@ -25,7 +25,7 @@
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pengisian Instrumen</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Hitung Rapor Mutu</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pakta Integritas</th>
-                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Verval</th>
+                            <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Verval Verifikator</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Verifikasi Pusat</th>
                             <th rowspan="2" class="text-center" colspan="2" style="vertical-align: middle;">Pengesahan</th>
                         </tr>
