@@ -290,4 +290,12 @@ class FrontController extends Controller
         ->rawColumns(['nama', 'count_sekolah', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan'])
         ->make(true);
     }
+    public function smk_coe(Request $request){
+        $query = Sekolah::query()->has('smk_coe')->has('sekolah_sasaran');//->orderBy('kecamatan_id')->orderBy('kabupaten_id')->orderBy('provinsi_id');
+        return DataTables::eloquent($query)
+        /*->orderColumn('name', function ($query, $order) {
+            $query->orderBy('status', $order);
+        })*/
+        ->toJson();
+    }
 }

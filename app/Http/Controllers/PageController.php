@@ -190,4 +190,7 @@ class PageController extends Controller
         ];
         return view('page.rapor_mutu')->with($params);
     }
+    public function smk_coe(){
+        return view('page.smk_coe');
+    }
 }
