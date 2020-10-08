@@ -89,7 +89,7 @@ if($laman == 'pengesahan'){
         
               <!-- Sidebar Menu -->
               <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a href="{{route('page', ['query' => 'rapor-mutu'])}}" class="nav-link text-white{{$active_rapor_mutu}}">
                           <i class="nav-icon fas fa-th"></i>
@@ -107,37 +107,37 @@ if($laman == 'pengesahan'){
                         <ul class="nav nav-treeview">
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'progres-data'])}}" class="nav-link text-white{{$aktif_instrumen}}">
-                              <i class="far fa-circle nav-icon"></i>
+                              <i class="fas fa-check nav-icon"></i>
                               <p>Pengisian Instrumen</p>
                             </a>
                           </li>
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'hitung-rapor-mutu'])}}" class="nav-link text-white{{$aktif_rapor_mutu}}">
-                              <i class="far fa-circle nav-icon"></i>
+                              <i class="fas fa-check nav-icon"></i>
                               <p>Hitung Rapor Mutu</p>
                             </a>
                           </li>
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'cetak-pakta'])}}" class="nav-link text-white{{$aktif_pakta_integritas}}">
-                              <i class="far fa-circle nav-icon"></i>
+                              <i class="fas fa-check nav-icon"></i>
                               <p>Cetak Pakta Integritas</p>
                             </a>
                           </li>
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'verval'])}}" class="nav-link text-white{{$aktif_verval}}">
-                              <i class="far fa-circle nav-icon"></i>
+                              <i class="fas fa-check nav-icon"></i>
                               <p>Verval Verifikator</p>
                             </a>
                           </li>
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'verifikasi'])}}" class="nav-link text-white{{$aktif_verifikasi}}">
-                              <i class="far fa-circle nav-icon"></i>
+                              <i class="fas fa-check nav-icon"></i>
                               <p>Verval Pusat</p>
                             </a>
                           </li>
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'pengesahan'])}}" class="nav-link text-white{{$aktif_pengesahan}}">
-                              <i class="far fa-circle nav-icon"></i>
+                              <i class="fas fa-check nav-icon"></i>
                               <p>Pengesahan Pusat</p>
                             </a>
                           </li>
