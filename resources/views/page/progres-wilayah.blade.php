@@ -71,9 +71,9 @@
                         <tr>
                             <td>
                                 @if($next_level_wilayah == 4)
-                                <a href="{{route('page', ['query' => 'progres', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => $item->kode_wilayah])}}">{{$item->nama}}</a>
+                                <a href="{{route('page', ['query' => 'progres', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => trim($item->kode_wilayah)])}}">{{$item->nama}}</a>
                                 @else
-                                <a href="{{route('page', ['query' => 'progres-data', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => $item->kode_wilayah])}}">{{$item->nama}}</a>
+                                <a href="{{route('page', ['query' => 'progres-data', 'id_level_wilayah' => $next_level_wilayah, 'kode_wilayah' => trim($item->kode_wilayah)])}}">{{$item->nama}}</a>
                                 @endif
                             </td>
                             <td class="text-center">{{$item->$count_smk}}</td>

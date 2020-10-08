@@ -145,13 +145,14 @@ class PageController extends Controller
         $with_tolak = 'sekolah_tolak'.$wilayah;
         $data_count = 'sekolah'.$wilayah.'_count';
         $data_count_coe = 'sekolah_coe'.$wilayah.'_count';
-        $nama_wilayah = Wilayah::find(request()->kode_wilayah);
+        $nama_wilayah = Wilayah::whereRaw("trim(kode_wilayah) = '".request()->kode_wilayah."'")->first();
         $all_wilayah = Wilayah::whereHas('negara', function($query){
             $query->where('negara_id', 'ID');
         })->where(function($query) use ($id_level_wilayah){
             $query->where('id_level_wilayah', $id_level_wilayah);
             if(request()->kode_wilayah){
-                $query->where('mst_kode_wilayah', request()->kode_wilayah);
+                //$query->where('mst_kode_wilayah', request()->kode_wilayah);
+                $query->whereRaw("trim(mst_kode_wilayah) = '".request()->kode_wilayah."'");
             }
         })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak])->orderBy('kode_wilayah')->get();
         /*
