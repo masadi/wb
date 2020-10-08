@@ -58,7 +58,7 @@ if($laman == 'pengesahan'){
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand navbar-dark navbar-purple">
+        <nav class="main-header navbar navbar-expand navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
               <li class="nav-item">
