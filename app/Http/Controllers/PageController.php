@@ -193,4 +193,24 @@ class PageController extends Controller
     public function smk_coe(){
         return view('page.smk_coe');
     }
+    public function hitung_rapor_mutu(Request $request){
+        $query = $request->route('query');
+        return view('page.dashboard.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function cetak_pakta(Request $request){
+        $query = $request->route('query');
+        return view('page.dashboard.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function verval(Request $request){
+        $query = $request->route('query');
+        return view('page.dashboard.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function verifikasi(Request $request){
+        $query = $request->route('query');
+        return view('page.dashboard.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function pengesahan(Request $request){
+        $query = $request->route('query');
+        return view('page.dashboard.'.$query)->with(['id_level_wilayah' => 1]);
+    }
 }
