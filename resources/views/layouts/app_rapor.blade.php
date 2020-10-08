@@ -67,7 +67,7 @@ if($laman == 'pengesahan'){
             </ul>
         
             </nav>
-          <aside class="main-sidebar sidebar-light-primary elevation-4 bg-purple text-white">
+          <aside class="main-sidebar sidebar-light-danger elevation-4 bg-info text-white">
             <!-- Brand Logo -->
             <a href="{{url('/')}}" class="brand-link">
               <img src="/images/AdminLTELogo.png" alt="APM SMK" class="brand-image img-circle elevation-3"
