@@ -18,7 +18,7 @@
     <!--link rel="shortcut icon" href="{{asset('favicons/favicon.ico')}}" /-->
     <style>
       .bg-custom {
-            background: #4abcb2 !important;
+            background: #206d66 !important;
         }
     </style>
 </head>
