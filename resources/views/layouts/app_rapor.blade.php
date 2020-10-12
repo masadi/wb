@@ -26,9 +26,22 @@
 $route = Route::current();
 $laman = $route->parameters['query'];
 $active_rapor_mutu = '';
-if($laman == 'rapor-mutu'){
-    $active_rapor_mutu = ' active';
+$aktif_rapor_mutu_sekolah = '';
+$aktif_rapor_mutu_verifikasi = '';
+$aktif_rapor_mutu_afirmasi = '';
+if($laman == 'rapor-mutu-sekolah'){
+    $active_rapor_mutu = ' menu-open';
+    $aktif_rapor_mutu_sekolah = ' active';
 }
+if($laman == 'rapor-mutu-verifikasi'){
+    $active_rapor_mutu = ' menu-open';
+    $aktif_rapor_mutu_verifikasi = ' active';
+}
+if($laman == 'rapor-mutu-afirmasi'){
+    $active_rapor_mutu = ' menu-open';
+    $aktif_rapor_mutu_afirmasi = ' active';
+}
+
 $active_progres_data = '';
 $aktif_instrumen = '';
 $aktif_rapor_mutu = '';
@@ -90,11 +103,40 @@ if($laman == 'pengesahan'){
               <!-- Sidebar Menu -->
               <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent text-sm" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
+                    <!--li class="nav-item">
                         <a href="{{route('page', ['query' => 'rapor-mutu'])}}" class="nav-link text-white{{$active_rapor_mutu}}">
                           <i class="nav-icon fas fa-th"></i>
                           <p>Rapor Mutu</p>
                         </a>
+                      </li-->
+                      <li class="nav-item has-treeview {{$active_rapor_mutu}}">
+                        <a href="#" class="nav-link text-white{{$aktif_rapor_mutu_sekolah}}{{$aktif_rapor_mutu_verifikasi}}{{$aktif_rapor_mutu_afirmasi}}">
+                          <i class="nav-icon fas fa-th"></i>
+                          <p>
+                            Rapor Mutu
+                            <i class="fas fa-angle-left right"></i>
+                          </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'rapor-mutu-sekolah'])}}" class="nav-link text-white{{$aktif_rapor_mutu_sekolah}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Sekolah</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'rapor-mutu-verifikasi'])}}" class="nav-link text-white{{$aktif_rapor_mutu_verifikasi}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Verifikasi</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'rapor-mutu-afirmasi'])}}" class="nav-link text-white{{$aktif_rapor_mutu_afirmasi}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Afirmasi</p>
+                            </a>
+                          </li>
+                        </ul>
                       </li>
                       <li class="nav-item has-treeview {{$active_progres_data}}">
                         <a href="#" class="nav-link text-white{{$aktif_instrumen}}{{$aktif_rapor_mutu}}{{$aktif_pakta_integritas}}{{$aktif_verval}}{{$aktif_verifikasi}}{{$aktif_pengesahan}}">

@@ -33,7 +33,7 @@ class PageController extends Controller
         $berita = Berita::whereSlug($slug)->first();
         return view('page.detil_berita')->with(['post' => $berita]);
     }
-    public function rapor_mutu($request){
+    public function rapor_mutu_sekolah($request){
         $query = $request->route('query');
         $all_wilayah = Wilayah::whereHas('negara', function($query){
             $query->where('negara_id', 'ID');
@@ -44,7 +44,33 @@ class PageController extends Controller
             'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
             'all_wilayah' => $all_wilayah,
         ];
-        return view('page.'.$query)->with($params);
+        return view('page.rapor-mutu.'.$query)->with($params);
+    }
+    public function rapor_mutu_verifikasi($request){
+        $query = $request->route('query');
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->orderBy('kode_wilayah')->get();
+        $params = [
+            'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
+            'all_wilayah' => $all_wilayah,
+        ];
+        return view('page.rapor-mutu.'.$query)->with($params);
+    }
+    public function rapor_mutu_afirmasi($request){
+        $query = $request->route('query');
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->orderBy('kode_wilayah')->get();
+        $params = [
+            'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
+            'all_wilayah' => $all_wilayah,
+        ];
+        return view('page.rapor-mutu.'.$query)->with($params);
     }
     public function get_chart()
     {
