@@ -87,7 +87,7 @@
                     <ul class="nav navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'berita'])}}">Berita</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'progres-data'])}}" target="_blank">Progres Data</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'rapor-mutu'])}}" target="_blank">Rapor Mutu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'rapor-mutu-sekolah'])}}" target="_blank">Rapor Mutu</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'galeri'])}}">Galeri</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'faq'])}}">FAQ</a></li>
                     </ul>
