@@ -73,6 +73,10 @@ if($laman == 'pengesahan'){
   $active_progres_data = ' menu-open';
   $aktif_pengesahan = ' active';
 }
+$aktif_login = '';
+if($laman == 'login'){
+  $aktif_login = ' active';
+}
 ?>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -103,12 +107,6 @@ if($laman == 'pengesahan'){
               <!-- Sidebar Menu -->
               <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent text-sm" data-widget="treeview" role="menu" data-accordion="false">
-                    <!--li class="nav-item">
-                        <a href="{{route('page', ['query' => 'rapor-mutu'])}}" class="nav-link text-white{{$active_rapor_mutu}}">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>Rapor Mutu</p>
-                        </a>
-                      </li-->
                       <li class="nav-item has-treeview {{$active_rapor_mutu}}">
                         <a href="#" class="nav-link text-white{{$aktif_rapor_mutu_sekolah}}{{$aktif_rapor_mutu_verifikasi}}{{$aktif_rapor_mutu_afirmasi}}">
                           <i class="nav-icon fas fa-th"></i>
@@ -185,6 +183,25 @@ if($laman == 'pengesahan'){
                           </li>
                         </ul>
                       </li>
+                      @auth
+                      <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                          <i class="nav-icon fas fa-sign-out-alt"></i>
+                          <p>Keluar Aplikasi</p>
+                        </a>
+                      </li>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                          @csrf
+                      </form>
+                      @else
+                      <li class="nav-item">
+                        <a href="{{route('page', ['query' => 'login'])}}" class="nav-link text-white{{$aktif_login}}">
+                          <i class="nav-icon fas fa-sign-in-alt"></i>
+                          <p>Masuk Aplikasi</p>
+                        </a>
+                      </li>
+                      @endauth
+                      
                 </ul>
               </nav>
             </div>

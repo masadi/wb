@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Wilayah;
 use App\Berita;
 use App\Komponen;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 class PageController extends Controller
 {
     public function index(Request $request){
@@ -239,5 +241,31 @@ class PageController extends Controller
     public function pengesahan(Request $request){
         $query = $request->route('query');
         return view('page.dashboard.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function login(Request $request){
+        if(Auth::check()){
+            return redirect()->route('page', ['query'=> 'rapor-mutu-sekolah']);
+        }
+        $query = $request->route('query');
+        return view('page.dashboard.'.$query);
+    }
+    public function login_dashboard(Request $request)
+    {
+        $login = request()->input('email');
+		$messages = [
+			'email.required' => 'Email/NPSN/Nama Pengguna tidak boleh kosong',
+		];
+		$validator = Validator::make(request()->all(), [
+			'email' => 'required|exists:users,username',
+		 ],
+		$messages
+        );
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $auth = request()->merge([$fieldType => $login]);
+        $credentials = $auth->only($fieldType, 'password');
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->route('page', ['query'=> 'rapor-mutu-sekolah']);
+        }
     }
 }

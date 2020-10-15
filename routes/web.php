@@ -17,6 +17,8 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+Route::post('/login-dashboard', 'PageController@login_dashboard')->name('login_dashboard');
+#Route::post('/page/{query}/{id_level_wilayah?}/{kode_wilayah?}', 'PageController@index')->name('page');
 Route::get('/page/{query}/{id_level_wilayah?}/{kode_wilayah?}', 'PageController@index')->name('page');
 Route::get('/berita/{slug}', 'PageController@detil_berita')->name('detil_berita');
 Route::get('/rapor-mutu/{komponen_id}', 'PageController@get_rapor_mutu')->name('get_rapor_mutu');
