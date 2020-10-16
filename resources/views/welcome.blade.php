@@ -153,6 +153,11 @@
     </div>
   </div>
 @endsection
+@section('css')
+<style>
+    .modal-body {text-align: justify !important; padding:0px 20px 0px 15px;}
+</style>
+@endsection
 @section('js')
 <script>
     $(window).on('load',function(){
