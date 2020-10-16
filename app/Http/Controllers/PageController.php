@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 use App\Wilayah;
 use App\Berita;
 use App\Komponen;
+use App\Sekolah;
+use App\Nilai_instrumen;
+use App\Nilai_akhir;
+use App\Nilai_aspek;
+use App\Nilai_komponen;
+use App\Pakta_integritas;
+use App\Rapor_mutu;
+use App\Jawaban;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 class PageController extends Controller
@@ -266,6 +274,23 @@ class PageController extends Controller
         if (Auth::attempt($credentials)) {
             // Authentication passed...
             return redirect()->route('page', ['query'=> 'rapor-mutu-sekolah']);
+        }
+    }
+    public function reset_instrumen($npsn)
+    {
+        $sekolah = Sekolah::with(['user', 'sekolah_sasaran'])->has('smk_coe')->where('npsn', $npsn)->first();
+        if($sekolah){
+            if($sekolah->user){
+                Jawaban::where('user_id', $sekolah->user->user_id)->delete();
+                Nilai_instrumen::where('user_id', $sekolah->user->user_id)->delete();
+                Nilai_akhir::where('user_id', $sekolah->user->user_id)->delete();
+                Nilai_aspek::where('user_id', $sekolah->user->user_id)->delete();
+                Nilai_komponen::where('user_id', $sekolah->user->user_id)->delete();
+            }
+            if($sekolah->sekolah_sasaran){
+                Pakta_integritas::where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->delete();
+                Rapor_mutu::where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->delete();
+            }
         }
     }
 }

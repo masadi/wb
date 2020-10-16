@@ -48,14 +48,14 @@ class KuisionerController extends Controller
                 Jawaban::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
-                        'indikator_id' => $request->indikator_id[$instrumen_id],
-                        'atribut_id' => $request->atribut_id[$instrumen_id],
-                        'aspek_id' => $request->aspek_id[$instrumen_id],
-                        'komponen_id' => $request->komponen_id[$instrumen_id],
                         'instrumen_id' => $instrumen_id,
                         'verifikator_id' => NULL,
                     ],
                     [
+                        'indikator_id' => $request->indikator_id[$instrumen_id],
+                        'atribut_id' => $request->atribut_id[$instrumen_id],
+                        'aspek_id' => $request->aspek_id[$instrumen_id],
+                        'komponen_id' => $request->komponen_id[$instrumen_id],
                         'nilai' => $nilai,
                     ]
                 );
@@ -73,14 +73,14 @@ class KuisionerController extends Controller
                 Jawaban::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
-                        'indikator_id' => $request->indikator_id[$instrumen_id],
-                        'atribut_id' => $request->atribut_id[$instrumen_id],
-                        'aspek_id' => $request->aspek_id[$instrumen_id],
-                        'komponen_id' => $request->komponen_id[$instrumen_id],
                         'instrumen_id' => $instrumen_id,
                         'verifikator_id' => $request->verifikator_id,
                     ],
                     [
+                        'indikator_id' => $request->indikator_id[$instrumen_id],
+                        'atribut_id' => $request->atribut_id[$instrumen_id],
+                        'aspek_id' => $request->aspek_id[$instrumen_id],
+                        'komponen_id' => $request->komponen_id[$instrumen_id],
                         'nilai' => $nilai,
                     ]
                 );
