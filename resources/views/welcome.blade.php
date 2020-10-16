@@ -61,6 +61,36 @@
             </button>
           </div>
           <div class="modal-body">
+            <h2>Pengiriman Final APM SMK CoE</h2>
+            <ol style="padding-left: 20px;">
+                <li>Tanggal 16-26 Oktober 2020: Pengiriman Final Rapor Mutu Sekolah pada APM SMK (penjaminanmutu.ditpsmk.net) <br>
+                    Sekolah melakukan pengecekan kembali isian capaian kinerja seluruh instrumen/kuesioner (58), dan melakukan tahap pengiriman Rapor Mutu Sekolah kembali
+                    <ol type="a" style="padding-left: 15px;">
+                        <li>Pastikan capaian kinerja seluruh instrumen/kuesioner (58) sudah final</li>
+                        <li>Melakukan hitung Rapor Mutu Sekolah</li>
+                        <li>Melakukan cetak Pakta Integritas</li>
+                        <li>Melakukan Kirim Rapor Mutu Sekolah</li>
+                    </ol>
+                </li>
+                <li>Tanggal 26 Oktober 2020: Cut Off pengiriman Rapor Mutu Final pada APM SMK pukul 24.00 WIB</li>
+            </ol>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          </div>
+      </div>
+    </div>
+</div>
+<div id="modalInfoOld" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">INFORMASI PENTING</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
             <h2>Jadwal Pengisian APM SMK CoE</h2>
             <ol style="padding-left: 20px;">
                 <li>Tanggal 1-3 Oktober 2020: Simulasi pengisian APM SMK, sekolah melakukan seluruh tahapan pengisian pada APM SMK:
@@ -108,7 +138,7 @@
 @section('js')
 <script>
     $(window).on('load',function(){
-        //$('#modalInfo').modal('show');
+        $('#modalInfo').modal('show');
     });
 </script>
 @endsection
