@@ -75,8 +75,16 @@
                                 <li>Melakukan Kirim Rapor Mutu Sekolah</li>
                             </ol>
                         </li>
-                        <li>Sekolah yang sudah final isian capaian kinerja seluruh instrumen/kuesioner (58) yang sudah diinput, maka yang dilakukan adalah :
+                        <li>Sekolah yang sudah final, dan tidak ingin melakukan perubahan atau revisi isian capaian kinerja seluruh instrumen/kuesioner (58) yang sudah diinput pada tahap Simulasi, maka yang dilakukan adalah:
                             <ol>
+                                <li>Melakukan hitung Rapor Mutu Sekolah</li>
+                                <li>Melakukan cetak Pakta Integritas</li>
+                                <li>Melakukan Kirim Rapor Mutu Sekolah</li>
+                            </ol>
+                        </li>
+                        <li>Sekolah yang belum mengisi pada tahap Simulasi Rapor Mutu Sekolah (APM SMK masih kosong) silahkan lakukan tahapan sebagai berikut:
+                            <ol>
+                                <li>Input capaian kinerja pada seluruh instrumen/kuesioner (58)</li>
                                 <li>Melakukan hitung Rapor Mutu Sekolah</li>
                                 <li>Melakukan cetak Pakta Integritas</li>
                                 <li>Melakukan Kirim Rapor Mutu Sekolah</li>
