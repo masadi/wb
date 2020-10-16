@@ -62,17 +62,29 @@
           </div>
           <div class="modal-body">
             <h2>Pengiriman Final APM SMK CoE</h2>
+            <p>Bapak/Ibu Kepala SMK CoE, terkait dengan pengisian Rapor Mutu Sekolah SMK CoE pada Aplikasi Penjaminan Mutu SMK (APM SMK), diinformasikan sebagai berikut :</p>
             <ol style="padding-left: 20px;">
-                <li>Tanggal 16-26 Oktober 2020: Pengiriman Final Rapor Mutu Sekolah pada APM SMK (penjaminanmutu.ditpsmk.net) <br>
+                <li><strong>Tanggal 16-26 Oktober 2020</strong>: Pengiriman Final Rapor Mutu Sekolah pada APM SMK (<strong><i>penjaminanmutu.ditpsmk.net</i></strong>) <br>
                     Sekolah melakukan pengecekan kembali isian capaian kinerja seluruh instrumen/kuesioner (58), dan melakukan tahap pengiriman Rapor Mutu Sekolah kembali
                     <ol type="a" style="padding-left: 15px;">
-                        <li>Pastikan capaian kinerja seluruh instrumen/kuesioner (58) sudah final</li>
-                        <li>Melakukan hitung Rapor Mutu Sekolah</li>
-                        <li>Melakukan cetak Pakta Integritas</li>
-                        <li>Melakukan Kirim Rapor Mutu Sekolah</li>
+                        <li>Sekolah yang ingin melakukan perubahan atau revisi isian instrumen/kuesioner melakukan pengecekan kembali isian capaian kinerja seluruh instrumen/kuesioner (58) yang sudah diinput, dan sekolah dapat melakukan perubahan atau revisi isian capaian kinerja pada masing-masing atau seluruh instrumen/kuesioner (58) sesuai dengan kondisi sekolah, dan melakukan tahap pengiriman Rapor Mutu Sekolah kembali
+                            <ol>
+                                <li>Pastikan capaian kinerja seluruh instrumen/kuesioner (58) sudah final</li>
+                                <li>Melakukan hitung Rapor Mutu Sekolah</li>
+                                <li>Melakukan cetak Pakta Integritas</li>
+                                <li>Melakukan Kirim Rapor Mutu Sekolah</li>
+                            </ol>
+                        </li>
+                        <li>Sekolah yang sudah final isian capaian kinerja seluruh instrumen/kuesioner (58) yang sudah diinput, maka yang dilakukan adalah :
+                            <ol>
+                                <li>Melakukan hitung Rapor Mutu Sekolah</li>
+                                <li>Melakukan cetak Pakta Integritas</li>
+                                <li>Melakukan Kirim Rapor Mutu Sekolah</li>
+                            </ol>
+                        </li>
                     </ol>
                 </li>
-                <li>Tanggal 26 Oktober 2020: Cut Off pengiriman Rapor Mutu Final pada APM SMK pukul 24.00 WIB</li>
+                <li><strong>Tanggal 26 Oktober 2020</strong>: Cut Off pengiriman Rapor Mutu Final pada APM SMK pukul 24.00 WIB</li>
             </ol>
           </div>
           <div class="modal-footer">
