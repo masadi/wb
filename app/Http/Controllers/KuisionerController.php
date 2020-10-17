@@ -14,10 +14,14 @@ use App\HelperModel;
 class KuisionerController extends Controller
 {
     public function index(Request $request){
-        return Komponen::withCount(['jawaban' => function($query) use ($request){
+        $output = Komponen::withCount(['jawaban' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
             $query->whereNull('verifikator_id');
         }, 'indikator'])->with(['aspek'])->get();
+        $sekolah = User::with(['sekolah' => function($query){
+            $query->with(['smk_coe']);
+        }])->find($request->user_id);
+        return response()->json(['status' => 'success', 'data' => $output, 'sekolah' => $sekolah]);
     }
     public function proses(Request $request){
         $komponen = Komponen::find($request->komponen_id);

@@ -41,7 +41,9 @@ class RaporController extends Controller
         }])->get();
         $user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
-        }])->with(['sekolah.sekolah_sasaran.pakta_integritas', 'nilai_akhir' => function($query){
+        }])->with(['sekolah' => function($query){
+            $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
+        }, 'nilai_akhir' => function($query){
             $query->whereNull('verifikator_id');
         }])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
@@ -85,7 +87,9 @@ class RaporController extends Controller
     }
     public function pakta(Request $request){
         $respone = [
-            'user' => User::with(['sekolah.sekolah_sasaran.pakta_integritas'])->with(['nilai_akhir' => function($query){
+            'user' => User::with(['sekolah' => function($query){
+                $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
+            }, 'nilai_akhir' => function($query){
                 $query->whereNull('verifikator_id');
             }])->find($request->user_id),
             'tahun_pendataan' => HelperModel::tahun_pendataan(),
