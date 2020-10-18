@@ -428,7 +428,22 @@ class HelperModel
 			$hasil = trim(self::penyebut($nilai));
 		}     		
 		return ucwords($hasil);
-	}
+    }
+    public static function nilai_satuan($nilai){
+        $result = 0;
+        if($nilai < 21){
+            $result = 1;
+        } elseif($nilai < 41){
+            $result = 2;
+        } elseif($nilai < 61){
+            $result = 3;
+        } elseif($nilai < 81){
+            $result = 4;
+        } elseif($nilai >= 81){
+            $result = 5;
+        }
+        return $result;
+    }
 	public static function predikat($nilai, $puluhan = false){
 		$predikat = '-';
 		if($puluhan){

@@ -182,6 +182,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 mb-4">
+                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
                         <canvas id="marksChart" width="100%" height="100%"></canvas>
                     </div>
                 </div>
@@ -334,6 +335,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 mb-4">
+                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
                         <canvas id="marksChart" width="100%" height="100%"></canvas>
                     </div>
                 </div>
@@ -370,7 +372,8 @@
 @endsection
 @section('js_file')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
+<script src="https://www.chartjs.org/samples/latest/utils.js"></script>
 @endsection
 @section('js')
 <script>
@@ -378,6 +381,7 @@ $('.select2').select2();
 $('#provinsi_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
+    $('#scatterChart').hide();
 	var ini = $(this).val();
 	if(ini == ''){
         $.get( "{{route('get_chart')}}", function( data ) {
@@ -435,6 +439,7 @@ $('#provinsi_id').change(function(){
 $('#kabupaten_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
+    $('#scatterChart').hide();
 	var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -489,6 +494,7 @@ $('#kabupaten_id').change(function(){
 $('#kecamatan_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
+    $('#scatterChart').hide();
 	var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -555,6 +561,7 @@ $('#sekolah_id').change(function(){
             $('#rekap_coe').hide();
             if(response.sekolah){
                 $('#rekap_sekolah').show();
+                $('#scatterChart').show();
                 $('.nama_sekolah').html(response.sekolah.nama);
                 $('.alamat_sekolah').html(response.sekolah.alamat);
                 $('.telp').html(response.sekolah.no_telp);
@@ -670,6 +677,87 @@ function tampilChart(data){
         radarChart.labels = data.nama_komponen;
         radarChart.data.datasets[0].data = data.nilai_komponen;
         radarChart.update();
+    }
+    if(data.group_komponen){
+        var color = Chart.helpers.color;
+        var scatterChartData = {
+            datasets: [{
+                label: 'Nama SMK',
+                borderColor: window.chartColors.red,
+                backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
+                data: [{
+                    x: data.group_komponen.all_kinerja.nilai_scatter,
+                    y: data.group_komponen.all_dampak.nilai_scatter
+                }]
+            }, {
+                label: 'SMK Lainnya dalam satu provinsi',
+                borderColor: window.chartColors.blue,
+                backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
+                data: [{
+                    x: -1,
+                    y: 0
+                }, {
+                    x: 3,
+                    y: -2
+                }, {
+                    x: 3,
+                    y: 1
+                }]
+            }]
+        };
+        console.log(data.group_komponen);
+        var ctx = document.getElementById('scatterChart').getContext('2d');
+        var scatterChart = new Chart(ctx, {
+            type: 'scatter',
+            data: scatterChartData,
+            options: {
+                tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        var nilai_kinerja = Math.round(tooltipItem.yLabel * 100) / 100;
+                        nilai_kinerja = nilai_kinerja + 3;
+                        var nilai_dampak = Math.round(tooltipItem.xLabel * 100) / 100;
+                        nilai_dampak = nilai_dampak + 3;
+                        label += 'Kinerja ('+nilai_kinerja+') | Dampak ('+nilai_dampak+')';
+                        return label;
+                    }
+                }
+            },
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            min: -3,
+                            max: 3,
+                            stepSize: 1,
+                            callback: v => v == 0 ? '.' : '.'
+                        },
+                        gridLines: {
+                            drawTicks: true
+                        }        
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: -3,
+                            max: 3,
+                            stepSize: 1,
+                            callback: v => v == 0 ? '.' : '.'
+                        },
+                        gridLines: {
+                            drawTicks: true
+                        } 
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: 'Pembandingan Kinerja dan Impact'
+                },
+            }
+        });
     }
 }
 </script>

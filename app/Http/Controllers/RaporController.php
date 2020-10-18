@@ -261,13 +261,15 @@ class RaporController extends Controller
                 'all_kinerja' => [
                     'nilai' => $nilai_komponen_kinerja,
                     'nama' => $nama_komponen_kinerja,
-                    'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
+                    'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),0),
+                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),0)) - 3,
                     'bintang' => $bintang_komponen_kinerja,
                 ],
                 'all_dampak' => [
                     'nilai' => $nilai_komponen_dampak,
                     'nama' => $nama_komponen_dampak,
                     'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
+                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),0)) - 3,
                     'bintang' => $bintang_komponen_dampak,
                 ],
             ];
