@@ -447,6 +447,22 @@ $('#kabupaten_id').change(function(){
             kode_wilayah: ini.trim(),
         },
 		success: function(response){
+            $('.avg_kinerja').html(response.output.all_kinerja.rerata);
+            $('.avg_dampak').html(response.output.all_dampak.rerata);
+            $.each(response.output.all_kinerja.nama, function (i, item) {
+                var a = $('h1').hasClass('kinerja-'+item);
+                $('h1.kinerja-'+item).html(response.output.all_kinerja.nilai[i]);
+            })
+            $.each(response.output.all_dampak.nama, function (i, item) {
+                var a = $('h1').hasClass('dampak-'+item);
+                $('h1.dampak-'+item).html(response.output.all_dampak.nilai[i]);
+            })
+            $.each($('.bintang-kinerja'), function(i, val) {
+                $(this).html(response.output.all_kinerja.bintang[i])
+            })
+            $.each($('.bintang-dampak'), function(i, val) {
+                $(this).html(response.output.all_dampak.bintang[i])
+            })
             $.each($('.avg'), function(i, val) {
                 $(this).html(response.nilai_komponen_kotak[i].nilai)
             })
@@ -485,6 +501,22 @@ $('#kecamatan_id').change(function(){
             kode_wilayah: ini.trim(),
         },
 		success: function(response){
+            $('.avg_kinerja').html(response.output.all_kinerja.rerata);
+            $('.avg_dampak').html(response.output.all_dampak.rerata);
+            $.each(response.output.all_kinerja.nama, function (i, item) {
+                var a = $('h1').hasClass('kinerja-'+item);
+                $('h1.kinerja-'+item).html(response.output.all_kinerja.nilai[i]);
+            })
+            $.each(response.output.all_dampak.nama, function (i, item) {
+                var a = $('h1').hasClass('dampak-'+item);
+                $('h1.dampak-'+item).html(response.output.all_dampak.nilai[i]);
+            })
+            $.each($('.bintang-kinerja'), function(i, val) {
+                $(this).html(response.output.all_kinerja.bintang[i])
+            })
+            $.each($('.bintang-dampak'), function(i, val) {
+                $(this).html(response.output.all_dampak.bintang[i])
+            })
             $.each($('.avg'), function(i, val) {
                 $(this).html(response.nilai_komponen_kotak[i].nilai)
             })
@@ -520,7 +552,6 @@ $('#sekolah_id').change(function(){
             sekolah_id: ini,
         },
 		success: function(response){
-            console.log(response)
             $('#rekap_coe').hide();
             if(response.sekolah){
                 $('#rekap_sekolah').show();
@@ -538,6 +569,22 @@ $('#sekolah_id').change(function(){
                 $('.jumlah_siswa').html(response.sekolah.anggota_rombel_count);
                 $('.ptk').html(response.sekolah.guru_count);
                 $('.tendik').html(response.sekolah.tendik_count);
+                $('.avg_kinerja').html(response.group_komponen.all_kinerja.rerata);
+                $('.avg_dampak').html(response.group_komponen.all_dampak.rerata);
+                $.each(response.group_komponen.all_kinerja.nama, function (i, item) {
+                    var a = $('h1').hasClass('kinerja-'+item);
+                    $('h1.kinerja-'+item).html(response.group_komponen.all_kinerja.nilai[i]);
+                })
+                $.each(response.group_komponen.all_dampak.nama, function (i, item) {
+                    var a = $('h1').hasClass('dampak-'+item);
+                    $('h1.dampak-'+item).html(response.group_komponen.all_dampak.nilai[i]);
+                })
+                $.each($('.bintang-kinerja'), function(i, val) {
+                    $(this).html(response.group_komponen.all_kinerja.bintang[i])
+                })
+                $.each($('.bintang-dampak'), function(i, val) {
+                    $(this).html(response.group_komponen.all_dampak.bintang[i])
+                })
                 $.each($('.avg'), function(i, val) {
                     $(this).html(response.nilai_komponen_kotak[i].nilai)
                 })

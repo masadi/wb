@@ -245,6 +245,32 @@ class RaporController extends Controller
                 $nilai_komponen_chart[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
                 $nama_komponen_chart[] 	= $komponen->nama;
             }
+            $komponen_kinerja = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [1,2,3])->get();
+            $komponen_dampak = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [4,5])->get();
+            foreach($komponen_kinerja as $kinerja){
+                $nilai_komponen_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
+                $bintang_komponen_kinerja[] 	= HelperModel::bintang_icon(number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+                $nama_komponen_kinerja[] = strtolower($kinerja->nama);
+            }
+            foreach($komponen_dampak as $dampak){
+                $nilai_komponen_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
+                $bintang_komponen_dampak[] 	= HelperModel::bintang_icon(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+                $nama_komponen_dampak[] = strtolower($dampak->nama);
+            }
+            $group_komponen = [
+                'all_kinerja' => [
+                    'nilai' => $nilai_komponen_kinerja,
+                    'nama' => $nama_komponen_kinerja,
+                    'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
+                    'bintang' => $bintang_komponen_kinerja,
+                ],
+                'all_dampak' => [
+                    'nilai' => $nilai_komponen_dampak,
+                    'nama' => $nama_komponen_dampak,
+                    'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
+                    'bintang' => $bintang_komponen_dampak,
+                ],
+            ];
             $respone = [
                 'sekolah' => Sekolah::with(['jurusan_sp'])->withCount(['guru', 'tendik', 'anggota_rombel', 'anggota_rombel as kelas_10_count' => function (Builder $query) {
                     $query->where('tingkat', 10);
@@ -257,7 +283,8 @@ class RaporController extends Controller
                 }])->find($request->sekolah_id),
                 'nilai_komponen_kotak' => $nilai_komponen, 
                 'nilai_komponen' => $nilai_komponen_chart, 
-                'nama_komponen' => $nama_komponen_chart
+                'nama_komponen' => $nama_komponen_chart,
+                'group_komponen' => $group_komponen,
             ];
         } else {
             $respone = [
