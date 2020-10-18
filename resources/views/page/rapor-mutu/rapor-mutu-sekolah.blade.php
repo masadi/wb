@@ -7,7 +7,7 @@
             <div class="card-body">
                 <form id="form">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Filter Provinsi</label>
                                 <select class="form-control select2" id="provinsi_id" style="width: 100%;">
@@ -18,7 +18,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Filter Kabupaten/Kota</label>
                                 <select class="form-control select2" id="kabupaten_id" style="width: 100%;">
@@ -26,11 +26,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Filter Kecamatan</label>
                                 <select class="form-control select2" id="kecamatan_id" style="width: 100%;">
                                     <option value="">Semua Kecamatan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Filter Sekolah</label>
+                                <select class="form-control select2" id="sekolah_id" style="width: 100%;">
+                                    <option value="">Semua Sekolah</option>
                                 </select>
                             </div>
                         </div>
@@ -43,7 +51,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12">
+                    <div id="rekap_coe" class="col-12">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -89,6 +97,22 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="rekap_sekolah" class="col-12" style="display: none;">
+                        <h2>Rapor Mutu 2020</h2>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12">
+                                <h4 class="nama_sekolah">-</h4>
+                                <h4 class="alamat_sekolah">-</h4>
+                                <h4><strong>Telp</strong>: <span class="telp">-</span> Fax: <span class="fax">-</span></h4>
+                                <h4><strong>Laman</strong>: <span class="laman">-</span></h4>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <h4>&nbsp;</h4>
+                                <h4><strong>Kepsek</strong> : <span class="kepsek">-</span></h4>
+                                <h4><strong>Program Keahlian</strong> : <span class="proli">-</span></h4>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-lg-6 col-md-12">
                         <table class="table">
                             <thead>
@@ -104,11 +128,11 @@
                             <tbody>
                                 <tr>
                                     <td>Jumlah Siswa</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td class="kelas_10">-</td>
+                                    <td class="kelas_11">-</td>
+                                    <td class="kelas_12">-</td>
+                                    <td class="kelas_13">-</td>
+                                    <td class="jumlah_siswa">-</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -125,13 +149,14 @@
                             <tbody>
                                 <tr>
                                     <td>Jumlah</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td class="ptk">-</td>
+                                    <td class="tendik">-</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                @auth
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
@@ -160,7 +185,6 @@
                         <canvas id="marksChart" width="100%" height="100%"></canvas>
                     </div>
                 </div>
-                {{--dd($komponen[0])--}}
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
@@ -251,6 +275,69 @@
                         </div>
                     </div>
                 </div>
+                @else
+                <div class="row">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-secondary">
+                                <h3 class="card-title">Kinerja (Performance)</h3>
+                                <div class="card-tools">
+                                    <?php
+                                    $rerata_kinerja = [];
+                                    foreach($komponen_kinerja as $kinerja){
+                                        $rerata_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
+                                    }
+                                    ?>
+                                    <span class="avg_kinerja">{{number_format(array_sum($rerata_kinerja) / count($rerata_kinerja),2)}}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach($komponen_kinerja as $kinerja)
+                                    <div class="col-lg-4 col-md-12">
+                                        <div class="position-relative p-3 mb-3 card-warna-{{strtolower($kinerja->nama)}} text-center" style="height:125px">
+                                            {{$kinerja->nama}} <br>
+                                            <h1 class="kinerja-{{strtolower(Helper::clean($kinerja->nama))}}">{{number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2)}}</h1>
+                                            <span class="bintang-kinerja">{!! Helper::bintang_icon(number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-secondary">
+                                <h3 class="card-title">Dampak (Impact)</h3>
+                                <div class="card-tools">
+                                    <?php
+                                    $rerata_dampak = [];
+                                    foreach($komponen_dampak as $dampak){
+                                        $rerata_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
+                                    }
+                                    ?>
+                                    <span class="avg_dampak">{{number_format(array_sum($rerata_dampak) / count($rerata_dampak),2)}}</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach($komponen_dampak as $dampak)
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="position-relative p-3 mb-3 card-warna-{{strtolower($dampak->nama)}} text-center" style="height:125px">
+                                            {{$dampak->nama}} <br>
+                                            <h1 class="dampak-{{strtolower(Helper::clean($dampak->nama))}}">{{number_format($dampak->all_nilai_komponen->avg('total_nilai'),2)}}</h1>
+                                            <span class="bintang-dampak">{!! Helper::bintang_icon(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 mb-4">
+                        <canvas id="marksChart" width="100%" height="100%"></canvas>
+                    </div>
+                </div>
+                @endauth
             </div>
         </div>
     </div>
@@ -289,6 +376,8 @@
 <script>
 $('.select2').select2();
 $('#provinsi_id').change(function(){
+    $('#rekap_coe').show();
+    $('#rekap_sekolah').hide();
 	var ini = $(this).val();
 	if(ini == ''){
         $.get( "{{route('get_chart')}}", function( data ) {
@@ -304,6 +393,22 @@ $('#provinsi_id').change(function(){
             kode_wilayah: ini.trim(),
         },
 		success: function(response){
+            $('.avg_kinerja').html(response.output.all_kinerja.rerata);
+            $('.avg_dampak').html(response.output.all_dampak.rerata);
+            $.each(response.output.all_kinerja.nama, function (i, item) {
+                var a = $('h1').hasClass('kinerja-'+item);
+                $('h1.kinerja-'+item).html(response.output.all_kinerja.nilai[i]);
+            })
+            $.each(response.output.all_dampak.nama, function (i, item) {
+                var a = $('h1').hasClass('dampak-'+item);
+                $('h1.dampak-'+item).html(response.output.all_dampak.nilai[i]);
+            })
+            $.each($('.bintang-kinerja'), function(i, val) {
+                $(this).html(response.output.all_kinerja.bintang[i])
+            })
+            $.each($('.bintang-dampak'), function(i, val) {
+                $(this).html(response.output.all_dampak.bintang[i])
+            })
             $.each($('.avg'), function(i, val) {
                 $(this).html(response.nilai_komponen_kotak[i].nilai)
             })
@@ -328,6 +433,8 @@ $('#provinsi_id').change(function(){
 	});
 });
 $('#kabupaten_id').change(function(){
+    $('#rekap_coe').show();
+    $('#rekap_sekolah').hide();
 	var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -364,6 +471,8 @@ $('#kabupaten_id').change(function(){
 	});
 });
 $('#kecamatan_id').change(function(){
+    $('#rekap_coe').show();
+    $('#rekap_sekolah').hide();
 	var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -388,7 +497,61 @@ $('#kecamatan_id').change(function(){
                     $('h1.'+key).html(val);
                 })
             })
+            $('#sekolah_id').html('<option value="">Semua Sekolah</option>');
+            $.each(response.output.all_sekolah, function (i, item) {
+                $('#sekolah_id').append($('<option>', { 
+                    value: item.value,
+                    text : item.text
+                }));
+            });
             tampilChart(response)
+		}
+	});
+});
+$('#sekolah_id').change(function(){
+	var ini = $(this).val();
+	//if(ini == ''){
+		//return false;
+	//}
+	$.ajax({
+		url: '{{route('api.rapor_sekolah')}}',
+		type: 'post',
+		data: {
+            sekolah_id: ini,
+        },
+		success: function(response){
+            console.log(response)
+            $('#rekap_coe').hide();
+            if(response.sekolah){
+                $('#rekap_sekolah').show();
+                $('.nama_sekolah').html(response.sekolah.nama);
+                $('.alamat_sekolah').html(response.sekolah.alamat);
+                $('.telp').html(response.sekolah.no_telp);
+                $('.fax').html(response.sekolah.no_fax);
+                $('.laman').html(response.sekolah.website);
+                $('.kepsek').html(response.sekolah.nama_kepsek);
+                $('.proli').html('');
+                $('.kelas_10').html(response.sekolah.kelas_10_count);
+                $('.kelas_11').html(response.sekolah.kelas_11_count);
+                $('.kelas_12').html(response.sekolah.kelas_12_count);
+                $('.kelas_13').html(response.sekolah.kelas_13_count);
+                $('.jumlah_siswa').html(response.sekolah.anggota_rombel_count);
+                $('.ptk').html(response.sekolah.guru_count);
+                $('.tendik').html(response.sekolah.tendik_count);
+                $.each($('.avg'), function(i, val) {
+                    $(this).html(response.nilai_komponen_kotak[i].nilai)
+                })
+                $.each($('.bintang'), function(i, val) {
+                    $(this).html(response.nilai_komponen_kotak[i].bintang)
+                })
+                $.each(response.nilai_komponen_kotak, function (i, item) {
+                    $.each(item.nilai_aspek, function (key, val) {
+                        var a = $('h1').hasClass(key);
+                        $('h1.'+key).html(val);
+                    })
+                })
+                tampilChart(response)
+            }
 		}
 	});
 });
@@ -397,9 +560,11 @@ $.get( "{{route('get_chart')}}", function( data ) {
 });
 function tampilChart(data){
     console.log(data.counting);
-    $.each($('td.rekap'), function(i, val) {
-        $(this).html(data.counting[i])
-    });
+    if(data.counting){
+        $.each($('td.rekap'), function(i, val) {
+            $(this).html(data.counting[i])
+        });
+    }
     var marksCanvas = document.getElementById("marksChart");
     var marksData = {
         labels: data.nama_komponen,

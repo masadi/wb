@@ -52,6 +52,8 @@ class PageController extends Controller
         })->orderBy('kode_wilayah')->get();
         $params = [
             'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
+            'komponen_kinerja' => Komponen::whereIn('id', [1,2,3])->get(),
+            'komponen_dampak' => Komponen::whereIn('id', [4,5])->get(),
             'all_wilayah' => $all_wilayah,
         ];
         return view('page.rapor-mutu.'.$query)->with($params);
@@ -147,7 +149,27 @@ class PageController extends Controller
             $sekolah_terima_count, 
             $sekolah_coe_count - $sekolah_terima_count,
         ];
-        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'counting' => $counting]);
+        $komponen_kinerja = Komponen::whereIn('id', [1,2,3])->get();
+        $komponen_dampak = Komponen::whereIn('id', [4,5])->get();
+        foreach($komponen_kinerja as $kinerja){
+            $nilai_komponen_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
+            $nama_komponen_kinerja[] = $kinerja->nama;
+        }
+        foreach($komponen_dampak as $dampak){
+            $nilai_komponen_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
+            $nama_komponen_dampak[] = $dampak->nama;
+        }
+        $all_kinerja = [
+            'nilai' => $nilai_komponen_kinerja,
+            'nama' => $nama_komponen_kinerja,
+            'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
+        ];
+        $all_dampak = [
+            'nilai' => $nilai_komponen_dampak,
+            'nama' => $nama_komponen_dampak,
+            'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
+        ];
+        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'counting' => $counting, 'all_kinerja' => $all_kinerja, 'all_dampak' => $all_dampak]);
     }
     public function galeri($request){
         $query = $request->route('query');

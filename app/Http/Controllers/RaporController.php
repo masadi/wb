@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+use App\Sekolah;
 use App\User;
 use App\Komponen;
 use App\Instrumen;
@@ -219,5 +221,52 @@ class RaporController extends Controller
         }])->find($request->user_id);
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
         dd($request->all());
+    }
+    public function sekolah(Request $request){
+        if($request->sekolah_id){
+            $callback = function($query) use ($request){
+                $query->whereHas('user.sekolah', function($query) use ($request){
+                    $query->where('sekolah_id', $request->sekolah_id);
+                });
+            };
+            $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
+            $nilai_komponen = [];
+            $nilai_komponen_chart = [];
+            $nama_komponen_chart = [];
+            foreach($all_komponen as $komponen){
+                $record_komponen= [];
+                $record_komponen['nilai'] 	= number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+                $record_komponen['bintang'] 	= HelperModel::bintang_icon(number_format($komponen->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+                foreach($komponen->aspek as $aspek){
+                    $record_komponen['nilai_aspek'][strtolower(HelperModel::clean($aspek->nama))] = number_format($aspek->all_nilai_aspek->avg('total_nilai'),2);
+                }
+                $nilai_komponen[] = $record_komponen;
+                $record_chart = [];
+                $nilai_komponen_chart[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+                $nama_komponen_chart[] 	= $komponen->nama;
+            }
+            $respone = [
+                'sekolah' => Sekolah::with(['jurusan_sp'])->withCount(['guru', 'tendik', 'anggota_rombel', 'anggota_rombel as kelas_10_count' => function (Builder $query) {
+                    $query->where('tingkat', 10);
+                }, 'anggota_rombel as kelas_11_count' => function (Builder $query) {
+                    $query->where('tingkat', 11);
+                }, 'anggota_rombel as kelas_12_count' => function (Builder $query) {
+                    $query->where('tingkat', 12);
+                }, 'anggota_rombel as kelas_13_count' => function (Builder $query) {
+                    $query->where('tingkat', 13);
+                }])->find($request->sekolah_id),
+                'nilai_komponen_kotak' => $nilai_komponen, 
+                'nilai_komponen' => $nilai_komponen_chart, 
+                'nama_komponen' => $nama_komponen_chart
+            ];
+        } else {
+            $respone = [
+                'sekolah' => NULL,
+                'text' => 'Rapor Mutu terkirim',
+                'icon' => 'success',
+            ];
+        }
+        
+        return response()->json($respone);
     }
 }

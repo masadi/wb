@@ -136,6 +136,7 @@ if($laman == 'login'){
                           </li>
                         </ul>
                       </li>
+                      @auth
                       <li class="nav-item has-treeview {{$active_progres_data}}">
                         <a href="#" class="nav-link text-white{{$aktif_instrumen}}{{$aktif_rapor_mutu}}{{$aktif_pakta_integritas}}{{$aktif_verval}}{{$aktif_verifikasi}}{{$aktif_pengesahan}}">
                           <i class="nav-icon fas fa-sync"></i>
@@ -183,7 +184,6 @@ if($laman == 'login'){
                           </li>
                         </ul>
                       </li>
-                      @auth
                       <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                           <i class="nav-icon fas fa-sign-out-alt"></i>

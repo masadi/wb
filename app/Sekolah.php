@@ -13,8 +13,26 @@ class Sekolah extends Model
 	protected $table = 'sekolah';
 	protected $primaryKey = 'sekolah_id';
     protected $guarded = [];
-    public function ptk(){
-        return $this->hasMany('App\Ptk', 'sekolah_id', 'sekolah_id');
+    public function anggota_rombel()
+    {
+        return $this->hasManyThrough(
+            'App\Anggota_rombel',
+            'App\Rombongan_belajar',
+            'sekolah_id', // Foreign key on Rombongan_belajar table...
+            'rombongan_belajar_id', // Foreign key on Anggota_rombel table...
+            'sekolah_id', // Local key on sekolah table...
+            'rombongan_belajar_id' // Local key on Rombongan_belajar table...
+        );
+    }
+    public function jurusan_sp()
+    {
+        return $this->hasMany('App\Jurusan_sp', 'sekolah_id', 'sekolah_id');
+    }
+    public function guru(){
+        return $this->hasMany('App\Ptk', 'sekolah_id', 'sekolah_id')->whereIn('jenis_ptk_id', [11,30,40,41,42,43,44,57,58,59]);
+    }
+    public function tendik(){
+        return $this->hasMany('App\Ptk', 'sekolah_id', 'sekolah_id')->whereIn('jenis_ptk_id', [3,4,5,6,7,8,9,10,12,13,14,20,25,26,51,52,53,54,56]);
     }
     public function pd(){
         return $this->hasMany('App\Peserta_didik', 'sekolah_id', 'sekolah_id');
