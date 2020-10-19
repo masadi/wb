@@ -47,6 +47,11 @@ let routes = [{
         component: require('./views/referensi/instrumen').default
     },
     {
+        path: '/pendamping',
+        name: 'pendamping',
+        component: require('./views/referensi/pendamping').default
+    },
+    {
         path: '/verifikator',
         name: 'verifikator',
         component: require('./views/referensi/penjamin_mutu').default

@@ -16,11 +16,11 @@ class CreatePendampingTable extends Migration
         Schema::create('pendamping', function (Blueprint $table) {
             $table->uuid('pendamping_id');
             $table->string('nama');
-            $table->uuid('sekolah_sasaran_id');
+            //$table->uuid('sekolah_sasaran_id');
             $table->string('instansi');
             $table->timestamps();
             $table->primary('pendamping_id');
-            $table->foreign('sekolah_sasaran_id')->references('sekolah_sasaran_id')->on('sekolah_sasaran')->onDelete('cascade');
+            //$table->foreign('sekolah_sasaran_id')->references('sekolah_sasaran_id')->on('sekolah_sasaran')->onDelete('cascade');
         });
     }
 

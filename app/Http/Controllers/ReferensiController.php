@@ -22,6 +22,7 @@ use App\HelperModel;
 use App\Sekolah_sasaran;
 use App\Tahun_pendataan;
 use App\Smk_coe;
+use App\Pendamping;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -88,6 +89,15 @@ class ReferensiController extends Controller
                             });
                         }
                     }
+                    if(request()->pendamping_id){
+                        if(request()->permintaan == 'add'){
+                            $query->doesntHave('pendamping');
+                        } else {
+                            $query->whereHas('pendamping', function ($query){
+                                $query->where('pendamping_id', request()->pendamping_id);
+                            });
+                        }
+                    }
                     if(request()->verifikasi_id){
                         $query->whereHas('sekolah_sasaran', function ($query) {
                             $query->where('verifikator_id', request()->verifikasi_id);
@@ -106,6 +116,15 @@ class ReferensiController extends Controller
                         } else {
                             $query->whereHas('sekolah_sasaran', function ($query){
                                 $query->where('verifikator_id', request()->verifikator_id);
+                            });
+                        }
+                    }
+                    if(request()->pendamping_id){
+                        if(request()->permintaan == 'add'){
+                            $query->doesntHave('pendamping');
+                        } else {
+                            $query->whereHas('pendamping', function ($query){
+                                $query->where('pendamping_id', request()->pendamping_id);
                             });
                         }
                     }
@@ -133,6 +152,15 @@ class ReferensiController extends Controller
                         });
                     }
                 }
+                if(request()->pendamping_id){
+                    if(request()->permintaan == 'add'){
+                        $query->doesntHave('pendamping');
+                    } else {
+                        $query->whereHas('pendamping', function ($query){
+                            $query->where('pendamping.pendamping_id', request()->pendamping_id);
+                        });
+                    }
+                }
                 if(request()->verifikasi_id){
                     $query->whereHas('sekolah_sasaran', function ($query) {
                         $query->where('verifikator_id', request()->verifikasi_id);
@@ -140,7 +168,7 @@ class ReferensiController extends Controller
                     });
                 }
             }
-        })->with(['smk_coe', 'user', 'sekolah_sasaran' => function($query){
+        })->has('smk_coe')->with(['smk_coe', 'user', 'sekolah_sasaran' => function($query){
             $query->with(['pakta_integritas', 'verifikator']);
         }])->orderBy($sortBy, request()->sortbydesc)
             /*->when(request()->q, function($all_data) {
@@ -389,6 +417,9 @@ class ReferensiController extends Controller
     public function get_sekolah_sasaran($request){
         return $this->get_sekolah($request);
     }
+    public function get_sekolah_sasaran_pendamping($request){
+        return $this->get_sekolah($request);
+    }
     public function status_coe(Request $request){
         if($request->status_coe){
             $text = 'Sekolah berhasil ditetapkan sebagai SMK CoE';
@@ -414,5 +445,18 @@ class ReferensiController extends Controller
             ];
         }
         return response()->json($response);
+    }
+    public function get_pendamping(){
+        $users = Pendamping::has('sekolah_sasaran')->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
+            //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
+            ->when(request()->q, function($posts) {
+                //MAKA FUNGSI FILTER AKAN DIJALANKAN
+                $posts = $posts->where('nama', 'ILIKE', '%' . request()->q . '%')
+                    ->orWhere('instansi', 'ILIKE', '%' . request()->q . '%')
+                    ->orWhere('pendamping_id', function($query){
+                        $query->select('pendamping_id')->from('sekolah_sasaran')->join('sekolah', 'sekolah_sasaran.sekolah_id', '=', 'sekolah.sekolah_id')->where('sekolah.nama', 'ILIKE', '%' . request()->q . '%');
+                    });
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $users]);
     }
 }

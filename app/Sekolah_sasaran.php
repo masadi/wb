@@ -48,4 +48,8 @@ class Sekolah_sasaran extends Model
     public function verifikator(){
         return $this->hasOne('App\User', 'user_id', 'verifikator_id');
     }
+    public function pendamping()
+    {
+        return $this->belongsTo('App\Pendamping', 'pendamping_id', 'pendamping_id');
+    }
 }

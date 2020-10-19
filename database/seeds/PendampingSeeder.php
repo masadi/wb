@@ -2,8 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use Rap2hpoutre\FastExcel\FastExcel;
-use App\Sekolah;
+use App\Sekolah_sasaran;
 use App\Pendamping;
+use App\HelperModel;
 class PendampingSeeder extends Seeder
 {
     /**
@@ -13,18 +14,22 @@ class PendampingSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('pendamping')->delete();
         $komponen = (new FastExcel)->import('public/template_pendamping.xlsx', function ($item){
-            $sekolah = Sekolah::doesntHave('pendamping')->has('sekolah_sasaran')->with('sekolah_sasaran')->where('npsn', $item['npsn'])->first();
+            $sekolah = Sekolah_sasaran::doesntHave('pendamping')->with(['sekolah' => function($query) use ($item){
+                $query->where('npsn', $item['npsn']);
+            }])->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->first();
             if($sekolah){
-                Pendamping::updateOrCreate(
-                    [
-                        'sekolah_sasaran_id' => $sekolah->sekolah_sasaran->sekolah_sasaran_id,
-                    ],
-                    [
-                        'nama' => $item['nama'],
-                        'instansi' => $item['instansi'],
-                    ]
-                );
+                if($item['nama']){
+                    $pendamping = Pendamping::updateOrCreate(
+                        [
+                            'nama' => $item['nama'],
+                            'instansi' => $item['instansi'],
+                        ]
+                    );
+                    $sekolah->pendamping_id = $pendamping->pendamping_id;
+                    $sekolah->save();
+                }
             }
         });
     }

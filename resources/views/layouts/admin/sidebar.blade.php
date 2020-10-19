@@ -89,6 +89,12 @@ $user = auth()->user();
                             </router-link>
                         </li>
                         <li class="nav-item">
+                            <router-link tag="a" to="/pendamping" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Pendamping</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
                             <router-link tag="a" to="/sekolah" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Sekolah</p>
