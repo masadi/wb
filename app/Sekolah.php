@@ -83,4 +83,26 @@ class Sekolah extends Model
     public function wilayah(){
         return $this->hasOne('App\Wilayah', 'kode_wilayah', 'kode_wilayah')->withTrashed()->with('parrentRecursive')->where('id_level_wilayah', 4);
     }
+    public function nilai_kinerja()
+    {
+        return $this->hasManyThrough(
+            'App\Nilai_komponen',
+            'App\User',
+            'sekolah_id', // Foreign key on User table...
+            'user_id', // Foreign key on Nilai_instrumen table...
+            'sekolah_id', // Local key on Sekolah table...
+            'user_id' // Local key on User table...
+        )->whereIn('komponen_id', [1,2,3]);
+    }
+    public function nilai_dampak()
+    {
+        return $this->hasManyThrough(
+            'App\Nilai_komponen',
+            'App\User',
+            'sekolah_id', // Foreign key on User table...
+            'user_id', // Foreign key on Nilai_instrumen table...
+            'sekolah_id', // Local key on Sekolah table...
+            'user_id' // Local key on User table...
+        )->whereIn('komponen_id', [4,5]);
+    }
 }

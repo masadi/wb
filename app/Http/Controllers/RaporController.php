@@ -229,6 +229,11 @@ class RaporController extends Controller
                     $query->where('sekolah_id', $request->sekolah_id);
                 });
             };
+            $all_callback = function($query) use ($request){
+                $query->whereHas('user.sekolah', function($query) use ($request){
+                    $query->where('sekolah_id', '<>', $request->sekolah_id);
+                });
+            };
             $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
             $nilai_komponen = [];
             $nilai_komponen_chart = [];
@@ -261,8 +266,8 @@ class RaporController extends Controller
                 'all_kinerja' => [
                     'nilai' => $nilai_komponen_kinerja,
                     'nama' => $nama_komponen_kinerja,
-                    'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),0),
-                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),0)) - 3,
+                    'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
+                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2)) - 3,
                     'bintang' => $bintang_komponen_kinerja,
                 ],
                 'all_dampak' => [
@@ -273,7 +278,16 @@ class RaporController extends Controller
                     'bintang' => $bintang_komponen_dampak,
                 ],
             ];
+            $all_sekolah = [];
+            if($request->sekolah_id){
+                $all_sekolah = Sekolah::select('sekolah_id', 'nama', 'provinsi', 'kabupaten', 'kecamatan')->with(['nilai_kinerja' => function($query){
+                    $query->whereNull('verifikator_id');
+                }, 'nilai_dampak' => function($query){
+                    $query->whereNull('verifikator_id');
+                }])->where('sekolah_id', '<>', $request->sekolah_id)->whereHas('smk_coe')->get();
+            }
             $respone = [
+                'all_sekolah' => $all_sekolah,
                 'sekolah' => Sekolah::with(['jurusan_sp'])->withCount(['guru', 'tendik', 'anggota_rombel', 'anggota_rombel as kelas_10_count' => function (Builder $query) {
                     $query->where('tingkat', 10);
                 }, 'anggota_rombel as kelas_11_count' => function (Builder $query) {

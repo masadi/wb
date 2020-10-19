@@ -372,7 +372,7 @@
 @endsection
 @section('js_file')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-<script src="https://www.chartjs.org/dist/2.9.3/Chart.min.js"></script>
+<script src="https://www.chartjs.org/dist/2.9.4/Chart.min.js"></script>
 <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
 @endsection
 @section('js')
@@ -548,9 +548,6 @@ $('#kecamatan_id').change(function(){
 });
 $('#sekolah_id').change(function(){
 	var ini = $(this).val();
-	//if(ini == ''){
-		//return false;
-	//}
 	$.ajax({
 		url: '{{route('api.rapor_sekolah')}}',
 		type: 'post',
@@ -558,8 +555,8 @@ $('#sekolah_id').change(function(){
             sekolah_id: ini,
         },
 		success: function(response){
-            $('#rekap_coe').hide();
             if(response.sekolah){
+                $('#rekap_coe').hide();
                 $('#rekap_sekolah').show();
                 $('#scatterChart').show();
                 $('.nama_sekolah').html(response.sekolah.nama);
@@ -605,6 +602,10 @@ $('#sekolah_id').change(function(){
                     })
                 })
                 tampilChart(response)
+            } else {
+                $('#rekap_sekolah').hide();
+                $('#scatterChart').hide();
+                $('#rekap_coe').show();
             }
 		}
 	});
@@ -612,22 +613,24 @@ $('#sekolah_id').change(function(){
 $.get( "{{route('get_chart')}}", function( data ) {
     tampilChart(data)
 });
+var radarChart;
+var scatterChart;
 function tampilChart(data){
-    console.log(data.counting);
     if(data.counting){
         $.each($('td.rekap'), function(i, val) {
             $(this).html(data.counting[i])
         });
     }
+    if(radarChart){
+        radarChart.destroy();
+    }
     var marksCanvas = document.getElementById("marksChart");
     var marksData = {
         labels: data.nama_komponen,
-        //labels: ["English", "Maths", "Physics", "Chemistry", "Biology", "History"],
         datasets: [{
             label: "Tahun 2020",
             backgroundColor: "transparent",
             data: data.nilai_komponen,
-            //data: [65, 75, 70, 80, 60, 80],
             borderColor: "rgba(200,0,0,0.6)",
             fill: false,
             radius: 6,
@@ -636,10 +639,9 @@ function tampilChart(data){
             pointBackgroundColor: "orange",
             pointBorderColor: "rgba(200,0,0,0.6)",
             pointHoverRadius: 10,
-            }]
+        }]
     };
-
-    var radarChart = new Chart(marksCanvas, {
+    radarChart = new Chart(marksCanvas, {
         type: 'radar',
         data: marksData,
         options: {
@@ -660,29 +662,51 @@ function tampilChart(data){
             tooltips:{
                 enabled:true,
             },
-            /*tooltips:{
-                enabled:true,
-                callbacks:{
-                    label: function(tooltipItem, data){
-                        var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
-                        //This will be the tooltip.body
-                        return datasetLabel + ': ' + tooltipItem.yLabel;
-                    }
-                },
-            }*/
         }
     });
-    if(data.output){
-        radarChart.reset();
-        radarChart.labels = data.nama_komponen;
-        radarChart.data.datasets[0].data = data.nilai_komponen;
-        radarChart.update();
-    }
     if(data.group_komponen){
+        function totalNilai(total, num) {
+            return total + num;
+        }
+        function nilai_satuan(nilai){
+            var result = 0;
+            if(nilai < 21){
+                result = 1;
+            } else if(nilai < 41){
+                result = 2;
+            } else if(nilai < 61){
+                result = 3;
+            } else if(nilai < 81){
+                result = 4;
+            } else if(nilai >= 81){
+                result = 5;
+            }
+            result = (nilai / 5) / 5;
+            return parseFloat(result).toFixed(2);
+        }
+        var responseApi = data;
+        var dataLainnya = responseApi.all_sekolah;
+        var smkLainnya = [];
+        $.each(dataLainnya, function (k, v) {
+            var set_nilai_kinerja = [];
+            $.each(v.nilai_kinerja, function(a,b){
+                set_nilai_kinerja.push(parseInt(b.total_nilai));
+            })
+            var set_nilai_dampak = [];
+            $.each(v.nilai_dampak, function(c,d){
+                set_nilai_dampak.push(parseInt(d.total_nilai));
+            })
+            var total_nilai_kinerja = parseFloat(set_nilai_kinerja.reduce(totalNilai, 0)).toFixed(2) / set_nilai_kinerja.length;
+            var total_nilai_dampak = parseFloat(set_nilai_dampak.reduce(totalNilai, 0)).toFixed(2) / set_nilai_dampak.length;
+            smkLainnya.push({
+                x: nilai_satuan(total_nilai_kinerja),
+                y: nilai_satuan(total_nilai_dampak),
+            });
+        })
         var color = Chart.helpers.color;
         var scatterChartData = {
             datasets: [{
-                label: 'Nama SMK',
+                label: responseApi.sekolah.nama,
                 borderColor: window.chartColors.red,
                 backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
                 data: [{
@@ -690,50 +714,52 @@ function tampilChart(data){
                     y: data.group_komponen.all_dampak.nilai_scatter
                 }]
             }, {
-                label: 'SMK Lainnya dalam satu provinsi',
+                label: 'SMK Lainnya',
                 borderColor: window.chartColors.blue,
                 backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
-                data: [{
-                    x: -1,
-                    y: 0
-                }, {
-                    x: 3,
-                    y: -2
-                }, {
-                    x: 3,
-                    y: 1
-                }]
+                data: smkLainnya,
             }]
         };
-        console.log(data.group_komponen);
+        if(scatterChart){
+            scatterChart.destroy();
+        }
         var ctx = document.getElementById('scatterChart').getContext('2d');
-        var scatterChart = new Chart(ctx, {
+        scatterChart = new Chart(ctx, {
             type: 'scatter',
             data: scatterChartData,
             options: {
                 tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                        if (label) {
-                            label += ': ';
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            /*console.log(tooltipItem);
+                            if(tooltipItem.index !== 0){
+                                console.log(responseApi.all_sekolah[tooltipItem.index - 1]);
+                            }*/
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            if(label === 'Nama SMK'){
+                                label = responseApi.sekolah.nama;
+                            }
+                            if (label) {
+                                label += ': ';
+                            } 
+                            
+                            var nilai_kinerja = Math.round(tooltipItem.yLabel * 100) / 100;
+                            nilai_kinerja = nilai_kinerja + 3;
+                            var nilai_dampak = Math.round(tooltipItem.xLabel * 100) / 100;
+                            nilai_dampak = nilai_dampak + 3;
+                            nilai_kinerja = parseFloat(nilai_kinerja).toFixed(2);
+                            nilai_dampak = parseFloat(nilai_dampak).toFixed(2);
+                            label += 'Kinerja ('+nilai_kinerja+') | Dampak ('+nilai_dampak+')';
+                            return label;
                         }
-                        var nilai_kinerja = Math.round(tooltipItem.yLabel * 100) / 100;
-                        nilai_kinerja = nilai_kinerja + 3;
-                        var nilai_dampak = Math.round(tooltipItem.xLabel * 100) / 100;
-                        nilai_dampak = nilai_dampak + 3;
-                        label += 'Kinerja ('+nilai_kinerja+') | Dampak ('+nilai_dampak+')';
-                        return label;
-                    }
-                }
-            },
+                    },
+                },
                 scales: {
                     xAxes: [{
                         ticks: {
                             min: -3,
                             max: 3,
-                            stepSize: 1,
+                            //stepSize: 1,
                             callback: v => v == 0 ? '.' : '.'
                         },
                         gridLines: {
@@ -744,7 +770,7 @@ function tampilChart(data){
                         ticks: {
                             min: -3,
                             max: 3,
-                            stepSize: 1,
+                            //stepSize: 1,
                             callback: v => v == 0 ? '.' : '.'
                         },
                         gridLines: {
@@ -758,6 +784,9 @@ function tampilChart(data){
                 },
             }
         });
+        if(data.output){
+            scatterChart.update();
+        }
     }
 }
 </script>
