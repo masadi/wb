@@ -55,7 +55,10 @@ class ResetRapor extends Command
             DB::table('rapor_mutu')->delete();
             DB::table('pakta_integritas')->delete();
             DB::table('nilai_akhir')->delete();
-            Nilai_instrumen::whereNotNull('verifikator_id')->delete();
+            DB::table('nilai_instrumen')->delete();
+            DB::table('nilai_komponen')->delete();
+            DB::table('nilai_aspek')->delete();
+            DB::table('jawaban')->delete();
         }
     }
 }
