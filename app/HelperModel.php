@@ -431,7 +431,7 @@ class HelperModel
     }
     public static function nilai_satuan($nilai){
         $result = ($nilai / 5) / 5;
-        return $result;
+        return $result - 3;
     }
 	public static function predikat($nilai, $puluhan = false){
 		$predikat = '-';

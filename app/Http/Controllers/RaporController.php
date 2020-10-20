@@ -267,14 +267,14 @@ class RaporController extends Controller
                     'nilai' => $nilai_komponen_kinerja,
                     'nama' => $nama_komponen_kinerja,
                     'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
-                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2)) - 3,
+                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2)),
                     'bintang' => $bintang_komponen_kinerja,
                 ],
                 'all_dampak' => [
                     'nilai' => $nilai_komponen_dampak,
                     'nama' => $nama_komponen_dampak,
                     'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
-                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),0)) - 3,
+                    'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2)),
                     'bintang' => $bintang_komponen_dampak,
                 ],
             ];
@@ -284,7 +284,7 @@ class RaporController extends Controller
                     $query->whereNull('verifikator_id');
                 }, 'nilai_dampak' => function($query){
                     $query->whereNull('verifikator_id');
-                }])->where('sekolah_id', '<>', $request->sekolah_id)->whereHas('smk_coe')->get();
+                }])->where('sekolah_id', '<>', $request->sekolah_id)->has('smk_coe')->has('nilai_kinerja')->get();
             }
             $respone = [
                 'all_sekolah' => $all_sekolah,

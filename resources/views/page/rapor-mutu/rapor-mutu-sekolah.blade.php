@@ -158,6 +158,9 @@
                 </div>
                 @auth
                 <div class="row">
+                    <div class="col-12">
+                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
+                    </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
                             <div class="card-header card-warna-{{strtolower($komponen[0]->nama)}}">
@@ -182,7 +185,6 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 mb-4">
-                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
                         <canvas id="marksChart" width="100%" height="100%"></canvas>
                     </div>
                 </div>
@@ -278,6 +280,9 @@
                 </div>
                 @else
                 <div class="row">
+                    <div class="col-12">
+                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
+                    </div>
                     <div class="col-lg-8 col-md-12">
                         <div class="card">
                             <div class="card-header bg-secondary">
@@ -335,7 +340,6 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 mb-4">
-                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
                         <canvas id="marksChart" width="100%" height="100%"></canvas>
                     </div>
                 </div>
@@ -669,6 +673,7 @@ function tampilChart(data){
             return total + num;
         }
         function nilai_satuan(nilai){
+            //return nilai;
             var result = 0;
             if(nilai < 21){
                 result = 1;
@@ -682,6 +687,7 @@ function tampilChart(data){
                 result = 5;
             }
             result = (nilai / 5) / 5;
+            result = result - 3;
             return parseFloat(result).toFixed(2);
         }
         var responseApi = data;
@@ -690,14 +696,14 @@ function tampilChart(data){
         $.each(dataLainnya, function (k, v) {
             var set_nilai_kinerja = [];
             $.each(v.nilai_kinerja, function(a,b){
-                set_nilai_kinerja.push(parseInt(b.total_nilai));
+                set_nilai_kinerja.push(parseFloat(b.total_nilai).toFixed(2));
             })
             var set_nilai_dampak = [];
             $.each(v.nilai_dampak, function(c,d){
-                set_nilai_dampak.push(parseInt(d.total_nilai));
+                set_nilai_dampak.push(parseFloat(d.total_nilai).toFixed(2));
             })
-            var total_nilai_kinerja = parseFloat(set_nilai_kinerja.reduce(totalNilai, 0)).toFixed(2) / set_nilai_kinerja.length;
-            var total_nilai_dampak = parseFloat(set_nilai_dampak.reduce(totalNilai, 0)).toFixed(2) / set_nilai_dampak.length;
+            var total_nilai_kinerja = parseFloat(set_nilai_kinerja.reduce(totalNilai, 0)).toFixed(2);// / set_nilai_kinerja.length;
+            var total_nilai_dampak = parseFloat(set_nilai_dampak.reduce(totalNilai, 0)).toFixed(2);// / set_nilai_dampak.length;
             smkLainnya.push({
                 x: nilai_satuan(total_nilai_kinerja),
                 y: nilai_satuan(total_nilai_dampak),
@@ -743,10 +749,10 @@ function tampilChart(data){
                                 label += ': ';
                             } 
                             
-                            var nilai_kinerja = Math.round(tooltipItem.yLabel * 100) / 100;
-                            nilai_kinerja = nilai_kinerja + 3;
-                            var nilai_dampak = Math.round(tooltipItem.xLabel * 100) / 100;
-                            nilai_dampak = nilai_dampak + 3;
+                            var nilai_kinerja = tooltipItem.xLabel;//Math.round(tooltipItem.yLabel * 100) / 100;
+                            //nilai_kinerja = nilai_kinerja;
+                            var nilai_dampak = tooltipItem.yLabel;//Math.round(tooltipItem.xLabel * 100) / 100;
+                            //nilai_dampak = nilai_dampak;
                             nilai_kinerja = parseFloat(nilai_kinerja).toFixed(2);
                             nilai_dampak = parseFloat(nilai_dampak).toFixed(2);
                             label += 'Kinerja ('+nilai_kinerja+') | Dampak ('+nilai_dampak+')';
@@ -760,7 +766,7 @@ function tampilChart(data){
                             min: -3,
                             max: 3,
                             //stepSize: 1,
-                            callback: v => v == 0 ? '.' : '.'
+                            //callback: v => v == 0 ? '.' : '.'
                         },
                         gridLines: {
                             drawTicks: true
@@ -771,7 +777,7 @@ function tampilChart(data){
                             min: -3,
                             max: 3,
                             //stepSize: 1,
-                            callback: v => v == 0 ? '.' : '.'
+                            //callback: v => v == 0 ? '.' : '.'
                         },
                         gridLines: {
                             drawTicks: true
