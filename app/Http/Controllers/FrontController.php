@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     public function progress(Request $request){
-        $query = Sekolah::query()->has('sekolah_sasaran')->with(['sekolah_sasaran' => function($query){
+        $query = Sekolah::query()->has('sekolah_sasaran')->with(['pendamping', 'sekolah_sasaran' => function($query){
             $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
         }])->with(['user.nilai_akhir'])->withCount('nilai_instrumen')->where(function($query){
             if(request()->kode_wilayah){
@@ -29,6 +29,10 @@ class FrontController extends Controller
         })
         ->addColumn('npsn', function ($item) {
             $links = $item->npsn;
+            return $links;
+        })
+        ->addColumn('nama_pendamping', function ($item) {
+            $links = ($item->pendamping) ? $item->pendamping->nama : '-';
             return $links;
         })
         ->addColumn('instrumen', function ($item) {

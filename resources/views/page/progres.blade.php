@@ -14,6 +14,7 @@
                         <tr>
                             <th>Nama Sekolah</th>
                             <th class="text-center">NPSN</th>
+                            <th>Nama Pendamping</th>
                             <th class="text-center">Pengisian Instrumen</th>
                             <th class="text-center">Hitung Rapor Mutu</th>
                             <th class="text-center">Pakta Integritas</th>
@@ -48,6 +49,7 @@
         columns: [
             {data: 'nama', name: 'nama'},
             {data: 'npsn', name: 'npsn'},
+            {data: 'nama_pendamping', name: 'nama_pendamping', orderable: false},
             {data: 'instrumen', name: 'instrumen'},
             {data: 'rapor_mutu', name: 'rapor_mutu'},
             {data: 'pakta_integritas', name: 'pakta_integritas'},
