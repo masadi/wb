@@ -315,4 +315,8 @@ class PageController extends Controller
             }
         }
     }
+    public function peta_mutu(Request $request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
 }

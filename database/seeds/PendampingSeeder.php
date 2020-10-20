@@ -14,11 +14,11 @@ class PendampingSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('pendamping')->delete();
+        //DB::table('pendamping')->delete();
         $komponen = (new FastExcel)->import('public/template_pendamping.xlsx', function ($item){
-            $sekolah = Sekolah_sasaran::doesntHave('pendamping')->with(['sekolah' => function($query) use ($item){
+            $sekolah = Sekolah_sasaran::whereHas('sekolah', function($query) use ($item){
                 $query->where('npsn', $item['npsn']);
-            }])->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->first();
+            })->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->first();
             if($sekolah){
                 if($item['nama']){
                     $pendamping = Pendamping::updateOrCreate(

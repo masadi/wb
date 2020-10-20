@@ -455,6 +455,9 @@ class ReferensiController extends Controller
                     ->orWhere('instansi', 'ILIKE', '%' . request()->q . '%')
                     ->orWhereHas('sekolah_sasaran', function($query){
                         $query->where('nama', 'ILIKE', '%' . request()->q . '%');
+                    })
+                    ->orWhereHas('sekolah_sasaran', function($query){
+                        $query->where('npsn', 'LIKE', '%' . request()->q . '%');
                     });
                     //->orWhere('pendamping_id', function($query){
                         //$query->select('pendamping_id')->from('sekolah_sasaran')->join('sekolah', 'sekolah_sasaran.sekolah_id', '=', 'sekolah.sekolah_id')->where('sekolah.nama', 'ILIKE', '%' . request()->q . '%');
