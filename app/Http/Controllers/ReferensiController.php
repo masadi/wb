@@ -453,9 +453,12 @@ class ReferensiController extends Controller
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
                 $posts = $posts->where('nama', 'ILIKE', '%' . request()->q . '%')
                     ->orWhere('instansi', 'ILIKE', '%' . request()->q . '%')
-                    ->orWhere('pendamping_id', function($query){
-                        $query->select('pendamping_id')->from('sekolah_sasaran')->join('sekolah', 'sekolah_sasaran.sekolah_id', '=', 'sekolah.sekolah_id')->where('sekolah.nama', 'ILIKE', '%' . request()->q . '%');
+                    ->orWhereHas('sekolah_sasaran', function($query){
+                        $query->where('nama', 'ILIKE', '%' . request()->q . '%');
                     });
+                    //->orWhere('pendamping_id', function($query){
+                        //$query->select('pendamping_id')->from('sekolah_sasaran')->join('sekolah', 'sekolah_sasaran.sekolah_id', '=', 'sekolah.sekolah_id')->where('sekolah.nama', 'ILIKE', '%' . request()->q . '%');
+                    //});
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $users]);
     }
