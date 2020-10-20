@@ -430,6 +430,7 @@ class HelperModel
 		return ucwords($hasil);
     }
     public static function nilai_satuan($nilai){
+        return $nilai;
         $result = ($nilai / 5) / 5;
         return $result - 3;
     }

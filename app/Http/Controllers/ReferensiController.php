@@ -153,6 +153,7 @@ class ReferensiController extends Controller
                     }
                 }
                 if(request()->pendamping_id){
+                    $query->has('smk_coe');
                     if(request()->permintaan == 'add'){
                         $query->doesntHave('pendamping');
                     } else {
@@ -168,7 +169,7 @@ class ReferensiController extends Controller
                     });
                 }
             }
-        })->has('smk_coe')->with(['smk_coe', 'user', 'sekolah_sasaran' => function($query){
+        })->with(['smk_coe', 'user', 'sekolah_sasaran' => function($query){
             $query->with(['pakta_integritas', 'verifikator']);
         }])->orderBy($sortBy, request()->sortbydesc)
             /*->when(request()->q, function($all_data) {
