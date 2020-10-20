@@ -319,4 +319,8 @@ class PageController extends Controller
         $query = $request->route('query');
         return view('page.'.$query)->with(['id_level_wilayah' => 1]);
     }
+    public function pencarian(Request $request){
+        $query = $request->route('query');
+        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
 }
