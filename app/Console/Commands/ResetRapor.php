@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Nilai_instrumen;
+use App\Sekolah;
 use Illuminate\Support\Facades\DB;
 class ResetRapor extends Command
 {
@@ -12,7 +13,7 @@ class ResetRapor extends Command
      *
      * @var string
      */
-    protected $signature = 'reset:rapor';
+    protected $signature = 'reset:rapor {npsn?}';
 
     /**
      * The console command description.
@@ -38,9 +39,23 @@ class ResetRapor extends Command
      */
     public function handle()
     {
-        DB::table('rapor_mutu')->delete();
-        DB::table('pakta_integritas')->delete();
-        DB::table('nilai_akhir')->delete();
-        Nilai_instrumen::whereNotNull('verifikator_id')->delete();
+        $npsn = $this->argument('npsn');
+        if($npsn){
+            $sekolah = Sekolah::with(['sekolah_sasaran', 'user'])->where('npsn', $npsn)->first();
+            if($sekolah){
+                DB::table('rapor_mutu')->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->delete();
+                DB::table('pakta_integritas')->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->delete();
+                DB::table('nilai_akhir')->where('user_id', $sekolah->user->user_id)->delete();
+                DB::table('nilai_instrumen')->where('user_id', $sekolah->user->user_id)->delete();
+                DB::table('nilai_komponen')->where('user_id', $sekolah->user->user_id)->delete();
+                DB::table('nilai_aspek')->where('user_id', $sekolah->user->user_id)->delete();
+                DB::table('jawaban')->where('user_id', $sekolah->user->user_id)->delete();
+            }
+        } else {
+            DB::table('rapor_mutu')->delete();
+            DB::table('pakta_integritas')->delete();
+            DB::table('nilai_akhir')->delete();
+            Nilai_instrumen::whereNotNull('verifikator_id')->delete();
+        }
     }
 }
