@@ -33,6 +33,7 @@ Route::group(['prefix' => 'referensi'], function(){
     Route::get('/{query}', 'ReferensiController@index');
     Route::post('/komponen/upload', 'ReferensiController@upload');
     Route::post('/sekolah-sasaran', 'ReferensiController@sekolah_sasaran');
+    Route::post('/sekolah-sasaran-pendamping', 'ReferensiController@sekolah_sasaran_pendamping');
     Route::post('/status-coe', 'ReferensiController@status_coe');
 });
 Route::group(['prefix' => 'kuisioner'], function(){

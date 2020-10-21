@@ -154,6 +154,7 @@ class ReferensiController extends Controller
                 }
                 if(request()->pendamping_id){
                     $query->has('smk_coe');
+                    $query->has('sekolah_sasaran');
                     if(request()->permintaan == 'add'){
                         $query->doesntHave('pendamping');
                     } else {
@@ -399,6 +400,53 @@ class ReferensiController extends Controller
                 $query->where('verifikator_id', $request->verifikator_id);
                 $query->where('tahun_pendataan_id', $tahun->tahun_pendataan_id);
             })->delete();
+            if($delete){
+                $response = [
+                    'title' => 'Berhasil',
+                    'text' => 'Sekolah sasaran berhasil dihapus',
+                    'icon' => 'success',
+                ];
+            } else {
+                $response = [
+                    'title' => 'Gagal',
+                    'text' => 'Sekolah sasaran gagal dihapus',
+                    'icon' => 'error',
+                ];
+            }
+        }
+        return response()->json($response);
+    }
+    public function sekolah_sasaran_pendamping(Request $request){
+        $tahun = Tahun_pendataan::where('periode_aktif', 1)->first();
+        $sekolah = Sekolah_sasaran::where(function($query) use ($request, $tahun){
+            $query->where('sekolah_id', $request->sekolah_id);
+            $query->where('tahun_pendataan_id', $tahun->tahun_pendataan_id);
+        })->first();
+        $insert = 0;
+        $delete = 0;
+        if($request->permintaan == 'add'){
+            if($sekolah){
+                $sekolah->pendamping_id = $request->pendamping_id;
+                $insert = $sekolah->save();
+            }
+            if($insert){
+                $response = [
+                    'title' => 'Berhasil',
+                    'text' => 'Sekolah sasaran berhasil ditambahkan',
+                    'icon' => 'success',
+                ];
+            } else {
+                $response = [
+                    'title' => 'Gagal',
+                    'text' => 'Sekolah sasaran gagal ditambahkan',
+                    'icon' => 'error',
+                ];
+            }
+        } else {
+            if($sekolah){
+                $sekolah->pendamping_id = NULL;
+                $delete = $sekolah->save();
+            }
             if($delete){
                 $response = [
                     'title' => 'Berhasil',
