@@ -539,5 +539,24 @@ class HelperModel
                 'predikat' => self::predikat($total_nilai, true),
             ]
         );
-	}
+    }
+    public static function nilai_aspek_final($skor_kuisioner, $skor_maksimal){
+        //=G3*100/D3
+        //G3 = $skor_kuisioner
+        //D3 = $skor_maksimal
+        return ($skor_kuisioner * 100) / $skor_maksimal;
+    }
+    public static function nilai_aspek_bobot($skor_kuisioner, $bobot, $skor_maksimal){
+        //=(G3*H3)/D3
+        //G3 = $skor_kuisioner
+        //H3 = $bobot;
+        //D3 = $skor_maksimal
+        return ($skor_kuisioner * $bobot) / $skor_maksimal;
+    }
+    public static function nilai_komponen_final($nilai_aspek_bobot, $total_bobot_aspek){
+        //=(SUM(L3:L22)*100)/K3
+        //G3 = $skor_kuisioner
+        //D3 = $skor_maksimal
+        return ($nilai_aspek_bobot * 100) / $total_bobot_aspek;
+    }
 }

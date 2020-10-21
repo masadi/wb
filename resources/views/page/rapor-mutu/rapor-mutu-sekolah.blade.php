@@ -7,7 +7,7 @@
             <div class="card-body">
                 <form id="form">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Provinsi</label>
                                 <select class="form-control select2" id="provinsi_id" style="width: 100%;">
@@ -18,7 +18,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Kabupaten/Kota</label>
                                 <select class="form-control select2" id="kabupaten_id" style="width: 100%;">
@@ -26,15 +26,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <!--div class="col-md-3">
                             <div class="form-group">
                                 <label>Filter Kecamatan</label>
                                 <select class="form-control select2" id="kecamatan_id" style="width: 100%;">
                                     <option value="">Semua Kecamatan</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="col-md-3">
+                        </div-->
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Sekolah</label>
                                 <select class="form-control select2" id="sekolah_id" style="width: 100%;">
@@ -491,6 +491,13 @@ $('#kabupaten_id').change(function(){
 					value: item.value,
 					text : item.text
 				}));
+            });
+            $('#sekolah_id').html('<option value="">Semua Sekolah</option>');
+			$.each(response.output.all_sekolah, function (i, item) {
+				$('#sekolah_id').append($('<option>', { 
+					value: item.value,
+					text : item.text
+				}));
 			});
 		}
 	});
@@ -577,8 +584,8 @@ $('#sekolah_id').change(function(){
                 $('.jumlah_siswa').html(response.sekolah.anggota_rombel_count);
                 $('.ptk').html(response.sekolah.guru_count);
                 $('.tendik').html(response.sekolah.tendik_count);
-                $('.avg_kinerja').html(response.group_komponen.all_kinerja.rerata);
-                $('.avg_dampak').html(response.group_komponen.all_dampak.rerata);
+                $('.avg_kinerja').html(response.rerata_komponen_kinerja);
+                $('.avg_dampak').html(response.rerata_komponen_dampak);
                 $.each(response.group_komponen.all_kinerja.nama, function (i, item) {
                     var a = $('h1').hasClass('kinerja-'+item);
                     $('h1.kinerja-'+item).html(response.group_komponen.all_kinerja.nilai[i]);
@@ -673,7 +680,7 @@ function tampilChart(data){
             return total + num;
         }
         function nilai_satuan(nilai){
-            //return nilai;
+            return nilai - 50;
             var result = 0;
             if(nilai < 21){
                 result = 1;
@@ -705,8 +712,8 @@ function tampilChart(data){
             var total_nilai_kinerja = parseFloat(set_nilai_kinerja.reduce(totalNilai, 0)).toFixed(2);// / set_nilai_kinerja.length;
             var total_nilai_dampak = parseFloat(set_nilai_dampak.reduce(totalNilai, 0)).toFixed(2);// / set_nilai_dampak.length;
             smkLainnya.push({
-                x: nilai_satuan(total_nilai_kinerja),
-                y: nilai_satuan(total_nilai_dampak),
+                x: total_nilai_kinerja - 50,
+                y: total_nilai_dampak - 50,
             });
         })
         var color = Chart.helpers.color;
@@ -716,8 +723,8 @@ function tampilChart(data){
                 borderColor: window.chartColors.red,
                 backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
                 data: [{
-                    x: data.group_komponen.all_kinerja.nilai_scatter,
-                    y: data.group_komponen.all_dampak.nilai_scatter
+                    x: (data.group_komponen.all_kinerja.nilai_scatter > 0) ? data.group_komponen.all_kinerja.nilai_scatter - 50 : 0,
+                    y: (data.group_komponen.all_dampak.nilai_scatter > 0) ? data.group_komponen.all_dampak.nilai_scatter - 50 : 0
                 }]
             }, {
                 label: 'SMK Lainnya',
@@ -742,6 +749,9 @@ function tampilChart(data){
                                 console.log(responseApi.all_sekolah[tooltipItem.index - 1]);
                             }*/
                             var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var nilai_kinerja = tooltipItem.xLabel;//Math.round(tooltipItem.yLabel * 100) / 100;
+                            var nilai_dampak = tooltipItem.yLabel;//Math.round(tooltipItem.xLabel * 100) / 100;
+                            console.log(nilai_kinerja+' atas');
                             if(label === 'Nama SMK'){
                                 label = responseApi.sekolah.nama;
                             }
@@ -749,12 +759,11 @@ function tampilChart(data){
                                 label += ': ';
                             } 
                             
-                            var nilai_kinerja = tooltipItem.xLabel;//Math.round(tooltipItem.yLabel * 100) / 100;
-                            //nilai_kinerja = nilai_kinerja;
-                            var nilai_dampak = tooltipItem.yLabel;//Math.round(tooltipItem.xLabel * 100) / 100;
-                            //nilai_dampak = nilai_dampak;
-                            nilai_kinerja = parseFloat(nilai_kinerja).toFixed(2);
-                            nilai_dampak = parseFloat(nilai_dampak).toFixed(2);
+                            nilai_dampak = (nilai_dampak) ? nilai_dampak + 50 : 0;
+                            nilai_kinerja = (nilai_kinerja) ? nilai_kinerja + 50 : 0;
+                            console.log(nilai_kinerja+' bawah');
+                            //nilai_kinerja = parseFloat(nilai_kinerja).toFixed(2);
+                            //nilai_dampak = parseFloat(nilai_dampak).toFixed(2);
                             label += 'Kinerja ('+nilai_kinerja+') | Dampak ('+nilai_dampak+')';
                             return label;
                         }
@@ -762,31 +771,94 @@ function tampilChart(data){
                 },
                 scales: {
                     xAxes: [{
-                        ticks: {
-                            min: -3,
-                            max: 3,
-                            //stepSize: 1,
-                            //callback: v => v == 0 ? '.' : '.'
+                        /*ticks: {
+                            min: -100,
+                            max: 100,
+                            stepSize: 10,
+                            callback: v => v == 0 ? '.' : '.'
                         },
                         gridLines: {
                             drawTicks: true
-                        }        
+                        },
+                        scaleLabel: {
+							labelString: '← Kinerja Rendah | Kinerja Tinggi →   ',
+							display: true
+                        }*/
+                        ticks: {
+                            min: -50,
+                            max: 50,
+                            stepSize: 5,
+                            callback: v => v == 0 ? 'Dampak Rendah' : '.'
+                        },
+						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+						display: true,
+						position: 'bottom',
+						id: 'x-axis-1',
+					}, {
+                        ticks: {
+                            min: -50,
+                            max: 50,
+                            stepSize: 5,
+                            callback: v => v == 0 ? 'Dampak Tinggi' : '.'
+                        },
+						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+						display: true,
+						position: 'top',
+						reverse: true,
+						id: 'x-axis-2',
+
+						// grid line settings
+						gridLines: {
+							drawOnChartArea: false, // only want the grid lines for one axis to show up
+						},
                     }],
                     yAxes: [{
+                        /*
                         ticks: {
-                            min: -3,
-                            max: 3,
-                            //stepSize: 1,
-                            //callback: v => v == 0 ? '.' : '.'
+                            min: -100,
+                            max: 100,
+                            stepSize: 10,
+                            callback: v => v == 0 ? '.' : '.'
                         },
                         gridLines: {
                             drawTicks: true
-                        } 
-                    }]
+                        },
+                        scaleLabel: {
+							labelString: '← Dampak Rendah | Dampak Tinggi →   ',
+							display: true
+						}*/
+                        ticks: {
+                            min: -100,
+                            max: 100,
+                            stepSize: 10,
+                            callback: v => v == 0 ? 'Kinerja Rendah' : '.'
+                        },
+						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+						display: true,
+						position: 'left',
+						id: 'y-axis-1',
+					}, {
+                        ticks: {
+                            min: -100,
+                            max: 100,
+                            stepSize: 10,
+                            callback: v => v == 0 ? 'Kinerja Tinggi' : '.'
+                        },
+						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+						display: true,
+						position: 'right',
+						reverse: true,
+						id: 'y-axis-2',
+
+						// grid line settings
+						gridLines: {
+							drawOnChartArea: false, // only want the grid lines for one axis to show up
+						},
+					}],
                 },
                 title: {
                     display: true,
-                    text: 'Pembandingan Kinerja dan Impact'
+                    text: 'Pembandingan Kinerja dan Impact',
                 },
             }
         });

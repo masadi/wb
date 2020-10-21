@@ -103,39 +103,8 @@ class FrontController extends Controller
 			$record['text'] 	= $wilayah->nama;
 			$output['result'][] = $record;
         }
-        if($request->id_level_wilayah == 3){
-            $output['all_sekolah'] = Sekolah::has('smk_coe')->whereRaw("trim(kecamatan_id) ='".$request->kode_wilayah."'")->selectRaw('sekolah_id as value, nama as text')->get();
-        }
-        $callback = function($query){
-            $query->whereHas('user.sekolah', function($query){
-                $query->has('sekolah_sasaran');
-                if(request()->id_level_wilayah == 1){
-                    $query->whereRaw("trim(provinsi_id) ='".request()->kode_wilayah."'");
-                } elseif(request()->id_level_wilayah == 2){
-                    $query->whereRaw("trim(kabupaten_id) ='".request()->kode_wilayah."'");
-                } elseif(request()->id_level_wilayah == 3){
-                    $query->whereRaw("trim(kecamatan_id) ='".request()->kode_wilayah."'");
-                }
-                //$query->whereIn('kode_wilayah', function($query){
-                    //$query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) ='".request()->kode_wilayah."'");
-                //});
-            });
-        };
-        $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
-        $nilai_komponen = [];
-        $nilai_komponen_chart = [];
-        $nama_komponen_chart = [];
-        foreach($all_komponen as $komponen){
-            $record_komponen= [];
-			$record_komponen['nilai'] 	= number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
-            $record_komponen['bintang'] 	= HelperModel::bintang_icon(number_format($komponen->all_nilai_komponen->avg('total_nilai'),2), 'warning');
-            foreach($komponen->aspek as $aspek){
-                $record_komponen['nilai_aspek'][strtolower(HelperModel::clean($aspek->nama))] = number_format($aspek->all_nilai_aspek->avg('total_nilai'),2);
-            }
-            $nilai_komponen[] = $record_komponen;
-            $record_chart = [];
-            $nilai_komponen_chart[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
-            $nama_komponen_chart[] 	= $komponen->nama;
+        if($request->id_level_wilayah == 2){
+            $output['all_sekolah'] = Sekolah::has('smk_coe')->whereRaw("trim(kabupaten_id) ='".$request->kode_wilayah."'")->selectRaw('sekolah_id as value, nama as text')->get();
         }
         if(request()->id_level_wilayah == 1){
             $wilayah = '_provinsi';
@@ -161,7 +130,6 @@ class FrontController extends Controller
             $query->where('id_level_wilayah', request()->id_level_wilayah);
             if(request()->kode_wilayah){
                 $query->whereRaw("trim(kode_wilayah) = '".request()->kode_wilayah."'");
-                //$query->whereRaw("trim(mst_kode_wilayah) = '".request()->kode_wilayah."'");
             }
         })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak])->orderBy('kode_wilayah')->get();
         $sekolah_coe_count = 0;
@@ -205,7 +173,37 @@ class FrontController extends Controller
             $sekolah_terima_count, 
             $sekolah_coe_count - $sekolah_terima_count,
         ];
-        //$all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
+        $callback = function($query){
+            $query->whereHas('user.sekolah', function($query){
+                $query->has('sekolah_sasaran');
+                if(request()->id_level_wilayah == 1){
+                    $query->whereRaw("trim(provinsi_id) ='".request()->kode_wilayah."'");
+                } elseif(request()->id_level_wilayah == 2){
+                    $query->whereRaw("trim(kabupaten_id) ='".request()->kode_wilayah."'");
+                } elseif(request()->id_level_wilayah == 3){
+                    $query->whereRaw("trim(kecamatan_id) ='".request()->kode_wilayah."'");
+                }
+                //$query->whereIn('kode_wilayah', function($query){
+                    //$query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) ='".request()->kode_wilayah."'");
+                //});
+            });
+        };
+        $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
+        $nilai_komponen = [];
+        $nilai_komponen_chart = [];
+        $nama_komponen_chart = [];
+        foreach($all_komponen as $komponen){
+            $record_komponen= [];
+			$record_komponen['nilai'] 	= number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+            $record_komponen['bintang'] 	= HelperModel::bintang_icon(number_format($komponen->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+            foreach($komponen->aspek as $aspek){
+                $record_komponen['nilai_aspek'][strtolower(HelperModel::clean($aspek->nama))] = number_format($aspek->all_nilai_aspek->avg('total_nilai'),2);
+            }
+            $nilai_komponen[] = $record_komponen;
+            $record_chart = [];
+            $nilai_komponen_chart[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+            $nama_komponen_chart[] 	= $komponen->nama;
+        }
         $komponen_kinerja = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [1,2,3])->get();
         $komponen_dampak = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [4,5])->get();
         foreach($komponen_kinerja as $kinerja){
