@@ -810,9 +810,9 @@ function tampilChart(data){
                     }],
                     yAxes: [{
                         ticks: {
-                            min: -100,
-                            max: 100,
-                            stepSize: 10,
+                            min: -50,
+                            max: 50,
+                            stepSize: 5,
                             callback: v => v == 0 ? 'Kinerja Rendah' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -827,9 +827,9 @@ function tampilChart(data){
 						},
 					}, {
                         ticks: {
-                            min: -100,
-                            max: 100,
-                            stepSize: 10,
+                            min: -50,
+                            max: 50,
+                            stepSize: 5,
                             callback: v => v == 0 ? 'Kinerja Tinggi' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
