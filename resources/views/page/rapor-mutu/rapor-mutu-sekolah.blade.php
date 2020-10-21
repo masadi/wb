@@ -771,35 +771,28 @@ function tampilChart(data){
                 },
                 scales: {
                     xAxes: [{
-                        /*ticks: {
-                            min: -100,
-                            max: 100,
-                            stepSize: 10,
-                            callback: v => v == 0 ? '.' : '.'
-                        },
-                        gridLines: {
-                            drawTicks: true
-                        },
-                        scaleLabel: {
-							labelString: '← Kinerja Rendah | Kinerja Tinggi →   ',
-							display: true
-                        }*/
                         ticks: {
                             min: -50,
                             max: 50,
                             stepSize: 5,
-                            callback: v => v == 0 ? 'Dampak Rendah' : '.'
+                            callback: v => v == 0 ? 'Dampak Rendah' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 						display: true,
 						position: 'bottom',
-						id: 'x-axis-1',
+                        id: 'x-axis-1',
+                        gridLines: {
+                            drawTicks: false,
+                            drawOnChartArea:true,
+                            color: 'rgba(0, 0, 0, 0)',
+                            zeroLineColor: 'rgba(0,0,0,0.50)',
+						},
 					}, {
                         ticks: {
                             min: -50,
                             max: 50,
                             stepSize: 5,
-                            callback: v => v == 0 ? 'Dampak Tinggi' : '.'
+                            callback: v => v == 0 ? 'Dampak Tinggi' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 						display: true,
@@ -809,24 +802,13 @@ function tampilChart(data){
 
 						// grid line settings
 						gridLines: {
-							drawOnChartArea: false, // only want the grid lines for one axis to show up
+                            drawTicks: false,
+                            drawOnChartArea:true,
+                            color: 'rgba(0, 0, 0, 0)',
+                            zeroLineColor: 'rgba(0,0,0,0.50)',
 						},
                     }],
                     yAxes: [{
-                        /*
-                        ticks: {
-                            min: -100,
-                            max: 100,
-                            stepSize: 10,
-                            callback: v => v == 0 ? '.' : '.'
-                        },
-                        gridLines: {
-                            drawTicks: true
-                        },
-                        scaleLabel: {
-							labelString: '← Dampak Rendah | Dampak Tinggi →   ',
-							display: true
-						}*/
                         ticks: {
                             min: -100,
                             max: 100,
@@ -836,7 +818,13 @@ function tampilChart(data){
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 						display: true,
 						position: 'left',
-						id: 'y-axis-1',
+                        id: 'y-axis-1',
+                        gridLines: {
+                            drawTicks: false,
+                            drawOnChartArea:true,
+                            color: 'rgba(0, 0, 0, 0)',
+                            zeroLineColor: 'rgba(0,0,0,0.50)',
+						},
 					}, {
                         ticks: {
                             min: -100,
@@ -849,10 +837,11 @@ function tampilChart(data){
 						position: 'right',
 						reverse: true,
 						id: 'y-axis-2',
-
-						// grid line settings
-						gridLines: {
-							drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        gridLines: {
+                            drawTicks: false,
+                            drawOnChartArea:true,
+                            color: 'rgba(0, 0, 0, 0)',
+                            zeroLineColor: 'rgba(0,0,0,0.50)',
 						},
 					}],
                 },
