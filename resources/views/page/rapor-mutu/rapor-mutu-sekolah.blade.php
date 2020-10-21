@@ -813,7 +813,7 @@ function tampilChart(data){
                             min: -100,
                             max: 100,
                             stepSize: 10,
-                            callback: v => v == 0 ? 'Kinerja Rendah' : '.'
+                            callback: v => v == 0 ? 'Kinerja Rendah' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 						display: true,
@@ -830,7 +830,7 @@ function tampilChart(data){
                             min: -100,
                             max: 100,
                             stepSize: 10,
-                            callback: v => v == 0 ? 'Kinerja Tinggi' : '.'
+                            callback: v => v == 0 ? 'Kinerja Tinggi' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
 						display: true,
