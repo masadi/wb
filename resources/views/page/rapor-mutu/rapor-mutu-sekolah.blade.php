@@ -679,24 +679,6 @@ function tampilChart(data){
         function totalNilai(total, num) {
             return total + num;
         }
-        function nilai_satuan(nilai){
-            return nilai - 50;
-            var result = 0;
-            if(nilai < 21){
-                result = 1;
-            } else if(nilai < 41){
-                result = 2;
-            } else if(nilai < 61){
-                result = 3;
-            } else if(nilai < 81){
-                result = 4;
-            } else if(nilai >= 81){
-                result = 5;
-            }
-            result = (nilai / 5) / 5;
-            result = result - 3;
-            return parseFloat(result).toFixed(2);
-        }
         var responseApi = data;
         var dataLainnya = responseApi.all_sekolah;
         var smkLainnya = [];
