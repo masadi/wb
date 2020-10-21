@@ -744,16 +744,19 @@ function tampilChart(data){
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, data) {
-                            /*console.log(tooltipItem);
                             if(tooltipItem.index !== 0){
-                                console.log(responseApi.all_sekolah[tooltipItem.index - 1]);
-                            }*/
+                                console.log(responseApi.all_sekolah[tooltipItem.index]);
+                            }
                             var label = data.datasets[tooltipItem.datasetIndex].label || '';
                             var nilai_kinerja = tooltipItem.xLabel;//Math.round(tooltipItem.yLabel * 100) / 100;
                             var nilai_dampak = tooltipItem.yLabel;//Math.round(tooltipItem.xLabel * 100) / 100;
-                            console.log(nilai_kinerja+' atas');
-                            if(label === 'Nama SMK'){
+                            var label_nama_sekolah = responseApi.all_sekolah[tooltipItem.index];
+                            if(tooltipItem.index === 0){
                                 label = responseApi.sekolah.nama;
+                            } else {
+                                if(label_nama_sekolah){
+                                    label = label_nama_sekolah.nama+' - '+label_nama_sekolah.kabupaten+' - '+label_nama_sekolah.provinsi;
+                                } 
                             }
                             if (label) {
                                 label += ': ';
@@ -761,9 +764,6 @@ function tampilChart(data){
                             
                             nilai_dampak = (nilai_dampak) ? nilai_dampak + 50 : 0;
                             nilai_kinerja = (nilai_kinerja) ? nilai_kinerja + 50 : 0;
-                            console.log(nilai_kinerja+' bawah');
-                            //nilai_kinerja = parseFloat(nilai_kinerja).toFixed(2);
-                            //nilai_dampak = parseFloat(nilai_dampak).toFixed(2);
                             label += 'Kinerja ('+nilai_kinerja+') | Dampak ('+nilai_dampak+')';
                             return label;
                         }
