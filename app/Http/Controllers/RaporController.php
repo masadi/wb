@@ -310,11 +310,8 @@ class RaporController extends Controller
                     }
                 })->has('smk_coe')->has('nilai_kinerja')->get();
             }
-            $nama_wilayah = '';
-            if($request->all_provinsi){
-                $wilayah = Wilayah::whereRaw("trim(kode_wilayah) = '".request()->provinsi_id."'")->first();
-                $nama_wilayah = ($wilayah) ? $wilayah->nama : '';
-            }
+            $wilayah = Wilayah::whereRaw("trim(kode_wilayah) = '".request()->provinsi_id."'")->first();
+            $nama_wilayah = ($wilayah) ? $wilayah->nama : '';
             $respone = [
                 'nama_wilayah' => $nama_wilayah,
                 'rerata_komponen_kinerja' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
