@@ -192,13 +192,6 @@ class PetaController extends Controller
     }
     public function sekolah(Request $request)
     {
-        $sekolah = Sekolah::where(function($query) use ($request){
-            if($request->id_level_wilayah == 1){
-                $query->whereRaw("trim(provinsi_id) = '".request()->kode_wilayah."'");
-            } else {
-                $query->whereRaw("trim(kabupaten_id) = '".request()->kode_wilayah."'");
-            }
-        })->count();
         $id_level_wilayah = request()->id_level_wilayah;
         if($id_level_wilayah == 1) {
             $wilayah = '_provinsi';

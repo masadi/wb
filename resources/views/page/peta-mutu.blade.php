@@ -76,7 +76,7 @@
                                 var contentTooltips;
                                 if(sekolah.data.id_level_wilayah == 1){
                                     contentTooltips = "<ul class='list-group list-group no-padding'>"+
-                                            "<li class='list-group-item list-group-item-info'><a href='{{url('page/peta-mutu')}}/{{$id_level_wilayah}}/"+value.json+"'><b>"+value.nama+"</b></a></li>"+
+                                            "<li class='list-group-item list-group-item-info'><a href='{{url('page/peta-mutu')}}/{{$id_level_wilayah + 1}}/"+value.json+"'><b>"+value.nama+"</b></a></li>"+
                                             "<li class='list-group-item list-group-item-warning'>Jumlah SMK : "+sekolah.data.jml_smk+"<br>SMK Coe : "+sekolah.data.smk_coe+"</li>"+
                                             "</ul>";
                                 } else {

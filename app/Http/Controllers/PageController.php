@@ -337,7 +337,7 @@ class PageController extends Controller
                 'zoom_level' => config('leaflet.zoom_level'),
             ];
         }
-        return view('page.'.$query)->with(['id_level_wilayah' => ($id_level_wilayah) ? $id_level_wilayah : 2, 'leaflet' => $leaflet, 'api_url_map' => $api_url_map]);
+        return view('page.'.$query)->with(['id_level_wilayah' => ($id_level_wilayah) ? $id_level_wilayah : 1, 'leaflet' => $leaflet, 'api_url_map' => $api_url_map]);
     }
     public function pencarian(Request $request){
         $query = $request->route('query');
