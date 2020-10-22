@@ -156,6 +156,10 @@
                         </table>
                     </div>
                 </div>
+                <div id="btn_toggle" class="col-12" style="display: none;">
+                    <button class="show_satu button btn btn-warning btn-lg" data-query="nasional">Tampilkan Data Nasional</button>
+                    <button class="show_dua button btn btn-danger btn-lg" style="display: none;" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
+                </div>
                 @auth
                 <div class="row">
                     <div class="col-12">
@@ -386,6 +390,7 @@ $('#provinsi_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
     $('#scatterChart').hide();
+    $('#btn_toggle').hide();
 	var ini = $(this).val();
 	if(ini == ''){
         $.get( "{{route('get_chart')}}", function( data ) {
@@ -444,6 +449,7 @@ $('#kabupaten_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
     $('#scatterChart').hide();
+    $('#btn_toggle').hide();
 	var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -506,6 +512,7 @@ $('#kecamatan_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
     $('#scatterChart').hide();
+    $('#btn_toggle').hide();
 	var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -558,18 +565,31 @@ $('#kecamatan_id').change(function(){
 	});
 });
 $('#sekolah_id').change(function(){
-	var ini = $(this).val();
-	$.ajax({
+    var ini = $(this).val();
+    var params = {
+        provinsi_id : $('#provinsi_id').val().trim(),
+        sekolah_id: ini,
+    }
+	getRaporMutu(params);
+});
+function getRaporMutu(params){
+    $.ajax({
 		url: '{{route('api.rapor_sekolah')}}',
 		type: 'post',
-		data: {
+		/*data: {
+            provinsi_id : $('#provinsi_id').val().trim(),
             sekolah_id: ini,
-        },
+        },*/
+        data: params,
 		success: function(response){
+            $( ".show_satu" ).toggle();
+            $( ".show_dua" ).toggle();
+            $('.nama_provinsi').html(response.nama_wilayah);
             if(response.sekolah){
                 $('#rekap_coe').hide();
                 $('#rekap_sekolah').show();
                 $('#scatterChart').show();
+                $('#btn_toggle').show();
                 $('.nama_sekolah').html(response.sekolah.nama);
                 $('.alamat_sekolah').html(response.sekolah.alamat);
                 $('.telp').html(response.sekolah.no_telp);
@@ -620,6 +640,24 @@ $('#sekolah_id').change(function(){
             }
 		}
 	});
+}
+$( ".button" ).click(function() {
+    var data = $(this).data('query');
+    var params;
+    if(data === 'nasional'){
+        params = {
+            all_provinsi: 1,
+            provinsi_id : $('#provinsi_id').val().trim(),
+            sekolah_id: $('#sekolah_id').val(),
+        }
+    } else {
+        params = {
+            all_provinsi: 0,
+            provinsi_id : $('#provinsi_id').val().trim(),
+            sekolah_id: $('#sekolah_id').val(),
+        }
+    }
+    getRaporMutu(params);
 });
 $.get( "{{route('get_chart')}}", function( data ) {
     tampilChart(data)
@@ -726,9 +764,6 @@ function tampilChart(data){
                 tooltips: {
                     callbacks: {
                         label: function(tooltipItem, data) {
-                            if(tooltipItem.index !== 0){
-                                console.log(responseApi.all_sekolah[tooltipItem.index]);
-                            }
                             var label = data.datasets[tooltipItem.datasetIndex].label || '';
                             var nilai_kinerja = tooltipItem.xLabel;//Math.round(tooltipItem.yLabel * 100) / 100;
                             var nilai_dampak = tooltipItem.yLabel;//Math.round(tooltipItem.xLabel * 100) / 100;

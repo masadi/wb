@@ -17,6 +17,7 @@ use App\Verifikasi;
 use App\Jenis_rapor;
 use App\Status_rapor;
 use App\Rapor_mutu;
+use App\Wilayah;
 use Carbon\Carbon;
 use PDF;
 class RaporController extends Controller
@@ -302,9 +303,20 @@ class RaporController extends Controller
                     $query->whereNull('verifikator_id');
                 }, 'nilai_dampak' => function($query){
                     $query->whereNull('verifikator_id');
-                }])->where('sekolah_id', '<>', $request->sekolah_id)->has('smk_coe')->has('nilai_kinerja')->get();
+                }])->where(function($query) use ($request){
+                    $query->where('sekolah_id', '<>', $request->sekolah_id);
+                    if(!$request->all_provinsi){
+                        $query->whereRaw("trim(provinsi_id) = '".request()->provinsi_id."'");
+                    }
+                })->has('smk_coe')->has('nilai_kinerja')->get();
+            }
+            $nama_wilayah = '';
+            if($request->all_provinsi){
+                $wilayah = Wilayah::whereRaw("trim(kode_wilayah) = '".request()->provinsi_id."'")->first();
+                $nama_wilayah = ($wilayah) ? $wilayah->nama : '';
             }
             $respone = [
+                'nama_wilayah' => $nama_wilayah,
                 'rerata_komponen_kinerja' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
                 'rerata_komponen_dampak' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
                 'group_komponen' => $group_komponen,
