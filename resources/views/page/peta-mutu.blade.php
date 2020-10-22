@@ -12,7 +12,7 @@
    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
    crossorigin=""/>
 <style>
-    #mapid { min-height: 700px; }
+    #mapid { min-height: 786px; }
 </style>
 @endsection
 @section('js')
