@@ -34,30 +34,7 @@
     $.get('{{ $api_url_map }}')
     .then(function (response) {
         var getData = response.data;
-        //return false;
-        /*L.geoJson(response.data, {
-			onEachFeature: function (feature, peta) {
-                console.log(feature);
-				var style = {fillColor: "#543199",
-                color: "#543199",
-                "weight": 1,
-                "opacity":0.6,
-                "fillOpacity": 0.5,
-                };
-                peta.setStyle(style);
-                var popup = L.popup();
-                peta.on('click', function(e){
-                    popup.setLatLng(e.latlng).setContent("<ul class='list-group list-group no-padding'>"+
-                        "<li class='list-group-item list-group-item-info'><b>Aceh</b></li>"+
-                        "<li class='list-group-item list-group-item-warning'><a href='http://103.40.55.226/dashboard/detil/060000'>230 SMK</a></li>"+
-                        "</ul>")
-                    .openOn(map);
-                });
-            }
-            }).addTo(map);*/
         $.each(getData, function(item, value){
-            //console.log(value);
-            //return false;
             var randomColor = Math.floor(Math.random()*16777215).toString(16);
             $.getJSON("{{url('geojson')}}/"+value.json,function(result){
                 L.geoJson(result.data, {
@@ -80,7 +57,6 @@
                                             "<li class='list-group-item list-group-item-warning'>Jumlah SMK : "+sekolah.data.jml_smk+"<br>SMK Coe : "+sekolah.data.smk_coe+"</li>"+
                                             "</ul>";
                                 } else {
-                                    //http://apm-smk.local:8002/page/progres-data/3/050100
                                     contentTooltips = "<ul class='list-group list-group no-padding'>"+
                                             "<li class='list-group-item list-group-item-info'><a href='{{url('page/progres-data')}}/3/"+value.json+"'><b>"+value.nama+"</b></a></li>"+
                                             "<li class='list-group-item list-group-item-warning'>Jumlah SMK : "+sekolah.data.jml_smk+"<br>SMK Coe : "+sekolah.data.smk_coe+"</li>"+
