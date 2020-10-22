@@ -3,8 +3,7 @@
 @section('content')
 <div class="row">
     <div class="col-12 m-0 p-0">
-        <div id="mapid" style="display: none;"></div>
-        <img class="d-block w-100" src="{{asset('vendor/img/Under-Construction.png')}}" alt="Sedang Dalam Pengembangan">
+        <div id="mapid"></div>
     </div>
 </div>
 @endsection
@@ -24,8 +23,7 @@
 
 <script>
     var bounds = new L.LatLngBounds();
-	var colors = ["#543199","#9f504d","#0f14ed","#641922","#0aafe4","#e834ca","#1c9d1a","#433be5","#4b3f9d","#85df3d","#ea0cb6","#827f5c","#671715","#77220d","#aa6eb6","#81b3ec","#12f1b8","#52b3bf","#52263d","#db1bef","#42e267","#5f008e","#6b8fac","#2532d6","#60483f","#0666c7","#e928b4","#ac624f","#dba259","#109b5e","#aab4ee","#906915","#211615","#3c0ad2"];
-    var map = L.map('mapid').setView([{{ config('leaflet.map_center_latitude') }}, {{ config('leaflet.map_center_longitude') }}], {{ config('leaflet.zoom_level') }});
+	var map = L.map('mapid').setView([{{ $leaflet['map_center_latitude'] }}, {{ $leaflet['map_center_longitude'] }}], {{ $leaflet['zoom_level'] }});
     var popup = L.popup();
     var baseUrl = "{{ url('/') }}";
 
@@ -33,18 +31,11 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    $.get('{{ route('api.peta.index') }}')
+    $.get('{{ $api_url_map }}')
     .then(function (response) {
-        console.log(response.data);
-        /*L.geoJSON(response.data, {
-            pointToLayer: function(geoJsonPoint, latlng) {
-                return L.marker(latlng);
-            }
-        })
-        .bindPopup(function (layer) {
-            return layer.feature.properties.map_popup_content;
-        }).addTo(map);*/
-        L.geoJson(response.data, {
+        var getData = response.data;
+        //return false;
+        /*L.geoJson(response.data, {
 			onEachFeature: function (feature, peta) {
                 console.log(feature);
 				var style = {fillColor: "#543199",
@@ -63,7 +54,50 @@
                     .openOn(map);
                 });
             }
-            }).addTo(map);
+            }).addTo(map);*/
+        $.each(getData, function(item, value){
+            //console.log(value);
+            //return false;
+            var randomColor = Math.floor(Math.random()*16777215).toString(16);
+            $.getJSON("{{url('geojson')}}/"+value.json,function(result){
+                L.geoJson(result.data, {
+                    onEachFeature: function (feature, peta) {
+                        var style = {
+                            fillColor: "#" + randomColor,
+                            color: "#" + randomColor,
+                            "weight": 1,
+                            "opacity":0.6,
+                            "fillOpacity": 0.5,
+                        };
+                        peta.setStyle(style);
+                        var popup = L.popup();
+                        peta.on('click', function(e){
+                            $.get('{{url('api/peta/sekolah/'.$id_level_wilayah)}}/'+value.json).then(function(sekolah){
+                                var contentTooltips;
+                                if(sekolah.data.id_level_wilayah == 1){
+                                    contentTooltips = "<ul class='list-group list-group no-padding'>"+
+                                            "<li class='list-group-item list-group-item-info'><a href='{{url('page/peta-mutu')}}/{{$id_level_wilayah}}/"+value.json+"'><b>"+value.nama+"</b></a></li>"+
+                                            "<li class='list-group-item list-group-item-warning'>Jumlah SMK : "+sekolah.data.jml_smk+"<br>SMK Coe : "+sekolah.data.smk_coe+"</li>"+
+                                            "</ul>";
+                                } else {
+                                    //http://apm-smk.local:8002/page/progres-data/3/050100
+                                    contentTooltips = "<ul class='list-group list-group no-padding'>"+
+                                            "<li class='list-group-item list-group-item-info'><a href='{{url('page/progres-data')}}/3/"+value.json+"'><b>"+value.nama+"</b></a></li>"+
+                                            "<li class='list-group-item list-group-item-warning'>Jumlah SMK : "+sekolah.data.jml_smk+"<br>SMK Coe : "+sekolah.data.smk_coe+"</li>"+
+                                            "</ul>";
+                                }
+                                popup
+                                .setLatLng(e.latlng)
+                                .setContent(contentTooltips)
+                                .openOn(map);
+                            }).catch(function (error) {
+                                console.log(error);
+                            });
+                        });
+                    }
+                }).addTo(map);
+            });
+        });
     })
     .catch(function (error) {
         console.log(error);

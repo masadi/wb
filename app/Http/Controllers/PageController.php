@@ -14,6 +14,7 @@ use App\Nilai_komponen;
 use App\Pakta_integritas;
 use App\Rapor_mutu;
 use App\Jawaban;
+use File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 class PageController extends Controller
@@ -317,7 +318,26 @@ class PageController extends Controller
     }
     public function peta_mutu(Request $request){
         $query = $request->route('query');
-        return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+        $id_level_wilayah = $request->id_level_wilayah;
+        if($id_level_wilayah == 2){
+            $api_url_map = route('api.peta.wilayah', ['kode_wilayah' => $request->kode_wilayah]);
+            $json = File::get('geojson/'.$request->kode_wilayah.'.geojson');
+            $json = json_decode($json);
+            $latlng = $json->features[0]->geometry->coordinates[0][0];
+            $leaflet = [
+                'map_center_latitude' => $latlng[0][1],
+                'map_center_longitude' => $latlng[0][0],
+                'zoom_level' => 9,
+            ];
+        } else {
+            $api_url_map = route('api.peta.index');
+            $leaflet = [
+                'map_center_latitude' => config('leaflet.map_center_latitude'),
+                'map_center_longitude' => config('leaflet.map_center_longitude'),
+                'zoom_level' => config('leaflet.zoom_level'),
+            ];
+        }
+        return view('page.'.$query)->with(['id_level_wilayah' => ($id_level_wilayah) ? $id_level_wilayah : 2, 'leaflet' => $leaflet, 'api_url_map' => $api_url_map]);
     }
     public function pencarian(Request $request){
         $query = $request->route('query');

@@ -86,4 +86,6 @@ Route::get('/wilayah', 'FrontController@get_wilayah')->name('api.wilayah');
 Route::post('/filter-wilayah', 'FrontController@filter_wilayah')->name('api.filter_wilayah');
 Route::group(['prefix' => 'peta'], function(){
     Route::get('/', 'PetaController@index')->name('api.peta.index');
+    Route::get('/wilayah/{kode_wilayah}', 'PetaController@wilayah')->name('api.peta.wilayah');
+    Route::get('/sekolah/{id_level_wilayah}/{kode_wilayah}', 'PetaController@sekolah');
 });
