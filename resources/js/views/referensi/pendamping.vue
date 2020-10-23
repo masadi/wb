@@ -27,6 +27,9 @@
                                 <i class="fas fa-th mr-1"></i>
                                 Data Pendamping
                             </h3>
+                            <div class="card-tools" v-show="hasRole('admin') || hasRole('direktorat')">
+                                <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Pendamping'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" />
@@ -36,6 +39,59 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Pendamping</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form @submit.prevent="insertData()" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input v-model="form.id" type="hidden" name="id" class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
+                            <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
+                            <has-error :form="form" field="nama"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>NIP</label>
+                            <input v-model="form.nip" type="text" name="nip" class="form-control" :class="{ 'is-invalid': form.errors.has('nip') }">
+                            <has-error :form="form" field="nip"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>NUPTK</label>
+                            <input v-model="form.nuptk" type="text" name="nuptk" class="form-control" :class="{ 'is-invalid': form.errors.has('nuptk') }">
+                            <has-error :form="form" field="nuptk"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Asal Instansi</label>
+                            <input v-model="form.instansi" type="text" name="instansi" class="form-control" :class="{ 'is-invalid': form.errors.has('instansi') }">
+                            <has-error :form="form" field="instansi"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input v-model="form.email" type="text" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                            <has-error :form="form" field="email"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor Handphone</label>
+                            <input v-model="form.nomor_hp" type="text" name="nomor_hp" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_hp') }">
+                            <has-error :form="form" field="nomor_hp"></has-error>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <my-loader />
 </div>
 </template>
@@ -45,6 +101,16 @@ import Datatable from './../components/Pendamping.vue' //IMPORT COMPONENT DATATA
 export default {
     data() {
         return {
+            editmode: false,
+            form: new Form({
+                id: '',
+                nama: '',
+                nip: '',
+                nuptk: '',
+                instansi: '',
+                email: '',
+                nomor_hp: '',
+            }),
             fields: [{
                     key: 'nama',
                     'label': 'Nama Lengkap',
@@ -135,6 +201,28 @@ export default {
 
                 this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
             }
+        },
+        newModal() {
+            this.editmode = false;
+            this.form.reset();
+            this.form.user_id = user.user_id;
+            $('#modalAdd').modal('show');
+        },
+        insertData() {
+            this.form.post('/api/referensi/simpan-pendamping').then((response) => {
+                console.log(response);
+                $('#modalAdd').modal('hide');
+                Toast.fire({
+                    icon: 'success',
+                    title: response.message
+                });
+                this.loadPostsData();
+            }).catch((e) => {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
         },
     }
 }

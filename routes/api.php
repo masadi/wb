@@ -31,6 +31,7 @@ Route::post('/hitung-nilai-instrumen', 'NilaiController@hitung_nilai');
 //Route::post('/users', 'UsersController@create');
 Route::group(['prefix' => 'referensi'], function(){
     Route::get('/{query}', 'ReferensiController@index');
+    Route::post('/simpan-{query}', 'ReferensiController@simpan_data');
     Route::post('/komponen/upload', 'ReferensiController@upload');
     Route::post('/sekolah-sasaran', 'ReferensiController@sekolah_sasaran');
     Route::post('/sekolah-sasaran-pendamping', 'ReferensiController@sekolah_sasaran_pendamping');

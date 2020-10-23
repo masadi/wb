@@ -520,4 +520,33 @@ class ReferensiController extends Controller
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $users]);
     }
+    public function simpan_data(Request $request){
+        if($request->route('query') == 'pendamping'){
+            $messages = [
+                'nama.required'	=> 'Nama tidak boleh kosong',
+                'instansi.required'	=> 'Asal Instansi tidak boleh kosong',
+                'email.required'	=> 'Email tidak boleh kosong',
+                'email.email'	=> 'Email tidak valid',
+                'nomor_hp.required'	=> 'Nomor Handphone tidak boleh kosong',
+            ];
+            $validator = Validator::make(request()->all(), [
+                'nama' => 'required',
+                'instansi' => 'required',
+                'email' => 'required|email',
+                'nomor_hp' => 'required',
+            ],
+            $messages
+            )->validate();
+            $pendamping = Pendamping::create([
+                'nama' => $request->nama,
+                'nip' => $request->nip,
+                'nuptk' => $request->nuptk,
+                'instansi' => $request->instansi,
+                'email' => $request->email,
+                'nomor_hp' => $request->nomor_hp,
+            ]);
+            return response()->json(['status' => 'success', 'data' => $pendamping]);
+        }
+        return response()->json(['status' => 'failed', 'data' => NULL]);
+    }
 }
