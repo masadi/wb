@@ -49,6 +49,10 @@ class KuisionerController extends Controller
     public function simpan_jawaban(Request $request){
         if($request->instrumen_id){
             foreach($request->instrumen_id as $instrumen_id => $nilai){
+                $del_sekolah = Jawaban::where(function($query) use ($request, $instrumen_id){
+                    $query->where('user_id',$request->user_id);
+                    $query->where('instrumen_id', $instrumen_id);
+                })->delete();
                 Jawaban::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
