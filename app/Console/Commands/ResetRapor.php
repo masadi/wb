@@ -41,7 +41,7 @@ class ResetRapor extends Command
     {
         $npsn = $this->argument('npsn');
         if($npsn){
-            $sekolah = Sekolah::with(['sekolah_sasaran', 'user'])->where('npsn', $npsn)->first();
+            $sekolah = Sekolah::has('sekolah_sasaran')->with(['sekolah_sasaran', 'user'])->where('npsn', $npsn)->first();
             if($sekolah){
                 DB::table('rapor_mutu')->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->delete();
                 DB::table('pakta_integritas')->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->delete();
