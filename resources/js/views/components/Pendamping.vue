@@ -71,8 +71,8 @@
                 <td>: {{modalText.nuptk}}</td>
             </tr>
             <tr>
-                <td>Asal Institusi</td>
-                <td>: {{modalText.institusi}}</td>
+                <td>Asal Instansi</td>
+                <td>: {{modalText.instansi}}</td>
             </tr>
             <tr>
                 <td>Email</td>
@@ -223,7 +223,6 @@ export default {
             })
         },
         openShowModal(row) {
-            console.log(row.item)
             this.showModal = true
             this.modalText = row.item
         },
