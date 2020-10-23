@@ -1,5 +1,5 @@
 <template>
-<b-modal id="modal-xl" size="xl" ref="addSekolah" title="List Sekolah Sasaran">
+<b-modal id="modal-xl" size="xl" ref="addSekolah" title="List Sekolah Binaan">
     <sekolah-sasaran-pendamping :pendamping_id="pendamping_id" :permintaan="permintaan"></sekolah-sasaran-pendamping>
     <template v-slot:modal-footer>
         <div class="float-right">

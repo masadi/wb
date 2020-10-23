@@ -35,8 +35,8 @@
         </template>
         <template v-slot:cell(actions)="row">
             <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" size="sm" variant="success" v-show="hasRole('admin') || hasRole('direktorat')">
-                <b-dropdown-item href="javascript:" @click="listSekolah(row.item.pendamping_id)"><i class="fas fa-folder"></i> List Sekolah Sasaran</b-dropdown-item>
-                <b-dropdown-item href="javascript:" @click="addSekolah(row.item.pendamping_id)"><i class="fas fa-folder-plus"></i> Tambah Sekolah Sasaran</b-dropdown-item>
+                <b-dropdown-item href="javascript:" @click="listSekolah(row.item.pendamping_id)"><i class="fas fa-folder"></i> List Sekolah Binaan</b-dropdown-item>
+                <b-dropdown-item href="javascript:" @click="addSekolah(row.item.pendamping_id)"><i class="fas fa-folder-plus"></i> Tambah Sekolah Binaan</b-dropdown-item>
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                 <b-dropdown-item href="javascript:" @click="deleteData(row.item.pendamping_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
             </b-dropdown>
