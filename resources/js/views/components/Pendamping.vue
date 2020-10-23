@@ -56,11 +56,11 @@
             <b-pagination v-model="meta.current_page" :total-rows="meta.total" :per-page="meta.per_page" align="right" @change="changePage" aria-controls="dw-datatable"></b-pagination>
         </div>
     </div>
-    <b-modal id="modal-lg" size="lg" v-model="showModal" title="Detil Penjamin Mutu">
+    <b-modal id="modal-lg" size="lg" v-model="showModal" title="Detil Pendamping">
         <table class="table">
             <tr>
                 <td width="20%">Nama</td>
-                <td width="80%">: {{modalText.name}}</td>
+                <td width="80%">: {{modalText.nama}}</td>
             </tr>
             <tr>
                 <td>NIP</td>
@@ -72,11 +72,7 @@
             </tr>
             <tr>
                 <td>Asal Institusi</td>
-                <td>: {{modalText.asal_institusi}}</td>
-            </tr>
-            <tr>
-                <td>Alamat Institusi</td>
-                <td>: {{modalText.alamat_institusi}}</td>
+                <td>: {{modalText.institusi}}</td>
             </tr>
             <tr>
                 <td>Email</td>
@@ -227,6 +223,7 @@ export default {
             })
         },
         openShowModal(row) {
+            console.log(row.item)
             this.showModal = true
             this.modalText = row.item
         },

@@ -496,7 +496,13 @@ class ReferensiController extends Controller
         return response()->json($response);
     }
     public function get_pendamping(){
-        $users = Pendamping::has('sekolah_sasaran')->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
+        $users = Pendamping::where(function($query){
+            if(request()->sekolah_id){
+                $query->whereHas('sekolah_sasaran', function($query){
+                    $query->where('sekolah_sasaran.sekolah_id', request()->sekolah_id);
+                });
+            }
+        })->has('sekolah_sasaran')->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
