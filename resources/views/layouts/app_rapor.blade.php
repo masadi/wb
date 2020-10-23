@@ -78,7 +78,7 @@ if($laman == 'login'){
   $aktif_login = ' active';
 }
 ?>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed text-sm">
     <div class="wrapper">
         <nav class="main-header navbar navbar-expand navbar-light">
             <!-- Left navbar links -->
@@ -106,7 +106,7 @@ if($laman == 'login'){
         
               <!-- Sidebar Menu -->
               <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent text-sm" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                       <li class="nav-item has-treeview {{$active_rapor_mutu}}">
                         <a href="#" class="nav-link text-white{{$aktif_rapor_mutu_sekolah}}{{$aktif_rapor_mutu_verifikasi}}{{$aktif_rapor_mutu_afirmasi}}">
                           <i class="nav-icon fas fa-th"></i>

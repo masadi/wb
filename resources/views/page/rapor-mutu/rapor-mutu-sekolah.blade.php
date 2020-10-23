@@ -101,15 +101,15 @@
                         <h2>Rapor Mutu 2020</h2>
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
-                                <h4 class="nama_sekolah">-</h4>
-                                <h4 class="alamat_sekolah">-</h4>
-                                <h4><strong>Telp</strong>: <span class="telp">-</span> Fax: <span class="fax">-</span></h4>
-                                <h4><strong>Laman</strong>: <span class="laman">-</span></h4>
+                                <p class="nama_sekolah m-0">-</p>
+                                <p class="alamat_sekolah m-0">-</p>
+                                <p class="m-0"><strong>Telp</strong>: <span class="telp">-</span> Fax: <span class="fax">-</span></p>
+                                <p class="m-0"><strong>Laman</strong>: <span class="laman">-</span></p>
                             </div>
                             <div class="col-lg-6 col-md-12">
-                                <h4>&nbsp;</h4>
-                                <h4><strong>Kepsek</strong> : <span class="kepsek">-</span></h4>
-                                <h4><strong>Program Keahlian</strong> : <span class="proli">-</span></h4>
+                                <p class="m-0">&nbsp;</p>
+                                <p class="m-0"><strong>Kepsek</strong> : <span class="kepsek">-</span></p>
+                                <p class="m-0"><strong>Program Keahlian</strong> : <span class="proli">-</span></p>
                             </div>
                         </div>
                     </div>
@@ -156,15 +156,8 @@
                         </table>
                     </div>
                 </div>
-                <div id="btn_toggle" class="col-12" style="display: none;">
-                    <button class="show_satu button btn btn-warning btn-lg" data-query="nasional">Tampilkan Data Nasional</button>
-                    <button class="show_dua button btn btn-danger btn-lg" style="display: none;" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
-                </div>
                 @auth
                 <div class="row">
-                    <div class="col-12">
-                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
-                    </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
                             <div class="card-header card-warna-{{strtolower($komponen[0]->nama)}}">
@@ -189,6 +182,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 mb-4">
+                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
                         <canvas id="marksChart" width="100%" height="100%"></canvas>
                     </div>
                 </div>
@@ -284,10 +278,7 @@
                 </div>
                 @else
                 <div class="row">
-                    <div class="col-12">
-                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
-                    </div>
-                    <div class="col-lg-8 col-md-12">
+                    <div class="col-lg-6 col-md-12">
                         <div class="card">
                             <div class="card-header bg-secondary">
                                 <h3 class="card-title">Kinerja (Performance)</h3>
@@ -343,8 +334,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 mb-4">
-                        <canvas id="marksChart" width="100%" height="100%"></canvas>
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <button class="show_satu button btn btn-warning btn-lg" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
+                        <button class="show_dua button btn btn-danger btn-lg" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
+                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
+                        <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
                     </div>
                 </div>
                 @endauth
