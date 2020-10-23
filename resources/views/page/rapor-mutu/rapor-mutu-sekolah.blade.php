@@ -337,7 +337,9 @@
                     <div class="col-lg-6 col-md-12 mb-4">
                         <button class="show_satu button btn btn-warning btn-lg" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
                         <button class="show_dua button btn btn-danger btn-lg" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
-                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
+                        <div style="width:100%; height:100%">
+                            <canvas id="scatterChart" class="mb-3" style="display: none;"></canvas>
+                        </div>
                         <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
                     </div>
                 </div>
@@ -785,7 +787,7 @@ function tampilChart(data){
                         ticks: {
                             min: -50,
                             max: 50,
-                            stepSize: 5,
+                            //stepSize: 5,
                             callback: v => v == 0 ? 'Dampak Rendah' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -802,7 +804,7 @@ function tampilChart(data){
                         ticks: {
                             min: -50,
                             max: 50,
-                            stepSize: 5,
+                            //stepSize: 5,
                             callback: v => v == 0 ? 'Dampak Tinggi' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -823,7 +825,7 @@ function tampilChart(data){
                         ticks: {
                             min: -50,
                             max: 50,
-                            stepSize: 5,
+                            //stepSize: 5,
                             callback: v => v == 0 ? 'Kinerja Rendah' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
@@ -840,7 +842,7 @@ function tampilChart(data){
                         ticks: {
                             min: -50,
                             max: 50,
-                            stepSize: 5,
+                            //stepSize: 5,
                             callback: v => v == 0 ? 'Kinerja Tinggi' : ''
                         },
 						type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
