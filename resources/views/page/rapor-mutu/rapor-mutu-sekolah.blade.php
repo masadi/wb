@@ -182,8 +182,14 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 mb-4">
-                        <canvas id="scatterChart" width="100%" height="50%" class="mb-3" style="display: none;"></canvas>
-                        <canvas id="marksChart" width="100%" height="100%"></canvas>
+                        <div id="btn_toggle" style="display: none;">
+                            <button class="show_satu button btn btn-warning btn-lg" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
+                            <button class="show_dua button btn btn-danger btn-lg" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
+                            <div style="width:100%; height:100%">
+                                <canvas id="scatterChart" class="mb-3" style="display: none;"></canvas>
+                            </div>
+                        </div>
+                        <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
                     </div>
                 </div>
                 <div class="row">
