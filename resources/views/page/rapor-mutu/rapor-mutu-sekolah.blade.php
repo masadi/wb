@@ -58,7 +58,7 @@
                                     <th class="text-center" rowspan="2" style="vertical-align: middle">JML SEKOLAH CoE</th>
                                     <th class="text-center" colspan="2">PENGISIAN INSTRUMEN</th>
                                     <th class="text-center" colspan="2">HITUNG RAPOR MUTU</th>
-                                    <th class="text-center" colspan="2">CETAK PAKTA INTEGRITAS</th>
+                                    <th class="text-center" colspan="2">KIRIM RAPOR MUTU</th>
                                     <th class="text-center" colspan="2">VERVAL VERIFIKATOR</th>
                                     <th class="text-center" colspan="2">VERVAL PUSAT</th>
                                     <th class="text-center" colspan="2">PENGESAHAN PUSAT</th>

@@ -137,7 +137,9 @@ class Wilayah extends Model
             'sekolah_id', // Foreign key on posts table...
             'kode_wilayah', // Local key on countries table...
             'sekolah_id' // Local key on users table...
-        )->whereHas('pakta_integritas');
+        )->whereHas('pakta_integritas', function($query){
+            $query->where('terkirim', 1);
+        });
     }
     public function sekolah_pakta_integritas_kabupaten(){
         return $this->hasManyThrough(
@@ -147,7 +149,9 @@ class Wilayah extends Model
             'sekolah_id', // Foreign key on posts table...
             'kode_wilayah', // Local key on countries table...
             'sekolah_id' // Local key on users table...
-        )->whereHas('pakta_integritas');
+        )->whereHas('pakta_integritas', function($query){
+            $query->where('terkirim', 1);
+        });
     }
     public function sekolah_pakta_integritas_kecamatan(){
         return $this->hasManyThrough(
@@ -157,7 +161,9 @@ class Wilayah extends Model
             'sekolah_id', // Foreign key on posts table...
             'kode_wilayah', // Local key on countries table...
             'sekolah_id' // Local key on users table...
-        )->whereHas('pakta_integritas');
+        )->whereHas('pakta_integritas', function($query){
+            $query->where('terkirim', 1);
+        });
     }
     public function sekolah_waiting_provinsi(){
         return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
