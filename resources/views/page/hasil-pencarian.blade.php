@@ -81,9 +81,9 @@
     </div>
     <div class="tab-pane fade" id="rapor-mutu" role="tabpanel" aria-labelledby="rapor-mutu-tab">
         @permission('users-create', 'repot-read')
-        <p class="text-center mt-3">Sedang dalam pengembangan</p>
+        <p class="text-center mt-3">Sedang dalam pengembangan 1</p>
         @else
-        <p class="text-center mt-3">Sedang dalam pengembangan</p>
+        <p class="text-center mt-3">Sedang dalam pengembangan 2</p>
         @endpermission
     </div>
   </div>
