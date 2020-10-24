@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Sekolah;
 use App\User;
 use App\HelperModel;
+use Validator;
 class SekolahController extends Controller
 {
     /**
@@ -127,5 +128,22 @@ class SekolahController extends Controller
         $data = Sekolah::find($id);
         $data->delete();
         return response()->json(['message' => 'Data Sekolah berhasil dihapus']);
+    }
+    public function pencarian(Request $request){
+        $messages = [
+            'npsn.required'	=> 'NPSN tidak boleh kosong',
+            'npsn.exists'	=> 'NPSN tidak ditemukan di database',
+        ];
+        $validator = Validator::make(request()->all(), [
+            'npsn' => 'required|exists:sekolah',
+            //'file' => 'required',
+        ],
+        $messages
+        )->validate();
+        $sekolah = Sekolah::where('npsn', $request->npsn)->first();
+        return response()->json([
+            'body' => view('page.hasil-pencarian', compact('sekolah'))->render(),
+            //'sekolah' => $sekolah,
+        ]);
     }
 }

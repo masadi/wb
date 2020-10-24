@@ -46,3 +46,4 @@ Route::group(['prefix' => 'komponen'], function(){
 //Route::get('/users', 'UsersController@index');
 //Route::post('/users', 'UsersController@create');
 Route::get('/geojson/{geojson}', 'PetaController@geojson');
+Route::post('/pencarian', 'SekolahController@pencarian')->name('pencarian');
