@@ -88,3 +88,6 @@
     </div>
   </div>
 {{--$sekolah--}}
+<script>
+    //$('p.mt-3').html('text')
+</script>
