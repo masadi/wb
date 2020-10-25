@@ -42,12 +42,15 @@ class RaporController extends Controller
                 }]);
             }]);
         }])->get();
-        $user = User::withCount(['nilai_instrumen' => function($query){
+        /*$user = User::withCount(['nilai_instrumen' => function($query){
             $query->whereNull('verifikator_id');
         }])->with(['sekolah' => function($query){
             $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
         }, 'nilai_akhir' => function($query){
             $query->whereNull('verifikator_id');
+        }])->find($request->user_id);*/
+        $user = User::with(['sekolah' => function($query){
+            $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
         }])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
@@ -64,17 +67,17 @@ class RaporController extends Controller
         })->orderBy('updated_at', 'DESC')->first();
         $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
         //$pakta_integritas = Pakta_integritas::where('user_id', $request->user_id)->first();
-        $pakta_integritas = NULL;
+        /*$pakta_integritas = NULL;
         if($user->sekolah->sekolah_sasaran){
             $pakta_integritas = $user->sekolah->sekolah_sasaran->pakta_integritas;
-        }
+        }*/
         $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
         $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();
         $respone = [
             'status' => 'success', 
             'detil_user' => $user,
             'data' => $komponen, 
-            'rapor' => [
+            /*'rapor' => [
                 'jml_instrumen' => $jml_instrumen, 
                 'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
                 'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
@@ -83,7 +86,7 @@ class RaporController extends Controller
                 'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
                 'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
                 'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
-            ],
+            ],*/
             'rapor_mutu' => HelperModel::rapor_mutu($request->user_id),
         ];
         return response()->json($respone);

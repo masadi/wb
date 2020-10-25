@@ -50,7 +50,7 @@
                                                 <img src="/images/icon_progres/2.png" width="150" alt="" style="margin-bottom:80px;" />
                                             </div>
                                             <div class="ps-bot">
-                                                <p>Perhitungan rapor mutu sekolah</p>
+                                                <p>Hitung rapor mutu sekolah</p>
                                             </div>
                                             <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.hitung }"></i></i></span>
                                         </li>
@@ -59,7 +59,7 @@
                                                 <img src="/images/icon_progres/3.png" width="200" alt="" />
                                             </div>
                                             <div class="ps-top">
-                                                <p>Cetak pakta integritas sekolah</p>
+                                                <p>Kirim rapor mutu sekolah</p>
                                             </div>
                                             <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pakta }"></i></i></span>
                                         </li>

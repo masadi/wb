@@ -44,7 +44,7 @@
                                             <span class="date">{{(rapor_mutu.hitung) ? rapor_mutu.hitung : '-'}}</span>
                                         </div>
                                         <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.hitung }"> Mengitung Rapor Mutu Sekolah </h4>
+                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.hitung }"> Hitung Rapor Mutu Sekolah </h4>
                                         </div>
                                     </li>
                                     <li class="li" v-bind:class="{ complete: rapor_mutu.pakta }">
@@ -52,7 +52,7 @@
                                             <span class="date">{{(rapor_mutu.pakta) ? rapor_mutu.pakta : '-'}}</span>
                                         </div>
                                         <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.pakta }"> Cetak Pakta Integritas Sekolah </h4>
+                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.pakta }"> Kirim Rapor Mutu Sekolah </h4>
                                         </div>
                                     </li>
                                     <li class="li" v-bind:class="{ complete: rapor_mutu.verval }">
@@ -456,11 +456,11 @@ export default {
                 this.bintangInstrumen = tempBintangInstrumen
                 this.kuisioners = getData.data
                 this.output_indikator = getData.output_indikator
-                this.rapor.kuisioner.lengkap = (getData.rapor.jml_instrumen == getData.detil_user.nilai_instrumen_count)
+                /*this.rapor.kuisioner.lengkap = (getData.rapor.jml_instrumen == getData.detil_user.nilai_instrumen_count)
                 this.rapor.kuisioner.tgl = (getData.rapor.kuisioner) ? getData.rapor.kuisioner : '-'
                 this.rapor.hitung.lengkap = getData.rapor.hitung
                 this.rapor.hitung.tgl = (getData.rapor.hitung) ? getData.rapor.hitung : '-'
-                this.rapor.pakta.lengkap = (getData.rapor.pakta_integritas) ? true : false
+                this.rapor.pakta.lengkap = getData.rapor.pakta_integritas
                 this.rapor.pakta.tgl = (getData.rapor.pakta_integritas) ? getData.rapor.pakta_integritas : '-'
                 this.rapor.verval.lengkap = getData.rapor.verval
                 this.rapor.verval.tgl = (getData.rapor.verval) ? getData.rapor.verval : '-'
@@ -470,7 +470,7 @@ export default {
                 this.rapor.terima.tgl = (getData.rapor.terima) ? getData.rapor.terima : '-'
                 this.rapor.tolak.lengkap = getData.rapor.tolak
                 this.rapor.tolak.tgl = (getData.rapor.tolak) ? getData.rapor.tolak : '-'
-                this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null
+                this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null*/
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''

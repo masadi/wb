@@ -156,7 +156,9 @@ class HelperModel
             $query->whereNull('verifikator_id');
         }, 'sekolah' => function($query){
             $query->with(['smk_coe', 'sekolah_sasaran' => function($query){
-                $query->with(['pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+                $query->with(['pakta_integritas' => function($query){
+                    $query->where('terkirim', 1);
+                }, 'waiting', 'proses', 'terima', 'tolak']);
             }]);
         }])->find($user_id);
         if($user->hasRole('sekolah')){
