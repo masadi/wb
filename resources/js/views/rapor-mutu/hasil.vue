@@ -456,6 +456,9 @@ export default {
                 this.bintangInstrumen = tempBintangInstrumen
                 this.kuisioners = getData.data
                 this.output_indikator = getData.output_indikator
+                this.rapor.kuisioner.lengkap = getData.rapor_mutu.instrumen
+                this.rapor.pakta.lengkap = getData.rapor_mutu.pakta
+                this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null
                 /*this.rapor.kuisioner.lengkap = (getData.rapor.jml_instrumen == getData.detil_user.nilai_instrumen_count)
                 this.rapor.kuisioner.tgl = (getData.rapor.kuisioner) ? getData.rapor.kuisioner : '-'
                 this.rapor.hitung.lengkap = getData.rapor.hitung
