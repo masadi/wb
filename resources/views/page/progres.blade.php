@@ -17,7 +17,7 @@
                             <th>Nama Pendamping</th>
                             <th class="text-center">Pengisian Instrumen</th>
                             <th class="text-center">Hitung Rapor Mutu</th>
-                            <th class="text-center">Pakta Integritas</th>
+                            <th class="text-center">Kirim Rapor Mutu</th>
                             <th class="text-center">Verval</th>
                             <th class="text-center">Verifikasi Pusat</th>
                             <th class="text-center">Pengesahan</th>
