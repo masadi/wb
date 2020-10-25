@@ -53,6 +53,10 @@ class KuisionerController extends Controller
                     $query->where('user_id',$request->user_id);
                     $query->where('instrumen_id', $instrumen_id);
                 })->delete();
+                $del_instrumen = Nilai_instrumen::where(function($query) use ($request, $instrumen_id){
+                    $query->where('user_id',$request->user_id);
+                    $query->where('instrumen_id', $instrumen_id);
+                })->delete();
                 Jawaban::updateOrCreate(
                     [
                         'user_id' => $request->user_id,
