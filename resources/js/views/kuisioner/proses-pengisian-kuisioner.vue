@@ -98,7 +98,7 @@ export default {
                 atribut_id: {},
                 aspek_id: {},
                 komponen_id: {},
-                instrumen_id: [],
+                instrumen_id: {},
             }),
             articles: [],
             items: [],
@@ -156,7 +156,7 @@ export default {
             this.per_page = getData.aspek.per_page
             this.items = getData.data
             this.title = getData.title
-            var tempData = [];
+            var tempData = {};
             var tempIndikator = {};
             var tempAtribut = {};
             var tempAspek = {};

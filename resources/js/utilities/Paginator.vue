@@ -37,7 +37,6 @@ export default {
                 if (this.data.length !== 0) {
                     this.makePagination(response.data.aspek);
                 }
-                console.log(page_url)
                 this.$emit('update-pagination-data', this.data);
             })
         },
