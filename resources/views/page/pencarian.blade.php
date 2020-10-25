@@ -27,6 +27,8 @@
 @endsection
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://www.chartjs.org/dist/2.9.4/Chart.min.js"></script>
+<script src="https://www.chartjs.org/samples/latest/utils.js"></script>
 <script>
     $('.pencarian').click(function(e){
         e.preventDefault();
