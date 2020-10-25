@@ -51,6 +51,8 @@ class RaporController extends Controller
         }])->find($request->user_id);*/
         $user = User::with(['sekolah' => function($query){
             $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
+        }, 'nilai_akhir' => function($query){
+            $query->whereNull('verifikator_id');
         }])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
