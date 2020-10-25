@@ -80,205 +80,208 @@
         </table>
     </div>
     <div class="tab-pane fade" id="rapor-mutu" role="tabpanel" aria-labelledby="rapor-mutu-tab">
-        @if($user && $user->isAbleTo(['referensi-read', 'report-read']))
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <div class="card">
-                    <div class="card-header card-warna-{{strtolower($all_komponen[0]->nama)}}">
-                        <h3 class="card-title">{{$all_komponen[0]->nama}}</h3>
-                        <div class="card-tools">
-                            <span class="avg">{{number_format($all_komponen[0]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
-                            <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[0]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+        @if($sekolah->smk_coe)
+            @if($user && $user->isAbleTo(['referensi-read', 'report-read']))
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card">
+                        <div class="card-header card-warna-{{strtolower($all_komponen[0]->nama)}}">
+                            <h3 class="card-title">{{$all_komponen[0]->nama}}</h3>
+                            <div class="card-tools">
+                                <span class="avg">{{number_format($all_komponen[0]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
+                                <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[0]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($all_komponen[0]->aspek as $aspek)
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[0]->nama)}} text-center" style="height:125px">
+                                        {{$aspek->nama}} <br>
+                                        <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($all_komponen[0]->aspek as $aspek)
-                            <div class="col-lg-4 col-md-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[0]->nama)}} text-center" style="height:125px">
-                                    {{$aspek->nama}} <br>
-                                    <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
-                                </div>
+                </div>
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div id="btn_toggle" style="display: none;">
+                        <button class="show_satu button btn btn-warning btn-block" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
+                        <button class="show_dua button btn btn-danger btn-block" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
+                        <div style="width:100%; height:100%">
+                            <canvas id="scatterChart" class="mb-3" style="display: none;"></canvas>
+                        </div>
+                    </div>
+                    <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card">
+                        <div class="card-header card-warna-{{strtolower($all_komponen[1]->nama)}}">
+                            <h3 class="card-title">{{$all_komponen[1]->nama}}</h3>
+                            <div class="card-tools">
+                                <span class="avg">{{number_format($all_komponen[1]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
+                                <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[1]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
                             </div>
-                            @endforeach
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($all_komponen[1]->aspek as $aspek)
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[1]->nama)}} text-center" style="height:125px">
+                                        {{$aspek->nama}} <br>
+                                        <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header card-warna-{{strtolower($all_komponen[2]->nama)}}">
+                            <h3 class="card-title">{{$all_komponen[2]->nama}}</h3>
+                            <div class="card-tools">
+                                <span class="avg">{{number_format($all_komponen[2]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
+                                <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[2]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($all_komponen[2]->aspek as $aspek)
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[2]->nama)}} text-center" style="height:125px">
+                                        {{$aspek->nama}} <br>
+                                        <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="card">
+                        <div class="card-header card-warna-{{strtolower($all_komponen[3]->nama)}}">
+                            <h3 class="card-title">{{$all_komponen[3]->nama}}</h3>
+                            <div class="card-tools">
+                                <span class="avg">{{number_format($all_komponen[3]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
+                                <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[3]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($all_komponen[3]->aspek as $aspek)
+                                <div class="col-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[3]->nama)}} text-center" style="height:125px">
+                                        {{$aspek->nama}} <br>
+                                        <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header card-warna-{{strtolower($all_komponen[4]->nama)}}">
+                            <h3 class="card-title">{{$all_komponen[4]->nama}}</h3>
+                            <div class="card-tools">
+                                <span class="avg">{{number_format($all_komponen[4]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
+                                <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[4]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($all_komponen[4]->aspek as $aspek)
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[4]->nama)}} text-center" style="height:125px">
+                                        {{$aspek->nama}} <br>
+                                        <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-12 mb-4">
-                <div id="btn_toggle" style="display: none;">
-                    <button class="show_satu button btn btn-warning btn-block" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
-                    <button class="show_dua button btn btn-danger btn-block" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
-                    <div style="width:100%; height:100%">
-                        <canvas id="scatterChart" class="mb-3" style="display: none;"></canvas>
-                    </div>
-                </div>
-                <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <div class="card">
-                    <div class="card-header card-warna-{{strtolower($all_komponen[1]->nama)}}">
-                        <h3 class="card-title">{{$all_komponen[1]->nama}}</h3>
-                        <div class="card-tools">
-                            <span class="avg">{{number_format($all_komponen[1]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
-                            <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[1]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($all_komponen[1]->aspek as $aspek)
-                            <div class="col-lg-4 col-md-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[1]->nama)}} text-center" style="height:125px">
-                                    {{$aspek->nama}} <br>
-                                    <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
-                                </div>
+            @else
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            <h3 class="card-title">Kinerja (Performance)</h3>
+                            <div class="card-tools">
+                                <?php
+                                $rerata_kinerja = [];
+                                foreach($komponen_kinerja as $kinerja){
+                                    $rerata_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
+                                }
+                                ?>
+                                <span class="avg_kinerja">{{number_format(array_sum($rerata_kinerja) / count($rerata_kinerja),2)}}</span>
                             </div>
-                            @endforeach
                         </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header card-warna-{{strtolower($all_komponen[2]->nama)}}">
-                        <h3 class="card-title">{{$all_komponen[2]->nama}}</h3>
-                        <div class="card-tools">
-                            <span class="avg">{{number_format($all_komponen[2]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
-                            <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[2]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($all_komponen[2]->aspek as $aspek)
-                            <div class="col-lg-6 col-md-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[2]->nama)}} text-center" style="height:125px">
-                                    {{$aspek->nama}} <br>
-                                    <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($komponen_kinerja as $kinerja)
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($kinerja->nama)}} text-center" style="height:125px">
+                                        {{$kinerja->nama}} <br>
+                                        <div class="kinerja-{{strtolower(Helper::clean($kinerja->nama))}}">{{number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2)}}</div>
+                                        <span class="bintang-kinerja">{!! Helper::bintang_icon(number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                                    </div>
                                 </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-                <div class="card">
-                    <div class="card-header card-warna-{{strtolower($all_komponen[3]->nama)}}">
-                        <h3 class="card-title">{{$all_komponen[3]->nama}}</h3>
-                        <div class="card-tools">
-                            <span class="avg">{{number_format($all_komponen[3]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
-                            <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[3]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                    <div class="card">
+                        <div class="card-header bg-secondary">
+                            <h3 class="card-title">Dampak (Impact)</h3>
+                            <div class="card-tools">
+                                <?php
+                                $rerata_dampak = [];
+                                foreach($komponen_dampak as $dampak){
+                                    $rerata_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
+                                }
+                                ?>
+                                <span class="avg_dampak">{{number_format(array_sum($rerata_dampak) / count($rerata_dampak),2)}}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($all_komponen[3]->aspek as $aspek)
-                            <div class="col-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[3]->nama)}} text-center" style="height:125px">
-                                    {{$aspek->nama}} <br>
-                                    <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($komponen_dampak as $dampak)
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="position-relative p-3 mb-3 card-warna-{{strtolower($dampak->nama)}} text-center" style="height:125px">
+                                        {{$dampak->nama}} <br>
+                                        <div class="dampak-{{strtolower(Helper::clean($dampak->nama))}}">{{number_format($dampak->all_nilai_komponen->avg('total_nilai'),2)}}</div>
+                                        <span class="bintang-dampak">{!! Helper::bintang_icon(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                                    </div>
                                 </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header card-warna-{{strtolower($all_komponen[4]->nama)}}">
-                        <h3 class="card-title">{{$all_komponen[4]->nama}}</h3>
-                        <div class="card-tools">
-                            <span class="avg">{{number_format($all_komponen[4]->all_nilai_komponen->avg('total_nilai'),2)}}</span>
-                            <span class="bintang">{!! Helper::bintang_icon(number_format($all_komponen[4]->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div id="btn_toggle" style="display: none;">
+                        <button class="show_satu button btn btn-warning btn-block" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
+                        <button class="show_dua button btn btn-danger btn-block" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
+                        <div style="width:100%; height:100%">
+                            <canvas id="scatterChart" class="mb-3" style="display: none;"></canvas>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($all_komponen[4]->aspek as $aspek)
-                            <div class="col-lg-6 col-md-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($all_komponen[4]->nama)}} text-center" style="height:125px">
-                                    {{$aspek->nama}} <br>
-                                    <div class="{{strtolower(Helper::clean($aspek->nama))}}">{{number_format($aspek->all_nilai_aspek->avg('total_nilai'),2)}}</div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+                    <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
                 </div>
             </div>
-        </div>
+            @endif
         @else
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <div class="card">
-                    <div class="card-header bg-secondary">
-                        <h3 class="card-title">Kinerja (Performance)</h3>
-                        <div class="card-tools">
-                            <?php
-                            $rerata_kinerja = [];
-                            foreach($komponen_kinerja as $kinerja){
-                                $rerata_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
-                            }
-                            ?>
-                            <span class="avg_kinerja">{{number_format(array_sum($rerata_kinerja) / count($rerata_kinerja),2)}}</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($komponen_kinerja as $kinerja)
-                            <div class="col-lg-4 col-md-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($kinerja->nama)}} text-center" style="height:125px">
-                                    {{$kinerja->nama}} <br>
-                                    <div class="kinerja-{{strtolower(Helper::clean($kinerja->nama))}}">{{number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2)}}</div>
-                                    <span class="bintang-kinerja">{!! Helper::bintang_icon(number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header bg-secondary">
-                        <h3 class="card-title">Dampak (Impact)</h3>
-                        <div class="card-tools">
-                            <?php
-                            $rerata_dampak = [];
-                            foreach($komponen_dampak as $dampak){
-                                $rerata_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
-                            }
-                            ?>
-                            <span class="avg_dampak">{{number_format(array_sum($rerata_dampak) / count($rerata_dampak),2)}}</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            @foreach($komponen_dampak as $dampak)
-                            <div class="col-lg-6 col-md-12">
-                                <div class="position-relative p-3 mb-3 card-warna-{{strtolower($dampak->nama)}} text-center" style="height:125px">
-                                    {{$dampak->nama}} <br>
-                                    <div class="dampak-{{strtolower(Helper::clean($dampak->nama))}}">{{number_format($dampak->all_nilai_komponen->avg('total_nilai'),2)}}</div>
-                                    <span class="bintang-dampak">{!! Helper::bintang_icon(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2), 'warning') !!}</span>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-12 mb-4">
-                <div id="btn_toggle" style="display: none;">
-                    <button class="show_satu button btn btn-warning btn-block" style="display: none;" data-query="nasional">Tampilkan Data Nasional</button>
-                    <button class="show_dua button btn btn-danger btn-block" data-query="provinsi">Tampilkan Data <span class="nama_provinsi"></span></button>
-                    <div style="width:100%; height:100%">
-                        <canvas id="scatterChart" class="mb-3" style="display: none;"></canvas>
-                    </div>
-                </div>
-                <canvas id="marksChart" style="max-width: 512px; margin: auto"></canvas>
-            </div>
-        </div>
+        <p class="text-center mt-3">{{$sekolah->nama}} belum ditetapkan menjadi SMK CoE</p>
         @endif
     </div>
 </div>
-{{$user}}
 <style>
     .card-warna-{{strtolower($all_komponen[0]->nama)}} {
         background:#d9434e !important;
@@ -302,11 +305,13 @@
     }
   </style>
 <script>
-    var params = {
-        provinsi_id : '{{$sekolah->provinsi_id}}',
-        sekolah_id: '{{$sekolah->sekolah_id}}',
-    }
-	getRaporMutu(params);
+var params = {
+    provinsi_id : '{{$sekolah->provinsi_id}}',
+    sekolah_id: '{{$sekolah->sekolah_id}}',
+}
+@if($sekolah->smk_coe)
+getRaporMutu(params);
+@endif
 function getRaporMutu(params){
     $.ajax({
 		url: '{{route('api.rapor_sekolah')}}',

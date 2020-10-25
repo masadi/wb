@@ -165,7 +165,7 @@ class SekolahController extends Controller
                 }]);
             }]);
         }])->get();*/
-        $sekolah = Sekolah::with(['jurusan_sp'])->withCount(['guru', 'tendik', 'anggota_rombel', 'anggota_rombel as kelas_10_count' => function (Builder $query) {
+        $sekolah = Sekolah::with(['jurusan_sp', 'smk_coe'])->withCount(['guru', 'tendik', 'anggota_rombel', 'anggota_rombel as kelas_10_count' => function (Builder $query) {
             $query->where('tingkat', 10);
         }, 'anggota_rombel as kelas_11_count' => function (Builder $query) {
             $query->where('tingkat', 11);
