@@ -36,7 +36,7 @@
                                             <span style="font-weight: 600;">{{item.pertanyaan}} <a href="javascript:{}" class="text-danger" v-on:click="petunjuk(item.instrumen_id)" title="Petunjuk Pengisian"><i class="fas fa-info-circle"></i></a></span>
                                             <div class="form-group">
                                                 <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">
-                                                    <input class="custom-control-input" type="radio" v-bind:id="item.instrumen_id+subs.urut" v-bind:name="`instrumen_id.${item.instrumen_id}`" v-model="form.instrumen_id[item.instrumen_id]" v-bind:value="subs.urut">
+                                                    <input class="custom-control-input" type="radio" v-bind:id="item.instrumen_id+subs.urut" v-model="form.instrumen_id[item.instrumen_id]" v-bind:value="subs.urut">
                                                     <label v-bind:for="item.instrumen_id+subs.urut" class="custom-control-label" style="font-weight: normal;">{{subs.urut}}. {{subs.pertanyaan}}</label>
                                                 </div>
                                             </div>
