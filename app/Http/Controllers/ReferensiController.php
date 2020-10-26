@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use File;
 use Validator;
 use PDF;
+use Artisan;
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
@@ -548,5 +549,9 @@ class ReferensiController extends Controller
             return response()->json(['status' => 'success', 'data' => $pendamping]);
         }
         return response()->json(['status' => 'failed', 'data' => NULL]);
+    }
+    public function reset_isian_instrumen(Request $request)
+    {
+        return Artisan::call('reset:rapor', ['npsn' => $request->npsn]);
     }
 }
