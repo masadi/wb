@@ -314,7 +314,7 @@ export default {
                             if (getData.user.sekolah.sekolah_sasaran.pakta_integritas.terkirim == 0) {
                                 this.isKirim = false
                                 if (npsn_pengecualian.includes(check_npsn) === false) {
-                                    this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati waktu yang ditentukan'
+                                    this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati batas waktu yang ditentukan'
                                     this.is_coe = null
                                 }
                             } else {
@@ -325,7 +325,7 @@ export default {
                             }
                         } else {
                             if (npsn_pengecualian.includes(check_npsn) === false) {
-                                this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati waktu yang ditentukan'
+                                this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati batas waktu yang ditentukan'
                                 this.is_coe = null
                             }
                             this.isKirim = true
