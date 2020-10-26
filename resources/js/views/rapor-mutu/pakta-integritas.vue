@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <div class="card" v-show="!is_coe">
                         <div class="card-body">
-                            <p>{{no_coe}}</p>
+                            <h3 class="text-center" v-html="no_coe"></h3>
                         </div>
                     </div>
                     <div class="card" v-show="is_coe">
@@ -291,17 +291,32 @@ export default {
                     this.tanggal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at) : '-' : '-'
                     this.tanggal_ttd = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at, false) : this.tanggalIndo(formatted_date, false) : this.tanggalIndo(formatted_date, false)
                     this.isBatal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? false : true : true
+                    this.no_coe = 'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
+                    this.is_coe = (getData.user.sekolah) ? getData.user.sekolah.smk_coe : null
                     if (getData.user.nilai_akhir && this.isBatal) {
                         this.isCheckbox = false
                     } else {
                         this.isCheckbox = true
-                        //this.isCetak = true
                     }
+                    var npsn_pengecualian = [
+                        '20400384',
+                        '69947173',
+                        '20265292',
+                        '20328949',
+                        '20340792',
+                        '20325261',
+                        '20306055'
+                    ]
+                    var check_npsn = getData.user.sekolah.npsn
                     if (getData.user.sekolah.sekolah_sasaran) {
                         if (getData.user.sekolah.sekolah_sasaran.pakta_integritas) {
                             this.pakta_integritas_id = getData.user.sekolah.sekolah_sasaran.pakta_integritas.pakta_integritas_id
                             if (getData.user.sekolah.sekolah_sasaran.pakta_integritas.terkirim == 0) {
                                 this.isKirim = false
+                                if (npsn_pengecualian.includes(check_npsn) === false) {
+                                    this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati waktu yang ditentukan'
+                                    this.is_coe = null
+                                }
                             } else {
                                 this.isKirim = true
                                 this.isBatal = true
@@ -309,8 +324,11 @@ export default {
                                 this.allowCetak = true
                             }
                         } else {
+                            if (npsn_pengecualian.includes(check_npsn) === false) {
+                                this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati waktu yang ditentukan'
+                                this.is_coe = null
+                            }
                             this.isKirim = true
-                            //this.isCetak = true
                         }
                     }
                     this.terms = false
@@ -318,8 +336,6 @@ export default {
                     this.show_text_batal = true
                     this.show_text_kirim = true
                     this.show_spinner_kirim = false
-                    this.no_coe = 'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
-                    this.is_coe = (getData.user.sekolah) ? getData.user.sekolah.smk_coe : null
                 })
         },
         tanggalIndo(time, full = true) {
