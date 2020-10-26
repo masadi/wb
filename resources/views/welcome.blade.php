@@ -169,7 +169,7 @@
 @section('js')
 <script>
     $(window).on('load',function(){
-        $('#modalInfo').modal('show');
+        //$('#modalInfo').modal('show');
     });
 </script>
 @endsection
