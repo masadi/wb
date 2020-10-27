@@ -71,7 +71,14 @@ class Wilayah extends Model
             'sekolah_id', // Foreign key on posts table...
             'kode_wilayah', // Local key on countries table...
             'sekolah_id' // Local key on users table...
-        )->whereHas('last_nilai_instrumen');
+        )->where(function($query){
+            $query->whereHas('sekolah', function($query){
+                $query->has('smk_coe');
+            });
+            $query->whereHas('nilai_instrumen', function($query){
+                $query->whereNull('verifikator_id');
+            });
+        });
     }
     public function sekolah_instrumen_kabupaten(){
         return $this->hasManyThrough(
@@ -81,7 +88,14 @@ class Wilayah extends Model
             'sekolah_id', // Foreign key on posts table...
             'kode_wilayah', // Local key on countries table...
             'sekolah_id' // Local key on users table...
-        )->whereHas('last_nilai_instrumen');
+        )->where(function($query){
+            $query->whereHas('sekolah', function($query){
+                $query->has('smk_coe');
+            });
+            $query->whereHas('nilai_instrumen', function($query){
+                $query->whereNull('verifikator_id');
+            });
+        });
     }
     public function sekolah_instrumen_kecamatan(){
         return $this->hasManyThrough(
@@ -91,7 +105,14 @@ class Wilayah extends Model
             'sekolah_id', // Foreign key on posts table...
             'kode_wilayah', // Local key on countries table...
             'sekolah_id' // Local key on users table...
-        )->whereHas('last_nilai_instrumen');
+        )->where(function($query){
+            $query->whereHas('sekolah', function($query){
+                $query->has('smk_coe');
+            });
+            $query->whereHas('nilai_instrumen', function($query){
+                $query->whereNull('verifikator_id');
+            });
+        });
     }
     public function sekolah_rapor_mutu_provinsi(){
         return $this->hasManyThrough(
@@ -103,6 +124,8 @@ class Wilayah extends Model
             'sekolah_id' // Local key on users table...
         )->whereHas('nilai_akhir', function($query){
             $query->whereNull('verifikator_id');
+        })->whereHas('sekolah', function($query){
+            $query->has('smk_coe');
         });
     }
     public function sekolah_rapor_mutu_kabupaten(){
@@ -115,6 +138,8 @@ class Wilayah extends Model
             'sekolah_id' // Local key on users table...
         )->whereHas('nilai_akhir', function($query){
             $query->whereNull('verifikator_id');
+        })->whereHas('sekolah', function($query){
+            $query->has('smk_coe');
         });
     }
     public function sekolah_rapor_mutu_kecamatan(){
@@ -127,6 +152,8 @@ class Wilayah extends Model
             'sekolah_id' // Local key on users table...
         )->whereHas('nilai_akhir', function($query){
             $query->whereNull('verifikator_id');
+        })->whereHas('sekolah', function($query){
+            $query->has('smk_coe');
         });
     }
     public function sekolah_pakta_integritas_provinsi(){
@@ -139,6 +166,8 @@ class Wilayah extends Model
             'sekolah_id' // Local key on users table...
         )->whereHas('pakta_integritas', function($query){
             $query->where('terkirim', 1);
+        })->whereHas('sekolah', function($query){
+            $query->has('smk_coe');
         });
     }
     public function sekolah_pakta_integritas_kabupaten(){
@@ -151,6 +180,8 @@ class Wilayah extends Model
             'sekolah_id' // Local key on users table...
         )->whereHas('pakta_integritas', function($query){
             $query->where('terkirim', 1);
+        })->whereHas('sekolah', function($query){
+            $query->has('smk_coe');
         });
     }
     public function sekolah_pakta_integritas_kecamatan(){
@@ -163,6 +194,8 @@ class Wilayah extends Model
             'sekolah_id' // Local key on users table...
         )->whereHas('pakta_integritas', function($query){
             $query->where('terkirim', 1);
+        })->whereHas('sekolah', function($query){
+            $query->has('smk_coe');
         });
     }
     public function sekolah_waiting_provinsi(){
@@ -294,12 +327,12 @@ class Wilayah extends Model
         });
     }
     public function sekolah_coe_provinsi(){
-        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('smk_coe');//->whereHas('sekolah_sasaran');
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->has('smk_coe');//->whereHas('sekolah_sasaran');
     }
     public function sekolah_coe_kabupaten(){
-        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->whereHas('smk_coe');//->whereHas('sekolah_sasaran');
+        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->has('smk_coe');//->whereHas('sekolah_sasaran');
     }
     public function sekolah_coe_kecamatan(){
-        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->whereHas('smk_coe');//->whereHas('sekolah_sasaran');
+        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->has('smk_coe');//->whereHas('sekolah_sasaran');
     }
 }
