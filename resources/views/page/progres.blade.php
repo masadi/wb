@@ -12,6 +12,7 @@
                 <table id="datatable" class="table table-bordered table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
+                            <th class="text-center">No.</th>
                             <th>Nama Sekolah</th>
                             <th class="text-center">NPSN</th>
                             <th>Nama Pendamping</th>
@@ -47,6 +48,7 @@
         },
         responsive: true,
         columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, className: 'text-center' },
             {data: 'nama', name: 'nama'},
             {data: 'npsn', name: 'npsn'},
             {data: 'nama_pendamping', name: 'nama_pendamping', orderable: false},

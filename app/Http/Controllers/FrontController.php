@@ -23,6 +23,7 @@ class FrontController extends Controller
             }
         })->get();
         return DataTables::of($query)
+        ->addIndexColumn()
         ->addColumn('nama', function ($item) {
             $links = $item->nama;
             return $links;
