@@ -305,7 +305,14 @@ export default {
                         '20328949',
                         '20340792',
                         '20325261',
-                        '20306055'
+                        '20306055',
+                        '20217802',
+                        '20328152',
+                        '69754002',
+                        '69882371',
+                        '20549504',
+                        '20210716',
+                        '20529957'
                     ]
                     var check_npsn = getData.user.sekolah.npsn
                     if (getData.user.sekolah.sekolah_sasaran) {
