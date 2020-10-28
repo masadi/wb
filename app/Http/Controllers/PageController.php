@@ -22,7 +22,11 @@ class PageController extends Controller
     public function index(Request $request){
         $query = $request->route('query');
         $query = str_replace('-', '_', $query);
-        return $this->{$query}($request);
+        if (method_exists($this, $query)) {
+            return $this->{$query}($request);
+        } else {
+            abort(404);
+        }
     }
     public function progres($request){
         $query = $request->route('query');
@@ -342,5 +346,10 @@ class PageController extends Controller
     public function pencarian(Request $request){
         $query = $request->route('query');
         return view('page.'.$query)->with(['id_level_wilayah' => 1]);
+    }
+    public function kebijakan($request)
+    {
+        $query = $request->route('query');
+        return view('page.'.$query);
     }
 }
