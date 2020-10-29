@@ -554,4 +554,50 @@ class ReferensiController extends Controller
     {
         return Artisan::call('reset:rapor', ['npsn' => $request->npsn]);
     }
+    public function update_data(Request $request)
+    {
+        if($request->route('query') == 'pendamping'){
+            $messages = [
+                'nama.required'	=> 'Nama tidak boleh kosong',
+                'instansi.required'	=> 'Asal Instansi tidak boleh kosong',
+                'email.required'	=> 'Email tidak boleh kosong',
+                'email.email'	=> 'Email tidak valid',
+                'nomor_hp.required'	=> 'Nomor Handphone tidak boleh kosong',
+            ];
+            $validator = Validator::make(request()->all(), [
+                'nama' => 'required',
+                'instansi' => 'required',
+                'email' => 'required|email',
+                'nomor_hp' => 'required',
+            ],
+            $messages
+            )->validate();
+            $pendamping = Pendamping::find($request->id);
+            $pendamping->nama = $request->nama;
+            $pendamping->nip = $request->nip;
+            $pendamping->nuptk = $request->nuptk;
+            $pendamping->instansi = $request->instansi;
+            $pendamping->email = $request->email;
+            $pendamping->nomor_hp = $request->nomor_hp;
+            if($pendamping->save()){
+                return response()->json(['status' => 'success', 'message' => 'Data Pendamping berhasil diperbaharui']);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Data Pendamping gagal diperbaharui']);
+            }
+        }
+        return response()->json(['status' => 'error', 'data' => NULL]);
+    }
+    public function delete_data(Request $request)
+    {
+        if($request->route('query') == 'pendamping'){
+            $id = $request->route('id');
+            Sekolah_sasaran::where('pendamping_id', $id)->update(['pendamping_id' => NULL]);
+            $pendamping = Pendamping::find($id);
+            if($pendamping->delete()){
+                return response()->json(['title' => 'Berhasil', 'status' => 'success', 'message' => 'Data Pendamping berhasil dihapus']);
+            } else {
+                return response()->json(['title' => 'Gagal', 'status' => 'error', 'message' => 'Data Pendamping gagal dihapus']);
+            }
+        }
+    }
 }

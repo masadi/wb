@@ -91,6 +91,59 @@
             </div>
         </template>
     </b-modal>
+    <b-modal ref="editModal" size="lg" title="Edit Data Pendamping">
+        <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input v-model="form.id" type="hidden" name="id" class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
+            <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
+            <has-error :form="form" field="nama"></has-error>
+        </div>
+        <div class="form-group">
+            <label>NIP</label>
+            <input v-model="form.nip" type="text" name="nip" class="form-control" :class="{ 'is-invalid': form.errors.has('nip') }">
+            <has-error :form="form" field="nip"></has-error>
+        </div>
+        <div class="form-group">
+            <label>NUPTK</label>
+            <input v-model="form.nuptk" type="text" name="nuptk" class="form-control" :class="{ 'is-invalid': form.errors.has('nuptk') }">
+            <has-error :form="form" field="nuptk"></has-error>
+        </div>
+        <div class="form-group">
+            <label>Asal Instansi</label>
+            <input v-model="form.instansi" type="text" name="instansi" class="form-control" :class="{ 'is-invalid': form.errors.has('instansi') }">
+            <has-error :form="form" field="instansi"></has-error>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input v-model="form.email" type="text" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+            <has-error :form="form" field="email"></has-error>
+        </div>
+        <div class="form-group">
+            <label>Nomor Handphone</label>
+            <input v-model="form.nomor_hp" type="text" name="nomor_hp" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_hp') }">
+            <has-error :form="form" field="nomor_hp"></has-error>
+        </div>
+        <template v-slot:modal-footer>
+            <div class="w-100 float-right">
+                <b-button variant="secondary" size="sm" @click="hideModal">
+                    Tutup
+                </b-button>
+                <b-button variant="success" size="sm" @click="updateData">
+                    Perbaharui
+                </b-button>
+            </div>
+        </template>
+        <!--form @submit.prevent="updateData()" method="post">
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
+                <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form-->
+    </b-modal>
     <TambahSekolahPendamping ref="TambahSekolahPendamping"></TambahSekolahPendamping>
     <ListSekolahPendamping ref="ListSekolahPendamping"></ListSekolahPendamping>
 </div>
@@ -137,6 +190,11 @@ export default {
             form: new Form({
                 id: '',
                 nama: '',
+                nip: '',
+                nuptk: '',
+                instansi: '',
+                email: '',
+                nomor_hp: '',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -205,13 +263,13 @@ export default {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    return fetch('/api/pendamping/' + id, {
+                    return fetch('/api/referensi/delete-pendamping/' + id, {
                         method: 'DELETE',
                     }).then(() => {
                         //this.form.delete('api/komponen/'+id).then(()=>{
                         Swal.fire(
                             'Berhasil!',
-                            'Data Pengguna berhasil dihapus',
+                            'Data Pendamping berhasil dihapus',
                             'success'
                         ).then(() => {
                             this.loadPerPage(10);
@@ -227,19 +285,29 @@ export default {
             this.modalText = row.item
         },
         editData(row) {
-            //console.log(row);
-            this.editmode = true
-            this.editModal = true
-            this.form.id = row.item.id
+            console.log(row);
+            this.form.id = row.item.pendamping_id
             this.form.nama = row.item.nama
-            $('#modalEdit').modal('show');
+            this.form.nip = row.item.nip
+            this.form.nuptk = row.item.nuptk
+            this.form.instansi = row.item.instansi
+            this.form.email = row.item.email
+            this.form.nomor_hp = row.item.nomor_hp
+            /*this.editmode = true
+            this.editModal = true
+
+            $('#modalEdit').modal('show');*/
+            this.$refs['editModal'].show()
+        },
+        hideModal() {
+            this.$refs['editModal'].hide()
         },
         updateData() {
-            let id = this.form.id;
-            this.form.put('/api/pendamping/' + id).then((response) => {
-                $('#modalEdit').modal('hide');
+            let id = this.form.id
+            this.form.put('/api/referensi/update-pendamping/' + id).then((response) => {
+                this.$refs['editModal'].hide()
                 Toast.fire({
-                    icon: 'success',
+                    icon: response.status,
                     title: response.message
                 });
                 this.loadPerPage(10);
