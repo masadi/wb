@@ -313,7 +313,13 @@ export default {
                         '20549504',
                         '20210716',
                         '20529957',
-                        '30401713'
+                        '30401713',
+                        '20326425',
+                        '20253319',
+                        '20564082',
+                        '20338847',
+                        '20300710',
+                        '20539814'
                     ]
                     var check_npsn = getData.user.sekolah.npsn
                     if (getData.user.sekolah.sekolah_sasaran) {
