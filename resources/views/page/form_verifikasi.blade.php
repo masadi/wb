@@ -54,15 +54,15 @@
     </ol>
 </p>
 <div class="table-responsive">
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th style="width: 5%">NO.</th>
-                <th style="width: 25%">INDIKATOR/PERTANYAAN</th>
-                <th style="width: 20%">VERIFIKASI/TELAAH DOKUMEN</th>
-                <th style="width: 10%">ADA</th>
-                <th style="width: 10%">TIDAK</th>
-                <th style="width: 30%">KETERANGAN</th>
+                <th style="width: 5%" class="text-center">NO.</th>
+                <th style="width: 25%" class="text-center">INDIKATOR/PERTANYAAN</th>
+                <th style="width: 20%" class="text-center">VERIFIKASI/TELAAH DOKUMEN</th>
+                <th style="width: 10%" class="text-center">ADA</th>
+                <th style="width: 10%" class="text-center">TIDAK</th>
+                <th style="width: 30%" class="text-center">KETERANGAN</th>
             </tr>
         </thead>
         <tbody>
@@ -78,13 +78,13 @@
             @foreach ($item->telaah_dokumen as $telaah_dokumen)
             <tr>
                 <td>
-                    {{$telaah_dokumen->nama}}
+                    {{trim($telaah_dokumen->nama)}}
                 </td>
-                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                <td class="text-center"><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         id="{{$telaah_dokumen->dok_id}}" value="0"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}>
                 </td>
-                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                <td class="text-center"><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         id="{{$telaah_dokumen->dok_id}}" value="1"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : ''}}>
                 </td>

@@ -13,11 +13,15 @@ class TelaahSeeder extends Seeder
     public function run()
     {
         $komponen = (new FastExcel)->import('public/template_telaah_dokumen.xlsx', function ($item){
-            Telaah_dokumen::updateOrCreate([
+            Telaah_dokumen::updateOrCreate(
+                [
                 'instrumen_id' => $item['instrumen_id'],
-                'nama' => $item['nama'],
                 'urut' => $item['urut'],
-            ]);
+                ],
+                [
+                    'nama' => trim($item['nama']),
+                ]
+            );
         });
     }
 }
