@@ -93,3 +93,4 @@ Route::group(['prefix' => 'peta'], function(){
     Route::get('/wilayah/{kode_wilayah}', 'PetaController@wilayah')->name('api.peta.wilayah');
     Route::get('/sekolah/{id_level_wilayah}/{kode_wilayah}', 'PetaController@sekolah');
 });
+Route::post('/verifikasi-sekolah', 'VerifikasiController@verifikasi_sekolah')->name('api.verifikasi_sekolah');

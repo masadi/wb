@@ -17,6 +17,7 @@ use App\Jenis_berita_acara;
 use App\Berita_acara;
 use App\Jenis_dokumen;
 use App\Dokumen;
+use App\Wilayah;
 use App\User;
 use Validator;
 use Carbon\Carbon;
@@ -26,6 +27,24 @@ class VerifikasiController extends Controller
     public function index(Request $request, $query){
         $function = 'get_'.str_replace('-', '_', $query);
         return $this->{$function}($request);
+    }
+    public function verifikasi_front(Request $request){
+        if ($request->isMethod('post')) {
+        } else {
+            $all_wilayah = Wilayah::whereHas('negara', function($query){
+                $query->where('negara_id', 'ID');
+            })->where(function($query){
+                $query->where('id_level_wilayah', 1);
+            })->orderBy('kode_wilayah')->get();
+            return view('page.verifikasi', compact('all_wilayah'));
+        }
+    }
+    public function verifikasi_sekolah(Request $request){
+        $sekolah = Sekolah::find($request->sekolah_id);
+        $instrumens = Instrumen::with('telaah_dokumen')->withCount('telaah_dokumen')->where('urut', 0)->get();
+        return response()->json([
+            'body' => view('page.form_verifikasi', compact('sekolah', 'instrumens'))->render(),
+        ]);
     }
     public function get_komponen(Request $request){
         $all_data = Komponen::get();

@@ -27,6 +27,9 @@ class Instrumen extends Model
     public function subs(){
         return $this->hasMany('App\Instrumen', 'ins_id', 'instrumen_id')->orderBy('urut', 'ASC');
     }
+    public function telaah_dokumen(){
+        return $this->hasMany('App\Telaah_dokumen', 'instrumen_id', 'instrumen_id')->orderBy('urut', 'ASC');
+    }
     public function aspek()
     {
         return $this->hasOneThrough(

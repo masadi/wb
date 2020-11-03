@@ -321,7 +321,8 @@ export default {
                         '20300710',
                         '20539814',
                         '20268221',
-                        '20616038'
+                        '20616038',
+                        '20616368'
                     ]
                     var check_npsn = getData.user.sekolah.npsn
                     if (getData.user.sekolah.sekolah_sasaran) {
