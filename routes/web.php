@@ -49,3 +49,4 @@ Route::get('/geojson/{geojson}', 'PetaController@geojson');
 Route::post('/pencarian', 'SekolahController@pencarian')->name('pencarian');
 Route::get('/verifikasi', 'VerifikasiController@verifikasi_front');
 Route::post('/verifikasi', 'VerifikasiController@verifikasi_front');
+Route::get('/dapodik', 'DapodikController@index');

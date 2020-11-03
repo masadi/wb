@@ -43,6 +43,7 @@
         <template v-slot:cell(actions)="row">
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
+                <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="sektorCoe(row)"><i class="fas fa-sync-alt"></i> Sektor CoE</b-dropdown-item>
                 <b-dropdown-item v-show="!row.item.smk_coe" href="javascript:" @click="tetapkanCoe(row)"><i class="fas fa-check"></i> Tetapkan CoE</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="batalkanCoe(row)"><i class="fas fa-times"></i> Batalkan CoE</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe && checkResetDB(row)" href="javascript:" @click="resetDb(row)"><i class="fas fa-sync"></i> Reset Isian Instrumen</b-dropdown-item>
@@ -284,6 +285,47 @@ export default {
         }
     },*/
     methods: {
+        sektorCoe(row) {
+            axios.get(`/api/referensi/jurusan`, {
+                params: {
+                    sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
+                },
+            }).then((response) => {
+                let getData = response.data
+                //console.log(getData)
+                //return false;
+                Swal.fire({
+                    title: 'Pilih Kompetensi Keahlian',
+                    input: 'select',
+                    inputOptions: getData.data.jurusan,
+                    inputValue: row.item.sekolah_sasaran.jurusan_id,
+                    inputPlaceholder: 'Pilih Kompetensi Keahlian',
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                        return new Promise((resolve) => {
+                            if (value) {
+                                axios.post(`/api/referensi/sektor-coe`, {
+                                    sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
+                                    jurusan_id: value,
+                                }).then((response) => {
+                                    let getData = response.data
+                                    Swal.fire(
+                                        getData.title,
+                                        getData.text,
+                                        getData.icon
+                                    ).then(() => {
+                                        this.loadPerPage(10);
+                                    });
+                                })
+                                resolve()
+                            } else {
+                                resolve('Kompetensi Keahlian tidak boleh kosong')
+                            }
+                        })
+                    }
+                })
+            })
+        },
         tetapkanCoe(row) {
             axios.post(`/api/referensi/status-coe`, {
                 sekolah_id: row.item.sekolah_id,

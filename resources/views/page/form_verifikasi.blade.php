@@ -2,7 +2,7 @@
     <tr>
         <td>Petugas Supervisi/Verifikasi</td>
         <td style="width: 1px;">:</td>
-        <td><input type="text" class="form-control form-control-sm" name="petugas"></td>
+        <td>{{$sekolah->sekolah_sasaran->verifikator->name}}</td>
     </tr>
     <tr>
         <td>Nama Sekolah</td>

@@ -36,6 +36,7 @@ Route::group(['prefix' => 'referensi'], function(){
     Route::post('/sekolah-sasaran', 'ReferensiController@sekolah_sasaran');
     Route::post('/sekolah-sasaran-pendamping', 'ReferensiController@sekolah_sasaran_pendamping');
     Route::post('/status-coe', 'ReferensiController@status_coe');
+    Route::post('/sektor-coe', 'ReferensiController@sektor_coe');
     Route::post('/reset-isian-instrumen', 'ReferensiController@reset_isian_instrumen');
     Route::put('/update-{query}/{id}', 'ReferensiController@update_data');
     Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');

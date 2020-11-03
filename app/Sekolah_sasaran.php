@@ -56,4 +56,7 @@ class Sekolah_sasaran extends Model
     {
         return $this->hasMany('App\Nilai_dokumen', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
     }
+    public function jurusan(){
+        return $this->hasOne('App\Jurusan', 'jurusan_id', 'jurusan_id');
+    }
 }

@@ -77,6 +77,21 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        
+        'dapodik' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => '54532',
+            'database' => 'pendataan',
+            'username' => 'erapor',
+            'password' => '*D9D0502C871F464D9052A2DAB595BE49*',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

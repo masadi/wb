@@ -23,6 +23,7 @@ use App\Sekolah_sasaran;
 use App\Tahun_pendataan;
 use App\Smk_coe;
 use App\Pendamping;
+use App\Jurusan;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -599,5 +600,36 @@ class ReferensiController extends Controller
                 return response()->json(['title' => 'Gagal', 'status' => 'error', 'message' => 'Data Pendamping gagal dihapus']);
             }
         }
+    }
+    public function get_jurusan($request){
+        $data = [
+            'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'jurusan' => Jurusan::where('level_bidang_id', 12)->get()->pluck('nama_jurusan', 'jurusan_id'),
+        ];
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    public function sektor_coe(Request $request){
+        $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
+        $sekolah_sasaran->jurusan_id = $request->jurusan_id;
+        $sektor_coe = $sekolah_sasaran->save();
+        if($sektor_coe){
+            $response = [
+                'title' => 'Berhasil',
+                'text' => 'Sektor CoE berhasil diperbaharui',
+                'icon' => 'success',
+            ];
+        } else {
+            $response = [
+                'title' => 'Gagal',
+                'text' => 'Permintaan gagal. Silahkan coba beberapa saat lagi!',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($response);
+        $data = [
+            'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'jurusan' => Jurusan::where('level_bidang_id', 12)->get()->pluck('nama_jurusan', 'jurusan_id'),
+        ];
+        return response()->json(['status' => 'success', 'data' => $data]);
     }
 }

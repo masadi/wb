@@ -41,7 +41,7 @@ class VerifikasiController extends Controller
         }
     }
     public function verifikasi_sekolah(Request $request){
-        $sekolah = Sekolah::with(['sekolah_sasaran'])->find($request->sekolah_id);
+        $sekolah = Sekolah::with(['sekolah_sasaran.verifikator'])->find($request->sekolah_id);
         if($request->action){
             foreach($request->instrumen_id as $instrumen_id){
                 foreach($request->ada[$instrumen_id] as $key => $ada){
