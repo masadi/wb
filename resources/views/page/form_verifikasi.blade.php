@@ -66,47 +66,19 @@
     <tbody>
         @foreach ($instrumens as $item)
         <tr>
-            <td>{{$loop->iteration}}</td>
-            <td>{{$item->pertanyaan}}</td>
-            <td>
-                <table>
-                    @foreach ($item->telaah_dokumen as $telaah_dokumen)
-                    <tr>
-                        <td>{{$telaah_dokumen->nama}}</td>
-                    </tr>
-                    @endforeach
-                </table>
-            </td>
-            <td>
-                <table>
-                    @foreach ($item->telaah_dokumen as $telaah_dokumen)
-                    <tr>
-                        <td><input type="radio" name="ada[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}"></td>
-                    </tr>
-                    @endforeach
-                </table>
-            </td>
-            <td>
-                <table>
-                    @foreach ($item->telaah_dokumen as $telaah_dokumen)
-                    <tr>
-                        <td><input type="radio" name="ada[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}"></td>
-                    </tr>
-                    @endforeach
-                </table>
-            </td>
-            <td>
-                <table>
-                    @foreach ($item->telaah_dokumen as $telaah_dokumen)
-                    <tr>
-                        <td>
-                            <div class="form-group col-12"><input type="text" class="form-control form-control-sm" name="keterangan[{{$telaah_dokumen->dok_id}}]" style="width: 100%"></div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
-            </td>
+            <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
+                {{$loop->iteration}}</td>
+            <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
+                {{$item->pertanyaan}}</td>
         </tr>
+            @foreach ($item->telaah_dokumen as $telaah_dokumen)
+            <tr>
+                <td>{{$telaah_dokumen->nama}}</td>
+                <td><input type="radio" name="ada[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="0"></td>
+                <td><input type="radio" name="ada[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="1"></td>
+                <td><input type="text" class="form-control" name="keterangan[{{$telaah_dokumen->dok_id}}]" style="width: 100%"></td>
+            </tr>
+            @endforeach
         @endforeach
     </tbody>
 </table>

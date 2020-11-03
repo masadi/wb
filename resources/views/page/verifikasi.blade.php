@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app_full')
 @section('title', 'Verifikasi Isian Instrumen Sekolah')
 @section('content')
 <div class="row">
