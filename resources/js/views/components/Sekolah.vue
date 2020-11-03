@@ -298,7 +298,7 @@ export default {
                     title: 'Pilih Kompetensi Keahlian',
                     input: 'select',
                     inputOptions: getData.data.jurusan,
-                    inputValue: row.item.sekolah_sasaran.jurusan_id,
+                    inputValue: (row.item.sekolah_sasaran.jurusan_id) ? row.item.sekolah_sasaran.jurusan_id : '',
                     inputPlaceholder: 'Pilih Kompetensi Keahlian',
                     showCancelButton: true,
                     inputValidator: (value) => {
