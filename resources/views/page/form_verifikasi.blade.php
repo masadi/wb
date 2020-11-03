@@ -57,25 +57,23 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th style="width: 5%" class="text-center">NO.</th>
-                <th style="width: 25%" class="text-center">INDIKATOR/PERTANYAAN</th>
+                <th style="width: 2%" class="text-center">NO.</th>
+                <th style="width: 38%" class="text-center">INDIKATOR/PERTANYAAN</th>
                 <th style="width: 20%" class="text-center">VERIFIKASI/TELAAH DOKUMEN</th>
-                <th style="width: 10%" class="text-center">ADA</th>
-                <th style="width: 10%" class="text-center">TIDAK</th>
+                <th style="width: 5%" class="text-center">ADA</th>
+                <th style="width: 5%" class="text-center">TIDAK</th>
                 <th style="width: 30%" class="text-center">KETERANGAN</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($instrumens as $item)
             <tr>
-                <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
+                <td rowspan="{{($item->telaah_dokumen_count + 1)}}" class="text-center">
                     {{$loop->iteration}}
                     <input type="hidden" name="instrumen_id[]" value="{{$item->instrumen_id}}">
                 </td>
                 <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
                     {{$item->pertanyaan}}
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                 </td>
             </tr>
             @foreach ($item->telaah_dokumen as $telaah_dokumen)
