@@ -53,37 +53,48 @@
             kata tidak sesuai jika dokumen pendukung tidak mendukung jawaban di aplikasi;</li>
     </ol>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th style="width: 5%">NO.</th>
-            <th style="width: 25%">INDIKATOR/PERTANYAAN</th>
-            <th style="width: 20%">VERIFIKASI/TELAAH DOKUMEN</th>
-            <th style="width: 10%">ADA</th>
-            <th style="width: 10%">TIDAK</th>
-            <th style="width: 30%">KETERANGAN</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($instrumens as $item)
-        <tr>
-            <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
-                {{$loop->iteration}}
-                <input type="hidden" name="instrumen_id[]" value="{{$item->instrumen_id}}">
-            </td>
-            <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
-                {{$item->pertanyaan}}</td>
-        </tr>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 5%">NO.</th>
+                <th style="width: 25%">INDIKATOR/PERTANYAAN</th>
+                <th style="width: 20%">VERIFIKASI/TELAAH DOKUMEN</th>
+                <th style="width: 10%">ADA</th>
+                <th style="width: 10%">TIDAK</th>
+                <th style="width: 30%">KETERANGAN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($instrumens as $item)
+            <tr>
+                <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
+                    {{$loop->iteration}}
+                    <input type="hidden" name="instrumen_id[]" value="{{$item->instrumen_id}}">
+                </td>
+                <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
+                    {{$item->pertanyaan}}</td>
+            </tr>
             @foreach ($item->telaah_dokumen as $telaah_dokumen)
             <tr>
                 <td>
                     {{$telaah_dokumen->nama}}
                 </td>
-                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="0" {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}></td>
-                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="1" {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : 'checked'}}></td>
-                <td><input type="text" class="form-control" name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%" value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}"></td>
+                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                        id="{{$telaah_dokumen->dok_id}}" value="0"
+                        {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}>
+                </td>
+                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                        id="{{$telaah_dokumen->dok_id}}" value="1"
+                        {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : 'checked'}}>
+                </td>
+                <td><input type="text" class="form-control"
+                        name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
+                        value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}">
+                </td>
             </tr>
             @endforeach
-        @endforeach
-    </tbody>
-</table>
+            @endforeach
+        </tbody>
+    </table>
+</div>
