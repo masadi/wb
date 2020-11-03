@@ -52,4 +52,8 @@ class Sekolah_sasaran extends Model
     {
         return $this->belongsTo('App\Pendamping', 'pendamping_id', 'pendamping_id');
     }
+    public function nilai_dokumen()
+    {
+        return $this->hasMany('App\Nilai_dokumen', 'sekolah_sasaran_id', 'sekolah_sasaran_id');
+    }
 }

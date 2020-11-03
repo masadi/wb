@@ -4,8 +4,8 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-                <form id="form" class="form-horizontal">
+            <form id="form" class="form-horizontal">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -37,15 +37,20 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Sekolah</label>
-                                <select class="form-control select2" id="sekolah_id" style="width: 100%;">
+                                <select class="form-control select2" id="sekolah_id" style="width: 100%;" name="sekolah_id">
                                     <option value="">Semua Sekolah</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                </form>
-                <div id="result"></div>
-            </div>
+
+                    <div id="result"></div>
+                </div>
+                <div class="card-footer" style="display: none;">
+                    <input type="hidden" name="action" value="simpan">
+                    <button class="btn btn-lg btn-primary float-right" id="simpan">SIMPAN</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -55,11 +60,13 @@
 @endsection
 @section('js_file')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @endsection
 @section('js')
 <script>
-$('.select2').select2();
+    $('.select2').select2();
 $('#provinsi_id').change(function(){
+    $('.card-footer').hide();
     var ini = $(this).val();
 	if(ini == ''){
         $('#kabupaten_id').html('<option value="">Semua Kab/Kota</option>');
@@ -85,6 +92,7 @@ $('#provinsi_id').change(function(){
 	});
 });
 $('#kabupaten_id').change(function(){
+    $('.card-footer').hide();
     var ini = $(this).val();
 	if(ini == ''){
 		return false;
@@ -116,8 +124,26 @@ $('#sekolah_id').change(function(){
             sekolah_id: ini,
         },
 		success: function(response){
+            $('.card-footer').show();
             $('#result').html(response.body)
         }
+    });
+});
+$("form").on("submit", function(event){
+    event.preventDefault();
+    var formValues= $(this).serialize();
+    $.post("{{route('api.verifikasi_sekolah')}}", formValues, function(data){
+        // Display the returned data in browser
+        $("#result").html('');
+        $('#provinsi_id').val('').trigger("change");
+        $('#sekolah_id').html('<option value="">Semua Sekolah</option>');
+        $('#kabupaten_id').html('<option value="">Semua Kab/Kota</option>');
+        Swal.fire({
+            title: data.title,
+            text: data.text,
+            icon: data.icon,
+            confirmButtonText: 'Terima Kasih'
+        });
     });
 });
 </script>

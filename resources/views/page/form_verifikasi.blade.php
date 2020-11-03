@@ -45,6 +45,7 @@
         <td><input type="text" class="form-control form-control-sm" name="sektor"></td>
     </tr>
 </table>
+<input type="hidden" name="sekolah_sasaran_id" value="{{$sekolah->sekolah_sasaran->sekolah_sasaran_id}}">
 <p><strong>Petunjuk Pengisian:</strong>
     <ol>
         <li>Beri tanda (√) pada kolom Ada/Tidak;</li>
@@ -67,16 +68,20 @@
         @foreach ($instrumens as $item)
         <tr>
             <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
-                {{$loop->iteration}}</td>
+                {{$loop->iteration}}
+                <input type="hidden" name="instrumen_id[]" value="{{$item->instrumen_id}}">
+            </td>
             <td rowspan="{{($item->telaah_dokumen_count + 1)}}">
                 {{$item->pertanyaan}}</td>
         </tr>
             @foreach ($item->telaah_dokumen as $telaah_dokumen)
             <tr>
-                <td>{{$telaah_dokumen->nama}}</td>
-                <td><input type="radio" name="ada[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="0"></td>
-                <td><input type="radio" name="ada[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="1"></td>
-                <td><input type="text" class="form-control" name="keterangan[{{$telaah_dokumen->dok_id}}]" style="width: 100%"></td>
+                <td>
+                    {{$telaah_dokumen->nama}}
+                </td>
+                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="0" {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}></td>
+                <td><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" value="1" {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : 'checked'}}></td>
+                <td><input type="text" class="form-control" name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%" value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}"></td>
             </tr>
             @endforeach
         @endforeach

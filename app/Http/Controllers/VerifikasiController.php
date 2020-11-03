@@ -19,6 +19,7 @@ use App\Jenis_dokumen;
 use App\Dokumen;
 use App\Wilayah;
 use App\User;
+use App\Nilai_dokumen;
 use Validator;
 use Carbon\Carbon;
 use PDF;
@@ -40,8 +41,33 @@ class VerifikasiController extends Controller
         }
     }
     public function verifikasi_sekolah(Request $request){
-        $sekolah = Sekolah::find($request->sekolah_id);
-        $instrumens = Instrumen::with('telaah_dokumen')->withCount('telaah_dokumen')->where('urut', 0)->get();
+        $sekolah = Sekolah::with(['sekolah_sasaran'])->find($request->sekolah_id);
+        if($request->action){
+            foreach($request->instrumen_id as $instrumen_id){
+                foreach($request->ada[$instrumen_id] as $key => $ada){
+                    Nilai_dokumen::updateOrCreate(
+                        [
+                            'sekolah_sasaran_id' => $request->sekolah_sasaran_id,
+                            'instrumen_id' => $instrumen_id,
+                            'dok_id' => $key,
+                        ],
+                        [
+                            'ada' => $ada,
+                            'keterangan' => $request->keterangan[$instrumen_id][$key]
+                        ]
+                    );
+                }
+            }
+            $respone = [
+                'title' => 'Berhasil',
+                'text' => 'Hasil verifikasi dan validasi berhasil disimpan!',
+                'icon' => 'success',
+            ];
+            return response()->json($respone);
+        }
+        $instrumens = Instrumen::with(['telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
+            $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
+        }])->withCount('telaah_dokumen')->where('urut', 0)->get();
         return response()->json([
             'body' => view('page.form_verifikasi', compact('sekolah', 'instrumens'))->render(),
         ]);

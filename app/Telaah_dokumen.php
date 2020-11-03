@@ -15,4 +15,8 @@ class Telaah_dokumen extends Model
     public function instrumen(){
         return $this->belongsTo('App\Instrumen');
     }
+    public function nilai_dokumen()
+    {
+        return $this->hasOne('App\Nilai_dokumen', 'dok_id', 'dok_id');
+    }
 }
