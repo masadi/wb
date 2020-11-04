@@ -59,4 +59,8 @@ class Sekolah_sasaran extends Model
     public function jurusan(){
         return $this->hasOne('App\Jurusan', 'jurusan_id', 'jurusan_id');
     }
+    public function sektor()
+    {
+        return $this->belongsTo('App\Sektor', 'sektor_id', 'id');
+    }
 }

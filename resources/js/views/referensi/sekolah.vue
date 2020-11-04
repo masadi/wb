@@ -96,9 +96,9 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'kecamatan',
-                    'label': 'Kecamatan',
-                    sortable: true
+                    key: 'sektor_coe',
+                    'label': 'Sektor CoE',
+                    sortable: false
                 },
                 {
                     key: 'kabupaten',

@@ -40,6 +40,9 @@
             <b-badge v-show="row.item.smk_coe" variant="success">Ya</b-badge>
             <b-badge v-show="!row.item.smk_coe" variant="danger">Tidak</b-badge>
         </template>
+        <template v-slot:cell(sektor_coe)="row">
+            {{(row.item.smk_coe) ? row.item.sekolah_sasaran.sektor.nama : '-'}}
+        </template>
         <template v-slot:cell(actions)="row">
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
@@ -286,7 +289,7 @@ export default {
     },*/
     methods: {
         sektorCoe(row) {
-            axios.get(`/api/referensi/jurusan`, {
+            axios.get(`/api/referensi/sektor`, {
                 params: {
                     sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
                 },
@@ -295,18 +298,18 @@ export default {
                 //console.log(getData)
                 //return false;
                 Swal.fire({
-                    title: 'Pilih Kompetensi Keahlian',
+                    title: 'Pilih Sektor',
                     input: 'select',
-                    inputOptions: getData.data.jurusan,
-                    inputValue: (row.item.sekolah_sasaran.jurusan_id) ? row.item.sekolah_sasaran.jurusan_id : '',
-                    inputPlaceholder: 'Pilih Kompetensi Keahlian',
+                    inputOptions: getData.data.sektor,
+                    inputValue: (row.item.sekolah_sasaran.sektor_id) ? row.item.sekolah_sasaran.sektor_id : '',
+                    inputPlaceholder: 'Pilih Sektor',
                     showCancelButton: true,
                     inputValidator: (value) => {
                         return new Promise((resolve) => {
                             if (value) {
                                 axios.post(`/api/referensi/sektor-coe`, {
                                     sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
-                                    jurusan_id: value,
+                                    sektor_id: value,
                                 }).then((response) => {
                                     let getData = response.data
                                     Swal.fire(
@@ -319,7 +322,7 @@ export default {
                                 })
                                 resolve()
                             } else {
-                                resolve('Kompetensi Keahlian tidak boleh kosong')
+                                resolve('Sektor tidak boleh kosong')
                             }
                         })
                     }

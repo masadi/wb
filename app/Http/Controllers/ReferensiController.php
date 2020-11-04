@@ -24,6 +24,7 @@ use App\Tahun_pendataan;
 use App\Smk_coe;
 use App\Pendamping;
 use App\Jurusan;
+use App\Sektor;
 use Carbon\Carbon;
 use File;
 use Validator;
@@ -173,7 +174,7 @@ class ReferensiController extends Controller
                 }
             }
         })->with(['smk_coe', 'user', 'sekolah_sasaran' => function($query){
-            $query->with(['pakta_integritas', 'verifikator']);
+            $query->with(['pakta_integritas', 'verifikator', 'sektor']);
         }])->orderBy($sortBy, request()->sortbydesc)
             /*->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
@@ -603,14 +604,21 @@ class ReferensiController extends Controller
     }
     public function get_jurusan($request){
         $data = [
-            'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'jurusan' => Jurusan::where('level_bidang_id', 12)->get()->pluck('nama_jurusan', 'jurusan_id'),
+            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'jurusan' => Jurusan::where('level_bidang_id', 12)->pluck('nama_jurusan', 'jurusan_id'),
+        ];
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    public function get_sektor($request){
+        $data = [
+            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'sektor' => Sektor::pluck('nama', 'id'),
         ];
         return response()->json(['status' => 'success', 'data' => $data]);
     }
     public function sektor_coe(Request $request){
         $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
-        $sekolah_sasaran->jurusan_id = $request->jurusan_id;
+        $sekolah_sasaran->sektor_id = $request->sektor_id;
         $sektor_coe = $sekolah_sasaran->save();
         if($sektor_coe){
             $response = [
@@ -626,10 +634,5 @@ class ReferensiController extends Controller
             ];
         }
         return response()->json($response);
-        $data = [
-            'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'jurusan' => Jurusan::where('level_bidang_id', 12)->get()->pluck('nama_jurusan', 'jurusan_id'),
-        ];
-        return response()->json(['status' => 'success', 'data' => $data]);
     }
 }
