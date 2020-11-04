@@ -1,6 +1,6 @@
 <table class="table">
     <tr>
-        <td>Petugas Supervisi/Verifikasi</td>
+        <td style="width: 20%">Petugas Supervisi/Verifikasi</td>
         <td style="width: 1px;">:</td>
         <td>{{$sekolah->sekolah_sasaran->verifikator->name}}</td>
     </tr>
@@ -42,7 +42,7 @@
     <tr>
         <td>Jenis/Sektor CoE</td>
         <td>:</td>
-        <td><input type="text" class="form-control form-control-sm" name="sektor"></td>
+        <td>{{$sekolah->sekolah_sasaran->sektor->nama}}</td>
     </tr>
 </table>
 <input type="hidden" name="sekolah_sasaran_id" value="{{$sekolah->sekolah_sasaran->sekolah_sasaran_id}}">
