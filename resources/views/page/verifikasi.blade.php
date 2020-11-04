@@ -37,7 +37,8 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Sekolah</label>
-                                <select class="form-control select2" id="sekolah_id" style="width: 100%;" name="sekolah_id">
+                                <select class="form-control select2" id="sekolah_id" style="width: 100%;"
+                                    name="sekolah_id">
                                     <option value="">Semua Sekolah</option>
                                 </select>
                             </div>
@@ -48,7 +49,10 @@
                 </div>
                 <div class="card-footer" style="display: none;">
                     <input type="hidden" name="action" value="simpan">
-                    <button class="btn btn-lg btn-primary float-right" id="simpan">SIMPAN</button>
+                    <a class="btn btn-lg btn-success float-left" id="cetak" href="javacript:void(0)"><i
+                            class="fa fas-print"></i> CETAK</a>
+                    <button class="btn btn-lg btn-primary float-right" id="simpan"><i class="fa far-save"></i>
+                        SIMPAN</button>
                 </div>
             </form>
         </div>
@@ -125,7 +129,8 @@ $('#sekolah_id').change(function(){
         },
 		success: function(response){
             $('.card-footer').show();
-            $('#result').html(response.body)
+            $('#result').html(response.body);
+            $('a#cetak').attr('href', '{{url('/cetak-hasil-verifikasi')}}/'+ini)
         }
     });
 });
@@ -142,8 +147,19 @@ $("form").on("submit", function(event){
             title: data.title,
             text: data.text,
             icon: data.icon,
-            confirmButtonText: 'Terima Kasih'
-        });
+            showDenyButton: true,
+            //showCancelButton: true,
+            confirmButtonText: 'Cetak Sekarang',
+            denyButtonText: 'Cetak Nanti',
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire('Terima Kasih', '', 'success')
+                window.open('{{url('/cetak-hasil-verifikasi')}}/'+data.sekolah_id)
+            } else if (result.isDenied) {
+                Swal.fire('Terima Kasih', '', 'info')
+            }
+        })
     });
 });
 </script>

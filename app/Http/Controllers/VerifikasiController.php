@@ -64,6 +64,7 @@ class VerifikasiController extends Controller
                 'title' => 'Berhasil',
                 'text' => 'Hasil verifikasi dan validasi berhasil disimpan!',
                 'icon' => 'success',
+                'sekolah_id' => $request->sekolah_id,
             ];
             return response()->json($respone);
         }
@@ -438,5 +439,23 @@ class VerifikasiController extends Controller
             $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
             return $pdf->download('instrumen.pdf');
         }
+    }
+    public function cetak($sekolah_id){
+        $sekolah = Sekolah::with(['sekolah_sasaran' => function($query){
+            $query->with(['verifikator', 'sektor']);
+        }])->find($sekolah_id);
+        $instrumens = Instrumen::with(['telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
+            $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
+        }])->withCount('telaah_dokumen')->where('urut', 0)->get();
+        $data = [
+            'sekolah' => $sekolah,
+            'instrumens' => $instrumens,
+        ];
+        $pdf = PDF::loadView('cetak.verifikasi', $data, [], [
+            'format' => [220, 330],
+            'orientation' => 'P',
+        ]);
+        $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
+        return $pdf->download('Hasil Verifikasi '.$sekolah->nama.'.pdf');
     }
 }
