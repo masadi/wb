@@ -40,8 +40,31 @@ class VerifikasiController extends Controller
             return view('page.verifikasi', compact('all_wilayah'));
         }
     }
+    public function verifikasi_instrumen(Request $request){
+        if ($request->isMethod('post')) {
+        } else {
+            $all_wilayah = Wilayah::whereHas('negara', function($query){
+                $query->where('negara_id', 'ID');
+            })->where(function($query){
+                $query->where('id_level_wilayah', 1);
+            })->orderBy('kode_wilayah')->get();
+            return view('page.verifikasi.instrumen', compact('all_wilayah'));
+        }
+    }
+    public function validasi_token(Request $request){
+        $user = User::where('token', $request->token)->first();
+        $sekolah = NULL;
+        if($user){
+            $sekolah = Sekolah::whereHas('sekolah_sasaran', function($query) use ($user){
+                $query->where('verifikator_id', $user->user_id);
+            })->get();
+        }
+        return response()->json([
+            'body' => view('page.verifikasi.sekolah', compact('sekolah', 'user'))->render(),
+        ]);
+    }
     public function verifikasi_sekolah(Request $request){
-        $sekolah = Sekolah::with(['sekolah_sasaran' => function($query){
+        $sekolah = Sekolah::with(['user', 'sekolah_sasaran' => function($query){
             $query->with(['verifikator', 'sektor']);
         }])->find($request->sekolah_id);
         if($request->action){
@@ -58,7 +81,36 @@ class VerifikasiController extends Controller
                             'keterangan' => $request->keterangan[$instrumen_id][$key]
                         ]
                     );
+                    $all_keterangan[$instrumen_id][] = $request->keterangan[$instrumen_id][$key];
                 }
+                $keterangan = array_filter($all_keterangan[$instrumen_id]);
+                $save = Nilai_instrumen::updateOrCreate(
+                    [
+                        'user_id' => $sekolah->user->user_id,
+                        'verifikator_id' => $request->verifikator_id,
+                        'instrumen_id' => $instrumen_id,
+                    ],
+                    [
+                        'nilai' => $request->verifikasi[$instrumen_id],
+                        'predikat' => HelperModel::predikat($request->verifikasi[$instrumen_id]),
+                        'keterangan' => ($keterangan) ? implode('. ', $keterangan) : NULL,
+                    ]
+                );
+                Jawaban::updateOrCreate(
+                    [
+                        'user_id' => $sekolah->user->user_id,
+                        'verifikator_id' => $request->verifikator_id,
+                        'komponen_id' => $request->komponen_id[$instrumen_id],
+                        'aspek_id' => $request->aspek_id[$instrumen_id],
+                        'atribut_id' => $request->atribut_id[$instrumen_id],
+                        'indikator_id' => $request->indikator_id[$instrumen_id],
+                        'instrumen_id' => $instrumen_id,
+                    ],
+                    [
+                        'nilai' => $request->verifikasi[$instrumen_id],
+                    ]
+                );
+                HelperModel::generate_nilai($sekolah->user->user_id, $request->verifikator_id);
             }
             $respone = [
                 'title' => 'Berhasil',
@@ -68,11 +120,35 @@ class VerifikasiController extends Controller
             ];
             return response()->json($respone);
         }
-        $instrumens = Instrumen::with(['telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
+        $callback = function($query) use ($request){
+            $query->where('verifikator_id', $request->verifikator_id);
+            $query->whereHas('user', function($query) use ($request){
+                $query->whereHas('sekolah', function($query) use ($request){
+                    $query->where('sekolah_id', $request->sekolah_id);
+                });
+                $query->where('sekolah_id', $request->sekolah_id);
+            });
+        };
+        $instrumens = Instrumen::with(['jawaban' => $callback, 'subs' => function($query){
+            $query->orderBy('urut', 'DESC');
+        }, 'telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
             $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
         }])->withCount('telaah_dokumen')->where('urut', 0)->get();
+        /*
+        $callback = function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+            $query->where('verifikator_id', $request->verifikator_id);
+            $query->whereHas('user', function($query) use ($request){
+                $query->whereHas('sekolah', function($query) use ($request){
+                    $query->where('sekolah_id', $request->sekolah_id);
+                });
+                $query->where('sekolah_id', $request->sekolah_id);
+            });
+        };
+        return Instrumen::with(['jawaban' => $callback, 'nilai_instrumen' => $callback, 'subs'])->find($request->instrumen_id);
+        */
         return response()->json([
-            'body' => view('page.form_verifikasi', compact('sekolah', 'instrumens'))->render(),
+            'body' => view('page.verifikasi.form', compact('sekolah', 'instrumens'))->render(),
         ]);
     }
     public function get_komponen(Request $request){
