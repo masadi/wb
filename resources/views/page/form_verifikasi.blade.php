@@ -48,7 +48,7 @@
 <input type="hidden" name="sekolah_sasaran_id" value="{{$sekolah->sekolah_sasaran->sekolah_sasaran_id}}">
 <p><strong>Petunjuk Pengisian:</strong>
     <ol>
-        <li>Beri tanda (√) pada kolom Ada/Tidak;</li>
+        <li>Checklist pada kolom Ada/Tidak;</li>
         <li>Pada kolom keterangan tulislah kata sesuai jika dokumen pendukung sesuai dengan jawaban di aplikasi atau
             kata tidak sesuai jika dokumen pendukung tidak mendukung jawaban di aplikasi;</li>
     </ol>
