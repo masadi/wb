@@ -18,6 +18,9 @@ class Instrumen extends Model
     public function jawaban(){
         return $this->hasOne('App\Jawaban', 'instrumen_id', 'instrumen_id');
     }
+    public function jawaban_sekolah(){
+        return $this->hasOne('App\Jawaban', 'instrumen_id', 'instrumen_id')->whereNull('verifikator_id');
+    }
     public function jawaban_penjamin_mutu(){
         return $this->hasOne('App\Nilai_instrumen', 'instrumen_id', 'instrumen_id');
     }

@@ -82,7 +82,8 @@
             ?>
             <tr style="background: #ecf0f1">
                 <th style="width: 2%; vertical-align: middle;" class="text-center">NO.</th>
-                <th style="width: 78%; vertical-align: middle;" class="text-center" colspan="2">INDIKATOR/PERTANYAAN</th>
+                <th style="width: 78%; vertical-align: middle;" class="text-center" colspan="2">INDIKATOR/PERTANYAAN
+                </th>
                 <th style="width: 10%" class="text-center">ISIAN INSTRUMEN SEKOLAH</th>
                 <th style="width: 10%" class="text-center">ISIAN INSTRUMEN VERIFIKASI</th>
             </tr>
@@ -98,9 +99,17 @@
                         value="{{$item->indikator->atribut_id}}">
                     <input type="hidden" name="indikator_id[{{$item->instrumen_id}}]" value="{{$item->indikator_id}}">
                 </td>
-                <td colspan="2">{{$item->pertanyaan}}</td>
-                <td class="text-center">{{($item->jawaban) ? $item->jawaban->nilai : '-'}}</td>
+                <td colspan="2">
+                    {{$item->pertanyaan}}
+                </td>
+                <td class="text-center">{{($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : '-'}}</td>
                 <td>
+                    <input type="text" class="form-control form-control-sm verifikasi-{{$item->instrumen_id}}"
+                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : 0}}" readonly>
+                    <input type="hidden" class="form-control form-control-sm" name="verifikasi[{{$item->instrumen_id}}]"
+                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : 0}}">
+                    <?php
+                    /*
                     <select name="verifikasi[{{$item->instrumen_id}}]" class="form-control form-control-sm">
                         @foreach ($item->subs as $sub)
                         <option value="{{$sub->urut}}"
@@ -108,6 +117,8 @@
                             {{$sub->urut}}</option>
                         @endforeach
                     </select>
+                    */
+                    ?>
                 </td>
             </tr>
             <tr>
@@ -125,16 +136,18 @@
                     {{trim($telaah_dokumen->nama)}}
                 </td>
                 <td class="text-center"><input type="radio"
+                        class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
-                        id="{{$telaah_dokumen->dok_id}}" value="0"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}>
                 </td>
-                <td class="text-center"><input type="radio"
+                <td class="text-center"><input type="radio" class="hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
-                        id="{{$telaah_dokumen->dok_id}}" value="1"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="1"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : ''}}>
                 </td>
-                <td><input type="text" class="form-control"
+                <td>
+                    <input type="text" class="form-control"
                         name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
                         value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}">
                 </td>
@@ -178,3 +191,25 @@
         </tbody>
     </table>
 </div>
+<script>
+    $( "input[type='radio']" ).change(function() {
+    var instrumen_id = $(this).data('instrumen_id');
+    var ada = $("."+instrumen_id+":checked").length;
+    var hitung = $(".hitung-"+instrumen_id+":checked").length;
+    console.log(ada);
+    console.log(hitung);
+    $.ajax({
+		url: '{{route('api.hitung_dokumen')}}',
+		type: 'post',
+		data: {
+            hitung: hitung,
+            ada: ada,
+        },
+		success: function(response){
+            console.log(response);
+            $('input[name="verifikasi['+instrumen_id+']"]').val(response.jawaban);
+            $('.verifikasi-'+instrumen_id).val(response.jawaban);
+        }
+    });
+});
+</script>

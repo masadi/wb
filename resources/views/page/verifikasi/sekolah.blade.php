@@ -34,19 +34,25 @@
     $('.select2').select2();
 $('#sekolah_id').change(function(){
     var ini = $(this).val();
-    $.ajax({
-		url: '{{route('api.verifikasi_sekolah')}}',
-		type: 'post',
-		data: {
-            sekolah_id: ini,
-            verifikator_id: $('.verifikator_id').val(),
-        },
-		success: function(response){
-            $('.tombol-submit').show();
-            $('#result_sekolah').html(response.body);
-            $('a#cetak').attr('href', '{{url('/cetak-hasil-verifikasi')}}/'+ini)
-        }
-    });
+    if(ini){
+        $.ajax({
+            url: '{{route('api.verifikasi_sekolah')}}',
+            type: 'post',
+            data: {
+                sekolah_id: ini,
+                verifikator_id: $('.verifikator_id').val(),
+            },
+            success: function(response){
+                $('.tombol-submit').show();
+                $('#result_sekolah').html(response.body);
+                $('a#cetak').attr('href', '{{url('/cetak-hasil-verifikasi')}}/'+ini)
+            }
+        });
+    } else {
+        $('#result_sekolah').html('');
+        $('.tombol-submit').hide();
+        $('a#cetak').attr('href', 'javacript:void(0)')
+    }
 });
 $("form").on("submit", function(event){
     event.preventDefault();

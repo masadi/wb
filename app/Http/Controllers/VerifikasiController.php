@@ -129,7 +129,15 @@ class VerifikasiController extends Controller
                 $query->where('sekolah_id', $request->sekolah_id);
             });
         };
-        $instrumens = Instrumen::with(['jawaban' => $callback, 'subs' => function($query){
+        $callback_sekolah = function($query) use ($request){
+            $query->whereHas('user', function($query) use ($request){
+                $query->whereHas('sekolah', function($query) use ($request){
+                    $query->where('sekolah_id', $request->sekolah_id);
+                });
+                $query->where('sekolah_id', $request->sekolah_id);
+            });
+        };
+        $instrumens = Instrumen::with(['jawaban' => $callback, 'jawaban_sekolah' => $callback_sekolah, 'subs' => function($query){
             $query->orderBy('urut', 'DESC');
         }, 'telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
             $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
@@ -149,6 +157,23 @@ class VerifikasiController extends Controller
         */
         return response()->json([
             'body' => view('page.verifikasi.form', compact('sekolah', 'instrumens'))->render(),
+        ]);
+    }
+    public function hitung_dokumen(Request $request){
+        $nilai = ($request->ada / $request->hitung) * 100;
+        $jawaban = 1;
+        if($nilai > 79){
+            $jawaban = 5;
+        } elseif($nilai > 59){
+            $jawaban = 4;
+        } elseif($nilai > 39){
+            $jawaban = 3;
+        } elseif($nilai > 19){
+            $jawaban = 2;
+        }
+        return response()->json([
+            'nilai' => $nilai,
+            'jawaban' => $jawaban,
         ]);
     }
     public function get_komponen(Request $request){
