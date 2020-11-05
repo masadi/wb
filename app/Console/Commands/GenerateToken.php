@@ -40,8 +40,8 @@ class GenerateToken extends Command
     {
         $users = User::whereRoleIs('penjamin_mutu')->get();
         foreach($users as $user){
-            $token = Str::random(10);
-            $user->token = $token;
+            $token = Str::random(6);
+            $user->token = strtoupper($token);
             $user->save();
         }
     }

@@ -52,7 +52,7 @@ class VerifikasiController extends Controller
         }
     }
     public function validasi_token(Request $request){
-        $user = User::where('token', $request->token)->first();
+        $user = User::whereRaw("lower(token) = '".strtolower($request->token)."'")->first();
         $sekolah = NULL;
         if($user){
             $sekolah = Sekolah::whereHas('sekolah_sasaran', function($query) use ($user){

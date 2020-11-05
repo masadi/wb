@@ -26,7 +26,7 @@
             </div>
         </form>
         @else
-        <p><strong>Anda belum memiliki sekolah binaan</strong></p>
+        <h3 class="text-center mt-3">Token yang dimasukkan tidak ditemukan di database!</h3>
         @endif
     </div>
 </div>
