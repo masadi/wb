@@ -68,22 +68,34 @@
             </tr>
             */
             ?>
-            <tr>
-                <th style="width: 2%" class="text-center">NO.</th>
-                <th style="width: 78%" class="text-center" colspan="2">INDIKATOR/PERTANYAAN</th>
-                <th style="width: 10%" class="text-center">ISIAN INSTRUMEN SEKOLAH</th>
-                <th style="width: 10%" class="text-center">ISIAN INSTRUMEN VERIFIKASI</th>
-            </tr>
+
         </thead>
         <tbody>
             @foreach ($instrumens as $item)
+            <?php
+            if($loop->iteration % 2 == 0){ 
+                $class = "#ffffff";  
+            } 
+            else{ 
+                $class = "#ecf0f1"; 
+            } 
+            ?>
+            <tr style="background: #ecf0f1">
+                <th style="width: 2%; vertical-align: middle;" class="text-center">NO.</th>
+                <th style="width: 78%; vertical-align: middle;" class="text-center" colspan="2">INDIKATOR/PERTANYAAN</th>
+                <th style="width: 10%" class="text-center">ISIAN INSTRUMEN SEKOLAH</th>
+                <th style="width: 10%" class="text-center">ISIAN INSTRUMEN VERIFIKASI</th>
+            </tr>
             <tr>
                 <td class="text-center" rowspan="{{($item->telaah_dokumen_count + 3)}}">
                     {{$loop->iteration}}
                     <input type="hidden" name="instrumen_id[]" value="{{$item->instrumen_id}}">
-                    <input type="hidden" name="komponen_id[{{$item->instrumen_id}}]" value="{{$item->indikator->atribut->aspek->komponen_id}}">
-                    <input type="hidden" name="aspek_id[{{$item->instrumen_id}}]" value="{{$item->indikator->atribut->aspek_id}}">
-                    <input type="hidden" name="atribut_id[{{$item->instrumen_id}}]" value="{{$item->indikator->atribut_id}}">
+                    <input type="hidden" name="komponen_id[{{$item->instrumen_id}}]"
+                        value="{{$item->indikator->atribut->aspek->komponen_id}}">
+                    <input type="hidden" name="aspek_id[{{$item->instrumen_id}}]"
+                        value="{{$item->indikator->atribut->aspek_id}}">
+                    <input type="hidden" name="atribut_id[{{$item->instrumen_id}}]"
+                        value="{{$item->indikator->atribut_id}}">
                     <input type="hidden" name="indikator_id[{{$item->instrumen_id}}]" value="{{$item->indikator_id}}">
                 </td>
                 <td colspan="2">{{$item->pertanyaan}}</td>
@@ -91,7 +103,9 @@
                 <td>
                     <select name="verifikasi[{{$item->instrumen_id}}]" class="form-control form-control-sm">
                         @foreach ($item->subs as $sub)
-                        <option value="{{$sub->urut}}" {{($item->jawaban) ? ($item->jawaban->nilai == $sub->urut) ? 'selected' : '' : ''}}>{{$sub->urut}}</option>
+                        <option value="{{$sub->urut}}"
+                            {{($item->jawaban) ? ($item->jawaban->nilai == $sub->urut) ? 'selected' : '' : ''}}>
+                            {{$sub->urut}}</option>
                         @endforeach
                     </select>
                 </td>
@@ -110,11 +124,13 @@
                 <td>
                     {{trim($telaah_dokumen->nama)}}
                 </td>
-                <td class="text-center"><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                <td class="text-center"><input type="radio"
+                        name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         id="{{$telaah_dokumen->dok_id}}" value="0"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}>
                 </td>
-                <td class="text-center"><input type="radio" name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                <td class="text-center"><input type="radio"
+                        name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         id="{{$telaah_dokumen->dok_id}}" value="1"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : ''}}>
                 </td>
