@@ -68,4 +68,7 @@ class User extends Authenticatable
     public function pakta_integritas(){
         return $this->hasOne('App\Pakta_integritas', 'user_id', 'user_id');
     }
+    public function getTokenAttribute($value){
+        return strtoupper($value);
+    }
 }
