@@ -23,6 +23,7 @@ use App\Nilai_dokumen;
 use Validator;
 use Carbon\Carbon;
 use PDF;
+use Storage;
 class VerifikasiController extends Controller
 {
     public function index(Request $request, $query){
@@ -67,8 +68,15 @@ class VerifikasiController extends Controller
         $sekolah = Sekolah::with(['user', 'sekolah_sasaran' => function($query){
             $query->with(['verifikator', 'sektor']);
         }])->find($request->sekolah_id);
+        $dokumen_verifikasi = NULL;
+        $file_dokumen_verifikasi = 'verifikasi/'.$request->sekolah_id.'.json';
+        if(Storage::exists($file_dokumen_verifikasi)){
+            $dokumen_verifikasi = Storage::get($file_dokumen_verifikasi);
+            $dokumen_verifikasi = json_decode($dokumen_verifikasi);
+        }
         if($request->action){
-            foreach($request->instrumen_id as $instrumen_id){
+            Storage::put('verifikasi/'.$request->sekolah_id.'.json', json_encode($request->all()));
+            /*foreach($request->instrumen_id as $instrumen_id){
                 foreach($request->ada[$instrumen_id] as $key => $ada){
                     Nilai_dokumen::updateOrCreate(
                         [
@@ -111,7 +119,7 @@ class VerifikasiController extends Controller
                     ]
                 );
                 HelperModel::generate_nilai($sekolah->user->user_id, $request->verifikator_id);
-            }
+            }*/
             $respone = [
                 'title' => 'Berhasil',
                 'text' => 'Hasil verifikasi dan validasi berhasil disimpan!',
@@ -156,7 +164,7 @@ class VerifikasiController extends Controller
         return Instrumen::with(['jawaban' => $callback, 'nilai_instrumen' => $callback, 'subs'])->find($request->instrumen_id);
         */
         return response()->json([
-            'body' => view('page.verifikasi.form', compact('sekolah', 'instrumens'))->render(),
+            'body' => view('page.verifikasi.form', compact('sekolah', 'instrumens', 'dokumen_verifikasi'))->render(),
         ]);
     }
     public function hitung_dokumen(Request $request){
@@ -548,9 +556,16 @@ class VerifikasiController extends Controller
         $instrumens = Instrumen::with(['telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
             $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
         }])->withCount('telaah_dokumen')->where('urut', 0)->get();
+        $dokumen_verifikasi = NULL;
+        $file_dokumen_verifikasi = 'verifikasi/'.$sekolah_id.'.json';
+        if(Storage::exists($file_dokumen_verifikasi)){
+            $dokumen_verifikasi = Storage::get($file_dokumen_verifikasi);
+            $dokumen_verifikasi = json_decode($dokumen_verifikasi);
+        }
         $data = [
             'sekolah' => $sekolah,
             'instrumens' => $instrumens,
+            'dokumen_verifikasi' => $dokumen_verifikasi,
         ];
         $pdf = PDF::loadView('cetak.verifikasi', $data, [], [
             'format' => [220, 330],

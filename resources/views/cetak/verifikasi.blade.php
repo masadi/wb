@@ -102,6 +102,17 @@
                     <td>
                         {{trim($telaah_dokumen->nama)}}
                     </td>
+                    @if($dokumen_verifikasi)
+                    <td class="text-center">
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : '√'}}
+                    </td>
+                    <td class="text-center">
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '√' : ''}}
+                    </td>
+                    <td>
+                        {{ $dokumen_verifikasi->keterangan->{$item->instrumen_id}->{$telaah_dokumen->dok_id} }}
+                    </td>
+                    @else
                     <td class="text-center">
                         {!!($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? '√' : '' :
                         '√'!!}
@@ -113,6 +124,7 @@
                     <td>
                         {{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}
                     </td>
+                    @endif
                 </tr>
                 @endforeach
                 @endforeach
@@ -129,7 +141,7 @@
             <td colspan="3">{{trim($kabupaten)}}, {{App\HelperModel::TanggalIndo(date('Y-m-d'))}}</td>
         </tr>
         <tr>
-            <td width="33%">
+            <td width="33%" class="text-center">
                 Kepala Sekolah
                 <br>
                 <br>
@@ -140,7 +152,7 @@
                 {{$sekolah->nama_kepsek}}<br>
                 NIP. {{$sekolah->nip_kepsek}}
             </td>
-            <td width="33%">
+            <td width="33%" class="text-center">
                 Pengawas Pembina
                 <br>
                 <br>
@@ -151,7 +163,7 @@
                 {{$sekolah->nama_pengawas}}<br>
                 NIP. {{$sekolah->nip_pengawas}}
             </td>
-            <td width="33%">
+            <td width="33%" class="text-center">
                 Petugas Verifikasi
                 <br>
                 <br>

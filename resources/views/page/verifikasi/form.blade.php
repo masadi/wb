@@ -104,10 +104,18 @@
                 </td>
                 <td class="text-center">{{($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : '-'}}</td>
                 <td>
+                    @if($dokumen_verifikasi)
+                    <input type="text" class="form-control form-control-sm verifikasi-{{$item->instrumen_id}}"
+                        style="width: 100%" value="{{ $dokumen_verifikasi->verifikasi->{$item->instrumen_id} }}"
+                        readonly>
+                    <input type="hidden" class="form-control form-control-sm" name="verifikasi[{{$item->instrumen_id}}]"
+                        style="width: 100%" value="{{ $dokumen_verifikasi->verifikasi->{$item->instrumen_id} }}"> 
+                    @else
                     <input type="text" class="form-control form-control-sm verifikasi-{{$item->instrumen_id}}"
                         style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : 0}}" readonly>
                     <input type="hidden" class="form-control form-control-sm" name="verifikasi[{{$item->instrumen_id}}]"
                         style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : 0}}">
+                    @endif
                     <?php
                     /*
                     <select name="verifikasi[{{$item->instrumen_id}}]" class="form-control form-control-sm">
@@ -135,8 +143,27 @@
                 <td>
                     {{trim($telaah_dokumen->nama)}}
                 </td>
-                <td class="text-center"><input type="radio"
-                        class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
+                @if($dokumen_verifikasi)
+                <td class="text-center">
+                    <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
+                        name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? 'checked' : ''}}>
+                </td>
+                <td class="text-center">
+                    <input type="radio" class="hitung-{{$item->instrumen_id}}"
+                        name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="1"
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked'}}>
+                </td>
+                <td>
+                    <input type="text" class="form-control"
+                        name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
+                        value="{{ $dokumen_verifikasi->keterangan->{$item->instrumen_id}->{$telaah_dokumen->dok_id} }}">
+                </td>
+                @else
+                <td class="text-center">
+                    <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}>
@@ -151,6 +178,7 @@
                         name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
                         value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}">
                 </td>
+                @endif
             </tr>
             @endforeach
             @endforeach
