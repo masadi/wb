@@ -55,7 +55,7 @@ class RaporController extends Controller
             $query->whereNull('verifikator_id');
         }, 'nilai_akhir_verifikasi' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->whereDate('updated_at', '>', '2020-11-08');
+            $query->whereDate('updated_at', '>=', '2020-11-08');
         }])->find($request->user_id);
         /*$output_aspek = $komponen->pluck('aspek')->flatten();
         $output_atribut = $output_aspek->pluck('atribut')->flatten();
