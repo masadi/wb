@@ -62,6 +62,9 @@ class User extends Authenticatable
     public function nilai_akhir(){
         return $this->hasOne('App\Nilai_akhir', 'user_id', 'user_id');//->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
     }
+    public function nilai_akhir_verifikasi(){
+        return $this->hasOne('App\Nilai_akhir', 'user_id', 'user_id');//->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
+    }
     public function nilai_akhir_penjamin_mutu(){
         return $this->hasOne('App\Nilai_akhir', 'verifikator_id', 'user_id');//->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
     }

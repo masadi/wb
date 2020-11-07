@@ -100,18 +100,28 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Nama Sekolah</th>
-                                        <th class="text-center" scope="col">Nilai Rapor Mutu</th>
+                                        <th scope="col" rowspan="3" class="text-center align-middle">Nama Sekolah</th>
+                                        <th class="text-center" scope="col" colspan="6">Nilai Rapor Mutu</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" colspan="3">Nilai Sekolah</th>
+                                        <th class="text-center" colspan="3">Nilai Verifikasi</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" scope="col">Nilai</th>
+                                        <th class="text-center" scope="col">Predikat</th>
+                                        <th class="text-center" scope="col">Kategori</th>
+                                        <th class="text-center" scope="col">Nilai</th>
                                         <th class="text-center" scope="col">Predikat</th>
                                         <th class="text-center" scope="col">Kategori</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{nama_sekolah}}</td>
+                                        <td class="text-center">{{nama_sekolah}}</td>
                                         <td class="text-center">{{nilai_rapor_mutu}}</td>
                                         <td class="text-center">{{predikat_sekolah}}</td>
                                         <td class="text-center">
@@ -120,6 +130,15 @@
                                             <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 41}"></span>
                                             <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 61}"></span>
                                             <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 81}"></span>
+                                        </td>
+                                        <td class="text-center">{{nilai_rapor_mutu_verifikasi}}</td>
+                                        <td class="text-center">{{predikat_sekolah_verifikasi}}</td>
+                                        <td class="text-center">
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 1}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 21}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 41}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 61}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 81}"></span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -318,7 +337,9 @@ export default {
             bintangInstrumen: {},
             nama_sekolah: '',
             nilai_rapor_mutu: 0,
+            nilai_rapor_mutu_verifikasi: 0,
             predikat_sekolah: '-',
+            predikat_sekolah_verifikasi: '-',
             data_lengkap: null,
             show_spinner_cetak: false,
             show_text_cetak: true,
@@ -476,7 +497,9 @@ export default {
                 this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null*/
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
-                this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : ''
+                this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : '-'
+                this.nilai_rapor_mutu_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.nilai : '-'
+                this.predikat_sekolah_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.predikat : '-'
                 let DataKeterangan = [];
                 let vm = this
                 $.each(getData.rapor_mutu.nilai_rapor_mutu.labels, function (key, valua) {
