@@ -147,17 +147,17 @@
                 <td class="text-center">
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
-                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="0"
                         {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked'}} required>
                 </td>
                 <td class="text-center">
                     <input type="radio" class="hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
-                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="1"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="1"
                         {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? 'checked' : ''}}>
                 </td>
                 <td>
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control keterangan-{{$telaah_dokumen->dok_id}}"
                         name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
                         value="{{ $dokumen_verifikasi->keterangan->{$item->instrumen_id}->{$telaah_dokumen->dok_id} }}">
                 </td>
@@ -165,17 +165,17 @@
                 <td class="text-center">
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
-                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="0"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : ''}} required>
                 </td>
                 <td class="text-center"><input type="radio" class="hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
-                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="1"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="1"
                         {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : ''}}>
                 </td>
                 <td>
-                    <input type="text" class="form-control"
-                        name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
+                    <input type="text" class="form-control keterangan-{{$telaah_dokumen->dok_id}}"
+                        name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"  style="width: 100%"
                         value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}">
                 </td>
                 @endif
@@ -220,12 +220,19 @@
     </table>
 </div>
 <script>
-    $( "input[type='radio']" ).change(function() {
+$( "input[type='radio']" ).change(function() {
     var instrumen_id = $(this).data('instrumen_id');
+    var dok_id = $(this).data('dok_id');
     var ada = $("."+instrumen_id+":checked").length;
     var hitung = $(".hitung-"+instrumen_id+":checked").length;
-    console.log(ada);
-    console.log(hitung);
+    var ini = $(this).val();
+    ini = parseInt(ini)
+    if(ini === 1){
+        $('.keterangan-'+dok_id).val('Tidak sesuai');
+    } else {
+        $('.keterangan-'+dok_id).val('Sesuai');
+    }
+    console.log(ini);
     $.ajax({
 		url: '{{route('api.hitung_dokumen')}}',
 		type: 'post',
