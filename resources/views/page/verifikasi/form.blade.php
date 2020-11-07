@@ -148,13 +148,13 @@
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
-                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? 'checked' : ''}}>
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked'}} required>
                 </td>
                 <td class="text-center">
                     <input type="radio" class="hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="1"
-                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked'}}>
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? 'checked' : ''}}>
                 </td>
                 <td>
                     <input type="text" class="form-control"
@@ -166,7 +166,7 @@
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" value="0"
-                        {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : 'checked'}}>
+                        {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : ''}} required>
                 </td>
                 <td class="text-center"><input type="radio" class="hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
