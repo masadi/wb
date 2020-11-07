@@ -112,9 +112,9 @@
                         style="width: 100%" value="{{ $dokumen_verifikasi->verifikasi->{$item->instrumen_id} }}"> 
                     @else
                     <input type="text" class="form-control form-control-sm verifikasi-{{$item->instrumen_id}}"
-                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : 0}}" readonly>
+                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : ($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : 0 }}" readonly>
                     <input type="hidden" class="form-control form-control-sm" name="verifikasi[{{$item->instrumen_id}}]"
-                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : 0}}">
+                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : ($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : 0 }}">
                     @endif
                     <?php
                     /*
