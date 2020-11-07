@@ -19,8 +19,8 @@
             <div id="result_sekolah"></div>
             <div class="tombol-submit" style="display: none;">
                 <input type="hidden" name="action" value="simpan">
-                <!--a class="btn btn-lg btn-success float-left" id="cetak" href="javacript:void(0)"><i
-                        class="fa fas-print"></i> CETAK</a-->
+                <a class="btn btn-lg btn-success float-left" id="cetak" href="javacript:void(0)" target="_blank"><i
+                        class="fa fas-print"></i> CETAK</a>
                 <button class="btn btn-lg btn-primary float-right" id="simpan"><i class="fa far-save"></i>
                     SIMPAN</button>
             </div>
