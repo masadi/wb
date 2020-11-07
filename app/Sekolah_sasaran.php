@@ -21,7 +21,7 @@ class Sekolah_sasaran extends Model
     }
     public function waiting()
     {
-        return $this->hasOne('App\Rapor_mutu', 'sekolah_sasaran_id', 'sekolah_sasaran_id')->whereHas('waiting');
+        return $this->hasOne('App\Rapor_mutu', 'sekolah_sasaran_id', 'sekolah_sasaran_id')->whereHas('waiting')->whereDate('updated_at', '>=', '2020-11-08');
     }
     public function proses()
     {

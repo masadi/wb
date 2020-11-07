@@ -58,6 +58,9 @@ class VerifikasiController extends Controller
         if($user){
             $sekolah = Sekolah::whereHas('sekolah_sasaran', function($query) use ($user){
                 $query->where('verifikator_id', $user->user_id);
+                $query->whereHas('pakta_integritas', function($query){
+                    $query->where('terkirim', 1);
+                });
             })->get();
         }
         return response()->json([

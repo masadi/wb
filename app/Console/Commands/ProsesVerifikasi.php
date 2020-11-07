@@ -9,6 +9,9 @@ use App\Nilai_instrumen;
 use App\HelperModel;
 use App\Jawaban;
 use App\Sekolah;
+use App\Status_rapor;
+use App\Rapor_mutu;
+use App\Jenis_rapor;
 class ProsesVerifikasi extends Command
 {
     /**
@@ -93,6 +96,15 @@ class ProsesVerifikasi extends Command
                 );
                 HelperModel::generate_nilai($sekolah->user->user_id, $content->verifikator_id);
             }
+            $status = Status_rapor::where('status', 'waiting')->first();
+            $jenis = Jenis_rapor::where('jenis', 'verval')->first();
+            Rapor_mutu::updateOrCreate([
+                'verifikator_id' => $content->verifikator_id,
+                'sekolah_sasaran_id' => $sekolah->sekolah_sasaran->sekolah_sasaran_id,
+                'status_rapor_id' => $status->id,
+                'jenis_rapor_id' => $jenis->id,
+                'keterangan' => 'Sudah di proses verifikasi',
+            ]);
             File::delete($file->getrealPath());
         }
         $this->info('Proses Verifikasi Selesai');
