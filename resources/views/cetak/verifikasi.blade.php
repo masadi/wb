@@ -138,10 +138,12 @@
     ?>
     <table border="0" width="100%">
         <tr>
-            <td colspan="3">{{trim($kabupaten)}}, {{App\HelperModel::TanggalIndo(date('Y-m-d'))}}</td>
+            <td width="5%"></td>
+            <td colspan="3" width="95%">{{trim($kabupaten)}}, {{App\HelperModel::TanggalIndo(date('Y-m-d'))}}</td>
         </tr>
         <tr>
-            <td width="33%" class="text-center">
+            <td width="5%"></td>
+            <td width="35%">
                 Kepala Sekolah
                 <br>
                 <br>
@@ -152,7 +154,7 @@
                 {{$sekolah->nama_kepsek}}<br>
                 NIP. {{$sekolah->nip_kepsek}}
             </td>
-            <td width="33%" class="text-center">
+            <td width="30%">
                 Pengawas Pembina
                 <br>
                 <br>
@@ -163,7 +165,7 @@
                 {{$sekolah->nama_pengawas}}<br>
                 NIP. {{$sekolah->nip_pengawas}}
             </td>
-            <td width="33%" class="text-center">
+            <td width="30%">
                 Petugas Verifikasi
                 <br>
                 <br>
