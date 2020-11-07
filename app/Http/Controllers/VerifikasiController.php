@@ -153,6 +153,7 @@ class VerifikasiController extends Controller
         }, 'telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
             $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
         }])->withCount('telaah_dokumen')->where('urut', 0)->get();
+        $nilai_dokumen = Nilai_dokumen::where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
         /*
         $callback = function($query) use ($request){
             $query->where('user_id', $request->user_id);
@@ -168,6 +169,8 @@ class VerifikasiController extends Controller
         */
         return response()->json([
             'body' => view('page.verifikasi.form', compact('sekolah', 'instrumens', 'dokumen_verifikasi'))->render(),
+            'dokumen_verifikasi' => $dokumen_verifikasi,
+            'nilai_dokumen' => $nilai_dokumen,
         ]);
     }
     public function hitung_dokumen(Request $request){

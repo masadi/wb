@@ -19,7 +19,7 @@
             <div id="result_sekolah"></div>
             <div class="tombol-submit" style="display: none;">
                 <input type="hidden" name="action" value="simpan">
-                <a class="btn btn-lg btn-success float-left" id="cetak" href="javacript:void(0)" target="_blank"><i
+                <a class="btn btn-lg btn-success float-left" id="cetak" href="javacript:void(0)" target="_blank" style="display: none;"><i
                         class="fa fas-print"></i> CETAK</a>
                 <button class="btn btn-lg btn-primary float-right" id="simpan"><i class="fa far-save"></i>
                     SIMPAN</button>
@@ -33,6 +33,7 @@
 <script>
     $('.select2').select2();
 $('#sekolah_id').change(function(){
+    $('a#cetak').hide();
     var ini = $(this).val();
     if(ini){
         $.ajax({
@@ -45,7 +46,10 @@ $('#sekolah_id').change(function(){
             success: function(response){
                 $('.tombol-submit').show();
                 $('#result_sekolah').html(response.body);
-                $('a#cetak').attr('href', '{{url('/cetak-hasil-verifikasi')}}/'+ini)
+                if(response.dokumen_verifikasi || response.nilai_dokumen){
+                    $('a#cetak').show();
+                    $('a#cetak').attr('href', '{{url('/cetak-hasil-verifikasi')}}/'+ini)
+                }
             }
         });
     } else {
