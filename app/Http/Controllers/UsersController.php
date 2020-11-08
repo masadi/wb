@@ -65,6 +65,8 @@ class UsersController extends Controller
 			'password_confirmation.same' => 'Konfirmasi sandi tidak sama dengan sandi baru',*/
 			'password.min' => 'Kata sandi minimal terdiri dari 8 karakter',
 			'password_confirmation.confirmed' => 'Konfirmasi kata sandi salah',
+			'token.required' => 'Token tidak boleh kosong',
+			'token.unique' => 'Token sudah terdaftar di database',
 		];
 		$validator = Validator::make(request()->all(), [
 			'image'					=> 'nullable|image|mimes:jpg,png,jpeg',
