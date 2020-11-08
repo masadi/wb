@@ -47,9 +47,11 @@ Route::group(['prefix' => 'komponen'], function(){
 //Route::post('/users', 'UsersController@create');
 Route::get('/geojson/{geojson}', 'PetaController@geojson');
 Route::post('/pencarian', 'SekolahController@pencarian')->name('pencarian');
-Route::get('/verifikasi', 'VerifikasiController@verifikasi_front');
+Route::get('/verifikasi', function(){
+    return redirect()->route('verifikasi_instrumen');
+});
 Route::post('/verifikasi', 'VerifikasiController@verifikasi_front');
-Route::get('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen');
+Route::get('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen')->name('verifikasi_instrumen');
 Route::post('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen');
 Route::get('/dapodik', 'DapodikController@index');
 Route::get('/cetak-hasil-verifikasi/{sekolah_id}', 'VerifikasiController@cetak');
