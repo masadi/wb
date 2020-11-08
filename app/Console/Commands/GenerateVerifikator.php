@@ -41,8 +41,9 @@ class GenerateVerifikator extends Command
     public function handle()
     {
         $komponen = (new FastExcel)->import('public/template_verifikator.xlsx', function ($item){
-            $username = str_replace(' ', '', $item['username']);
-            $username = strtolower($username);
+            $username = strtolower($item['username']);
+            $token = str_replace(' ', '_', trim($username));
+            $username = str_replace(' ', '', $username);
             $sekolah = Sekolah::has('sekolah_sasaran')->with('sekolah_sasaran')->where('npsn', $item['npsn'])->first();
             $new_user = User::updateOrCreate(
                 [
@@ -52,7 +53,7 @@ class GenerateVerifikator extends Command
                     'email' => $username.'@psmk.kemdikbud.go.id',
                     'name' => $item['name'],
                     'password' => bcrypt($username),
-                    'token' => $username,
+                    'token' => $token,
                 ]
             );
             if(!$new_user->hasRole('penjamin_mutu')){
