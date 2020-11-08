@@ -351,6 +351,7 @@ class ReferensiController extends Controller
             $query->with(['subs']);
             $query->where('urut', 0);
         }])->get();
+        $data['user'] = User::with(['sekolah'])->find(request()->user_id); 
         //return view('cetak.instrumen', $data);
         $pdf = PDF::loadView('cetak.instrumen', $data, [], [
             'format' => [220, 330],

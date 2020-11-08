@@ -69,6 +69,7 @@ class UsersController extends Controller
 		$validator = Validator::make(request()->all(), [
 			'image'					=> 'nullable|image|mimes:jpg,png,jpeg',
 			'name'					=> 'required',
+			'token'					=> 'required|unique:users,token,' . $id .',user_id',
             'email'					=> 'required|email|unique:users,email,' . $id .',user_id',
 			//'current_password'		=> 'nullable',
 			'current_password'		=> ['nullable', new MatchOldPassword($request->user_id)],
@@ -138,6 +139,7 @@ class UsersController extends Controller
 		$user->asal_institusi = $request->asal_institusi;
 		$user->alamat_institusi = $request->alamat_institusi;
 		$user->nomor_hp = $request->nomor_hp;
+		$user->token = trim(strtolower($request->token));
 		$user->name = $request->input('name');
         $user->email = strtolower($request->input('email'));
 		if($user->save()){

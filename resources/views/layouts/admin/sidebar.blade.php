@@ -3,11 +3,11 @@ $user = auth()->user();
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{url('/')}}" class="brand-link">
-    <!--router-link tag="a" to="/beranda" class="brand-link"-->
+        <!--router-link tag="a" to="/beranda" class="brand-link"-->
         <img src="/images/AdminLTELogo.png" alt="APM SMK" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">APM SMK</span>
-    <!--/router-link-->
+        <!--/router-link-->
     </a>
 
     <!-- Sidebar -->
@@ -51,37 +51,36 @@ $user = auth()->user();
                     </a>
                     <ul class="nav nav-treeview">
                         @if($user->isAbleTo('referensi-create'))
-                            <li class="nav-item">
-                                <router-link tag="a" to="/komponen" class="nav-link">
-                                    <i class="nav-icon fas fa-hand-point-right"></i>
-                                    <p>Komponen</p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link tag="a" to="/aspek" class="nav-link">
-                                    <i class="nav-icon fas fa-hand-point-right"></i>
-                                    <p>Aspek</p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link tag="a" to="/atribut" class="nav-link">
-                                    <i class="nav-icon fas fa-hand-point-right"></i>
-                                    <p>Atribut</p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link tag="a" to="/indikator" class="nav-link">
-                                    <i class="nav-icon fas fa-hand-point-right"></i>
-                                    <p>Indikator Kinerja</p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link tag="a" to="/instrumen" class="nav-link">
-                                    <i class="nav-icon fas fa-hand-point-right"></i>
-                                    <p>Instrumen</p>
-                                </router-link>
-                            </li>
-                        @endif
+                        <li class="nav-item">
+                            <router-link tag="a" to="/komponen" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Komponen</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/aspek" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Aspek</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/atribut" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Atribut</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/indikator" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Indikator Kinerja</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/instrumen" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Instrumen</p>
+                            </router-link>
+                        </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/verifikator" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
@@ -94,6 +93,7 @@ $user = auth()->user();
                                 <p>Pendamping</p>
                             </router-link>
                         </li>
+                        @endif
                         <li class="nav-item">
                             <router-link tag="a" to="/sekolah" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
@@ -101,12 +101,12 @@ $user = auth()->user();
                             </router-link>
                         </li>
                         @if($user->isAbleTo('users-create'))
-                            <li class="nav-item">
-                                <router-link tag="a" to="/pengguna" class="nav-link">
-                                    <i class="nav-icon fas fa-hand-point-right"></i>
-                                    <p>Pengguna</p>
-                                </router-link>
-                            </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/pengguna" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Pengguna</p>
+                            </router-link>
+                        </li>
                         @endif
                     </ul>
                 </li>
@@ -142,6 +142,15 @@ $user = auth()->user();
                 </li>
                 @endif
                 @if($user->isAbleTo('verifikasi-create'))
+                <li class="nav-item">
+                    <a href="{{route('verifikasi_instrumen')}}" class="nav-link">
+                        <i class="nav-icon fas fa-user-edit"></i>
+                        <p>Verifikasi Instrumen</p>
+                    </a>
+                </li>
+                @endif
+                @if($user->isAbleTo('pengesahan-create'))
+                <!--verifikasi-create-->
                 <li class="nav-item has-treeview">
                     <a class="nav-link" href="javascript:{}">
                         <i class="nav-icon fas fa-user-edit"></i>
@@ -202,7 +211,8 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="javascript:{}" onclick="document.getElementById('logout-form-sidebar').submit();">
+                    <a class="nav-link text-danger" href="javascript:{}"
+                        onclick="document.getElementById('logout-form-sidebar').submit();">
                         <i class="nav-icon fas fa-sign-out-alt"></i> Keluar Aplikasi
                     </a>
                     <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" style="display: none;">

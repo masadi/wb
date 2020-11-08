@@ -52,16 +52,16 @@
                 <b-dropdown-item v-show="row.item.smk_coe && checkResetDB(row)" href="javascript:" @click="resetDb(row)"><i class="fas fa-sync"></i> Reset Isian Instrumen</b-dropdown-item>
                 <!--b-dropdown-item href="javascript:" @click="deleteData(row.item.sekolah_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item-->
             </b-dropdown>
-            <b-dropdown v-show="hasRole('penjamin_mutu')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
+            <!--b-dropdown v-show="hasRole('penjamin_mutu')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="cetakInstrumen(row.item)"><i class="fas fa-print"></i> Cetak Instrumen</b-dropdown-item>
                 <b-dropdown-item href="javascript:" v-show="isDisabled(row.item.sekolah_sasaran)" @click="openVerifikasi(row.item.user.user_id)"><i class="fas fa-check"></i> Proses Verifikasi</b-dropdown-item>
-            </b-dropdown>
+            </b-dropdown-->
             <!--button v-show="user.sekolah_id" class="btn btn-success btn-sm" @click="editData(row)"><i class="fas fa-edit"></i> Edit</button-->
             <b-dropdown v-show="user.sekolah_id" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                 <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
             </b-dropdown>
-            <!--button v-show="hasRole('penjamin_mutu')" :disabled='isDisabled(row.item.sekolah_sasaran)' class="btn btn-warning btn-sm" @click="openVerifikasi(row.item.user.user_id)">Verifikasi</button-->
+            <button v-show="hasRole('penjamin_mutu')" class="btn btn-warning btn-sm" @click="cetakInstrumen(row.item)"><i class="fas fa-print"></i> Cetak Instrumen</button>
             <!--button v-show="hasRole('direktorat')" class="btn btn-warning btn-sm" @click="openShowModal(row)">Detil</button-->
             <b-dropdown v-show="hasRole('direktorat')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
