@@ -14,7 +14,7 @@ class FrontController extends Controller
 {
     public function progress(Request $request){
         $query = Sekolah::query()->has('sekolah_sasaran')->with(['pendamping', 'sekolah_sasaran' => function($query){
-            $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak']);
+            $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak', 'verifikator']);
         }])->with(['user.nilai_akhir'])->withCount('nilai_instrumen')->where(function($query){
             if(request()->kode_wilayah){
                 $query->whereIn('kode_wilayah', function($query){
@@ -34,6 +34,10 @@ class FrontController extends Controller
         })
         ->addColumn('nama_pendamping', function ($item) {
             $links = ($item->pendamping) ? $item->pendamping->nama : '-';
+            return $links;
+        })
+        ->addColumn('nama_verifikator', function ($item) {
+            $links = ($item->sekolah_sasaran->verifikator) ? ($item->sekolah_sasaran->verifikator->name != 'Tim Verifikator') ? $item->sekolah_sasaran->verifikator->name : '-' : '-';
             return $links;
         })
         ->addColumn('instrumen', function ($item) {

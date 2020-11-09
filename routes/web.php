@@ -55,3 +55,4 @@ Route::get('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen')
 Route::post('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen');
 Route::get('/dapodik', 'DapodikController@index');
 Route::get('/cetak-hasil-verifikasi/{sekolah_id}', 'VerifikasiController@cetak');
+Route::get('/hasil-verifikasi', 'VerifikasiController@hasil_verifikasi')->name('hasil_verifikasi');

@@ -15,7 +15,8 @@
                             <th class="text-center">No.</th>
                             <th>Nama Sekolah</th>
                             <th class="text-center">NPSN</th>
-                            <th>Nama Pendamping</th>
+                            <th>Pendamping</th>
+                            <th>Verifikator</th>
                             <th class="text-center">Pengisian Instrumen</th>
                             <th class="text-center">Hitung Rapor Mutu</th>
                             <th class="text-center">Kirim Rapor Mutu</th>
@@ -51,7 +52,8 @@
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, className: 'text-center' },
             {data: 'nama', name: 'nama'},
             {data: 'npsn', name: 'npsn'},
-            {data: 'nama_pendamping', name: 'nama_pendamping', orderable: false},
+            {data: 'nama_pendamping', name: 'nama_pendamping'},
+            {data: 'nama_verifikator', name: 'nama_verifikator'},
             {data: 'instrumen', name: 'instrumen'},
             {data: 'rapor_mutu', name: 'rapor_mutu'},
             {data: 'pakta_integritas', name: 'pakta_integritas'},

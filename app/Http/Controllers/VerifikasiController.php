@@ -24,6 +24,7 @@ use Validator;
 use Carbon\Carbon;
 use PDF;
 use Storage;
+use File;
 class VerifikasiController extends Controller
 {
     public function index(Request $request, $query){
@@ -581,5 +582,14 @@ class VerifikasiController extends Controller
         ]);
         $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
         return $pdf->download('Hasil Verifikasi '.$sekolah->nama.'.pdf');
+    }
+    public function hasil_verifikasi(){
+        $path = storage_path('app/verifikasi');
+        $files = File::files($path);
+        foreach($files as $file){
+            $sekolah_id[] = str_replace('.json', '', $file->getFileName());
+        }
+        $sekolah = Sekolah::with(['sekolah_sasaran.verifikator'])->find($sekolah_id);
+        dd($sekolah);
     }
 }
