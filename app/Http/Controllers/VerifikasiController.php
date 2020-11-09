@@ -63,8 +63,10 @@ class VerifikasiController extends Controller
                 });
             })->get();
         }
+        $token = str_repeat('*', strlen($request->token));
         return response()->json([
             'body' => view('page.verifikasi.sekolah', compact('sekolah', 'user'))->render(),
+            'token' => $token,
         ]);
     }
     public function verifikasi_sekolah(Request $request){

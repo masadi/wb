@@ -109,6 +109,7 @@ $('#token').click(function(e){
                 token: token,
             },
             success: function(response){
+                $('.token').val(response.token)
                 $('#result').html(response.body);
             }
         });
