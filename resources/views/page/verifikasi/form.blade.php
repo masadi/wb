@@ -42,7 +42,7 @@
     <tr>
         <td>Jenis/Sektor CoE</td>
         <td>:</td>
-        <td>{{$sekolah->sekolah_sasaran->sektor->nama}}</td>
+        <td>{{($sekolah->sekolah_sasaran->sektor) ? $sekolah->sekolah_sasaran->sektor->nama : 'Belum ditentukan'}}</td>
     </tr>
 </table>
 <input type="hidden" name="sekolah_sasaran_id" value="{{$sekolah->sekolah_sasaran->sekolah_sasaran_id}}">
