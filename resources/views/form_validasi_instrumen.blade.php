@@ -39,8 +39,8 @@
                     @endforeach
                     @foreach ($instrumen->telaah_dokumen as $telaah_dokumen)
                     <div class="form-group">
-                        <label for="{{$telaah_dokumen->dok_id}}">Telaah Dokumen ke {{$subs->urut}}</label>
-                        <textarea name="telaah_dokumen[{{$telaah_dokumen->dok_id}}]" id="{{$subs->dok_id}}" class="form-control textarea">{{$telaah_dokumen->nama}}</textarea>
+                        <label for="{{$telaah_dokumen->dok_id}}">Telaah Dokumen ke {{$telaah_dokumen->urut}}</label>
+                        <textarea name="telaah_dokumen[{{$telaah_dokumen->dok_id}}]" id="{{$telaah_dokumen->dok_id}}" class="form-control textarea">{{$telaah_dokumen->nama}}</textarea>
                     </div>
                     @endforeach
                     <div class="form-group">
