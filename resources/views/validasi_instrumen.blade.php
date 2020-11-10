@@ -33,21 +33,6 @@
 @section('js')
 <script>
 $('.select2').select2();
-$('#sekolah_id').change(function(){
-    var ini = $(this).val();
-    $.ajax({
-		url: '{{route('api.verifikasi_sekolah')}}',
-		type: 'post',
-		data: {
-            sekolah_id: ini,
-        },
-		success: function(response){
-            $('.card-footer').show();
-            $('#result').html(response.body);
-            $('a#cetak').attr('href', '{{url('/cetak-hasil-verifikasi')}}/'+ini)
-        }
-    });
-});
 $('#token').click(function(e){
     e.preventDefault();
     var token = $('.token').val();
@@ -70,33 +55,5 @@ $('#token').click(function(e){
         })
     }
 })
-$("form").on("submit", function(event){
-    event.preventDefault();
-    var formValues= $(this).serialize();
-    $.post("{{route('api.verifikasi_sekolah')}}", formValues, function(data){
-        // Display the returned data in browser
-        $("#result").html('');
-        $('#provinsi_id').val('').trigger("change");
-        $('#sekolah_id').html('<option value="">Semua Sekolah</option>');
-        $('#kabupaten_id').html('<option value="">Semua Kab/Kota</option>');
-        Swal.fire({
-            title: data.title,
-            text: data.text,
-            icon: data.icon,
-            showDenyButton: true,
-            //showCancelButton: true,
-            confirmButtonText: 'Cetak Sekarang',
-            denyButtonText: 'Cetak Nanti',
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire('Terima Kasih', '', 'success')
-                window.open('{{url('/cetak-hasil-verifikasi')}}/'+data.sekolah_id)
-            } else if (result.isDenied) {
-                Swal.fire('Terima Kasih', '', 'info')
-            }
-        })
-    });
-});
 </script>
 @endsection

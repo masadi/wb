@@ -15,10 +15,6 @@
             </div>
         </div>
         <div id="result"></div>
-        <div class="tombol-submit" style="display: none;">
-            <button class="btn btn-lg btn-primary float-right" id="simpan"><i class="fa far-save"></i>
-                SIMPAN</button>
-        </div>
         @else
         <form id="form" class="form-horizontal">
             <input type="hidden" name="instrumen_id" value="{{$instrumen->instrumen_id}}">
@@ -26,17 +22,29 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="pertanyaan">Rumusan Pertanyaan</label>
-                        <textarea name="pertanyaan" id="pertanyaan" class="form-control">{{$instrumen->pertanyaan}}</textarea>
+                        <textarea name="pertanyaan" id="pertanyaan" class="form-control textarea">{{$instrumen->pertanyaan}}</textarea>
                     </div>
-                </div>
-                <div class="col-12">
                     <div class="form-group">
                         <label for="pertanyaan">Petunjuk Pengisian</label>
-                        <textarea name="petunjuk_pengisian" id="petunjuk_pengisian" class="form-control">{{$instrumen->petunjuk_pengisian}}</textarea>
+                        <textarea name="petunjuk_pengisian" id="petunjuk_pengisian" class="form-control textarea">{{$instrumen->petunjuk_pengisian}}</textarea>
+                    </div>
+                    @foreach ($instrumen->subs as $subs)
+                    <div class="form-group">
+                        <label for="{{$subs->instrumen_id}}">Pertanyaan ke {{$subs->urut}}</label>
+                        <textarea name="pertanyaan_sub[{{$subs->instrumen_id}}]" id="{{$subs->instrumen_id}}" class="form-control textarea">{{$subs->pertanyaan}}</textarea>
+                    </div>
+                    @endforeach
+                    @foreach ($instrumen->telaah_dokumen as $telaah_dokumen)
+                    <div class="form-group">
+                        <label for="{{$telaah_dokumen->dok_id}}">Telaah Dokumen ke {{$subs->urut}}</label>
+                        <textarea name="telaah_dokumen[{{$telaah_dokumen->dok_id}}]" id="{{$subs->dok_id}}" class="form-control textarea">{{$telaah_dokumen->nama}}</textarea>
+                    </div>
+                    @endforeach
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary float-right" id="simpan">SIMPAN</button>
                     </div>
                 </div>
             </div>
-            {{$instrumen}}
         </form>
         @endif
     </div>
@@ -63,13 +71,16 @@ $('#instrumen_id').change(function(){
         $('.tombol-submit').hide();
     }
 });
+var textArea = $('.textarea');
+$.each(textArea, function(i, v){
+    v.style.overflow = 'hidden';
+    v.style.height = 0;
+    v.style.height = v.scrollHeight + 'px';
+})
 $("form").on("submit", function(event){
     event.preventDefault();
     var formValues= $(this).serialize();
     $.post("{{route('api.validasi_instrumen')}}", formValues, function(data){
-        console.log(data);
-        return false;
-        // Display the returned data in browser
         Swal.fire({
             title: data.title,
             text: data.text,

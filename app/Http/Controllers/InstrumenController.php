@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Instrumen;
+use App\telaah_dokumen;
 class InstrumenController extends Controller
 {
     public function index()
@@ -48,6 +49,28 @@ class InstrumenController extends Controller
     }
     public function validasi_instrumen(Request $request){
         if ($request->isMethod('post')) {
+            //dd($request->all());
+            $instrumen = Instrumen::find($request->instrumen_id);
+            $instrumen->pertanyaan = $request->pertanyaan;
+            $instrumen->petunjuk_pengisian = $request->petunjuk_pengisian;
+            if($instrumen->save()){
+                foreach($request->pertanyaan_sub as $instrumen_id => $pertanyaan){
+                    $sub_instrumen = Instrumen::find($instrumen_id);
+                    $sub_instrumen->pertanyaan = $pertanyaan;
+                    $sub_instrumen->save();
+                }
+                foreach($request->telaah_dokumen as $dok_id => $nama){
+                    $telaah_dokumen = Telaah_dokumen::find($dok_id);
+                    $telaah_dokumen->nama = $nama;
+                    $telaah_dokumen->save();
+                }
+                $respone = [
+                    'title' => 'Berhasil',
+                    'text' => 'Instrumen berhasil disimpan!',
+                    'icon' => 'success',
+                ];
+                return response()->json($respone);
+            }
         } else {
             return view('validasi_instrumen');
         }
@@ -67,7 +90,7 @@ class InstrumenController extends Controller
     }
     public function cari(Request $request){
         $instrumens = NULL;
-        $instrumen = Instrumen::with(['subs','indikator.atribut.aspek.komponen'])->find($request->instrumen_id);
+        $instrumen = Instrumen::with(['subs','telaah_dokumen'])->find($request->instrumen_id);
         $query = 'input';
         return response()->json([
             'body' => view('form_validasi_instrumen', compact('instrumens', 'instrumen', 'query'))->render(),
