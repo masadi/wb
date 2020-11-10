@@ -26,12 +26,12 @@
                     <ol class="instrumen">
                         @foreach ($aspek->instrumen as $instrumen)
                         <li>
-                            <p class="text-bold">Petunjuk Pengisian: <br> {{$instrumen->petunjuk_pengisian}}</p>
-                            <p class="text-bold">Pertanyaan: <br> {{$instrumen->pertanyaan}}</p>
+                            <p class="text-bold">Petunjuk Pengisian: <br> {!! $instrumen->petunjuk_pengisian !!}</p>
+                            <p class="text-bold">Pertanyaan: <br> {!! $instrumen->pertanyaan !!}</p>
                             <p>Pilihan Jawaban <br>
                                 <ol class="jawaban">
                                     @foreach ($instrumen->subs as $sub)
-                                    <li>{{$sub->pertanyaan}}</li>
+                                    <li>{!! $sub->pertanyaan !!}</li>
                                     @endforeach
                                 </ol>
                             </p>
