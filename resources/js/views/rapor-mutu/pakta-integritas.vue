@@ -299,30 +299,14 @@ export default {
                         this.isCheckbox = true
                     }
                     var npsn_pengecualian = [
-                        '20400384',
+                        '50205616',
                         '69947173',
-                        '20265292',
-                        '20328949',
-                        '20340792',
-                        '20325261',
-                        '20306055',
-                        '20217802',
-                        '20328152',
-                        '69754002',
-                        '69882371',
-                        '20549504',
-                        '20210716',
-                        '20529957',
-                        '30401713',
-                        '20326425',
-                        '20253319',
-                        '20564082',
-                        '20338847',
-                        '20300710',
-                        '20539814',
-                        '20268221',
-                        '20616038',
-                        '20616368'
+                        '20237410',
+                        '69900388',
+                        '20217795',
+                        '20224614',
+                        '20607873',
+                        '20321842'
                     ]
                     var check_npsn = getData.user.sekolah.npsn
                     if (getData.user.sekolah.sekolah_sasaran) {
@@ -330,7 +314,7 @@ export default {
                             this.pakta_integritas_id = getData.user.sekolah.sekolah_sasaran.pakta_integritas.pakta_integritas_id
                             if (getData.user.sekolah.sekolah_sasaran.pakta_integritas.terkirim == 0) {
                                 this.isKirim = false
-                                if (npsn_pengecualian.includes(check_npsn) === false) {
+                                if (npsn_pengecualian.includes(check_npsn) === true) {
                                     this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati batas waktu yang ditentukan'
                                     this.is_coe = null
                                 }
@@ -341,7 +325,7 @@ export default {
                                 this.allowCetak = true
                             }
                         } else {
-                            if (npsn_pengecualian.includes(check_npsn) === false) {
+                            if (npsn_pengecualian.includes(check_npsn) === true) {
                                 this.no_coe = 'Pengiriman Rapor Mutu Sekolah tidak dapat dilakukan karena telah melewati batas waktu yang ditentukan'
                                 this.is_coe = null
                             }
