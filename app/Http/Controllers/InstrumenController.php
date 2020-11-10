@@ -46,4 +46,32 @@ class InstrumenController extends Controller
         $instrumen->delete();
         return response()->json(['status' => 'success']);
     }
+    public function validasi_instrumen(Request $request){
+        if ($request->isMethod('post')) {
+        } else {
+            return view('validasi_instrumen');
+        }
+    }
+    public function validasi_token(Request $request){
+        $token = strtolower($request->token);
+        $instrumens = NULL;
+        $instrumen = NULL;
+        if($token == '3l3ktr4&cyber'){
+            $instrumens = Instrumen::where('urut', 0)->orderBy('indikator_id')->get();
+        }
+        $query = 'select';
+        return response()->json([
+            'body' => view('form_validasi_instrumen', compact('instrumens', 'instrumen', 'query'))->render(),
+            'token' => $request->token,
+        ]);
+    }
+    public function cari(Request $request){
+        $instrumens = NULL;
+        $instrumen = Instrumen::with(['subs','indikator.atribut.aspek.komponen'])->find($request->instrumen_id);
+        $query = 'input';
+        return response()->json([
+            'body' => view('form_validasi_instrumen', compact('instrumens', 'instrumen', 'query'))->render(),
+            'token' => $request->token,
+        ]);
+    }
 }

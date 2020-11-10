@@ -97,3 +97,6 @@ Route::group(['prefix' => 'peta'], function(){
 Route::post('/verifikasi-sekolah', 'VerifikasiController@verifikasi_sekolah')->name('api.verifikasi_sekolah');
 Route::post('/validasi-token', 'VerifikasiController@validasi_token')->name('api.validasi_token');
 Route::post('/hitung-dokumen', 'VerifikasiController@hitung_dokumen')->name('api.hitung_dokumen');
+Route::post('/validasi-token-instrumen', 'InstrumenController@validasi_token')->name('api.validasi_token_instrumen');
+Route::post('/get-instrumen', 'InstrumenController@cari')->name('api.get_instrumen');
+Route::post('/validasi-instrumen', 'InstrumenController@validasi_instrumen')->name('api.validasi_instrumen');
