@@ -3,6 +3,9 @@
         @if($instrumens)
         <div class="row">
             <div class="col-12">
+                <div class="form-group mt-3">
+                    <a href="{{route('cetak_validasi_instrumen')}}" class="btn btn-lg btn-success btn-block">CETAK HASIL VALIDASI</a>
+                </div>
                 <div class="form-group">
                     <label>Pilih Nomor Instrumen</label>
                     <select class="form-control select2" id="instrumen_id" style="width: 100%;" name="instrumen_id">

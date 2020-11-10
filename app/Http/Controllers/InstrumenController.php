@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Instrumen;
 use App\telaah_dokumen;
+use App\Komponen;
+use PDF;
 class InstrumenController extends Controller
 {
     public function index()
@@ -96,5 +98,17 @@ class InstrumenController extends Controller
             'body' => view('form_validasi_instrumen', compact('instrumens', 'instrumen', 'query'))->render(),
             'token' => $request->token,
         ]);
+    }
+    public function cetak_validasi_instrumen(){
+        $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query){
+            $query->with(['subs', 'telaah_dokumen']);
+            $query->where('urut', 0);
+        }])->get();
+        $pdf = PDF::loadView('cetak.hasil_validasi_instrumen', $data, [], [
+            'format' => [220, 330],
+            'orientation' => 'P',
+        ]);
+        $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
+        return $pdf->stream('hasil_validasi_instrumen.pdf');
     }
 }
