@@ -155,7 +155,7 @@ class VerifikasiController extends Controller
             $query->orderBy('urut', 'DESC');
         }, 'telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
             $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
-        }])->withCount('telaah_dokumen')->where('urut', 0)->get();
+        }])->withCount('telaah_dokumen')->where('urut', 0)->orderBy('indikator_id')->get();
         $nilai_dokumen = Nilai_dokumen::where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
         /*
         $callback = function($query) use ($request){
