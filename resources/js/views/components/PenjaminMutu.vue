@@ -211,19 +211,36 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     return fetch('/api/users/' + id, {
-                        method: 'DELETE',
-                    }).then(() => {
-                        //this.form.delete('api/komponen/'+id).then(()=>{
-                        Swal.fire(
-                            'Berhasil!',
-                            'Data Pengguna berhasil dihapus',
-                            'success'
-                        ).then(() => {
-                            this.loadPerPage(10);
-                        });
-                    }).catch((data) => {
-                        Swal.fire("Failed!", data.message, "warning");
-                    });
+                            method: 'DELETE',
+                        })
+                        /*.then((response) => {
+                            console.log(response)
+                            return false;
+                            //this.form.delete('api/komponen/'+id).then(()=>{
+                            Swal.fire(
+                                'Berhasil!',
+                                'Data Pengguna berhasil dihapus',
+                                'success'
+                            ).then(() => {
+                                this.loadPerPage(10);
+                            });
+                        }).catch((data) => {
+                            Swal.fire("Failed!", data.message, "warning");
+                        });*/
+                        .then(response => response.json())
+                        .then(data => {
+                            //console.log(data) 
+                            Swal.fire(
+                                data.title,
+                                data.text,
+                                data.icon,
+                            ).then(() => {
+                                if (data.icon !== 'error') {
+                                    this.loadPerPage(10);
+                                }
+                            });
+                        }) // Manipulate the data retrieved back, if we want to do something with it
+                        .catch(err => console.log(err)) // Do something with the error
                 }
             })
         },

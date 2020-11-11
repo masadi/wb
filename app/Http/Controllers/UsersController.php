@@ -221,4 +221,22 @@ class UsersController extends Controller
 		}
 		return response()->json($response);
 	}
+	public function destroy($id){
+		$user = User::withCount('sekolah_sasaran')->find($id);
+		if($user->sekolah_sasaran_count){
+			$response = [
+				'title' => 'Gagal',
+				'text' => 'Verifikator masih memiliki sekolah sasaran. Silahkan ganti verifikator terlebih dahulu',
+				'icon' => 'error',
+			];
+		} else {
+			$user->delete();
+			$response = [
+				'title' => 'Berhasil',
+				'text' => 'Verifikator berhasil dihapus',
+				'icon' => 'success',
+			];
+		}
+		return response()->json($response);
+	}
 }
