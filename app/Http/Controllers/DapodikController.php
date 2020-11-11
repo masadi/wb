@@ -12,7 +12,7 @@ use App\User;
 class DapodikController extends Controller
 {
     public function index(){
-        $verifikator = User::whereRoleIs('penjamin_mutu')->select('name', 'token')->get();
+        $verifikator = User::whereRoleIs('penjamin_mutu')->whereNotNull('token')->select('name', 'token')->get();
         return (new FastExcel($verifikator))->download('data_verifikator_apm.xlsx');
         $jurusan = DB::connection('dapodik')->table('ref.jurusan')->where(function($query){
             $query->whereNull('expired_date');
