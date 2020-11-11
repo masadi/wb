@@ -103,7 +103,6 @@
                         {{trim($telaah_dokumen->nama)}}
                     </td>
                     @if($dokumen_verifikasi)
-                    @isset($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})
                     <td class="text-center">
                         {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : '√'}}
                     </td>
@@ -113,19 +112,6 @@
                     <td>
                         {{ $dokumen_verifikasi->keterangan->{$item->instrumen_id}->{$telaah_dokumen->dok_id} }}
                     </td>
-                    @else
-                    <td class="text-center">
-                        {!!($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? '√' : '' :
-                        '√'!!}
-                    </td>
-                    <td class="text-center">
-                        {!!($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? '√' : '' :
-                        ''!!}
-                    </td>
-                    <td>
-                        {{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}
-                    </td>
-                    @endisset
                     @else
                     <td class="text-center">
                         {!!($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? '√' : '' :
