@@ -148,7 +148,7 @@
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="0"
-                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked'}} required>
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}) ? ($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked' : 'checked'}} required>
                 </td>
                 <td class="text-center">
                     <input type="radio" class="hitung-{{$item->instrumen_id}}"
