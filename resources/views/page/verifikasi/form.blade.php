@@ -144,11 +144,12 @@
                     {{trim($telaah_dokumen->nama)}}
                 </td>
                 @if($dokumen_verifikasi)
+                @isset($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})
                 <td class="text-center">
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
                         name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
                         data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="0"
-                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}) ? ($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked' : 'checked'}} required>
+                        {{($dokumen_verifikasi->ada->{$item->instrumen_id}->{$telaah_dokumen->dok_id})  ? '' : 'checked'}} required>
                 </td>
                 <td class="text-center">
                     <input type="radio" class="hitung-{{$item->instrumen_id}}"
@@ -161,6 +162,24 @@
                         name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]" style="width: 100%"
                         value="{{ $dokumen_verifikasi->keterangan->{$item->instrumen_id}->{$telaah_dokumen->dok_id} }}">
                 </td>
+                @else
+                <td class="text-center">
+                    <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
+                        name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="0"
+                        {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 0) ? 'checked' : '' : ''}} required>
+                </td>
+                <td class="text-center"><input type="radio" class="hitung-{{$item->instrumen_id}}"
+                        name="ada[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"
+                        data-instrumen_id="{{$item->instrumen_id}}" id="{{$telaah_dokumen->dok_id}}" data-dok_id="{{$telaah_dokumen->dok_id}}" value="1"
+                        {{($telaah_dokumen->nilai_dokumen) ? ($telaah_dokumen->nilai_dokumen->ada == 1) ? 'checked' : '' : ''}}>
+                </td>
+                <td>
+                    <input type="text" class="form-control keterangan-{{$telaah_dokumen->dok_id}}"
+                        name="keterangan[{{$item->instrumen_id}}][{{$telaah_dokumen->dok_id}}]"  style="width: 100%"
+                        value="{{($telaah_dokumen->nilai_dokumen) ? $telaah_dokumen->nilai_dokumen->keterangan : ''}}">
+                </td>
+                @endisset
                 @else
                 <td class="text-center">
                     <input type="radio" class="{{$item->instrumen_id}} hitung-{{$item->instrumen_id}}"
