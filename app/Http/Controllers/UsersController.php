@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -48,7 +49,48 @@ class UsersController extends Controller
             'password' => Hash::make($request['password']),
         ]);
 
-    }
+	}
+	public function store(Request $request){
+		$messages = [
+			'name.required'	=> 'Nama Lengkap tidak boleh kosong',
+			'email.email'	=> 'Email Tidak Valid',
+			'email.unique'	=> 'Email sudah terdaftar di database',
+			/*'current_password.nullable' => 'Please enter current password',
+    		'password.nullable' => 'Please enter password',
+			'email.required'	=> 'Email tidak boleh kosong',
+			'password.required_with_all' => 'Kata sandi baru tidak boleh kosong',
+			'password_confirmation.same' => 'Konfirmasi sandi tidak sama dengan sandi baru',*/
+			'token.required' => 'Token tidak boleh kosong',
+			'token.unique' => 'Token sudah terdaftar di database',
+		];
+		$validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+			//'password' => ['required', 'string', 'min:8', 'confirmed'],
+			'token' => ['required', 'string', 'max:255', 'unique:users,username'],
+        ],
+		$messages
+		)->validate();
+		$username = strtolower($request->token);
+		$username = str_replace(' ', '', $username);
+		$username = trim($username);
+        $user =  User::create([
+            'name' => $request['name'],
+			'email' => $request['email'],
+			'username' => $username,
+            'password' => Hash::make($username),
+		]);
+		if(!$user->hasRole('penjamin_mutu')){
+			$role = Role::where('name', 'penjamin_mutu')->first();
+			$user->attachRole($role);
+		}
+		$response = [
+			'title' => 'Berhasil',
+			'text' => 'Verifikator berhasil ditambahkan',
+			'icon' => 'success',
+		];
+		return response()->json($response);
+	}
     public function profile(Request $request){
         $data = User::find($request->user_id);
         return response()->json(['status' => 'success', 'data' => $data]);

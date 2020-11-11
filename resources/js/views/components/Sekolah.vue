@@ -46,6 +46,7 @@
         <template v-slot:cell(actions)="row">
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
+                <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="editVerifikator(row)"><i class="fas fa-exchange-alt"></i> Ganti Verifikator</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="sektorCoe(row)"><i class="fas fa-sync-alt"></i> Sektor CoE</b-dropdown-item>
                 <b-dropdown-item v-show="!row.item.smk_coe" href="javascript:" @click="tetapkanCoe(row)"><i class="fas fa-check"></i> Tetapkan CoE</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="batalkanCoe(row)"><i class="fas fa-times"></i> Batalkan CoE</b-dropdown-item>
@@ -257,6 +258,7 @@ export default {
             deleteModal: false,
             showModal: false,
             editModal: false,
+            editModalVerifikator: false,
             modalText: {},
             selected: null,
             sasaran: false,
@@ -481,6 +483,47 @@ export default {
             this.form.nama_pengawas = row.item.nama_pengawas
             this.form.nip_pengawas = row.item.nip_pengawas
             $('#modalEdit').modal('show');
+        },
+        editVerifikator(row) {
+            axios.get(`/api/referensi/verifikator`, {
+                params: {
+                    sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
+                },
+            }).then((response) => {
+                let getData = response.data
+                //console.log(getData)
+                //return false;
+                Swal.fire({
+                    title: 'Pilih Verifikator',
+                    input: 'select',
+                    inputOptions: getData.data.verifikator,
+                    inputValue: (row.item.sekolah_sasaran.verifikator_id) ? row.item.sekolah_sasaran.verifikator_id : '',
+                    inputPlaceholder: 'Pilih Verifikator',
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                        return new Promise((resolve) => {
+                            if (value) {
+                                axios.post(`/api/referensi/simpan-verifikator`, {
+                                    sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
+                                    verifikator_id: value,
+                                }).then((response) => {
+                                    let getData = response.data
+                                    Swal.fire(
+                                        getData.data.title,
+                                        getData.data.text,
+                                        getData.data.icon
+                                    ).then(() => {
+                                        this.loadPerPage(10);
+                                    });
+                                })
+                                resolve()
+                            } else {
+                                resolve('Verifikator_id tidak boleh kosong')
+                            }
+                        })
+                    }
+                })
+            })
         },
         updateData() {
             let id = this.form.id;

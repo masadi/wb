@@ -27,6 +27,9 @@
                                 <i class="fas fa-th mr-1"></i>
                                 Data Verifikator
                             </h3>
+                            <div class="card-tools">
+                                <button class="btn btn-success btn-sm btn-block btn-flat" v-show="hasRole('admin')" v-b-modal.newModal>Tambah Data</button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Verifikator'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" />
@@ -36,6 +39,40 @@
             </div>
         </div>
     </section>
+    <b-modal ref="newModal" id="newModal" size="lg" title="Tambah Data Verifikator">
+        <template v-slot:modal-header>
+            <h5 class="modal-title">Tambah Data Verifikator</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </template>
+        <template v-slot:default="{ hide }">
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input v-model="form.name" type="text" name="name" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                <has-error :form="form" field="name"></has-error>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input v-model="form.email" type="email" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                <has-error :form="form" field="email"></has-error>
+            </div>
+            <div class="form-group">
+                <label>Nomor HP</label>
+                <input v-model="form.nomor_hp" type="text" name="nomor_hp" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_hp') }">
+                <has-error :form="form" field="nomor_hp"></has-error>
+            </div>
+            <div class="form-group">
+                <label>Token</label>
+                <input v-model="form.token" type="text" name="token" class="form-control" :class="{ 'is-invalid': form.errors.has('token') }">
+                <has-error :form="form" field="token"></has-error>
+            </div>
+        </template>
+        <template v-slot:modal-footer="{ hide }">
+            <b-button variant="secondary" size="sm" @click="hide()">Tutup</b-button>
+            <b-button variant="primary" size="sm" @click="insertData">Simpan</b-button>
+        </template>
+    </b-modal>
     <my-loader />
 </div>
 </template>
@@ -71,6 +108,12 @@ export default {
                     sortable: false
                 }, //TAMBAHKAN CODE INI
             ],
+            form: new Form({
+                name: '',
+                email: '',
+                nomor_hp: '',
+                token: '',
+            }),
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
@@ -140,6 +183,23 @@ export default {
 
                 this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
             }
+        },
+        insertData() {
+            this.form.post('/api/users').then((response) => {
+                Swal.fire(
+                    response.title,
+                    response.text,
+                    response.icon,
+                ).then(() => {
+                    this.$refs['newModal'].hide()
+                    this.loadPostsData(10);
+                });
+            }).catch((e) => {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
         },
     }
 }

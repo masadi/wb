@@ -550,6 +550,16 @@ class ReferensiController extends Controller
                 'nomor_hp' => $request->nomor_hp,
             ]);
             return response()->json(['status' => 'success', 'data' => $pendamping]);
+        } elseif($request->route('query') == 'verifikator'){
+            $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
+            $sekolah_sasaran->verifikator_id = $request->verifikator_id;
+            $sekolah_sasaran->save();
+            $response = [
+                'title' => 'Berhasil',
+                'text' => 'Verifikator berhasil diganti',
+                'icon' => 'success',
+            ];
+            return response()->json(['status' => 'success', 'data' => $response]);
         }
         return response()->json(['status' => 'failed', 'data' => NULL]);
     }
@@ -614,6 +624,14 @@ class ReferensiController extends Controller
         $data = [
             //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
             'sektor' => Sektor::pluck('nama', 'id'),
+        ];
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    public function get_verifikator($request){
+        //$verifikator = User::whereRoleIs('penjamin_mutu')->select('name', 'token')->get();
+        $data = [
+            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'verifikator' => User::whereRoleIs('penjamin_mutu')->pluck('name', 'user_id'),
         ];
         return response()->json(['status' => 'success', 'data' => $data]);
     }
