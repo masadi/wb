@@ -78,7 +78,8 @@ class UsersController extends Controller
             'name' => $request['name'],
 			'email' => $request['email'],
 			'username' => $username,
-            'password' => Hash::make($username),
+			'password' => Hash::make($username),
+			'token' => strtolower($request->token),
 		]);
 		if(!$user->hasRole('penjamin_mutu')){
 			$role = Role::where('name', 'penjamin_mutu')->first();
