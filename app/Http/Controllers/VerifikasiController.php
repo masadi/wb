@@ -564,7 +564,7 @@ class VerifikasiController extends Controller
         }])->find($sekolah_id);
         $instrumens = Instrumen::with(['telaah_dokumen.nilai_dokumen' => function($query) use ($sekolah){
             $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
-        }])->withCount('telaah_dokumen')->where('urut', 0)->get();
+        }])->withCount('telaah_dokumen')->where('urut', 0)->orderBy('indikator_id')->get();
         $dokumen_verifikasi = NULL;
         $file_dokumen_verifikasi = 'verifikasi/'.$sekolah_id.'.json';
         if(Storage::exists($file_dokumen_verifikasi)){
