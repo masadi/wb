@@ -12,6 +12,7 @@ use App\Sekolah;
 use App\Status_rapor;
 use App\Rapor_mutu;
 use App\Jenis_rapor;
+use App\Telaah_dokumen;
 class ProsesVerifikasi extends Command
 {
     /**
@@ -54,18 +55,22 @@ class ProsesVerifikasi extends Command
             }])->find($content->sekolah_id);
             foreach($content->instrumen_id as $instrumen_id){
                 foreach($content->ada->{$instrumen_id} as $key => $ada){
-                    Nilai_dokumen::updateOrCreate(
-                        [
-                            'sekolah_sasaran_id' => $content->sekolah_sasaran_id,
-                            'instrumen_id' => $instrumen_id,
-                            'dok_id' => $key,
-                        ],
-                        [
-                            'ada' => $ada,
-                            'keterangan' => $content->keterangan->{$instrumen_id}->{$key}
-                        ]
-                    );
-                    $all_keterangan[$instrumen_id][] = $content->keterangan->{$instrumen_id}->{$key};
+                    $telaah_dokumen = Telaah_dokumen::find($key);
+                    $all_keterangan = [];
+                    if($telaah_dokumen){
+                        Nilai_dokumen::updateOrCreate(
+                            [
+                                'sekolah_sasaran_id' => $content->sekolah_sasaran_id,
+                                'instrumen_id' => $instrumen_id,
+                                'dok_id' => $key,
+                            ],
+                            [
+                                'ada' => $ada,
+                                'keterangan' => $content->keterangan->{$instrumen_id}->{$key}
+                            ]
+                        );
+                        $all_keterangan[$instrumen_id][] = $content->keterangan->{$instrumen_id}->{$key};
+                    }
                 }
                 $keterangan = array_filter($all_keterangan[$instrumen_id]);
                 $save = Nilai_instrumen::updateOrCreate(
