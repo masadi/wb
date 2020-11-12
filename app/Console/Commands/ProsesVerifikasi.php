@@ -56,7 +56,7 @@ class ProsesVerifikasi extends Command
             foreach($content->instrumen_id as $instrumen_id){
                 foreach($content->ada->{$instrumen_id} as $key => $ada){
                     $telaah_dokumen = Telaah_dokumen::find($key);
-                    $all_keterangan = [];
+                    $all_keterangan[$instrumen_id] = [];
                     if($telaah_dokumen){
                         Nilai_dokumen::updateOrCreate(
                             [
