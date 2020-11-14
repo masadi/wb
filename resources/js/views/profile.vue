@@ -214,11 +214,7 @@ export default {
             formData.append('asal_institusi', this.form.asal_institusi)
             formData.append('alamat_institusi', this.form.alamat_institusi)
             formData.append('nomor_hp', this.form.nomor_hp)
-            if (!hasRole('penjamin_mutu')) {
-                formData.append('token', 'token')
-            } else {
-                formData.append('token', this.form.token)
-            }
+            formData.append('token', this.form.token)
             axios.post('/api/update-profile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
