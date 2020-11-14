@@ -501,6 +501,7 @@ export default {
                 if (getData.detil_user.sekolah.npsn === '20219159') {
                     this.nilai_rapor_mutu_verifikasi = '-'
                     this.predikat_sekolah_verifikasi = '-'
+                    this.rapor_mutu.verval = null
                 } else {
                     this.nilai_rapor_mutu_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.nilai : '-'
                     this.predikat_sekolah_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.predikat : '-'
