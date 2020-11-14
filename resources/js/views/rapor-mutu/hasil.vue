@@ -498,8 +498,13 @@ export default {
                 this.nama_sekolah = getData.detil_user.name
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : '-'
-                this.nilai_rapor_mutu_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.nilai : '-'
-                this.predikat_sekolah_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.predikat : '-'
+                if (getData.detil_user.sekolah.npsn === '20219159') {
+                    this.nilai_rapor_mutu_verifikasi = '-'
+                    this.predikat_sekolah_verifikasi = '-'
+                } else {
+                    this.nilai_rapor_mutu_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.nilai : '-'
+                    this.predikat_sekolah_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.predikat : '-'
+                }
                 let DataKeterangan = [];
                 let vm = this
                 $.each(getData.rapor_mutu.nilai_rapor_mutu.labels, function (key, valua) {
