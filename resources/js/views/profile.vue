@@ -82,6 +82,9 @@
                                             <has-error :form="form" field="token"></has-error>
                                         </div>
                                     </template>
+                                    <template v-if="!hasRole('penjamin_mutu')">
+                                        <input v-model="form.token" type="hidden" id="token" name="token" value="token" class="form-control" :class="{ 'is-invalid': form.errors.has('token') }">
+                                    </template>
                                     <label for="current-password" class="col-form-label">Sandi Saat Ini (Biarkan kosong jika tidak ingin
                                         merubah)</label>
                                     <div class="form-group">
