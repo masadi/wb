@@ -463,6 +463,9 @@ function tampilChart(data){
             $(this).html(data.counting[i])
         });
     }
+    if(lineChart){
+        lineChart.destroy();
+    }
     var RaporMutuVerifikasi = document.getElementById('rapor_mutu_verifikasi').getContext('2d');
     lineChart = new Chart(RaporMutuVerifikasi, {
         type: 'line',
