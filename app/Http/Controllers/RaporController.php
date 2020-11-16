@@ -252,13 +252,14 @@ class RaporController extends Controller
                     $query->where('sekolah_id', '<>', $request->sekolah_id);
                 });
             };
-            $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
+            $all_komponen = Komponen::with(['all_nilai_komponen' => $callback, 'all_nilai_komponen_verifikasi' => $callback, 'aspek.all_nilai_aspek' => $callback])->get();
             $nilai_komponen = [];
             $nilai_komponen_chart = [];
             $nama_komponen_chart = [];
             foreach($all_komponen as $komponen){
                 $record_komponen= [];
                 $record_komponen['nilai'] 	= number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+                $record_komponen['nilai_verifikasi'] 	= number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
                 $record_komponen['bintang'] 	= HelperModel::bintang_icon(number_format($komponen->all_nilai_komponen->avg('total_nilai'),2), 'warning');
                 foreach($komponen->aspek as $aspek){
                     $record_komponen['nilai_aspek'][strtolower(HelperModel::clean($aspek->nama))] = number_format($aspek->all_nilai_aspek->avg('total_nilai'),2);
@@ -266,16 +267,18 @@ class RaporController extends Controller
                 $nilai_komponen[] = $record_komponen;
                 $record_chart = [];
                 $nilai_komponen_chart[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+                $nilai_komponen_verifikasi[] = number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
                 $nama_komponen_chart[] 	= $komponen->nama;
             }
-            $komponen_kinerja = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [1,2,3])->get();
-            $komponen_dampak = Komponen::with(['all_nilai_komponen' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [4,5])->get();
+            $komponen_kinerja = Komponen::with(['all_nilai_komponen' => $callback, 'all_nilai_komponen_verifikasi' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [1,2,3])->get();
+            $komponen_dampak = Komponen::with(['all_nilai_komponen' => $callback, 'all_nilai_komponen_verifikasi' => $callback, 'aspek.all_nilai_aspek' => $callback])->whereIn('id', [4,5])->get();
             foreach($komponen_kinerja as $kinerja){
                 $bobot_kinerja = 0;
                 foreach($kinerja->aspek as $aspek_kinerja){
                     $bobot_kinerja += $aspek_kinerja->bobot;
                 }
                 $nilai_komponen_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
+                $nilai_komponen_kinerja_verifikasi[] = number_format($kinerja->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
                 $bintang_komponen_kinerja[] 	= HelperModel::bintang_icon(number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2), 'warning');
                 $nama_komponen_kinerja[] = strtolower($kinerja->nama);
             }
@@ -285,6 +288,7 @@ class RaporController extends Controller
                     $bobot_dampak += $aspek_dampak->bobot;
                 }
                 $nilai_komponen_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
+                $nilai_komponen_dampak_verifikasi[] = number_format($dampak->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
                 //(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2) * $bobot_dampak) / 100;
                 $bintang_komponen_dampak[] 	= HelperModel::bintang_icon(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2), 'warning');
                 $nama_komponen_dampak[] = strtolower($dampak->nama);
@@ -292,6 +296,7 @@ class RaporController extends Controller
             $group_komponen = [
                 'all_kinerja' => [
                     'nilai' => $nilai_komponen_kinerja,
+                    'nilai_verifikasi' => $nilai_komponen_kinerja_verifikasi,
                     'nama' => $nama_komponen_kinerja,
                     'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
                     'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2)),
@@ -299,6 +304,7 @@ class RaporController extends Controller
                 ],
                 'all_dampak' => [
                     'nilai' => $nilai_komponen_dampak,
+                    'nilai_verifikasi' => $nilai_komponen_dampak_verifikasi,
                     'nama' => $nama_komponen_dampak,
                     'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
                     'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2)),
@@ -329,6 +335,7 @@ class RaporController extends Controller
                 'sekolah' => $sekolah,
                 'nilai_komponen_kotak' => $nilai_komponen, 
                 'nilai_komponen' => $nilai_komponen_chart, 
+                'nilai_komponen_verifikasi' => $nilai_komponen_verifikasi, 
                 'nama_komponen' => $nama_komponen_chart,
             ];
         } else {
