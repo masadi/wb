@@ -438,6 +438,7 @@ class ReferensiController extends Controller
                     'sekolah_id' => $request->sekolah_id,
                     'pendamping_id' => $request->pendamping_id,
                     'verifikator_id' => $verifikator->user_id,
+                    'tahun_pendataan_id' => $tahun->tahun_pendataan_id,
                 ]);
             }
             if($insert){
