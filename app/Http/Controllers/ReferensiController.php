@@ -432,6 +432,13 @@ class ReferensiController extends Controller
             if($sekolah){
                 $sekolah->pendamping_id = $request->pendamping_id;
                 $insert = $sekolah->save();
+            } else {
+                $verifikator = User::where('username', 'verifikator')->first();
+                $insert = Sekolah_sasaran::create([
+                    'sekolah_id' => $request->sekolah_id,
+                    'pendamping_id' => $request->pendamping_id,
+                    'verifikator_id' => $verifikator->user_id,
+                ]);
             }
             if($insert){
                 $response = [
