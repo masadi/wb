@@ -89,6 +89,21 @@ class PageController extends Controller
         ];
         return view('page.rapor-mutu.'.$query)->with($params);
     }
+    public function rapor_mutu_komparasi($request){
+        $query = $request->route('query');
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->orderBy('kode_wilayah')->get();
+        $params = [
+            'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
+            'komponen_kinerja' => Komponen::whereIn('id', [1,2,3])->get(),
+            'komponen_dampak' => Komponen::whereIn('id', [4,5])->get(),
+            'all_wilayah' => $all_wilayah,
+        ];
+        return view('page.rapor-mutu.'.$query)->with($params);
+    }
     public function get_chart()
     {
         $all_komponen = Komponen::with('all_nilai_komponen')->get();
@@ -175,6 +190,98 @@ class PageController extends Controller
             'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
         ];
         return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'counting' => $counting, 'all_kinerja' => $all_kinerja, 'all_dampak' => $all_dampak]);
+    }
+    public function get_chart_komparasi()
+    {
+        $all_komponen = Komponen::with(['all_nilai_komponen', 'all_nilai_komponen_verifikasi'])->get();
+        foreach($all_komponen as $komponen){
+            $nilai_komponen[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
+            $nilai_komponen_verifikasi[] = number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
+            $nama_komponen[] = $komponen->nama;
+        }
+        $wilayah = '_provinsi';
+        $with = 'sekolah'.$wilayah;
+        $with_coe = 'sekolah_coe'.$wilayah;
+        $with_instrumen = 'sekolah_instrumen'.$wilayah;
+        $with_pakta_integritas = 'sekolah_pakta_integritas'.$wilayah;
+        $with_rapor_mutu = 'sekolah_rapor_mutu'.$wilayah;
+        $with_waiting = 'sekolah_waiting'.$wilayah;
+        $with_proses = 'sekolah_proses'.$wilayah;
+        $with_terima = 'sekolah_terima'.$wilayah;
+        $with_tolak = 'sekolah_tolak'.$wilayah;
+        $data_count = 'sekolah'.$wilayah.'_count';
+        $data_count_coe = 'sekolah_coe'.$wilayah.'_count';
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak])->orderBy('kode_wilayah')->get();
+        $sekolah_coe_count = 0;
+        $sekolah_instrumen_count = 0;
+        $sekolah_rapor_mutu_count = 0;
+        $sekolah_pakta_integritas_count = 0;
+        $sekolah_waiting_count = 0;
+        $sekolah_proses_count = 0;
+        $sekolah_terima_count = 0;
+        $sekolah_tolak_count = 0;
+        $coe_count = $with_coe.'_count';
+        $instrumen_count = $with_instrumen.'_count';
+        $pakta_integritas_count = $with_pakta_integritas.'_count';
+        $rapor_mutu_count = $with_rapor_mutu.'_count';
+        $waiting_count = $with_waiting.'_count';
+        $proses_count = $with_proses.'_count';
+        $terima_count = $with_terima.'_count';
+        $tolak_count = $with_tolak.'_count';
+        foreach($all_wilayah as $wilayah){
+            $sekolah_coe_count += $wilayah->$coe_count;
+            $sekolah_instrumen_count += $wilayah->$instrumen_count;
+            $sekolah_rapor_mutu_count += $wilayah->$rapor_mutu_count;
+            $sekolah_pakta_integritas_count += $wilayah->$pakta_integritas_count;
+            $sekolah_waiting_count += $wilayah->$waiting_count;
+            $sekolah_proses_count += $wilayah->$proses_count;
+            $sekolah_terima_count += $wilayah->$terima_count;
+            $sekolah_tolak_count += $wilayah->$tolak_count;
+        }
+        $counting = [
+            $sekolah_coe_count, 
+            $sekolah_instrumen_count, 
+            $sekolah_coe_count - $sekolah_instrumen_count,
+            $sekolah_rapor_mutu_count, 
+            $sekolah_coe_count - $sekolah_rapor_mutu_count,
+            $sekolah_pakta_integritas_count, 
+            $sekolah_coe_count - $sekolah_pakta_integritas_count,
+            $sekolah_waiting_count, 
+            $sekolah_coe_count - $sekolah_waiting_count,
+            $sekolah_proses_count, 
+            $sekolah_coe_count - $sekolah_proses_count,
+            $sekolah_terima_count, 
+            $sekolah_coe_count - $sekolah_terima_count,
+        ];
+        $komponen_kinerja = Komponen::whereIn('id', [1,2,3])->get();
+        $komponen_dampak = Komponen::whereIn('id', [4,5])->get();
+        foreach($komponen_kinerja as $kinerja){
+            $nilai_komponen_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
+            $nilai_komponen_kinerja_verifikasi[] = number_format($kinerja->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
+            $nama_komponen_kinerja[] = $kinerja->nama;
+        }
+        foreach($komponen_dampak as $dampak){
+            $nilai_komponen_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
+            $nilai_komponen_dampak_verifikasi[] = number_format($dampak->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
+            $nama_komponen_dampak[] = $dampak->nama;
+        }
+        $all_kinerja = [
+            'nilai' => $nilai_komponen_kinerja,
+            'nilai_verifikasi' => $nilai_komponen_kinerja_verifikasi,
+            'nama' => $nama_komponen_kinerja,
+            'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
+        ];
+        $all_dampak = [
+            'nilai' => $nilai_komponen_dampak,
+            'nilai_verifikasi' => $nilai_komponen_dampak_verifikasi,
+            'nama' => $nama_komponen_dampak,
+            'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
+        ];
+        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'nilai_komponen_verifikasi' => $nilai_komponen_verifikasi, 'counting' => $counting, 'all_kinerja' => $all_kinerja, 'all_dampak' => $all_dampak]);
     }
     public function galeri($request){
         $query = $request->route('query');
