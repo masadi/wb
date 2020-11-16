@@ -73,32 +73,34 @@ class ProsesVerifikasi extends Command
                     }
                 }
                 $keterangan = array_filter($all_keterangan[$instrumen_id]);
-                $save = Nilai_instrumen::updateOrCreate(
-                    [
-                        'user_id' => $sekolah->user->user_id,
-                        'verifikator_id' => $content->verifikator_id,
-                        'instrumen_id' => $instrumen_id,
-                    ],
-                    [
-                        'nilai' => $content->verifikasi->{$instrumen_id},
-                        'predikat' => HelperModel::predikat($content->verifikasi->{$instrumen_id}   ),
-                        'keterangan' => ($keterangan) ? implode('. ', $keterangan) : NULL,
-                    ]
-                );
-                Jawaban::updateOrCreate(
-                    [
-                        'user_id' => $sekolah->user->user_id,
-                        'verifikator_id' => $content->verifikator_id,
-                        'komponen_id' => $content->komponen_id->{$instrumen_id},
-                        'aspek_id' => $content->aspek_id->{$instrumen_id},
-                        'atribut_id' => $content->atribut_id->{$instrumen_id},
-                        'indikator_id' => $content->indikator_id->{$instrumen_id},
-                        'instrumen_id' => $instrumen_id,
-                    ],
-                    [
-                        'nilai' => $content->verifikasi->{$instrumen_id},
-                    ]
-                );
+                if($content->verifikasi->{$instrumen_id}){
+                    $save = Nilai_instrumen::updateOrCreate(
+                        [
+                            'user_id' => $sekolah->user->user_id,
+                            'verifikator_id' => $content->verifikator_id,
+                            'instrumen_id' => $instrumen_id,
+                        ],
+                        [
+                            'nilai' => $content->verifikasi->{$instrumen_id},
+                            'predikat' => HelperModel::predikat($content->verifikasi->{$instrumen_id}   ),
+                            'keterangan' => ($keterangan) ? implode('. ', $keterangan) : NULL,
+                        ]
+                    );
+                    Jawaban::updateOrCreate(
+                        [
+                            'user_id' => $sekolah->user->user_id,
+                            'verifikator_id' => $content->verifikator_id,
+                            'komponen_id' => $content->komponen_id->{$instrumen_id},
+                            'aspek_id' => $content->aspek_id->{$instrumen_id},
+                            'atribut_id' => $content->atribut_id->{$instrumen_id},
+                            'indikator_id' => $content->indikator_id->{$instrumen_id},
+                            'instrumen_id' => $instrumen_id,
+                        ],
+                        [
+                            'nilai' => $content->verifikasi->{$instrumen_id},
+                        ]
+                    );
+                }
                 HelperModel::generate_nilai($sekolah->user->user_id, $content->verifikator_id);
             }
             $status = Status_rapor::where('status', 'waiting')->first();
