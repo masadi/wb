@@ -29,6 +29,7 @@ $active_rapor_mutu = '';
 $aktif_rapor_mutu_sekolah = '';
 $aktif_rapor_mutu_verifikasi = '';
 $aktif_rapor_mutu_afirmasi = '';
+$aktif_rapor_mutu_komparasi = '';
 if($laman == 'rapor-mutu-sekolah'){
     $active_rapor_mutu = ' menu-open';
     $aktif_rapor_mutu_sekolah = ' active';
@@ -41,7 +42,10 @@ if($laman == 'rapor-mutu-afirmasi'){
     $active_rapor_mutu = ' menu-open';
     $aktif_rapor_mutu_afirmasi = ' active';
 }
-
+if($laman == 'rapor-mutu-komparasi'){
+    $active_rapor_mutu = ' menu-open';
+    $aktif_rapor_mutu_komparasi = ' active';
+}
 $active_progres_data = '';
 $aktif_instrumen = '';
 $aktif_rapor_mutu = '';
@@ -108,7 +112,7 @@ if($laman == 'login'){
               <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                       <li class="nav-item has-treeview {{$active_rapor_mutu}}">
-                        <a href="#" class="nav-link text-white{{$aktif_rapor_mutu_sekolah}}{{$aktif_rapor_mutu_verifikasi}}{{$aktif_rapor_mutu_afirmasi}}">
+                        <a href="#" class="nav-link text-white{{$aktif_rapor_mutu_sekolah}}{{$aktif_rapor_mutu_verifikasi}}{{$aktif_rapor_mutu_afirmasi}}{{$aktif_rapor_mutu_komparasi}}">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
                             Rapor Mutu
@@ -132,6 +136,12 @@ if($laman == 'login'){
                             <a href="{{route('page', ['query' => 'rapor-mutu-afirmasi'])}}" class="nav-link text-white{{$aktif_rapor_mutu_afirmasi}}">
                               <i class="fas fa-check nav-icon"></i>
                               <p>Afirmasi</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'rapor-mutu-komparasi'])}}" class="nav-link text-white{{$aktif_rapor_mutu_komparasi}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Komparasi</p>
                             </a>
                           </li>
                         </ul>
