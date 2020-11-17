@@ -35,32 +35,39 @@ class HelperModel
         return $jenis_rapor->id;
     }
     public static function bintang_icon($nilai, $color){
+        /*
+        91-100 = sangat baik
+        76-90 = baik
+        61-75 = cukup baik
+        46-60 = kurang baik
+        0-45 = tidak baik
+        */
         $html = '';
-        if ($nilai > 0 && $nilai < 20){
+        if ($nilai > 0 && $nilai <= 45){
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 20 && $nilai < 40) {
+        } elseif($nilai > 45 && $nilai <= 60) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 40 && $nilai < 60) {
+        } elseif($nilai > 60 && $nilai <= 75) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 60 && $nilai < 80) {
+        } elseif($nilai > 75 && $nilai <= 90) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="far fa-star"></i>';
-        } elseif($nilai >= 80) {
+        } elseif($nilai > 90) {
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
             $html .= '<i class="fas fa-star text-'.$color.'"></i>';
@@ -110,36 +117,49 @@ class HelperModel
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
             }
         } else {
-            if($nilai < 20){
+            /*
+            91-100 = sangat baik
+            76-90 = baik
+            61-75 = cukup baik
+            46-60 = kurang baik
+            0-45 = tidak baik
+            */
+            if ($nilai > 0 && $nilai <= 45){
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            } elseif($nilai < 40) {
+            } elseif($nilai > 45 && $nilai <= 60) {
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            } elseif($nilai < 60) {
+            } elseif($nilai > 60 && $nilai <= 75) {
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
-            } elseif($nilai < 80) {
+            } elseif($nilai > 75 && $nilai <= 90) {
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
                 $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+            } elseif($nilai > 90) {
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
             } else {
-                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
-                $html .= '<img src="'.asset('vendor/img/star_color.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
+                $html .= '<img src="'.asset('vendor/img/star_white.png').'" alt="">';
             }
         }
         return $html;
@@ -196,7 +216,20 @@ class HelperModel
             if($user->nilai_akhir){
                 $nilai_rapor_mutu_tercapai = $user->nilai_akhir->nilai;
                 $nilai_rapor_mutu_belum_tercapai = (100 - $nilai_rapor_mutu_tercapai);
-                if($nilai_rapor_mutu_tercapai < 21){
+                if ($nilai_rapor_mutu_tercapai > 0 && $nilai_rapor_mutu_tercapai <= 45){
+                    $backgroundColor = '#dc3545';
+                } elseif($nilai_rapor_mutu_tercapai > 45 && $nilai_rapor_mutu_tercapai <= 60) {
+                    $backgroundColor = '#ffc107';
+                } elseif($nilai_rapor_mutu_tercapai > 69 && $nilai_rapor_mutu_tercapai <= 75) {
+                    $backgroundColor = '#ff851b';
+                } elseif($nilai_rapor_mutu_tercapai > 75 && $nilai_rapor_mutu_tercapai <= 90) {
+                    $backgroundColor = '#39cccc';
+                } elseif($nilai_rapor_mutu_tercapai > 90) {
+                    $backgroundColor = '#28a745';
+                } else {
+                    $backgroundColor = '#dc3545';
+                }
+                /*if($nilai_rapor_mutu_tercapai < 21){
                     $backgroundColor = '#dc3545';
                 } elseif($nilai_rapor_mutu_tercapai < 41){
                     $backgroundColor = '#ffc107';
@@ -206,7 +239,7 @@ class HelperModel
                     $backgroundColor = '#39cccc';
                 } elseif($nilai_rapor_mutu_tercapai >= 81){
                     $backgroundColor = '#28a745';
-                }
+                }*/
             }
             $obj_nilai_rapor = (object) [
                 /*'barPercentage' => 10,
@@ -439,24 +472,37 @@ class HelperModel
 	public static function predikat($nilai, $puluhan = false){
 		$predikat = '-';
 		if($puluhan){
-			if($nilai < 21){
-				$predikat = 'Sangat Kurang';
+            if ($nilai > 0 && $nilai <= 45){
+                $predikat = 'Tidak Baik';
+            } elseif($nilai > 45 && $nilai <= 60) {
+                $predikat = 'Kurang Baik';
+            } elseif($nilai > 60 && $nilai <= 75) {
+                $predikat = 'Cukup Baik';
+            } elseif($nilai > 75 && $nilai <= 90) {
+                $predikat = 'Baik';
+            } elseif($nilai > 90) {
+                $predikat = 'Sangat Baik';
+            } else {
+                $predikat = '-';
+            }
+			/*if($nilai < 21){
+				$predikat = 'Tidak Baik';
 			} elseif($nilai < 41){
-				$predikat = 'Kurang';
+				$predikat = 'Kurang Baik';
 			} elseif($nilai < 61){
-				$predikat = 'Cukup';
+				$predikat = 'Cukup Baik';
 			} elseif($nilai < 81){
 				$predikat = 'Baik';
 			} elseif($nilai >= 81){
 				$predikat = 'Sangat Baik';
-			}
+			}*/
 		} else {
 			if($nilai == 1){
-				$predikat = 'Sangat Kurang';
+				$predikat = 'Tidak Baik';
 			} elseif($nilai == 2){
-				$predikat = 'Kurang';
+				$predikat = 'Kurang Baik';
 			} elseif($nilai == 3){
-				$predikat = 'Cukup';
+				$predikat = 'Cukup Baik';
 			} elseif($nilai == 4){
 				$predikat = 'Baik';
 			} elseif($nilai == 5){
