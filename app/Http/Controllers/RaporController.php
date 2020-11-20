@@ -256,10 +256,16 @@ class RaporController extends Controller
             $nilai_komponen = [];
             $nilai_komponen_chart = [];
             $nama_komponen_chart = [];
+            $nilai_komponen_komparasi = [];
             foreach($all_komponen as $komponen){
                 $record_komponen= [];
                 $record_komponen['nilai'] 	= number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
                 $record_komponen['nilai_verifikasi'] 	= number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
+                $nilai_komponen_komparasi[] = [
+                    'komponen' => $komponen->nama,
+                    'sekolah' => number_format($komponen->all_nilai_komponen->avg('total_nilai'),2),
+                    'verifikasi' => number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2),
+                ];
                 $record_komponen['bintang'] 	= HelperModel::bintang_icon(number_format($komponen->all_nilai_komponen->avg('total_nilai'),2), 'warning');
                 foreach($komponen->aspek as $aspek){
                     $record_komponen['nilai_aspek'][strtolower(HelperModel::clean($aspek->nama))] = number_format($aspek->all_nilai_aspek->avg('total_nilai'),2);
@@ -336,6 +342,7 @@ class RaporController extends Controller
                 'nilai_komponen_kotak' => $nilai_komponen, 
                 'nilai_komponen' => $nilai_komponen_chart, 
                 'nilai_komponen_verifikasi' => $nilai_komponen_verifikasi, 
+                'nilai_komponen_komparasi' => $nilai_komponen_komparasi,
                 'nama_komponen' => $nama_komponen_chart,
             ];
         } else {

@@ -17,12 +17,14 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
+Route::get('/rapor-mutu/{query}', 'DashboardController@rapor_mutu')->name('dashboard.rapor_mutu');
 Route::post('/login-dashboard', 'PageController@login_dashboard')->name('login_dashboard');
 #Route::post('/page/{query}/{id_level_wilayah?}/{kode_wilayah?}', 'PageController@index')->name('page');
 Route::get('/reset-instrumen/{npsn}', 'PageController@reset_instrumen')->name('reset_instrumen');
 Route::get('/page/{query}/{id_level_wilayah?}/{kode_wilayah?}', 'PageController@index')->name('page');
 Route::get('/berita/{slug}', 'PageController@detil_berita')->name('detil_berita');
-Route::get('/rapor-mutu/{komponen_id}', 'PageController@get_rapor_mutu')->name('get_rapor_mutu');
+//Route::get('/rapor-mutu/{komponen_id}', 'PageController@get_rapor_mutu')->name('get_rapor_mutu');
 Route::get('/get-chart', 'PageController@get_chart')->name('get_chart');
 Route::get('/get-chart-komparasi', 'PageController@get_chart_komparasi')->name('get_chart_komparasi');
 /*Route::get('/{query}', function ($query) {

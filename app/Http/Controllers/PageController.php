@@ -197,6 +197,11 @@ class PageController extends Controller
         foreach($all_komponen as $komponen){
             $nilai_komponen[] = number_format($komponen->all_nilai_komponen->avg('total_nilai'),2);
             $nilai_komponen_verifikasi[] = number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
+            $nilai_komponen_komparasi[] = [
+                'komponen' => $komponen->nama,
+                'sekolah' => number_format($komponen->all_nilai_komponen->avg('total_nilai'),2),
+                'verifikasi' => number_format($komponen->all_nilai_komponen_verifikasi->avg('total_nilai'),2),
+            ];
             $nama_komponen[] = $komponen->nama;
         }
         $wilayah = '_provinsi';
@@ -281,7 +286,7 @@ class PageController extends Controller
             'nama' => $nama_komponen_dampak,
             'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
         ];
-        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'nilai_komponen_verifikasi' => $nilai_komponen_verifikasi, 'counting' => $counting, 'all_kinerja' => $all_kinerja, 'all_dampak' => $all_dampak]);
+        return response()->json(['nama_komponen' => $nama_komponen, 'nilai_komponen' => $nilai_komponen, 'nilai_komponen_verifikasi' => $nilai_komponen_verifikasi, 'nilai_komponen_komparasi' => $nilai_komponen_komparasi, 'counting' => $counting, 'all_kinerja' => $all_kinerja, 'all_dampak' => $all_dampak]);
     }
     public function galeri($request){
         $query = $request->route('query');

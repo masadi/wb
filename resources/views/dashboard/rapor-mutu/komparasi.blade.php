@@ -1,4 +1,4 @@
-@extends('layouts.app_rapor')
+@extends('layouts.app_dashboard')
 @section('title', 'Komprasi Rapor Mutu SMK')
 @section('content')
 <div class="row">
@@ -50,8 +50,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div id="chartdiv"></div>
-                <!--canvas id="rapor_mutu_verifikasi" style="height: 250px"></canvas-->
+                <canvas id="rapor_mutu_verifikasi" style="height: 250px"></canvas>
             </div>
         </div>
     </div>
@@ -142,47 +141,36 @@
 @section('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <style>
-    .card-warna-{{ strtolower($komponen[0]->nama) }} {
-        background: #d9434e !important;
-        color: white;
-    }
-    .card-warna-{{ strtolower($komponen[1]->nama) }} {
-        background: #1fac4d !important;
-        color: white;
-    }
-    .card-warna-{{ strtolower($komponen[2]->nama) }} {
-        background: #48cfc1 !important;
-        color: white;
-    }
-    .card-warna-{{ strtolower($komponen[3]->nama) }} {
-        background: #9398ec !important;
-        color: white;
-    }
-    .card-warna-{{ strtolower($komponen[4]->nama) }} {
-        background: #d27b25 !important;
-        color: white;
-    }
+    .card-warna-{{strtolower($komponen[0]->nama)}} {
+      background:#d9434e !important;
+      color:white;
+  }
+  .card-warna-{{strtolower($komponen[1]->nama)}} {
+      background:#1fac4d !important;
+      color:white;
+  }
+  .card-warna-{{strtolower($komponen[2]->nama)}} {
+      background:#48cfc1 !important;
+      color:white;
+  }
+  .card-warna-{{strtolower($komponen[3]->nama)}} {
+      background:#9398ec !important;
+      color:white;
+  }
+  .card-warna-{{strtolower($komponen[4]->nama)}} {
+      background:#d27b25 !important;
+      color:white;
+  }
 </style>
 @endsection
 @section('js_file')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://www.chartjs.org/dist/2.9.4/Chart.min.js"></script>
 <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
-<!-- Resources -->
-<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
-<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
 @endsection
 @section('js')
-<!-- Styles -->
-<style>
-    #chartdiv {
-        width: 100%;
-        height: 500px;
-    }
-</style>
 <script>
-$('.select2').select2();
+    $('.select2').select2();
 $('#provinsi_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();
@@ -468,85 +456,14 @@ $.get( "{{route('get_chart_komparasi')}}", function( data ) {
     tampilChart(data)
 });
 
-var chart;
+var lineChart;
 function tampilChart(data){
     if(data.counting){
         $.each($('td.rekap'), function(i, val) {
             $(this).html(data.counting[i])
         });
     }
-    console.log(data.nilai_komponen_komparasi)
-    console.log(chart)
-    am4core.ready(function() {
-    
-    // Themes begin
-    am4core.useTheme(am4themes_animated);
-    // Themes end
-    //am4core.options.autoDispose = true;
-    // Create chart instance
-
-    chart = am4core.create("chartdiv", am4charts.XYChart3D);
-    
-    // Add data
-    /*chart.data = [{
-        "country": "USA",
-        "year2017": 3.5,
-        "year2018": 4.2
-    }, {
-        "country": "UK",
-        "year2017": 1.7,
-        "year2018": 3.1
-    }, {
-        "country": "Canada",
-        "year2017": 2.8,
-        "year2018": 2.9
-    }, {
-        "country": "Japan",
-        "year2017": 2.6,
-        "year2018": 2.3
-    }, {
-        "country": "France",
-        "year2017": 1.4,
-        "year2018": 2.1
-    }];*/
-    chart.data = data.nilai_komponen_komparasi;
-    // Create axes
-    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = "komponen";
-    categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.renderer.minGridDistance = 30;
-    
-    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.title.text = "Nilai Komponen";
-    valueAxis.renderer.labels.template.adapter.add("text", function(text) {
-      return text;
-    });
-    valueAxis.min = 0;
-    valueAxis.max = 100;
-    valueAxis.strictMinMax = true; 
-    
-    // Create series
-    var series = chart.series.push(new am4charts.ColumnSeries3D());
-    series.dataFields.valueY = "sekolah";
-    series.dataFields.categoryX = "komponen";
-    series.name = "Nilai Sekolah";
-    series.clustered = false;
-    series.columns.template.tooltipText = "Nilai Sekolah: [bold]{valueY}[/]";
-    series.columns.template.fillOpacity = 0.9;
-    series.columns.template.fill = am4core.color(window.chartColors.red);
-    var series2 = chart.series.push(new am4charts.ColumnSeries3D());
-    series2.dataFields.valueY = "verifikasi";
-    series2.dataFields.categoryX = "komponen";
-    series2.name = "Nilai Verifikasi";
-    series2.clustered = false;
-    series2.columns.template.tooltipText = "Nilai Verifikasi: [bold]{valueY}[/]";
-    series2.columns.template.fill = am4core.color(window.chartColors.blue);
-    
-    }); // end am4core.ready()
-    if(chart){
-        chart.data = data.nilai_komponen_komparasi;
-    }
-    /*if(lineChart){
+    if(lineChart){
         lineChart.destroy();
     }
     var RaporMutuVerifikasi = document.getElementById('rapor_mutu_verifikasi').getContext('2d');
@@ -609,7 +526,6 @@ function tampilChart(data){
     if(data.output){
         lineChart.update();
     }
-    */
 }
 </script>
 @endsection
