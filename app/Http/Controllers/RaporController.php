@@ -286,6 +286,7 @@ class RaporController extends Controller
                 $nilai_komponen_kinerja[] = number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2);
                 $nilai_komponen_kinerja_verifikasi[] = number_format($kinerja->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
                 $bintang_komponen_kinerja[] 	= HelperModel::bintang_icon(number_format($kinerja->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+                $bintang_komponen_kinerja_verifikasi[] 	= HelperModel::bintang_icon(number_format($kinerja->all_nilai_komponen_verifikasi->avg('total_nilai'),2), 'warning');
                 $nama_komponen_kinerja[] = strtolower($kinerja->nama);
             }
             foreach($komponen_dampak as $dampak){
@@ -295,8 +296,8 @@ class RaporController extends Controller
                 }
                 $nilai_komponen_dampak[] = number_format($dampak->all_nilai_komponen->avg('total_nilai'),2);
                 $nilai_komponen_dampak_verifikasi[] = number_format($dampak->all_nilai_komponen_verifikasi->avg('total_nilai'),2);
-                //(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2) * $bobot_dampak) / 100;
                 $bintang_komponen_dampak[] 	= HelperModel::bintang_icon(number_format($dampak->all_nilai_komponen->avg('total_nilai'),2), 'warning');
+                $bintang_komponen_dampak_verifikasi[] 	= HelperModel::bintang_icon(number_format($dampak->all_nilai_komponen_verifikasi->avg('total_nilai'),2), 'warning');
                 $nama_komponen_dampak[] = strtolower($dampak->nama);
             }
             $group_komponen = [
@@ -307,6 +308,7 @@ class RaporController extends Controller
                     'rerata' => number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2),
                     'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_kinerja) / count($nilai_komponen_kinerja),2)),
                     'bintang' => $bintang_komponen_kinerja,
+                    'bintang_verifikasi' => $bintang_komponen_kinerja_verifikasi,
                 ],
                 'all_dampak' => [
                     'nilai' => $nilai_komponen_dampak,
@@ -315,6 +317,7 @@ class RaporController extends Controller
                     'rerata' => number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2),
                     'nilai_scatter' => HelperModel::nilai_satuan(number_format(array_sum($nilai_komponen_dampak) / count($nilai_komponen_dampak),2)),
                     'bintang' => $bintang_komponen_dampak,
+                    'bintang_verifikasi' => $bintang_komponen_dampak_verifikasi,
                 ],
             ];
             $all_sekolah = [];

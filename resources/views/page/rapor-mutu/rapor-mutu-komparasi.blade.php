@@ -124,7 +124,7 @@
                         <div class="position-relative p-3 mb-3 card-warna-{{strtolower($dampak->nama)}} text-center"
                             style="height:125px">
                             {{$dampak->nama}} <br>
-                            <h1 class="dampak-verifikasi{{strtolower(Helper::clean($dampak->nama))}}">
+                            <h1 class="dampak-verifikasi-{{strtolower(Helper::clean($dampak->nama))}}">
                                 {{number_format($dampak->all_nilai_komponen_verifikasi->avg('total_nilai'),2)}}
                             </h1>
                             <span class="bintang-dampak-verifikasi">{!!
@@ -206,14 +206,12 @@ $('#provinsi_id').change(function(){
             $('.avg_kinerja').html(response.output.all_kinerja.rerata);
             $('.avg_dampak').html(response.output.all_dampak.rerata);
             $.each(response.output.all_kinerja.nama, function (i, item) {
-                var a = $('h1').hasClass('kinerja-'+item);
                 $('h1.kinerja-'+item).html(response.output.all_kinerja.nilai[i]);
                 $('h1.kinerja-verifikasi-'+item).html(response.output.all_kinerja.nilai_verifikasi[i]);
             })
             $.each(response.output.all_dampak.nama, function (i, item) {
-                var a = $('h1').hasClass('dampak-'+item);
                 $('h1.dampak-'+item).html(response.output.all_dampak.nilai[i]);
-                $('h1.dampak-verifikasi-'+item).html(response.output.all_dampak.nilai[i]);
+                $('h1.dampak-verifikasi-'+item).html(response.output.all_dampak.nilai_verifikasi[i]);
             })
             $.each($('.bintang-kinerja'), function(i, val) {
                 $(this).html(response.output.all_kinerja.bintang[i])
@@ -270,18 +268,24 @@ $('#kabupaten_id').change(function(){
             $('.avg_kinerja').html(response.output.all_kinerja.rerata);
             $('.avg_dampak').html(response.output.all_dampak.rerata);
             $.each(response.output.all_kinerja.nama, function (i, item) {
-                var a = $('h1').hasClass('kinerja-'+item);
                 $('h1.kinerja-'+item).html(response.output.all_kinerja.nilai[i]);
+                $('h1.kinerja-verifikasi-'+item).html(response.output.all_kinerja.nilai_verifikasi[i]);
             })
             $.each(response.output.all_dampak.nama, function (i, item) {
-                var a = $('h1').hasClass('dampak-'+item);
                 $('h1.dampak-'+item).html(response.output.all_dampak.nilai[i]);
+                $('h1.dampak-verifikasi-'+item).html(response.output.all_dampak.nilai_verifikasi[i]);
             })
             $.each($('.bintang-kinerja'), function(i, val) {
                 $(this).html(response.output.all_kinerja.bintang[i])
             })
+            $.each($('.bintang-kinerja-verifikasi'), function(i, val) {
+                $(this).html(response.output.all_kinerja.bintang_verifikasi[i])
+            })
             $.each($('.bintang-dampak'), function(i, val) {
                 $(this).html(response.output.all_dampak.bintang[i])
+            })
+            $.each($('.bintang-dampak-verifikasi'), function(i, val) {
+                $(this).html(response.output.all_dampak.bintang_verifikasi[i])
             })
             $.each($('.avg'), function(i, val) {
                 $(this).html(response.nilai_komponen_kotak[i].nilai)
@@ -333,18 +337,24 @@ $('#kecamatan_id').change(function(){
             $('.avg_kinerja').html(response.output.all_kinerja.rerata);
             $('.avg_dampak').html(response.output.all_dampak.rerata);
             $.each(response.output.all_kinerja.nama, function (i, item) {
-                var a = $('h1').hasClass('kinerja-'+item);
                 $('h1.kinerja-'+item).html(response.output.all_kinerja.nilai[i]);
+                $('h1.kinerja-verifikasi-'+item).html(response.output.all_kinerja.nilai_verifikasi[i]);
             })
             $.each(response.output.all_dampak.nama, function (i, item) {
-                var a = $('h1').hasClass('dampak-'+item);
                 $('h1.dampak-'+item).html(response.output.all_dampak.nilai[i]);
+                $('h1.dampak-verifikasi-'+item).html(response.output.all_dampak.nilai_verifikasi[i]);
             })
             $.each($('.bintang-kinerja'), function(i, val) {
                 $(this).html(response.output.all_kinerja.bintang[i])
             })
+            $.each($('.bintang-kinerja-verifikasi'), function(i, val) {
+                $(this).html(response.output.all_kinerja.bintang_verifikasi[i])
+            })
             $.each($('.bintang-dampak'), function(i, val) {
                 $(this).html(response.output.all_dampak.bintang[i])
+            })
+            $.each($('.bintang-dampak-verifikasi'), function(i, val) {
+                $(this).html(response.output.all_dampak.bintang_verifikasi[i])
             })
             $.each($('.avg'), function(i, val) {
                 $(this).html(response.nilai_komponen_kotak[i].nilai)
@@ -414,16 +424,24 @@ function getRaporMutu(params){
                 $.each(response.group_komponen.all_kinerja.nama, function (i, item) {
                     var a = $('h1').hasClass('kinerja-'+item);
                     $('h1.kinerja-'+item).html(response.group_komponen.all_kinerja.nilai[i]);
+                    $('h1.kinerja-verifikasi-'+item).html(response.group_komponen.all_kinerja.nilai_verifikasi[i]);
                 })
                 $.each(response.group_komponen.all_dampak.nama, function (i, item) {
                     var a = $('h1').hasClass('dampak-'+item);
                     $('h1.dampak-'+item).html(response.group_komponen.all_dampak.nilai[i]);
+                    $('h1.dampak-verifikasi-'+item).html(response.group_komponen.all_dampak.nilai_verifikasi[i]);
                 })
                 $.each($('.bintang-kinerja'), function(i, val) {
                     $(this).html(response.group_komponen.all_kinerja.bintang[i])
                 })
                 $.each($('.bintang-dampak'), function(i, val) {
                     $(this).html(response.group_komponen.all_dampak.bintang[i])
+                })
+                $.each($('.bintang-kinerja-verifikasi'), function(i, val) {
+                    $(this).html(response.group_komponen.all_kinerja.bintang_verifikasi[i])
+                })
+                $.each($('.bintang-dampak-verifikasi'), function(i, val) {
+                    $(this).html(response.group_komponen.all_dampak.bintang_verifikasi[i])
                 })
                 $.each($('.avg'), function(i, val) {
                     $(this).html(response.nilai_komponen_kotak[i].nilai)
