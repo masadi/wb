@@ -125,20 +125,20 @@
                                         <td class="text-center">{{nilai_rapor_mutu}}</td>
                                         <td class="text-center">{{predikat_sekolah}}</td>
                                         <td class="text-center">
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 1}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 21}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 41}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 61}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu >= 81}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu > 0}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu > 45}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu > 60}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu > 75}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu > 90}"></span>
                                         </td>
                                         <td class="text-center">{{nilai_rapor_mutu_verifikasi}}</td>
                                         <td class="text-center">{{predikat_sekolah_verifikasi}}</td>
                                         <td class="text-center">
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 1}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 21}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 41}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 61}"></span>
-                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi >= 81}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi > 0}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi > 45}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi > 60}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi > 75}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': nilai_rapor_mutu_verifikasi > 90}"></span>
                                         </td>
                                     </tr>
                                 </tbody>
