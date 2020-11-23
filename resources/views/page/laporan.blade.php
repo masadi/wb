@@ -68,16 +68,16 @@
 @endsection
 @section('js')
 <script>
-var table;
-function rekapitulasi(provinsi_id, kabupaten_id, sekolah_id){
-    table = $('#rekapitulasi').DataTable( {
+    var oTable = $('#rekapitulasi').DataTable( {
         retrieve: true,
         processing: true,
         serverSide: true,
-        //ajax: '{{ route('api.progres') }}',
         ajax: {
             url: '{{ route('api.rekapitulasi.index') }}',
             data: function(d){
+                var provinsi_id = $('#provinsi_id').val();
+                var kabupaten_id = $('#kabupaten_id').val();
+                var sekolah_id = $('#sekolah_id').val();
                 if(provinsi_id){
                     d.provinsi_id = provinsi_id;
                 }
@@ -132,9 +132,58 @@ function rekapitulasi(provinsi_id, kabupaten_id, sekolah_id){
             }
         }
     });
-}
 $('.select2').select2();
-rekapitulasi();
+$('#provinsi_id').change(function(){
+    var ini = $(this).val();
+    $('#kabupaten_id').html('<option value="">Semua Kab/Kota</option>');
+    if(ini){
+        $.ajax({
+            url: '{{route('api.filter_wilayah')}}',
+            type: 'post',
+            data: {
+                id_level_wilayah: 1,
+                kode_wilayah: ini.trim(),
+            },
+            success: function(response){
+                $('#kabupaten_id').html('<option value="">Semua Kab/Kota</option>');
+                $.each(response.output.result, function (i, item) {
+                    $('#kabupaten_id').append($('<option>', { 
+                        value: item.value,
+                        text : item.text
+                    }));
+                });
+            }
+        })
+	}
+    oTable.draw();
+});
+$('#kabupaten_id').change(function(){
+    var ini = $(this).val();
+    $('#sekolah_id').html('<option value="">Semua Sekolah</option>');
+	if(ini){
+		$.ajax({
+            url: '{{route('api.filter_wilayah')}}',
+            type: 'post',
+            data: {
+                id_level_wilayah: 2,
+                kode_wilayah: ini.trim(),
+            },
+            success: function(response){
+                $('#sekolah_id').html('<option value="">Semua Sekolah</option>');
+                $.each(response.output.all_sekolah, function (i, item) {
+                    $('#sekolah_id').append($('<option>', { 
+                        value: item.value,
+                        text : item.text
+                    }));
+                });
+            }
+        })
+    }
+    oTable.draw();
+})
+$('#sekolah_id').change(function(){
+    oTable.draw();
+});
 </script>
 @endsection
 @section('js_file')

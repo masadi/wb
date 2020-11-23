@@ -45,12 +45,13 @@ class RekapitulasiController extends Controller
         ->addIndexColumn()
         ->filter(function ($query) {
             if (request()->has('provinsi_id')) {
-                $query->whereIn('kode_wilayah', function($query){
+                /*$query->whereIn('kode_wilayah', function($query){
                     $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->provinsi_id."'");
-                });
+                });*/
+                $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
             }
             if (request()->has('kabupaten_id')) {
-                $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kabupaten_id."'");
+                $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
             }
             if (request()->has('sekolah_id')) {
                 $query->where('sekolah_id', request('sekolah_id'));
