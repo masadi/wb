@@ -1,5 +1,5 @@
 @extends('layouts.app_rapor')
-@section('title', 'Rekapitulasi Rapor Mutu')
+@section('title', 'Laporan Proses Penjamian Mutu SMK')
 @section('content')
 <div class="row">
     <div class="col-12">
