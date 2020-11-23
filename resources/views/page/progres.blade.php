@@ -85,21 +85,6 @@
                 "sortDescending": ": activate to sort column descending"
             }
         }
-		/*"retrieve": true,
-		"processing": true,
-        "serverSide": true,
-        "ajax": "{{ route('api.progres') }}",
-		"columns": [
-            {data: 'nama', name: 'nama'},
-            {data: 'npsn', name: 'npsn'},
-            {data: 'instrumen', name: 'instrumen'},
-            {data: 'rapor_mutu', name: 'rapor_mutu'},
-            {data: 'hitung_rapor', name: 'hitung_rapor'},
-            {data: 'pakta_integritas', name: 'pakta_integritas'},
-            {data: 'verval', name: 'verval'},
-            {data: 'verifikasi', name: 'verifikasi'},
-            {data: 'pengesahan', name: 'pengesahan'},
-        ],*/
     });
 </script>
 @endsection

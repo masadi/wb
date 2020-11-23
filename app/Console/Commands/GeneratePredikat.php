@@ -40,19 +40,19 @@ class GeneratePredikat extends Command
      */
     public function handle()
     {
-        $nilai_aspek = Nilai_aspek::all();
+        $nilai_aspek = Nilai_aspek::where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2')->get();
         foreach($nilai_aspek as $aspek){
             $predikat_aspek = HelperModel::predikat($aspek->total_nilai, true);
             $aspek->predikat = $predikat_aspek;
             $aspek->save();
         }
-        $nilai_komponen = Nilai_komponen::all();
+        $nilai_komponen = Nilai_komponen::where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2')->get();
         foreach($nilai_komponen as $komponen){
             $predikat_komponen = HelperModel::predikat($komponen->total_nilai, true);
             $komponen->predikat = $predikat_komponen;
             $komponen->save();
         }
-        $nilai_akhir = Nilai_akhir::all();
+        $nilai_akhir = Nilai_akhir::where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2')->get();
         foreach($nilai_akhir as $akhir){
             $predikat_akhir = HelperModel::predikat($akhir->nilai, true);
             $akhir->predikat = $predikat_akhir;

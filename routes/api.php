@@ -100,3 +100,6 @@ Route::post('/hitung-dokumen', 'VerifikasiController@hitung_dokumen')->name('api
 Route::post('/validasi-token-instrumen', 'InstrumenController@validasi_token')->name('api.validasi_token_instrumen');
 Route::post('/get-instrumen', 'InstrumenController@cari')->name('api.get_instrumen');
 Route::post('/validasi-instrumen', 'InstrumenController@validasi_instrumen')->name('api.validasi_instrumen');
+Route::group(['prefix' => 'rekapitulasi'], function(){
+    Route::get('/', 'RekapitulasiController@index')->name('api.rekapitulasi.index');
+});

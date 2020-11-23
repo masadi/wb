@@ -30,6 +30,7 @@ $aktif_rapor_mutu_sekolah = '';
 $aktif_rapor_mutu_verifikasi = '';
 $aktif_rapor_mutu_afirmasi = '';
 $aktif_rapor_mutu_komparasi = '';
+$aktif_rekap = '';
 if($laman == 'rapor-mutu-sekolah'){
     $active_rapor_mutu = ' menu-open';
     $aktif_rapor_mutu_sekolah = ' active';
@@ -45,6 +46,9 @@ if($laman == 'rapor-mutu-afirmasi'){
 if($laman == 'rapor-mutu-komparasi'){
     $active_rapor_mutu = ' menu-open';
     $aktif_rapor_mutu_komparasi = ' active';
+}
+if($laman == 'rekapitulasi'){
+    $aktif_rekap = ' active';
 }
 $active_progres_data = '';
 $aktif_instrumen = '';
@@ -145,6 +149,12 @@ if($laman == 'login'){
                             </a>
                           </li>
                         </ul>
+                      </li>
+                      <li class="nav-item" style="display: none;">
+                        <a href="{{route('page', ['query' => 'rekapitulasi'])}}" class="nav-link text-white{{$aktif_rekap}}">
+                          <i class="fas fa-tasks nav-icon"></i>
+                          <p>Rekapitulasi</p>
+                        </a>
                       </li>
                       @auth
                       <li class="nav-item has-treeview {{$active_progres_data}}">

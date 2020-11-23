@@ -28,6 +28,19 @@ class PageController extends Controller
             abort(404);
         }
     }
+    public function rekapitulasi($request){
+        $query = $request->route('query');
+        $all_wilayah = Wilayah::whereHas('negara', function($query){
+            $query->where('negara_id', 'ID');
+        })->where(function($query){
+            $query->where('id_level_wilayah', 1);
+        })->orderBy('kode_wilayah')->get();
+        $params = [
+            'id_level_wilayah' => 1,
+            'all_wilayah' => $all_wilayah,
+        ];
+        return view('page.'.$query)->with($params);
+    }
     public function progres($request){
         $query = $request->route('query');
         $kode_wilayah = $request->route('kode_wilayah');
