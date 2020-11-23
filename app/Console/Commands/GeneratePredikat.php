@@ -58,6 +58,25 @@ class GeneratePredikat extends Command
             $akhir->predikat = $predikat_akhir;
             $akhir->save();
         }
-        $this->info('Proses Generate Predikat Selesai');
+        $this->info('Proses Generate Predikat Verifikator Selesai');
+        $nilai_aspek = Nilai_aspek::whereNull('verifikator_id')->get();
+        foreach($nilai_aspek as $aspek){
+            $predikat_aspek = HelperModel::predikat($aspek->total_nilai, true);
+            $aspek->predikat = $predikat_aspek;
+            $aspek->save();
+        }
+        $nilai_komponen = Nilai_komponen::whereNull('verifikator_id')->get();
+        foreach($nilai_komponen as $komponen){
+            $predikat_komponen = HelperModel::predikat($komponen->total_nilai, true);
+            $komponen->predikat = $predikat_komponen;
+            $komponen->save();
+        }
+        $nilai_akhir = Nilai_akhir::whereNull('verifikator_id')->get();
+        foreach($nilai_akhir as $akhir){
+            $predikat_akhir = HelperModel::predikat($akhir->nilai, true);
+            $akhir->predikat = $predikat_akhir;
+            $akhir->save();
+        }
+        $this->info('Proses Generate Predikat Sekolah Selesai');
     }
 }
