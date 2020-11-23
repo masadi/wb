@@ -15,4 +15,8 @@ class Nilai_komponen extends Model
     public function user(){
         return $this->hasOne('App\User', 'user_id', 'user_id');
     }
+    public function komponen()
+    {
+        return $this->belongsTo('App\Komponen', 'komponen_id', 'id');
+    }
 }

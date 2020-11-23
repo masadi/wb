@@ -26,14 +26,6 @@
                                 </select>
                             </div>
                         </div>
-                        <!--div class="col-md-3">
-                            <div class="form-group">
-                                <label>Filter Kecamatan</label>
-                                <select class="form-control select2" id="kecamatan_id" style="width: 100%;">
-                                    <option value="">Semua Kecamatan</option>
-                                </select>
-                            </div>
-                        </div-->
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Sekolah</label>
@@ -50,15 +42,18 @@
                             <th rowspan="2" style="vertical-align: middle;" class="text-center">No</th>
                             <th rowspan="2" style="vertical-align: middle;">Nama Sekolah</th>
                             <th rowspan="2" style="vertical-align: middle;" class="text-center">NPSN</th>
-                            <th colspan="5" class="text-center">Kinerja</th>
+                            <th colspan="7" class="text-center">Kinerja</th>
                             <th colspan="3" class="text-center">Dampak</th>
                             <th rowspan="2" style="vertical-align: middle;">Nilai Rapor Mutu</th>
+                            <th rowspan="2" style="vertical-align: middle;">Predikat</th>
                         </tr>
                         <tr>
                             <th>Input</th>
                             <th>Proses</th>
                             <th>Output</th>
                             <th>Rerata</th>
+                            <th>Nilai Terendah</th>
+                            <th>Nilai Tertinggi</th>
                             <th>Afirmasi</th>
                             <th>Outcome</th>
                             <th>Impact</th>
@@ -94,18 +89,21 @@ function rekapitulasi(id_level_wilayah, kode_wilayah, sekolah_id){
         },
         responsive: true,
         columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false },
+            { data: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
             {data: 'nama', name: 'nama', orderable: false},
             {data: 'npsn', name: 'npsn', orderable: false, className: 'text-center'},
             {data: 'nilai_input', name: 'nilai_input', orderable: false, className: 'text-center'},
             {data: 'nilai_proses', name: 'nilai_proses', orderable: false, className: 'text-center'},
             {data: 'nilai_output', name: 'nilai_output', orderable: false, className: 'text-center'},
             {data: 'nilai_kinerja', name: 'nilai_kinerja', orderable: false, className: 'text-center'},
+            {data: 'terendah', name: 'terendah', orderable: false, className: 'text-center'},
+            {data: 'tertinggi', name: 'tertinggi', orderable: false, className: 'text-center'},
             {data: 'afirmasi', name: 'afirmasi', orderable: false, className: 'text-center'},
             {data: 'nilai_outcome', name: 'nilai_outcome', orderable: false, className: 'text-center'},
             {data: 'nilai_impact', name: 'nilai_impact', orderable: false, className: 'text-center'},
             {data: 'nilai_dampak', name: 'nilai_dampak', orderable: false, className: 'text-center'},
             {data: 'nilai_akhir', name: 'nilai_akhir', orderable: false, className: 'text-center'},
+            {data: 'predikat', name: 'predikat', orderable: false, className: 'text-center'},
         ],
         language: {
             "decimal":        "",
