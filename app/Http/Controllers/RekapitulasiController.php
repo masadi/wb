@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Sekolah;
-
+use App\User;
+use App\Nilai_akhir;
 class RekapitulasiController extends Controller
 {
     public function index(Request $request){
@@ -125,5 +126,193 @@ class RekapitulasiController extends Controller
         })
         ->rawColumns(['nama', 'npsn', 'nilai_input', 'nilai_proses', 'nilai_output', 'nilai_kinerja', 'terendah', 'tertinggi', 'afirmasi', 'nilai_outcome', 'nilai_impact', 'nilai_dampak', 'nilai_akhir', 'predikat'])
         ->make(true);
+    }
+    public function wilayah(Request $request){
+        $sangat_baik = Sekolah::where(function($query){
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [91, 100]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $baik = Sekolah::where(function($query){
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [76, 90]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $cukup_baik = Sekolah::where(function($query){
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [61, 75]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $kurang_baik = Sekolah::where(function($query){
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [46, 60]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $tidak_baik = Sekolah::where(function($query){
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [0, 45]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $sangat_baik_provinsi = Sekolah::where(function($query){
+            $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [91, 100]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $baik_provinsi = Sekolah::where(function($query){
+            $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [76, 90]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $cukup_baik_provinsi = Sekolah::where(function($query){
+            $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [61, 75]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $kurang_baik_provinsi = Sekolah::where(function($query){
+            $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [46, 60]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $tidak_baik_provinsi = Sekolah::where(function($query){
+            $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [0, 45]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $sangat_baik_kabupaten = Sekolah::where(function($query){
+            $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [91, 100]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $baik_kabupaten = Sekolah::where(function($query){
+            $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [76, 90]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $cukup_baik_kabupaten = Sekolah::where(function($query){
+            $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [61, 75]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $kurang_baik_kabupaten = Sekolah::where(function($query){
+            $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [46, 60]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $tidak_baik_kabupaten = Sekolah::where(function($query){
+            $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
+            $query->whereHas('smk_coe');
+            $query->whereHas('nilai_akhir', function($query){
+                $query->whereBetween('nilai', [0, 45]);
+                $query->whereNotNull('verifikator_id');
+                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            });
+        })->count();
+        $data = [
+            'rekap_nasional' => [
+                'sangat_baik' => $sangat_baik,
+                'baik' => $baik,
+                'cukup_baik' => $cukup_baik,
+                'kurang_baik' => $kurang_baik,
+                'tidak_baik' => $tidak_baik,
+            ],
+            'rekap_provinsi' => [
+                'sangat_baik' => $sangat_baik_provinsi,
+                'baik' => $baik_provinsi,
+                'cukup_baik' => $cukup_baik_provinsi,
+                'kurang_baik' => $kurang_baik_provinsi,
+                'tidak_baik' => $tidak_baik_provinsi,
+            ],
+            'rekap_kabupaten' => [
+                'sangat_baik' => $sangat_baik_kabupaten,
+                'baik' => $baik_kabupaten,
+                'cukup_baik' => $cukup_baik_kabupaten,
+                'kurang_baik' => $kurang_baik_kabupaten,
+                'tidak_baik' => $tidak_baik_kabupaten,
+            ],
+            'chart' => [
+                [
+                    'komponen' => 'Sangat Baik',
+                    'nasional' => $sangat_baik,
+                    'provinsi' => $sangat_baik_provinsi,
+                    'kabupaten' => $sangat_baik_kabupaten,
+                ],
+                [
+                    'komponen' => 'Baik',
+                    'nasional' => $baik,
+                    'provinsi' => $baik_provinsi,
+                    'kabupaten' => $baik_kabupaten,
+                ],
+                [
+                    'komponen' => 'Cukup Baik',
+                    'nasional' => $cukup_baik,
+                    'provinsi' => $cukup_baik_provinsi,
+                    'kabupaten' => $cukup_baik_kabupaten,
+                ],
+                [
+                    'komponen' => 'Kurang Baik',
+                    'nasional' => $kurang_baik,
+                    'provinsi' => $kurang_baik_provinsi,
+                    'kabupaten' => $kurang_baik_kabupaten,
+                ],
+                [
+                    'komponen' => 'Tidak Baik',
+                    'nasional' => $tidak_baik,
+                    'provinsi' => $tidak_baik_provinsi,
+                    'kabupaten' => $tidak_baik_kabupaten,
+                ],
+            ]
+        ];
+        return response()->json(['data' => $data]);
     }
 }

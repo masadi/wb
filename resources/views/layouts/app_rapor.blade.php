@@ -163,35 +163,6 @@ if($laman == 'login'){
                         </ul>
                       </li>
                       @auth
-                      <li class="nav-item has-treeview {{$active_laporan}}">
-                        <a href="#" class="nav-link text-white{{$active_laporan_rapor_mutu}}{{$active_laporan_rekap}}{{$active_laporan_afirmasi}}">
-                          <i class="nav-icon fas fa-tasks"></i>
-                          <p>
-                            Laporan Rapor Mutu Verifikasi
-                            <i class="fas fa-angle-left right"></i>
-                          </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                            <a href="{{route('page', ['query' => 'laporan'])}}" class="nav-link text-white{{$active_laporan_rapor_mutu}}">
-                              <i class="fas fa-check nav-icon"></i>
-                              <p>Rapor Mutu</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="{{route('page', ['query' => 'rekapitulasi'])}}" class="nav-link text-white{{$active_laporan_rekap}}">
-                              <i class="fas fa-check nav-icon"></i>
-                              <p>Rekapitulasi</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="{{route('page', ['query' => 'afirmasi'])}}" class="nav-link text-white{{$active_laporan_afirmasi}}">
-                              <i class="fas fa-check nav-icon"></i>
-                              <p>Afirmasi</p>
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
                       <li class="nav-item has-treeview {{$active_progres_data}}">
                         <a href="#" class="nav-link text-white{{$aktif_instrumen}}{{$aktif_rapor_mutu}}{{$aktif_pakta_integritas}}{{$aktif_verval}}{{$aktif_verifikasi}}{{$aktif_pengesahan}}">
                           <i class="nav-icon fas fa-sync"></i>
@@ -235,6 +206,35 @@ if($laman == 'login'){
                             <a href="{{route('page', ['query' => 'pengesahan'])}}" class="nav-link text-white{{$aktif_pengesahan}}">
                               <i class="fas fa-check nav-icon"></i>
                               <p>Pengesahan Pusat</p>
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="nav-item has-treeview {{$active_laporan}}">
+                        <a href="#" class="nav-link text-white{{$active_laporan_rapor_mutu}}{{$active_laporan_rekap}}{{$active_laporan_afirmasi}}">
+                          <i class="nav-icon fas fa-tasks"></i>
+                          <p>
+                            Laporan Rapor Mutu Verifikasi
+                            <i class="fas fa-angle-left right"></i>
+                          </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'laporan'])}}" class="nav-link text-white{{$active_laporan_rapor_mutu}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Rapor Mutu</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'rekapitulasi'])}}" class="nav-link text-white{{$active_laporan_rekap}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Rekapitulasi</p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="{{route('page', ['query' => 'afirmasi'])}}" class="nav-link text-white{{$active_laporan_afirmasi}}">
+                              <i class="fas fa-check nav-icon"></i>
+                              <p>Afirmasi</p>
                             </a>
                           </li>
                         </ul>
