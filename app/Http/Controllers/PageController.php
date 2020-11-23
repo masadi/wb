@@ -28,7 +28,7 @@ class PageController extends Controller
             abort(404);
         }
     }
-    public function rekapitulasi($request){
+    public function laporan($request){
         $query = $request->route('query');
         $all_wilayah = Wilayah::whereHas('negara', function($query){
             $query->where('negara_id', 'ID');
