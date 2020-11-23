@@ -44,29 +44,25 @@
                         </div>
                     </div>
                 </form>
-                <table class="table table-bordered" id="rekapitulasi">
+                <table class="table table-bordered" id="rekapitulasi" style="width: 100%">
                     <thead>
                         <tr>
-                            <th rowspan="2" style="vertical-align: middle;">No</th>
-                            <th rowspan="2" style="vertical-align: middle;">Wilayah</th>
-                            <th colspan="6" class="text-center">Kinerja</th>
-                            <th colspan="5" class="text-center">Dampak</th>
-                            <th rowspan="2" style="vertical-align: middle;">Nilai Keseluruhan</th>
-                            <th rowspan="2" style="vertical-align: middle">Nilai Terendah</th>
-                            <th rowspan="2" style="vertical-align: middle;">Nilai Tertinggi</th>
+                            <th rowspan="2" style="vertical-align: middle;" class="text-center">No</th>
+                            <th rowspan="2" style="vertical-align: middle;">Nama Sekolah</th>
+                            <th rowspan="2" style="vertical-align: middle;" class="text-center">NPSN</th>
+                            <th colspan="5" class="text-center">Kinerja</th>
+                            <th colspan="3" class="text-center">Dampak</th>
+                            <th rowspan="2" style="vertical-align: middle;">Nilai Rapor Mutu</th>
                         </tr>
                         <tr>
                             <th>Input</th>
                             <th>Proses</th>
                             <th>Output</th>
-                            <th>Rata-rata</th>
-                            <th>Nilai Terendah</th>
-                            <th>Nilai Tertinggi</th>
+                            <th>Rerata</th>
+                            <th>Afirmasi</th>
                             <th>Outcome</th>
                             <th>Impact</th>
-                            <th>Rata-rata</th>
-                            <th>Nilai Terendah</th>
-                            <th>Nilai Tertinggi</th>
+                            <th>Rerata</th>
                         </tr>
                     </thead>
                 </table>
@@ -98,17 +94,18 @@ function rekapitulasi(id_level_wilayah, kode_wilayah, sekolah_id){
         },
         responsive: true,
         columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, className: 'text-center' },
-            {data: 'nama', name: 'nama'},
-            {data: 'npsn', name: 'npsn'},
-            {data: 'nama_pendamping', name: 'nama_pendamping'},
-            {data: 'nama_verifikator', name: 'nama_verifikator'},
-            {data: 'instrumen', name: 'instrumen'},
-            {data: 'rapor_mutu', name: 'rapor_mutu'},
-            {data: 'pakta_integritas', name: 'pakta_integritas'},
-            {data: 'verval', name: 'verval'},
-            {data: 'verifikasi', name: 'verifikasi'},
-            {data: 'pengesahan', name: 'pengesahan'},
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center', orderable: false },
+            {data: 'nama', name: 'nama', orderable: false},
+            {data: 'npsn', name: 'npsn', orderable: false, className: 'text-center'},
+            {data: 'nilai_input', name: 'nilai_input', orderable: false, className: 'text-center'},
+            {data: 'nilai_proses', name: 'nilai_proses', orderable: false, className: 'text-center'},
+            {data: 'nilai_output', name: 'nilai_output', orderable: false, className: 'text-center'},
+            {data: 'nilai_kinerja', name: 'nilai_kinerja', orderable: false, className: 'text-center'},
+            {data: 'afirmasi', name: 'afirmasi', orderable: false, className: 'text-center'},
+            {data: 'nilai_outcome', name: 'nilai_outcome', orderable: false, className: 'text-center'},
+            {data: 'nilai_impact', name: 'nilai_impact', orderable: false, className: 'text-center'},
+            {data: 'nilai_dampak', name: 'nilai_dampak', orderable: false, className: 'text-center'},
+            {data: 'nilai_akhir', name: 'nilai_akhir', orderable: false, className: 'text-center'},
         ],
         language: {
             "decimal":        "",
@@ -136,6 +133,7 @@ function rekapitulasi(id_level_wilayah, kode_wilayah, sekolah_id){
         }
     });
 }
+$('.select2').select2();
 rekapitulasi({{$id_level_wilayah}});
 </script>
 @endsection
@@ -143,8 +141,10 @@ rekapitulasi({{$id_level_wilayah}});
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script src="//cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 @endsection
 @section('css')
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection

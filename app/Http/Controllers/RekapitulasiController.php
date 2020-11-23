@@ -9,9 +9,23 @@ use App\Sekolah;
 class RekapitulasiController extends Controller
 {
     public function index(Request $request){
-        $query = Sekolah::query()->has('sekolah_sasaran')->with(['pendamping', 'sekolah_sasaran' => function($query){
-            $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak', 'verifikator']);
-        }])->with(['user.nilai_akhir'])->withCount('nilai_instrumen')->where(function($query){
+        $query = Sekolah::query()->has('sekolah_sasaran')->with(['nilai_input' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_proses' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_output' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_outcome' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_impact' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_kinerja' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_dampak' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }, 'nilai_akhir' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }])->where(function($query){
             if(request()->kode_wilayah){
                 $query->whereIn('kode_wilayah', function($query){
                     $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kode_wilayah."'");
@@ -24,71 +38,43 @@ class RekapitulasiController extends Controller
             $links = $item->nama;
             return $links;
         })
-        ->addColumn('npsn', function ($item) {
-            $links = $item->npsn;
+        ->addColumn('nilai_input', function ($item) {
+            $links = ($item->nilai_input) ? $item->nilai_input->total_nilai : 0;
             return $links;
         })
-        ->addColumn('nama_pendamping', function ($item) {
-            $links = ($item->pendamping) ? $item->pendamping->nama : '-';
+        ->addColumn('nilai_proses', function ($item) {
+            $links = ($item->nilai_proses) ? $item->nilai_proses->total_nilai : 0;
             return $links;
         })
-        ->addColumn('nama_verifikator', function ($item) {
-            $links = ($item->sekolah_sasaran->verifikator) ? ($item->sekolah_sasaran->verifikator->name != 'Tim Verifikator') ? $item->sekolah_sasaran->verifikator->name : '-' : '-';
+        ->addColumn('nilai_output', function ($item) {
+            $links = ($item->nilai_output) ? $item->nilai_output->total_nilai : 0;
             return $links;
         })
-        ->addColumn('instrumen', function ($item) {
-            if($item->nilai_instrumen_count){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
-            } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-            }
+        ->addColumn('nilai_kinerja', function ($item) {
+            $links = ($item->nilai_kinerja) ? number_format($item->nilai_kinerja->avg('total_nilai'),2,'.','.') : 0;
             return $links;
         })
-        ->addColumn('rapor_mutu', function ($item) {
-            if($item->user->nilai_akhir){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
-            } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-            }
+        ->addColumn('afirmasi', function ($item) {
+            $links = '-';
             return $links;
         })
-        ->addColumn('pakta_integritas', function ($item) {
-            if($item->sekolah_sasaran->pakta_integritas){
-                if($item->sekolah_sasaran->pakta_integritas->terkirim){
-                    $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
-                } else {
-                    $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-                }
-            } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-            }
+        ->addColumn('nilai_outcome', function ($item) {
+            $links = ($item->nilai_outcome) ? $item->nilai_outcome->total_nilai : 0;
             return $links;
         })
-        ->addColumn('verval', function ($item) {
-            if($item->sekolah_sasaran->waiting){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
-            } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-            }
+        ->addColumn('nilai_impact', function ($item) {
+            $links = ($item->nilai_impact) ? $item->nilai_impact->total_nilai : 0;
             return $links;
         })
-        ->addColumn('verifikasi', function ($item) {
-            if($item->sekolah_sasaran->proses){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
-            } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-            }
+        ->addColumn('nilai_dampak', function ($item) {
+            $links = ($item->nilai_dampak) ? number_format($item->nilai_dampak->avg('total_nilai'),2,'.','.') : 0;
             return $links;
         })
-        ->addColumn('pengesahan', function ($item) {
-            if($item->sekolah_sasaran->terima){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
-            } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
-            }
+        ->addColumn('nilai_akhir', function ($item) {
+            $links = ($item->nilai_akhir) ? $item->nilai_akhir->nilai : 0;
             return $links;
         })
-        ->rawColumns(['nama', 'npsn', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan'])
+        ->rawColumns(['nama', 'npsn', 'nilai_input', 'nilai_proses', 'nilai_output', 'nilai_kinerja', 'afirmasi', 'nilai_outcome', 'nilai_impact', 'nilai_dampak', 'nilai_akhir'])
         ->make(true);
     }
 }
