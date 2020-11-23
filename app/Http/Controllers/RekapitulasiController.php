@@ -34,28 +34,28 @@ class RekapitulasiController extends Controller
         }, 'nilai_akhir' => function($query){
             $query->whereNotNull('verifikator_id');
             $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
-        }])->where(function($query){
+        }]/*)->where(function($query){
             if(request()->kode_wilayah){
                 $query->whereIn('kode_wilayah', function($query){
                     $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kode_wilayah."'");
                 });
             }
-        })->orderBy('provinsi_id')->orderBy('kabupaten_id');
+        }*/)->orderBy('provinsi_id')->orderBy('kabupaten_id');
         return DataTables::of($query)
         ->addIndexColumn()
         ->filter(function ($query) {
-            if (request()->has('name')) {
-                $query->where('name', 'like', "%" . request('name') . "%");
+            if (request()->has('provinsi_id')) {
+                $query->whereIn('kode_wilayah', function($query){
+                    $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->provinsi_id."'");
+                });
             }
-
-            if (request()->has('email')) {
-                $query->where('email', 'like', "%" . request('email') . "%");
+            if (request()->has('kabupaten_id')) {
+                $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kabupaten_id."'");
+            }
+            if (request()->has('sekolah_id')) {
+                $query->where('sekolah_id', request('sekolah_id'));
             }
         }, true)
-        ->addColumn('nama', function ($item) {
-            $links = $item->nama;
-            return $links;
-        })
         ->addColumn('nilai_input', function ($item) {
             $links = ($item->nilai_input) ? $item->nilai_input->total_nilai : 0;
             return $links;

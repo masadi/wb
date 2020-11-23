@@ -69,7 +69,7 @@
 @section('js')
 <script>
 var table;
-function rekapitulasi(id_level_wilayah, kode_wilayah, sekolah_id){
+function rekapitulasi(provinsi_id, kabupaten_id, sekolah_id){
     table = $('#rekapitulasi').DataTable( {
         retrieve: true,
         processing: true,
@@ -78,9 +78,11 @@ function rekapitulasi(id_level_wilayah, kode_wilayah, sekolah_id){
         ajax: {
             url: '{{ route('api.rekapitulasi.index') }}',
             data: function(d){
-                d.id_level_wilayah = (id_level_wilayah) ? id_level_wilayah : null;
-                if(kode_wilayah){
-                    d.kode_wilayah = kode_wilayah;
+                if(provinsi_id){
+                    d.provinsi_id = provinsi_id;
+                }
+                if(kabupaten_id){
+                    d.kabupaten_id = kabupaten_id;
                 }
                 if(sekolah_id){
                     d.sekolah_id = sekolah_id;
@@ -132,7 +134,7 @@ function rekapitulasi(id_level_wilayah, kode_wilayah, sekolah_id){
     });
 }
 $('.select2').select2();
-rekapitulasi({{$id_level_wilayah}});
+rekapitulasi();
 </script>
 @endsection
 @section('js_file')
