@@ -362,9 +362,9 @@ function tampilChart(data){
     seriesNasional.clustered = false;
     seriesNasional.columns.template.tooltipText = "Jumlah Sekolah Kab/Kota: [bold]{valueY}[/]";
     seriesNasional.columns.template.fillOpacity = 0.9;
-    seriesNasional.columns.template.showTooltipOn = "always";
-    seriesNasional.tooltip.pointerOrientation = "top";
-    seriesNasional.columns.template.tooltipY = 0;
+    /*seriesNasional.columns.template.showTooltipOn = "always";
+    seriesNasional.tooltip.pointerOrientation = "right";
+    seriesNasional.columns.template.tooltipY = 0;*/
     seriesNasional.columns.template.width = am4core.percent(50);
     seriesNasional.columns.template.fill = am4core.color(window.chartColors.red);
     var series2Nasional = chartNasional.series.push(new am4charts.ColumnSeries3D());
@@ -373,9 +373,9 @@ function tampilChart(data){
     series2Nasional.name = "Jumlah Sekolah Provinsi";
     series2Nasional.clustered = false;
     series2Nasional.columns.template.tooltipText = "Jumlah Sekolah Provinsi: [bold]{valueY}[/]";
-    series2Nasional.columns.template.showTooltipOn = "always";
-    series2Nasional.tooltip.pointerOrientation = "top";
-    series2Nasional.columns.template.tooltipY = 0;
+    /*series2Nasional.columns.template.showTooltipOn = "always";
+    series2Nasional.tooltip.pointerOrientation = "right";
+    series2Nasional.columns.template.tooltipY = 0;*/
     series2Nasional.columns.template.width = am4core.percent(65);
     series2Nasional.columns.template.fill = am4core.color(window.chartColors.blue);
     var series3Nasional = chartNasional.series.push(new am4charts.ColumnSeries3D());
@@ -384,9 +384,9 @@ function tampilChart(data){
     series3Nasional.name = "Jumlah Sekolah Nasional";
     series3Nasional.clustered = false;
     series3Nasional.columns.template.tooltipText = "Jumlah Sekolah Nasional: [bold]{valueY}[/]";
-    series3Nasional.columns.template.showTooltipOn = "always";
-    series3Nasional.tooltip.pointerOrientation = "top";
-    series3Nasional.columns.template.tooltipY = 0;
+    /*series3Nasional.columns.template.showTooltipOn = "always";
+    series3Nasional.tooltip.pointerOrientation = "right";
+    series3Nasional.columns.template.tooltipY = 0;*/
     series3Nasional.columns.template.fill = am4core.color(window.chartColors.green);
     
     }); // end am4core.ready()
