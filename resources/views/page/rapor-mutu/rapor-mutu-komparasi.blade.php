@@ -552,6 +552,9 @@ function tampilChart(data){
     series.columns.template.tooltipText = "Nilai Sekolah: [bold]{valueY}[/]";
     series.columns.template.fillOpacity = 0.9;
     series.columns.template.fill = am4core.color(window.chartColors.red);
+    series.columns.template.showTooltipOn = "always";
+    series.tooltip.pointerOrientation = "top";
+    series.columns.template.tooltipY = 90;
     var series2 = chart.series.push(new am4charts.ColumnSeries3D());
     series2.dataFields.valueY = "verifikasi";
     series2.dataFields.categoryX = "komponen";
@@ -559,6 +562,9 @@ function tampilChart(data){
     series2.clustered = false;
     series2.columns.template.tooltipText = "Nilai Verifikasi: [bold]{valueY}[/]";
     series2.columns.template.fill = am4core.color(window.chartColors.blue);
+    series2.columns.template.showTooltipOn = "always";
+    series2.tooltip.pointerOrientation = "top";
+    series2.columns.template.tooltipY = 0;
     
     }); // end am4core.ready()
     if(chart){
