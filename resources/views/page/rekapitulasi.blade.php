@@ -83,7 +83,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th colspan="4" class="text-center">Provinsi -</th>
+                                    <th colspan="4" class="text-center">Provinsi</th>
                                 </tr>
                                 <tr>
                                     <th class="text-center">No</th>
@@ -130,7 +130,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th colspan="4" class="text-center">Kab/Kota -</th>
+                                    <th colspan="4" class="text-center">Kab/Kota</th>
                                 </tr>
                                 <tr>
                                     <th class="text-center">No</th>
