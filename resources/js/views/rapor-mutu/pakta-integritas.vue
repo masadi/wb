@@ -298,11 +298,15 @@ export default {
                     } else {
                         this.isCheckbox = true
                     }
-                    var npsn_pengecualian = [
+                    /*var npsn_pengecualian = [
                         '50205616',
                         '69900388',
                         '20607873',
                         '20321842'
+                    ]*/
+                    var npsn_pengecualian = [
+                        '11111111',
+                        '22222222',
                     ]
                     var check_npsn = getData.user.sekolah.npsn
                     if (getData.user.sekolah.sekolah_sasaran) {
