@@ -61,3 +61,4 @@ Route::get('/cetak-hasil-verifikasi/{sekolah_id}', 'VerifikasiController@cetak')
 Route::get('/hasil-verifikasi', 'VerifikasiController@hasil_verifikasi')->name('hasil_verifikasi');
 Route::get('/validasi-instrumen', 'InstrumenController@validasi_instrumen')->name('validasi_instrumen');
 Route::get('/cetak-hasil-validasi-instrumen', 'InstrumenController@cetak_validasi_instrumen')->name('cetak_validasi_instrumen');
+Route::get('/export-excel', 'FrontController@export_excel')->name('export_excel');

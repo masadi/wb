@@ -6,8 +6,12 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-refresh mr-1"></i>
-                Progres Data Penjaminan Mutu SMK
-            </h3></div>
+                    Progres Data Penjaminan Mutu SMK
+                </h3>
+                <div class="card-tools">
+                    <a href="{{route('export_excel')}}" class="btn btn-sm btn-success export">Unduh Excel</a>
+                </div>
+            </div>
             <div class="card-body">
                 <form id="form">
                     <div class="row">
@@ -74,7 +78,7 @@
 @endsection
 @section('js')
 <script>
-$(document).ready( function () {
+    $(document).ready( function () {
     $('.select2').select2();
     var oTable = $('#datatable').DataTable( {
         retrieve: true,
@@ -140,14 +144,22 @@ $(document).ready( function () {
 			turn_on_icheck();
 		}
     });
+    
     $('#verifikasi').change(function(e){
+        var ini = $(this).val();
+        var url_export = '{{route('export_excel')}}' + '?verifikasi=' + ini + '&tahap='+$('#tahap').val();
+        $('a.export').attr('href', url_export);
 		oTable.draw();
         e.preventDefault();
     });
     $('#tahap').change(function(e){
+        var ini = $(this).val();
+        var url_export = '{{route('export_excel')}}'+ '?verifikasi='+ $('#verifikasi').val() + '&tahap='+ini;
+        $('a.export').attr('href', url_export);
 		oTable.draw();
         e.preventDefault();
     });
+    
 });
 function turn_on_icheck(){
     $('a.toggle-modal').bind('click',function(e) {

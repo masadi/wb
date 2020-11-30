@@ -11,6 +11,8 @@ use App\Wilayah;
 use App\Komponen;
 use App\HelperModel;
 use Illuminate\Support\Facades\DB;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Box\Spout\Writer\Style\StyleBuilder;
 class FrontController extends Controller
 {
     public function progress(Request $request){
@@ -422,5 +424,54 @@ class FrontController extends Controller
             ];
         }
         return response()->json(['output' => $output, 'sekolah_sasaran_id' => $sekolah_sasaran_id, 'tahap' => $sekolah_sasaran->tahap]);
+    }
+    public function export_excel(Request $request){
+        $header_style = (new StyleBuilder())
+        ->setFontBold()
+        ->build();
+        $data_sekolah = Sekolah::with(['wilayah', 'sekolah_sasaran.verifikator', 'pendamping'])->whereHas('sekolah_sasaran', function($query){
+            if (request()->has('verifikasi')) {
+                if (request('verifikasi') == 1) {
+                    $query->has('waiting');
+                } elseif (request('verifikasi') == 2) {
+                    $query->doesntHave('waiting');
+                }
+            }
+            if (request('tahap')) {
+                $query->where('tahap', request('tahap'));
+            }
+        })->get();
+        $i=1;
+        foreach($data_sekolah as $sekolah){
+            //dump($sekolah);
+            $verifikator = '-';
+            if($sekolah->sekolah_sasaran->verifikator_id != '84ff9f29-1bd0-462f-976f-4c512dc22cc2'){
+                $verifikator = $sekolah->sekolah_sasaran->verifikator->name;
+            }
+            $list[] = [
+                'No' => $i++,
+                'Provinsi' => $sekolah->wilayah->parrentRecursive->parrentRecursive->parrentRecursive->nama,
+                'Kabupaten/Kota' => $sekolah->wilayah->parrentRecursive->parrentRecursive->nama,
+                'Nama Sekolah' => $sekolah->nama,
+                'NPSN' => $sekolah->nama,
+                'Sektor CoE' => ($sekolah->sekolah_sasaran->sektor) ? $sekolah->sekolah_sasaran->sektor->nama : '-',
+                'Pendamping' => ($sekolah->pendamping) ? $sekolah->pendamping->nama : '-',
+                'Verifikator' => $verifikator,
+            ];
+        }
+        $custom_name = '';
+        if (request()->has('verifikasi')) {
+            if (request('verifikasi') == 1) {
+                $custom_name = ' Sudah Verifikasi';
+            } elseif (request('verifikasi') == 2) {
+                $custom_name = ' Belum Verifikasi';
+            }
+        }
+        if (request('tahap')) {
+            $custom_name .= ' Tahap '.request('tahap');
+        }
+        return (new FastExcel($list))
+            ->headerStyle($header_style)
+            ->download('Data SMK CoE'.$custom_name.'.xlsx');
     }
 }
