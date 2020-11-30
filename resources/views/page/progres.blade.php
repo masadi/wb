@@ -141,8 +141,7 @@ $(document).ready( function () {
 		}
     });
     $('#verifikasi').change(function(e){
-		$('#tahap').prop("selectedIndex", '');
-        oTable.draw();
+		oTable.draw();
         e.preventDefault();
     });
     $('#tahap').change(function(e){
