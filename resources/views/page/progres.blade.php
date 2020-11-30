@@ -50,6 +50,7 @@
                             <th class="text-center">No.</th>
                             <th>Nama Sekolah</th>
                             <th class="text-center">NPSN</th>
+                            <th class="text-center">Tahap</th>
                             <th>Pendamping</th>
                             <th>Verifikator</th>
                             <th class="text-center">Pengisian Instrumen</th>
@@ -97,7 +98,8 @@ $(document).ready( function () {
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, className: 'text-center' },
             {data: 'nama', name: 'nama'},
-            {data: 'npsn', name: 'npsn'},
+            {data: 'npsn', name: 'npsn', className: 'text-center'},
+            {data: 'tahap', name: 'tahap'},
             {data: 'nama_pendamping', name: 'nama_pendamping'},
             {data: 'nama_verifikator', name: 'nama_verifikator'},
             {data: 'instrumen', name: 'instrumen'},

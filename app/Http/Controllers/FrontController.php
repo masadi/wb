@@ -62,6 +62,10 @@ class FrontController extends Controller
             $links = $item->npsn;
             return $links;
         })
+        ->addColumn('tahap', function ($item) {
+            $links = $item->sekolah_sasaran->tahap;
+            return $links;
+        })
         ->addColumn('nama_pendamping', function ($item) {
             $links = ($item->pendamping) ? $item->pendamping->nama : '-';
             return $links;
