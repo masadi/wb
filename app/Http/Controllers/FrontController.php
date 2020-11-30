@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\User;
 use App\Sekolah;
+use App\Sekolah_sasaran;
 use App\Wilayah;
 use App\Komponen;
 use App\HelperModel;
@@ -13,7 +14,18 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     public function progress(Request $request){
-        $query = Sekolah::query()->has('sekolah_sasaran')->with(['pendamping', 'sekolah_sasaran' => function($query){
+        $query = Sekolah::query()->whereHas('sekolah_sasaran', function($query){
+            if (request()->has('status_verifikasi')) {
+                if (request('status_verifikasi') == 1) {
+                    $query->has('waiting');
+                } elseif (request('status_verifikasi') == 2) {
+                    $query->doesntHave('waiting');
+                }
+            }
+            if (request('tahap')) {
+                $query->where('tahap', request('tahap'));
+            }
+        })->with(['pendamping', 'sekolah_sasaran' => function($query){
             $query->with(['rapor_mutu', 'pakta_integritas', 'waiting', 'proses', 'terima', 'tolak', 'verifikator']);
         }])->with(['user.nilai_akhir'])->withCount('nilai_instrumen')->where(function($query){
             if(request()->kode_wilayah){
@@ -23,6 +35,24 @@ class FrontController extends Controller
             }
         })->get();
         return DataTables::of($query)
+        /*->filter(function ($query) {
+            if (request()->has('status_verifikasi')) {
+                if (request('status_verifikasi')) {
+                    $query->whereHas('sekolah_sasaran', function($query){
+                        $query->whereHas('proses');
+                    });
+                } else {
+                    $query->whereHas('sekolah_sasaran', function($query){
+                        $query->doesntHave('proses');
+                    });
+                }
+            }
+            if (request()->has('tahap')) {
+                $query->whereHas('sekolah_sasaran', function($query){
+                    $query->where('tahap', request('tahap'));
+                });
+            }
+        }, true)*/
         ->addIndexColumn()
         ->addColumn('nama', function ($item) {
             $links = $item->nama;
@@ -42,57 +72,61 @@ class FrontController extends Controller
         })
         ->addColumn('instrumen', function ($item) {
             if($item->nilai_instrumen_count){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></div>';
             } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
             }
             return $links;
         })
         ->addColumn('rapor_mutu', function ($item) {
             if($item->user->nilai_akhir){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></div>';
             } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
             }
             return $links;
         })
         ->addColumn('pakta_integritas', function ($item) {
             if($item->sekolah_sasaran->pakta_integritas){
                 if($item->sekolah_sasaran->pakta_integritas->terkirim){
-                    $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                    $links = '<div class="text-center"><i class="fas fa-check text-success"></i></div>';
                 } else {
-                    $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                    $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
                 }
             } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
             }
             return $links;
         })
         ->addColumn('verval', function ($item) {
             if($item->sekolah_sasaran->waiting){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></div>';
             } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
             }
             return $links;
         })
         ->addColumn('verifikasi', function ($item) {
             if($item->sekolah_sasaran->proses){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></div>';
             } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
             }
             return $links;
         })
         ->addColumn('pengesahan', function ($item) {
             if($item->sekolah_sasaran->terima){
-                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-check text-success"></i></div>';
             } else {
-                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></a></div>';
+                $links = '<div class="text-center"><i class="fas fa-times text-danger"></i></div>';
             }
             return $links;
         })
-        ->rawColumns(['nama', 'npsn', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan'])
+        ->addColumn('edit_tahap', function ($item) {
+            $links = '<div class="text-center"><a data-sekolah_sasaran_id="'.$item->sekolah_sasaran->sekolah_sasaran_id.'" class="btn btn-sm btn-warning toggle-modal" href="'.route('api.edit_tahap', ['id' => $item->sekolah_sasaran->sekolah_sasaran_id]).'"><i class="fas fa-pencil-alt"></i></a></div>';
+            return $links;
+        })
+        ->rawColumns(['nama', 'npsn', 'instrumen', 'rapor_mutu', 'pakta_integritas', 'verval', 'verifikasi', 'pengesahan', 'edit_tahap'])
         ->make(true);
     }
     public function filter_wilayah(Request $request)
@@ -352,5 +386,37 @@ class FrontController extends Controller
             $query->orderBy('status', $order);
         })*/
         ->toJson();
+    }
+    public function edit_tahap(Request $request){
+        $sekolah_sasaran_id = $request->route('id');
+        if(!$sekolah_sasaran_id){
+            $sekolah_sasaran_id = $request->sekolah_sasaran_id;
+        }
+        $sekolah_sasaran = Sekolah_sasaran::find($sekolah_sasaran_id);
+        if ($request->isMethod('post')) {
+            $sekolah_sasaran->tahap = $request->tahap;
+            if($sekolah_sasaran->save()){
+                $output = [
+                    'title' => 'Berhasil',
+                    'text' => 'Tahap verifikasi berhasil disimpan',
+                    'icon' => 'success',
+                ]; 
+            } else {
+                $output = [
+                    'title' => 'Gagal',
+                    'text' => 'Tahap verifikasi gagal disimpan',
+                    'icon' => 'error',
+                ];
+            }
+        } else {
+            $output = [
+                1 => 'Tahap 1',
+                2 => 'Tahap 2',
+                3 => 'Tahap 3',
+                4 => 'Tahap 4',
+                5 => 'Tahap 5',
+            ];
+        }
+        return response()->json(['output' => $output, 'sekolah_sasaran_id' => $sekolah_sasaran_id, 'tahap' => $sekolah_sasaran->tahap]);
     }
 }

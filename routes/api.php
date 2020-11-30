@@ -86,6 +86,8 @@ Route::get('/get-kuisioner', 'KuisionerController@proses');
 Route::post('/simpan-jawaban', 'KuisionerController@simpan_jawaban');
 Route::post('/sinkronisasi', 'HomeController@sinkron');
 Route::get('/progress', 'FrontController@progress')->name('api.progres');
+Route::get('/progress/edit-tahap/{id}', 'FrontController@edit_tahap')->name('api.edit_tahap');
+Route::post('/progress/simpan-tahap', 'FrontController@edit_tahap')->name('api.simpan_tahap');
 Route::get('/smk-coe', 'FrontController@smk_coe')->name('api.smk_coe');
 Route::get('/wilayah', 'FrontController@get_wilayah')->name('api.wilayah');
 Route::post('/filter-wilayah', 'FrontController@filter_wilayah')->name('api.filter_wilayah');
