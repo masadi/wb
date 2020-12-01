@@ -108,6 +108,11 @@
         <has-error :form="form" field="nomor_hp"></has-error>
       </div>
       <div class="form-group">
+        <label>NIP</label>
+        <input v-model="form.nip" type="text" name="nip" class="form-control" :class="{ 'is-invalid': form.errors.has('nip') }" />
+        <has-error :form="form" field="nip"></has-error>
+      </div>
+      <div class="form-group">
         <label>Token</label>
         <input v-model="form.token" type="text" name="token" class="form-control" :class="{ 'is-invalid': form.errors.has('token') }" />
         <has-error :form="form" field="token"></has-error>
@@ -168,6 +173,7 @@ export default {
         email: "",
         nomor_hp: "",
         token: "",
+        nip: "",
       }),
       //VARIABLE INI AKAN MENGHADLE SORTING DATA
       sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -279,6 +285,7 @@ export default {
       this.form.email = row.item.email;
       this.form.nomor_hp = row.item.nomor_hp;
       this.form.token = row.item.token;
+      this.form.nip = row.item.nip;
     },
     updateData() {
       let id = this.form.id;

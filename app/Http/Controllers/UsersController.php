@@ -258,6 +258,7 @@ class UsersController extends Controller
 		$user->nomor_hp = $request->nomor_hp;
 		$user->email = $request->email;
 		$user->token = strtolower($request->token);
+		$user->nip = $request->nip;
 		if($user->save()){
 			$response = [
 				'title' => 'Berhasil',
