@@ -239,4 +239,38 @@ class UsersController extends Controller
 		}
 		return response()->json($response);
 	}
+	public function update(Request $request, $id){
+		$messages = [
+			'name.required'	=> 'Nama Lengkap tidak boleh kosong',
+			'email.required'	=> 'Email tidak boleh kosong',
+			'token.required' => 'Token tidak boleh kosong',
+			'token.unique' => 'Token sudah terdaftar di database',
+		];
+		$validator = Validator::make(request()->all(), [
+			'name'					=> 'required',
+			'token'					=> 'required|unique:users,token,' . $id .',user_id',
+            'email'					=> 'required|email|unique:users,email,' . $id .',user_id',
+		],
+		$messages
+		)->validate();
+		$user = User::find($id);
+		$user->name = $request->name;
+		$user->nomor_hp = $request->nomor_hp;
+		$user->email = $request->email;
+		$user->token = strtolower($request->token);
+		if($user->save()){
+			$response = [
+				'title' => 'Berhasil',
+				'text' => 'Data Verifikator berhasil diperbaharui',
+				'icon' => 'success',
+			];
+		} else {
+			$response = [
+				'title' => 'Gagal',
+				'text' => 'Data Verifikator gagal diperbaharui',
+				'icon' => 'error',
+			];
+		}
+		return response()->json($response);
+	}
 }

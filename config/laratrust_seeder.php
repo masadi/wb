@@ -48,6 +48,9 @@ return [
         'pengawas' => [
             'repot' => 'r',
         ],
+        'pendamping' => [
+            'repot' => 'c,r,u,d',
+        ],
     ],
 
     'permissions_map' => [

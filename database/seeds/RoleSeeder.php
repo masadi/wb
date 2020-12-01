@@ -46,7 +46,7 @@ class RoleSeeder extends Seeder
             // Attach all permissions to the role
             $role->permissions()->sync($permissions);
         }
-        $all_kinerja = Komponen::whereIn('id', [1,2,3])->get();
-        $all_dampak = Komponen::whereIn('id', [4,5])->get();
+        //$all_kinerja = Komponen::whereIn('id', [1,2,3])->get();
+        //$all_dampak = Komponen::whereIn('id', [4,5])->get();
     }
 }
