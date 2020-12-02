@@ -57,6 +57,7 @@ Route::post('/verifikasi', 'VerifikasiController@verifikasi_front');
 Route::get('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen')->name('verifikasi_instrumen');
 Route::post('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen');
 Route::get('/dapodik', 'DapodikController@index');
+Route::get('/pendamping', 'DapodikController@get_pendamping');
 Route::get('/cetak-hasil-verifikasi/{sekolah_id}', 'VerifikasiController@cetak');
 Route::get('/hasil-verifikasi', 'VerifikasiController@hasil_verifikasi')->name('hasil_verifikasi');
 Route::get('/validasi-instrumen', 'InstrumenController@validasi_instrumen')->name('validasi_instrumen');

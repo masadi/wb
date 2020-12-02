@@ -9,6 +9,7 @@ use App\Sekolah;
 use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\User;
+use App\Pendamping;
 class DapodikController extends Controller
 {
     public function index(){
@@ -54,5 +55,9 @@ class DapodikController extends Controller
             'x-api-key' => $sekolah->sekolah_id,
         ])->withBasicAuth('admin', '1234')->asForm()->post($host_server_direktorat, $data_sync);
         dd($response->json());
+    }
+    public function get_pendamping(Request $request){
+        $pendamping = Pendamping::has('sekolah_sasaran')->select('nama', 'instansi', 'nip', 'nuptk', 'email', 'nomor_hp', 'token')->get();
+        return (new FastExcel($pendamping))->download('data_pendamping_apm.xlsx');
     }
 }
