@@ -129,6 +129,7 @@
 @endif
 <script>
     $('.datepicker').datepicker();
+    /*
     Dropzone.autoDiscover = false;
     var previewNode = document.querySelector("#template");
     previewNode.id = "";
@@ -194,4 +195,5 @@
             myDropzone.removeAllFiles(true);
         };
     //}
+    */
 </script>
