@@ -36,13 +36,13 @@
 @endsection
 @section('js')
 <script>
-    $('.select2').select2();
+$('.select2').select2();
 $('#token').click(function(e){
     e.preventDefault();
     var token = $('.token').val();
     if(token){
         $.ajax({
-            url: '{{route('api.laporan.validasi_token')}}',
+            url: '{{route('api.laporan.validasi_token_verifikator')}}',
             type: 'post',
             data: {
                 token: token,

@@ -10,11 +10,35 @@ use App\Sekolah_sasaran;
 use App\Jenis_laporan;
 use App\Laporan;
 use App\Berkas_laporan;
+use App\User;
 class LaporanController extends Controller
 {
     public function index(Request $request){
-        $data_pendamping = Pendamping::has('sekolah_sasaran')->get();
-        return view('laporan.index', compact('data_pendamping'));
+        //$data_pendamping = Pendamping::has('sekolah_sasaran')->get();
+        return view('laporan.index');
+    }
+    public function verifikasi(Request $request){
+        //$data_verifikator = User::whereRoleIs('penjamin_mutu')->get();
+        return view('laporan.verifikasi');
+    }
+    public function validasi_token_verifikator(Request $request){
+        $pendamping = User::whereRaw("lower(token) = '".strtolower($request->token)."'")->first();
+        $sekolah = NULL;
+        if($pendamping){
+            $sekolah = Sekolah::whereHas('sekolah_sasaran', function($query) use ($pendamping){
+                $query->where('verifikator_id', $pendamping->user_id);
+                $query->whereHas('pakta_integritas', function($query){
+                    $query->where('terkirim', 1);
+                });
+            })->get();
+        }
+        $token = $request->token;//str_repeat('*', strlen($request->token));
+        $jenis_laporan = Jenis_laporan::whereIn('id', [3])->get();
+        $formulir = 'verifikator';
+        return response()->json([
+            'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan', 'formulir'))->render(),
+            'token' => $token,
+        ]);
     }
     public function validasi_token(Request $request){
         $pendamping = Pendamping::whereRaw("lower(token) = '".strtolower($request->token)."'")->first();
@@ -29,8 +53,9 @@ class LaporanController extends Controller
         }
         $token = $request->token;//str_repeat('*', strlen($request->token));
         $jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
+        $formulir = 'pendamping';
         return response()->json([
-            'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan'))->render(),
+            'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan', 'formulir'))->render(),
             'token' => $token,
         ]);
     }
@@ -47,9 +72,16 @@ class LaporanController extends Controller
 
     }
     public function simpan(Request $request){
-        $pendamping = Pendamping::find($request->pendamping_id);
-        $pendamping->nama = $request->nama;
-        $pendamping->instansi = $request->instansi;
+        if($request->pendamping_id){
+            $pendamping = Pendamping::find($request->pendamping_id);
+            $pendamping->nama = $request->nama;
+            $pendamping->instansi = $request->instansi;
+            $key = 'pendamping_id';
+        } else {
+            $pendamping = User::find($request->verifikator_id);
+            $pendamping->asal_institusi = $request->instansi;
+            $key = 'verifikator_id';
+        }
         $pendamping->nip = $request->nip;
         $pendamping->nuptk = $request->nuptk;
         $pendamping->email = $request->email;
@@ -59,7 +91,7 @@ class LaporanController extends Controller
         $laporan = Laporan::updateOrCreate(
             [
                 'jenis_laporan_id' => $request->jenis_laporan_id,
-                'pendamping_id' => $request->pendamping_id,
+                $key => $request->pendamping_id,
                 'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
             ],
             [

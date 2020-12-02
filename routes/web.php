@@ -64,5 +64,10 @@ Route::get('/validasi-instrumen', 'InstrumenController@validasi_instrumen')->nam
 Route::get('/cetak-hasil-validasi-instrumen', 'InstrumenController@cetak_validasi_instrumen')->name('cetak_validasi_instrumen');
 Route::get('/export-excel', 'FrontController@export_excel')->name('export_excel');
 Route::group(['prefix' => 'laporan'], function(){
-    Route::get('/', 'LaporanController@index');
+    //Route::get('/', 'LaporanController@index')->name('laporan.pendampingan_utama');
+    Route::get('/', function(){
+        return redirect()->route('laporan.pendampingan');
+    });
 });
+Route::get('/laporan-pendampingan', 'LaporanController@index')->name('laporan.pendampingan');
+Route::get('/laporan-verifikasi', 'LaporanController@verifikasi')->name('laporan.verifikasi');

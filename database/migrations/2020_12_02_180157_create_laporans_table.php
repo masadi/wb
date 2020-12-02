@@ -16,7 +16,8 @@ class CreateLaporansTable extends Migration
         Schema::create('laporan', function (Blueprint $table) {
             $table->uuid('laporan_id');
             $table->foreignId('jenis_laporan_id')->constrained('jenis_laporan')->onDelete('cascade');
-            $table->uuid('pendamping_id');
+            $table->uuid('pendamping_id')->nullable();
+            $table->uuid('verifikator_id')->nullable();
             $table->uuid('sekolah_sasaran_id');
             $table->text('jumlah_iduka')->nullable();
             $table->text('lulusan')->nullable();
@@ -30,6 +31,7 @@ class CreateLaporansTable extends Migration
             $table->timestamps();
             $table->primary('laporan_id');
             $table->foreign('pendamping_id')->references('pendamping_id')->on('pendamping')->onDelete('cascade');
+            $table->foreign('verifikator_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('sekolah_sasaran_id')->references('sekolah_sasaran_id')->on('sekolah_sasaran')->onDelete('cascade');
         });
     }

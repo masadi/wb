@@ -2,16 +2,29 @@
     <div class="col-12">
         @if($sekolah)
         <form id="form" class="form-horizontal">
+            @if($formulir == 'pendamping')
             <input type="hidden" class="pendamping_id" name="pendamping_id" value="{{$pendamping->pendamping_id}}">
             <h3>Biodata Pendamping</h3>
             <div class="form-group">
-                <label for="nama">Nama Lengkap</label>
-                <input type="text" name="nama" id="nama" class="form-control" value="{{$pendamping->nama}}">
+                <label for="nama">Nama Lengkap <span class="text-red">*</span></label>
+                <input type="text" name="nama" id="nama" class="form-control" value="{{$pendamping->nama}}" required>
             </div>
             <div class="form-group">
-                <label for="instansi">Instansi Asal</label>
-                <input type="text" name="instansi" id="instansi" class="form-control" value="{{$pendamping->instansi}}">
+                <label for="instansi">Instansi Asal <span class="text-red">*</span></label>
+                <input type="text" name="instansi" id="instansi" class="form-control" value="{{$pendamping->instansi}}" required>
             </div>
+            @else
+            <input type="hidden" class="verifikator_id" name="verifikator_id" value="{{$pendamping->user_id}}">
+            <h3>Biodata Verifikator</h3>
+            <div class="form-group">
+                <label for="nama">Nama Lengkap <span class="text-red">*</span></label>
+                <input type="text" name="nama" id="nama" class="form-control" value="{{$pendamping->name}}" required>
+            </div>
+            <div class="form-group">
+                <label for="instansi">Instansi Asal <span class="text-red">*</span></label>
+                <input type="text" name="instansi" id="instansi" class="form-control" value="{{$pendamping->asal_institusi}}" required>
+            </div>
+            @endif
             <div class="form-group">
                 <label for="nip">NIP</label>
                 <input type="text" name="nip" id="nip" class="form-control" value="{{$pendamping->nip}}">
@@ -21,17 +34,17 @@
                 <input type="text" name="nuptk" id="nuptk" class="form-control" value="{{$pendamping->nuptk}}">
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" class="form-control" value="{{$pendamping->email}}">
+                <label for="email">Email <span class="text-red">*</span></label>
+                <input type="email" name="email" id="email" class="form-control" value="{{$pendamping->email}}" required>
             </div>
             <div class="form-group">
-                <label for="nomor_hp">Nomor HP</label>
-                <input type="text" name="nomor_hp" id="nomor_hp" class="form-control" value="{{$pendamping->nomor_hp}}">
+                <label for="nomor_hp">Nomor HP <span class="text-red">*</span></label>
+                <input type="text" name="nomor_hp" id="nomor_hp" class="form-control" value="{{$pendamping->nomor_hp}}" required>
             </div>
             <h3>Formulir Laporan</h3>
             <div class="form-group">
-                <label for="sekolah_id">Pilih Sekolah</label>
-                <select class="form-control select2" id="sekolah_id" style="width: 100%;" name="sekolah_id">
+                <label for="sekolah_id">Pilih Sekolah <span class="text-red">*</span></label>
+                <select class="form-control select2" id="sekolah_id" style="width: 100%;" name="sekolah_id" required>
                     <option value="">== Pilih Sekolah == </option>
                     @foreach ($sekolah as $item)
                     <option value="{{$item->sekolah_id}}">{{$item->nama}}</option>
@@ -39,8 +52,8 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="jenis_laporan_id">Pilih Jenis Laporan</label>
-                <select class="form-control select2" id="jenis_laporan_id" style="width: 100%;" name="jenis_laporan_id">
+                <label for="jenis_laporan_id">Pilih Jenis Laporan <span class="text-red">*</span></label>
+                <select class="form-control select2" id="jenis_laporan_id" style="width: 100%;" name="jenis_laporan_id" required>
                     <option value="">== Pilih Jenis Laporan == </option>
                     @foreach ($jenis_laporan as $laporan)
                     <option value="{{$laporan->id}}">{{$laporan->nama}}</option>
