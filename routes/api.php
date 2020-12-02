@@ -111,4 +111,5 @@ Route::group(['prefix' => 'laporan'], function(){
     Route::post('/validasi-token', 'LaporanController@validasi_token')->name('api.laporan.validasi_token');
     Route::post('/sekolah', 'LaporanController@get_sekolah')->name('api.laporan.sekolah');
     Route::post('/simpan', 'LaporanController@simpan')->name('api.laporan.simpan');
+    Route::post('/upload', 'LaporanController@upload')->name('api.laporan.upload');
 });

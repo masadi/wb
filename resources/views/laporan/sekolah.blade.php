@@ -38,6 +38,15 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label for="jenis_laporan_id">Pilih Jenis Laporan</label>
+                <select class="form-control select2" id="jenis_laporan_id" style="width: 100%;" name="jenis_laporan_id">
+                    <option value="">== Pilih Jenis Laporan == </option>
+                    @foreach ($jenis_laporan as $laporan)
+                    <option value="{{$laporan->id}}">{{$laporan->nama}}</option>
+                    @endforeach
+                </select>
+            </div>
             <div id="result_sekolah"></div>
             <div class="tombol-submit" style="display: none;">
                 <input type="hidden" name="action" value="simpan">
@@ -53,9 +62,14 @@
     </div>
 </div>
 <script>
-    $('.select2').select2();
+$('.select2').select2();
 $('#sekolah_id').change(function(){
-    $('a#cetak').hide();
+    $('.tombol-submit').hide();
+    $('#result_sekolah').html('');
+    $('#jenis_laporan_id').val('').trigger("change");
+});
+$('#jenis_laporan_id').change(function(){
+    $('.tombol-submit').hide();
     var ini = $(this).val();
     if(ini){
         $('.tombol-submit').show();
@@ -63,7 +77,8 @@ $('#sekolah_id').change(function(){
             url: '{{route('api.laporan.sekolah')}}',
             type: 'post',
             data: {
-                sekolah_id: ini,
+                sekolah_id: $('#sekolah_id').val(),
+                jenis_laporan_id: ini,
                 pendamping_id: $('.pendamping_id').val(),
             },
             success: function(response){
