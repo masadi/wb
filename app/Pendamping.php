@@ -24,4 +24,7 @@ class Pendamping extends Model
             'sekolah_id' // Local key on Sekolah_sasaran table...
         )->where('tahun_pendataan_id', HelperModel::tahun_pendataan());
     }
+    public function getTokenAttribute($value){
+        return strtoupper($value);
+    }
 }
