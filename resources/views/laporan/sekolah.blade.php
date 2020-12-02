@@ -93,6 +93,7 @@ $('#jenis_laporan_id').change(function(){
                 sekolah_id: $('#sekolah_id').val(),
                 jenis_laporan_id: ini,
                 pendamping_id: $('.pendamping_id').val(),
+                verifikator_id: $('.verifikator_id').val(),
             },
             success: function(response){
                 $('.tombol-submit').show();

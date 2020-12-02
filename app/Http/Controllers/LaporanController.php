@@ -60,10 +60,15 @@ class LaporanController extends Controller
         ]);
     }
     public function get_sekolah(Request $request){
-        $pendamping = Pendamping::find($request->pendamping_id);
         $sekolah = Sekolah::with('sekolah_sasaran')->find($request->sekolah_id);
+        if($request->pendamping_id){
+            $pendamping = Pendamping::find($request->pendamping_id);
+            $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
+        } else {
+            $pendamping = User::find($request->verifikator_id);
+            $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('verifikator_id', $request->verifikator_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
+        }
         $jenis_laporan = $request->jenis_laporan_id;
-        $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
         return response()->json([
             'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan', 'laporan'))->render(),
         ]);
@@ -91,7 +96,7 @@ class LaporanController extends Controller
         $laporan = Laporan::updateOrCreate(
             [
                 'jenis_laporan_id' => $request->jenis_laporan_id,
-                $key => $request->pendamping_id,
+                $key => ($request->pendamping_id) ? $request->pendamping_id : $request->verifikator_id,
                 'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
             ],
             [
