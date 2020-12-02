@@ -28,7 +28,7 @@ class LaporanController extends Controller
             })->get();
         }
         $token = $request->token;//str_repeat('*', strlen($request->token));
-        $jenis_laporan = Jenis_laporan::whereIn('id', [1,3])->get();
+        $jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
         return response()->json([
             'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan'))->render(),
             'token' => $token,
@@ -41,6 +41,9 @@ class LaporanController extends Controller
         return response()->json([
             'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan'))->render(),
         ]);
+    }
+    public function formulir(Request $request){
+
     }
     public function simpan(Request $request){
         $pendamping = Pendamping::find($request->pendamping_id);
