@@ -1,31 +1,31 @@
 @if($jenis_laporan == 1)
 <div class="form-group">
     <label for="jumlah_iduka">Jumlah dan nama IDUKA <span class="text-red">*</span></label>
-    <textarea name="jumlah_iduka" id="jumlah_iduka" class="form-control" required></textarea>
+    <textarea name="jumlah_iduka" id="jumlah_iduka" class="form-control" required>{{($laporan) ? $laporan->jumlah_iduka : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="lulusan">Berapakah jumlah lulusan dari sekolah yang bapak/ibu dampingi dapat diserap oleh IDUKA? <span
             class="text-red">*</span></label>
-    <textarea name="lulusan" id="lulusan" class="form-control" required></textarea>
+    <textarea name="lulusan" id="lulusan" class="form-control" required>{{($laporan) ? $laporan->lulusan : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="lulusan_all">Berapakah jumlah lulusan dari sekolah yang bapak/ibu dampingi sudah diserap oleh IDUKA?
         <span class="text-red">*</span><br> <small>Mengambil data dari tahun 2016 s.d. 2020</small></label>
-    <textarea name="lulusan_all" id="lulusan_all" class="form-control" required></textarea>
+    <textarea name="lulusan_all" id="lulusan_all" class="form-control" required>{{($laporan) ? $laporan->lulusan_all : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="perkembangan_smk">Perkembangan SMK <span class="text-red">*</span><br> <small>Potret sekolah sebelum,
             sesudah dan Action Plan Pelaksanaan SMK CoE</small></label>
-    <textarea name="perkembangan_smk" id="perkembangan_smk" class="form-control" required></textarea>
+    <textarea name="perkembangan_smk" id="perkembangan_smk" class="form-control" required>{{($laporan) ? $laporan->perkembangan_smk : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="kesimpulan_saran">Kesimpulan dan Saran <span class="text-red">*</span><br> <small>uraian singkat yang
             berisi tentang kondisi sebenarnya sekolah pada saat pelaksanaan pendampingan SMK CoE</small></label>
-    <textarea name="kesimpulan_saran" id="kesimpulan_saran" class="form-control" required></textarea>
+    <textarea name="kesimpulan_saran" id="kesimpulan_saran" class="form-control" required>{{($laporan) ? $laporan->kesimpulan_saran : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="tanggal_pelaksanaan">Tanggal Pelaksanaan Pendampingan <span class="text-red">*</span></label>
-    <input class="datepicker form-control" data-date-format="dd/mm/yyyy">
+    <input class="datepicker form-control" name="tanggal_pelaksanaan" value="{{($laporan) ? date('m/d/Y', strtotime($laporan->tanggal_pelaksanaan)) : ''}}">
 </div>
 @endif
 @if($jenis_laporan == 3)
@@ -33,23 +33,23 @@
     <label for="pengisian">Adakah pengisian APM yang tidak sesuai setelah diverifikasi? <span
             class="text-red">*</span><br> <small>Jika ada (Jelaskan), Jika Tidak (tidak dijelaskan/isi dengan
             -)</small></label>
-    <textarea name="pengisian" id="pengisian" class="form-control" required></textarea>
+    <textarea name="pengisian" id="pengisian" class="form-control" required>{{($laporan) ? $laporan->pengisian : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="kendala">Adakah Kendala dalam Proses Verifikasi? dan cara mengatasainya <span
             class="text-red">*</span><br> <small>Jika ada (Jelaskan), Jika Tidak (tidak dijelaskan/isi dengan
             -)</small></label>
-    <textarea name="kendala" id="kendala" class="form-control" required></textarea>
+    <textarea name="kendala" id="kendala" class="form-control" required>{{($laporan) ? $laporan->kendala : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="kondisi">Bagaimana Kondisi dari Tim Pendamping pada saat melaksankanan Workshop Pertama? <span
             class="text-red">*</span><br> <small>Jika ada (Jelaskan), Jika Tidak (tidak dijelaskan/isi dengan
             -)</small></label>
-    <textarea name="kondisi" id="kondisi" class="form-control" required></textarea>
+    <textarea name="kondisi" id="kondisi" class="form-control" required>{{($laporan) ? $laporan->kondisi : ''}}</textarea>
 </div>
 <div class="form-group">
     <label for="tanggal_pelaksanaan">Tanggal Pelaksanaan Verifikasi <span class="text-red">*</span></label>
-    <input class="datepicker form-control" data-date-format="dd/mm/yyyy">
+    <input class="datepicker form-control" name="tanggal_pelaksanaan" value="{{($laporan) ? date('m/d/Y', strtotime($laporan->tanggal_pelaksanaan)) : ''}}">
 </div>
 @endif
 @if($jenis_laporan == 2)

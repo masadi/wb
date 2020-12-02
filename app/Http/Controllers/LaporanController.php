@@ -36,10 +36,11 @@ class LaporanController extends Controller
     }
     public function get_sekolah(Request $request){
         $pendamping = Pendamping::find($request->pendamping_id);
-        $sekolah = Sekolah::find($request->sekolah_id);
+        $sekolah = Sekolah::with('sekolah_sasaran')->find($request->sekolah_id);
         $jenis_laporan = $request->jenis_laporan_id;
+        $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
         return response()->json([
-            'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan'))->render(),
+            'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan', 'laporan'))->render(),
         ]);
     }
     public function formulir(Request $request){
