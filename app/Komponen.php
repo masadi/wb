@@ -19,7 +19,7 @@ class Komponen extends Model
         return $this->hasMany('App\Nilai_komponen', 'komponen_id', 'id')->whereNull('verifikator_id');
     }
     public function all_nilai_komponen_verifikasi(){
-        return $this->hasMany('App\Nilai_komponen', 'komponen_id', 'id')->whereNotNull('verifikator_id');
+        return $this->hasMany('App\Nilai_komponen', 'komponen_id', 'id')->whereNotNull('verifikator_id')->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
     }
     public function nilai_komponen_verifikasi(){
         return $this->hasOne('App\Nilai_komponen', 'komponen_id', 'id');

@@ -127,6 +127,9 @@ class Sekolah extends Model
             'user_id' // Local key on User table...
         )->where('komponen_id', 1);
     }
+    public function nilai_input_verifikasi(){
+        return $this->nilai_input();
+    }
     public function nilai_proses()
     {
         return $this->hasOneThrough(
@@ -137,6 +140,9 @@ class Sekolah extends Model
             'sekolah_id', // Local key on Sekolah table...
             'user_id' // Local key on User table...
         )->where('komponen_id', 2);
+    }
+    public function nilai_proses_verifikasi(){
+        return $this->nilai_proses();
     }
     public function nilai_output()
     {
@@ -149,6 +155,9 @@ class Sekolah extends Model
             'user_id' // Local key on User table...
         )->where('komponen_id', 3);
     }
+    public function nilai_output_verifikasi(){
+        return $this->nilai_output();
+    }
     public function nilai_outcome()
     {
         return $this->hasOneThrough(
@@ -160,6 +169,9 @@ class Sekolah extends Model
             'user_id' // Local key on User table...
         )->where('komponen_id', 4);
     }
+    public function nilai_outcome_verifikasi(){
+        return $this->nilai_outcome();
+    }
     public function nilai_impact()
     {
         return $this->hasOneThrough(
@@ -170,6 +182,9 @@ class Sekolah extends Model
             'sekolah_id', // Local key on Sekolah table...
             'user_id' // Local key on User table...
         )->where('komponen_id', 4);
+    }
+    public function nilai_impact_verifikasi(){
+        return $this->nilai_impact();
     }
     public function nilai_akhir()
     {

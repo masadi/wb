@@ -11,6 +11,9 @@ use App\Jenis_laporan;
 use App\Laporan;
 use App\Berkas_laporan;
 use App\User;
+use App\Nilai_komponen;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Rap2hpoutre\FastExcel\SheetCollection;
 class LaporanController extends Controller
 {
     public function index(Request $request){
@@ -127,5 +130,66 @@ class LaporanController extends Controller
         $image->move(public_path('berkas_laporan'), $imageName);
    
         return response()->json(['success'=> $imageName]);
+    }
+    function rekap(Request $request){
+        $all_sekolah = Sekolah::with(['nilai_input' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_proses' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_output' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_outcome' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_impact' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_input_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_proses_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_output_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_outcome_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_impact_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }])->has('sekolah_sasaran')->orderBy('provinsi_id')->orderBy('kabupaten_id')->get();
+        $i=1;
+        foreach($all_sekolah as $sekolah){
+            $nilai_sekolah[] = [
+                'No' => $i,
+                'Provinsi' => $sekolah->provinsi,
+                'Kabupaten/Kota' => $sekolah->kabupaten,
+                'Nama Sekolah' => $sekolah->nama,
+                'NPSN' => $sekolah->npsn,
+                'Nilai Input' => ($sekolah->nilai_input) ? $sekolah->nilai_input->total_nilai : '-',
+                'Nilai Proses' => ($sekolah->nilai_proses) ? $sekolah->nilai_proses->total_nilai : '-',
+                'Nilai Output' => ($sekolah->nilai_output) ? $sekolah->nilai_output->total_nilai : '-',
+                'Nilai Outcome' => ($sekolah->nilai_outcome) ? $sekolah->nilai_outcome->total_nilai : '-',
+                'Nilai Impact' => ($sekolah->nilai_impact) ? $sekolah->nilai_impact->total_nilai : '-',
+            ];
+            $nilai_verifikasi[] = [
+                'No' => $i,
+                'Provinsi' => $sekolah->provinsi,
+                'Kabupaten/Kota' => $sekolah->kabupaten,
+                'Nama Sekolah' => $sekolah->nama,
+                'NPSN' => $sekolah->npsn,
+                'Nilai Input' => ($sekolah->nilai_input_verifikasi) ? $sekolah->nilai_input_verifikasi->total_nilai : '-',
+                'Nilai Proses' => ($sekolah->nilai_proses_verifikasi) ? $sekolah->nilai_proses_verifikasi->total_nilai : '-',
+                'Nilai Output' => ($sekolah->nilai_output_verifikasi) ? $sekolah->nilai_output_verifikasi->total_nilai : '-',
+                'Nilai Outcome' => ($sekolah->nilai_outcome_verifikasi) ? $sekolah->nilai_outcome_verifikasi->total_nilai : '-',
+                'Nilai Impact' => ($sekolah->nilai_impact_verifikasi) ? $sekolah->nilai_impact_verifikasi->total_nilai : '-',
+            ];
+            $i++;
+        }
+        $sheets = new SheetCollection([
+            'Nilai Sekolah' => $nilai_sekolah,
+            'Nilai Verifikasi' => $nilai_verifikasi,
+        ]);
+        return (new FastExcel($sheets))->download('Rekapitulasi Rapor Mutu SMK CoE Tahun 2020.xlsx');
     }
 }
