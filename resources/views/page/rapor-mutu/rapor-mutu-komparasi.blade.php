@@ -242,6 +242,8 @@
                         </tr-->
                     </tbody>
                 </table>
+            </div>
+            <div class="card-footer text-center">
                 {{$all_sekolah->links()}}
             </div>
         </div>
