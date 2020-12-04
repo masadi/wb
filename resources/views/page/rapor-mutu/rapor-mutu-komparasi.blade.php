@@ -56,17 +56,17 @@
                             <th rowspan="3" class="text-center" style="vertical-align: middle;">NO</th>
                             <th rowspan="3" class="text-center" style="vertical-align: middle;">NAMA SEKOLAH</th>
                             <th rowspan="3" class="text-center" style="vertical-align: middle;">NPSN</th>
-                            <th colspan="11" class="text-center">NILAI SEKOLAH</th>
-                            <th colspan="12" class="text-center">NILAI VERIFIKASI</th>
+                            <th colspan="13" class="text-center">NILAI SEKOLAH</th>
+                            <th colspan="14" class="text-center">NILAI VERIFIKASI</th>
                             <th rowspan="3" class="text-center">NILAI KOMPARASI SEKOLAH &gt;&lt; VERIFIKASI</th>
                         </tr>
                         <tr>
                             <th colspan="6" class="text-center">KINERJA</th>
-                            <th colspan="3" class="text-center">DAMPAK</th>
+                            <th colspan="5" class="text-center">DAMPAK</th>
                             <th rowspan="2" class="text-center" style="vertical-align: middle;">NILAI SEKOLAH</th>
                             <th rowspan="2" class="text-center" style="vertical-align: middle;">PREDIKAT</th>
                             <th colspan="6" class="text-center">KINERJA</th>
-                            <th colspan="3" class="text-center">DAMPAK</th>
+                            <th colspan="5" class="text-center">DAMPAK</th>
                             <th rowspan="2" class="text-center" style="vertical-align: middle;">NILAI VERIFIKASI</th>
                             <th rowspan="2" class="text-center" style="vertical-align: middle;">PREDIKAT</th>
                             <th rowspan="2" class="text-center" style="vertical-align: middle;">AFIRMASI</th>
@@ -81,6 +81,8 @@
                             <th class="text-center">OUTCOME</th>
                             <th class="text-center">IMPACT</th>
                             <th class="text-center">RERATA</th>
+                            <th class="text-center">NILAI TERENDAH</th>
+                            <th class="text-center">NILAI TERTINGGI</th>
                             <th class="text-center">INPUT</th>
                             <th class="text-center">PROSES</th>
                             <th class="text-center">OUTPUT</th>
@@ -90,6 +92,8 @@
                             <th class="text-center">OUTCOME</th>
                             <th class="text-center">IMPACT</th>
                             <th class="text-center">RERATA</th>
+                            <th class="text-center">NILAI TERENDAH</th>
+                            <th class="text-center">NILAI TERTINGGI</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -104,37 +108,43 @@
                             <td class="text-center">{{($sekolah->nilai_kinerja) ? number_format($sekolah->nilai_kinerja->avg('total_nilai'),2,'.','.') : 0}}</td>
                             <td class="text-center">
                                 <?php
-                                $keyed_terendah_sekolah = [];
+                                $keyed_kinerja_sekolah = [];
                                 if($sekolah->nilai_kinerja){
-                                    $nilai_terendah = $sekolah->nilai_kinerja->map(function ($name) {
+                                    $nilai_kinerja_sekolah = $sekolah->nilai_kinerja->map(function ($name) {
                                         $return['nilai'] = $name->total_nilai;
                                         $return['nama'] = $name->komponen->nama;
                                         return $return;
                                     });
-                                    $keyed_terendah_sekolah = $nilai_terendah->keyBy('nilai')->toArray();
+                                    $keyed_kinerja_sekolah = $nilai_kinerja_sekolah->keyBy('nilai')->toArray();
                                 }
-                                $terendah_sekolah = ($keyed_terendah_sekolah) ? ($keyed_terendah_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]) ? $keyed_terendah_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]['nama'] : '-' : '-';
+                                $terendah_kinerja_sekolah = ($keyed_kinerja_sekolah) ? ($keyed_kinerja_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]) ? $keyed_kinerja_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]['nama'] : '-' : '-';
+                                $tertinggi_kinerja_sekolah = ($keyed_kinerja_sekolah) ? ($keyed_kinerja_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]) ? $keyed_kinerja_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]['nama'] : '-' : '-';
                                 ?>
-                                {{$terendah_sekolah}}
+                                {{$terendah_kinerja_sekolah}}
                             </td>
                             <td class="text-center">
-                                <?php
-                                $keyed_tertinggi_sekolah = [];
-                                if($sekolah->nilai_kinerja){
-                                    $nilai_tertinggi = $sekolah->nilai_kinerja->map(function ($name) {
-                                        $return['nilai'] = $name->total_nilai;
-                                        $return['nama'] = $name->komponen->nama;
-                                        return $return;
-                                    });
-                                    $keyed_tertinggi_sekolah = $nilai_tertinggi->keyBy('nilai')->toArray();
-                                }
-                                $tertinggi_sekolah = ($keyed_tertinggi_sekolah) ? ($keyed_tertinggi_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]) ? $keyed_tertinggi_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]['nama'] : '-' : '-';
-                                ?>
-                                {{$tertinggi_sekolah}}
+                                {{$tertinggi_kinerja_sekolah}}
                             </td>
                             <td class="text-center">{{($sekolah->nilai_outcome) ? $sekolah->nilai_outcome->total_nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_impact) ? $sekolah->nilai_impact->total_nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_dampak) ? number_format($sekolah->nilai_dampak->avg('total_nilai'),2,'.','.') : 0}}</td>
+                            <td>
+                                <?php
+                                $keyed_dampak_sekolah = [];
+                                if($sekolah->nilai_dampak){
+                                    $nilai_dampak_sekolah = $sekolah->nilai_dampak->map(function ($name) {
+                                        $return['nilai'] = $name->total_nilai;
+                                        $return['nama'] = $name->komponen->nama;
+                                        return $return;
+                                    });
+                                    $keyed_dampak_sekolah = $nilai_dampak_sekolah->keyBy('nilai')->toArray();
+                                }
+                                $terendah_dampak_sekolah = ($keyed_dampak_sekolah) ? ($keyed_dampak_sekolah[$sekolah->nilai_dampak->min('total_nilai')]) ? $keyed_dampak_sekolah[$sekolah->nilai_dampak->min('total_nilai')]['nama'] : '-' : '-';
+                                $tertinggi_dampak_sekolah = ($keyed_dampak_sekolah) ? ($keyed_dampak_sekolah[$sekolah->nilai_dampak->max('total_nilai')]) ? $keyed_dampak_sekolah[$sekolah->nilai_dampak->max('total_nilai')]['nama'] : '-' : '-';
+                                ?>
+                                {{$terendah_dampak_sekolah}}
+                            </td>
+                            <td>{{$tertinggi_dampak_sekolah}}</td>
                             <td class="text-center">{{($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_input_verifikasi) ? $sekolah->nilai_input_verifikasi->total_nilai : 0}}</td>
@@ -143,37 +153,43 @@
                             <td class="text-center">{{($sekolah->nilai_kinerja_verifikasi) ? number_format($sekolah->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0}}</td>
                             <td class="text-center">
                                 <?php
-                                $keyed_terendah_verifikasi = [];
+                                $keyed_verifikasi = [];
                                 if($sekolah->nilai_kinerja_verifikasi){
-                                    $nilai_terendah_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
+                                    $nilai_kinerja_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
                                         $return['nilai'] = $name->total_nilai;
                                         $return['nama'] = $name->komponen->nama;
                                         return $return;
                                     });
-                                    $keyed_terendah_verifikasi = $nilai_terendah_verifikasi->keyBy('nilai')->toArray();
+                                    $keyed_verifikasi = $nilai_kinerja_verifikasi->keyBy('nilai')->toArray();
                                 }
-                                $terendah_verifikasi = ($keyed_terendah_verifikasi) ? ($keyed_terendah_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]) ? $keyed_terendah_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]['nama'] : '-' : '-';
+                                $terendah_verifikasi = ($keyed_verifikasi) ? ($keyed_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]) ? $keyed_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]['nama'] : '-' : '-';
+                                $tertinggi_verifikasi = ($keyed_verifikasi) ? ($keyed_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]) ? $keyed_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
                                 ?>
                                 {{$terendah_verifikasi}}
                             </td>
                             <td class="text-center">
-                                <?php
-                                $keyed_tertinggi_verifikasi = [];
-                                if($sekolah->nilai_kinerja_verifikasi){
-                                    $nilai_tertinggi_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
-                                        $return['nilai'] = $name->total_nilai;
-                                        $return['nama'] = $name->komponen->nama;
-                                        return $return;
-                                    });
-                                    $keyed_tertinggi_verifikasi = $nilai_tertinggi_verifikasi->keyBy('nilai')->toArray();
-                                }
-                                $tertinggi_verifikasi = ($keyed_tertinggi_verifikasi) ? ($keyed_tertinggi_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]) ? $keyed_tertinggi_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
-                                ?>
                                 {{$tertinggi_verifikasi}}
                             </td>
                             <td class="text-center">{{($sekolah->nilai_outcome_verifikasi) ? $sekolah->nilai_outcome_verifikasi->total_nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_impact_verifikasi) ? $sekolah->nilai_impact_verifikasi->total_nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0}}</td>
+                            <td>
+                                <?php
+                                $keyed_dampak_verifikasi = [];
+                                if($sekolah->nilai_dampak_verifikasi){
+                                    $nilai_dampak_verifikasi = $sekolah->nilai_dampak_verifikasi->map(function ($name) {
+                                        $return['nilai'] = $name->total_nilai;
+                                        $return['nama'] = $name->komponen->nama;
+                                        return $return;
+                                    });
+                                    $keyed_dampak_verifikasi = $nilai_dampak_verifikasi->keyBy('nilai')->toArray();
+                                }
+                                $terendah_dampak_verifikasi = ($keyed_dampak_verifikasi) ? ($keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]) ? $keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
+                                $tertinggi_kinerja_verifikasi = ($keyed_dampak_verifikasi) ? ($keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]) ? $keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
+                                ?>
+                                {{$terendah_dampak_verifikasi}}
+                            </td>
+                            <td>{{$tertinggi_kinerja_verifikasi}}</td>
                             <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->predikat : 0}}</td>
                             <td class="text-center">
