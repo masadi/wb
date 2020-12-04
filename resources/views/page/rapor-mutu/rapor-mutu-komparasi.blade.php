@@ -49,6 +49,123 @@
     </div>
     <div class="col-12">
         <div class="card">
+            <div class="card-body table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th rowspan="3" class="text-center" style="vertical-align: middle;">NO</th>
+                            <th rowspan="3" class="text-center" style="vertical-align: middle;">NAMA SEKOLAH</th>
+                            <th rowspan="3" class="text-center" style="vertical-align: middle;">NPSN</th>
+                            <th colspan="11" class="text-center">NILAI SEKOLAH</th>
+                            <th colspan="12" class="text-center">NILAI VERIFIKASI</th>
+                            <th rowspan="3" class="text-center">NILAI KOMPARASI SEKOLAH &gt;&lt; VERIFIKASI</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6" class="text-center">KINERJA</th>
+                            <th colspan="3" class="text-center">DAMPAK</th>
+                            <th rowspan="2" class="text-center" style="vertical-align: middle;">NILAI SEKOLAH</th>
+                            <th rowspan="2" class="text-center" style="vertical-align: middle;">PREDIKAT</th>
+                            <th colspan="6" class="text-center">KINERJA</th>
+                            <th colspan="3" class="text-center">DAMPAK</th>
+                            <th rowspan="2" class="text-center" style="vertical-align: middle;">NILAI VERIFIKASI</th>
+                            <th rowspan="2" class="text-center" style="vertical-align: middle;">PREDIKAT</th>
+                            <th rowspan="2" class="text-center" style="vertical-align: middle;">AFIRMASI</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">INPUT</th>
+                            <th class="text-center">PROSES</th>
+                            <th class="text-center">OUTPUT</th>
+                            <th class="text-center">RERATA</th>
+                            <th class="text-center">NILAI TERENDAH</th>
+                            <th class="text-center">NILAI TERTINGGI</th>
+                            <th class="text-center">OUTCOME</th>
+                            <th class="text-center">IMPACT</th>
+                            <th class="text-center">RERATA</th>
+                            <th class="text-center">INPUT</th>
+                            <th class="text-center">PROSES</th>
+                            <th class="text-center">OUTPUT</th>
+                            <th class="text-center">RERATA</th>
+                            <th class="text-center">NILAI TERENDAH</th>
+                            <th class="text-center">NILAI TERTINGGI</th>
+                            <th class="text-center">OUTCOME</th>
+                            <th class="text-center">IMPACT</th>
+                            <th class="text-center">RERATA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>Sekolah Contoh</td>
+                            <td>12345678</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">2</td>
+                            <td class="text-center">3</td>
+                            <td class="text-center">4</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">6</td>
+                            <td class="text-center">7</td>
+                            <td class="text-center">8</td>
+                            <td class="text-center">9</td>
+                            <td class="text-center">10</td>
+                            <td class="text-center">11</td>
+                            <td class="text-center">12</td>
+                            <td class="text-center">13</td>
+                            <td class="text-center">14</td>
+                            <td class="text-center">15</td>
+                            <td class="text-center">16</td>
+                            <td class="text-center">17</td>
+                            <td class="text-center">18</td>
+                            <td class="text-center">19</td>
+                            <td class="text-center">20</td>
+                            <td class="text-center">21</td>
+                            <td class="text-center">22</td>
+                            <td class="text-center">23</td>
+                            <td class="text-center">24</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="7" class="text-center">NILAI KOMPARASI SEKOLAH &gt;&lt; VERIFIKASI</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="text-center">BAGIAN</th>
+                            <th colspan="5" class="text-center">KOMPONEN</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">KINERJA</th>
+                            <th class="text-center">DAMPAK</th>
+                            <th class="text-center">INPUT</th>
+                            <th class="text-center">PROSES</th>
+                            <th class="text-center">OUTPUT</th>
+                            <th class="text-center">OUTCOME</th>
+                            <th class="text-center">IMPACT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td class="text-center">2</td>
+                            <td class="text-center">3</td>
+                            <td class="text-center">4</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">6</td>
+                            <td class="text-center">7</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
             <div class="card-body">
                 <div id="chartdiv"></div>
                 <!--canvas id="rapor_mutu_verifikasi" style="height: 250px"></canvas-->
