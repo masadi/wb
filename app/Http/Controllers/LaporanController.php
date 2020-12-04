@@ -361,7 +361,6 @@ class LaporanController extends Controller
             'Nilai Sekolah' => $set_nilai_sekolah,
             'Nilai Verifikasi' => $set_nilai_verifikasi,
         ]);
-        dd($sheets);
         return (new FastExcel($sheets))->download('Rekapitulasi Rapor Mutu SMK CoE Tahun 2020.xlsx');
         /*foreach ($all_sekolah as $sekolah){
             $rekap[] = [
