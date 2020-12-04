@@ -1,5 +1,5 @@
 @extends('layouts.app_rapor')
-@section('title', 'Komprasi Rapor Mutu SMK')
+@section('title', 'Komparasi Rapor Mutu SMK')
 @section('content')
 <div class="row">
     <div class="col-12">
