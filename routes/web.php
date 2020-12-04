@@ -69,6 +69,7 @@ Route::group(['prefix' => 'laporan'], function(){
         return redirect()->route('laporan.pendampingan');
     });
     Route::get('/rekap', 'LaporanController@rekap')->name('laporan.rekap');
+    Route::get('/rekapitulasi', 'LaporanController@rekapitulasi')->name('laporan.rekapitulasi');
 });
 Route::get('/laporan-pendampingan', 'LaporanController@index')->name('laporan.pendampingan');
 Route::get('/laporan-verifikasi', 'LaporanController@verifikasi')->name('laporan.verifikasi');

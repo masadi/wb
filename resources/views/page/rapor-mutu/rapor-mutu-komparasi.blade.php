@@ -204,9 +204,9 @@
                                 @if($nilai_sekolah == $nilai_verifikasi)
                                 Rapor Mutu Sekolah = Rapor Mutu Verifikasi
                                 @elseif($nilai_sekolah < $nilai_verifikasi)
-                                Rapor Mutu Sekolah &lt; Rapor Mutu Verifikasi
-                                @elseif($nilai_sekolah > $nilai_verifikasi)
                                 Rapor Mutu Sekolah &gt; Rapor Mutu Verifikasi
+                                @elseif($nilai_sekolah > $nilai_verifikasi)
+                                Rapor Mutu Sekolah &lt; Rapor Mutu Verifikasi
                                 @endif
                             </td>
                         </tr>
