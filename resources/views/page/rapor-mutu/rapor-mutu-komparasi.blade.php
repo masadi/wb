@@ -267,43 +267,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th colspan="7" class="text-center">NILAI KOMPARASI SEKOLAH &gt;&lt; VERIFIKASI</th>
-                        </tr>
-                        <tr>
-                            <th colspan="2" class="text-center">BAGIAN</th>
-                            <th colspan="5" class="text-center">KOMPONEN</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">KINERJA</th>
-                            <th class="text-center">DAMPAK</th>
-                            <th class="text-center">INPUT</th>
-                            <th class="text-center">PROSES</th>
-                            <th class="text-center">OUTPUT</th>
-                            <th class="text-center">OUTCOME</th>
-                            <th class="text-center">IMPACT</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td class="text-center">2</td>
-                            <td class="text-center">3</td>
-                            <td class="text-center">4</td>
-                            <td class="text-center">5</td>
-                            <td class="text-center">6</td>
-                            <td class="text-center">7</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
                 <div id="chartdiv"></div>
                 <!--canvas id="rapor_mutu_verifikasi" style="height: 250px"></canvas-->
             </div>
