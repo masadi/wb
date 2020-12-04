@@ -291,11 +291,11 @@ class LaporanController extends Controller
             $afirmasi = '-';
             if($nilai_verifikasi){
                 if($nilai_kinerja < 50 && $nilai_dampak < 50) {
-                    $afirmasi = 'Prioritas';
+                    $afirmasi = 'Afirmasi (Kinerja dan Dampak dibawah nilai 50)';
                 } elseif($nilai_kinerja < 50 && $nilai_dampak > 50){
-                    $afirmasi = 'Rekomendasi 1';
+                    $afirmasi = 'Afirmasi (Kinerja dibawah Nilai 50)';
                 } elseif($nilai_kinerja > 50 && $nilai_dampak < 50){
-                    $afirmasi = 'Rekomendasi 2';
+                    $afirmasi = 'Afirmasi (Dampak dibawah Nilai 50)';
                 }
             }
             $status = '-';
