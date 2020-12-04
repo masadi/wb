@@ -81,15 +81,15 @@
                             <th class="text-center">OUTCOME</th>
                             <th class="text-center">IMPACT</th>
                             <th class="text-center">RERATA</th>
-                            <th class="text-center">INPUT2</th>
-                            <th class="text-center">PROSES2</th>
-                            <th class="text-center">OUTPUT2</th>
-                            <th class="text-center">RERATA2</th>
-                            <th class="text-center">NILAI TERENDAH2</th>
-                            <th class="text-center">NILAI TERTINGGI2</th>
-                            <th class="text-center">OUTCOME2</th>
-                            <th class="text-center">IMPACT2</th>
-                            <th class="text-center">RERATA2</th>
+                            <th class="text-center">INPUT</th>
+                            <th class="text-center">PROSES</th>
+                            <th class="text-center">OUTPUT</th>
+                            <th class="text-center">RERATA</th>
+                            <th class="text-center">NILAI TERENDAH</th>
+                            <th class="text-center">NILAI TERTINGGI</th>
+                            <th class="text-center">OUTCOME</th>
+                            <th class="text-center">IMPACT</th>
+                            <th class="text-center">RERATA</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -176,12 +176,28 @@
                             <td class="text-center">{{($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0}}</td>
                             <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->predikat : 0}}</td>
-                            <td class="text-center">-</td>
                             <td class="text-center">
                                 <?php
                                 $nilai_sekolah = ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0;
                                 $nilai_verifikasi = ($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0;
+                                $nilai_kinerja = ($sekolah->nilai_kinerja_verifikasi) ? number_format($sekolah->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0;
+                                $nilai_dampak = ($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0;
                                 ?>
+                                @if($nilai_verifikasi)
+                                    @if($nilai_kinerja < 50 && $nilai_dampak < 50)
+                                        Prioritas
+                                    @elseif($nilai_kinerja < 50 && $nilai_dampak > 50)
+                                        Rekomendasi 1
+                                    @elseif($nilai_kinerja > 50 && $nilai_dampak < 50)
+                                        Rekomendasi 2
+                                    @else
+                                        -
+                                    @endif
+                                @else
+                                -
+                                @endif
+                            </td>
+                            <td class="text-center">
                                 {{--
                                     =IF(W6=L6;"Rapor Mutu Sekolah = Rapor Mutu Verifikasi";IF(L6<W6;"Rapor Mutu Sekolah < Rapor Mutu Verifikasi";"Rapor Mutu Sekolah > Rapor Mutu Verifikasi"))
                                 --}}
