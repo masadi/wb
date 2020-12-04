@@ -235,11 +235,6 @@ class LaporanController extends Controller
         }, 'nilai_akhir_verifikasi' => function($query){
             $query->whereNotNull('verifikator_id');
             $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
-        }, 'nilai_komponen' => function($query){
-            $query->whereNull('verifikator_id');
-        }, 'nilai_komponen_verifikasi' => function($query){
-            $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }]/*)->where(function($query){
             if(request()->kode_wilayah){
                 $query->whereIn('kode_wilayah', function($query){
@@ -328,7 +323,7 @@ class LaporanController extends Controller
                 'Rerata' => ($sekolah->nilai_dampak) ? number_format($sekolah->nilai_dampak->avg('total_nilai'),2,'.','.') : 0,
                 'Nilai Rapor' => ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : 0,
                 'Predikat' => ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0,
-                'Hasil Rata-rata Komponen' => ($sekolah->nilai_komponen) ? number_format($sekolah->nilai_komponen->avg('total_nilai'),2,'.','.') : 0,
+                //'Hasil Rata-rata Komponen' => ($sekolah->nilai_komponen) ? number_format($sekolah->nilai_komponen->avg('total_nilai'),2,'.','.') : 0,
             ];
             $set_nilai_verifikasi[] = [
                 'No' => $i,
