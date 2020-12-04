@@ -206,4 +206,18 @@ class Sekolah extends Model
     public function nilai_akhir_verifikasi(){
         return $this->nilai_akhir();
     }
+    public function nilai_komponen()
+    {
+        return $this->hasManyThrough(
+            'App\Nilai_komponen',
+            'App\User',
+            'sekolah_id', // Foreign key on User table...
+            'user_id', // Foreign key on Nilai_instrumen table...
+            'sekolah_id', // Local key on Sekolah table...
+            'user_id' // Local key on User table...
+        );
+    }
+    public function nilai_komponen_verifikasi(){
+        return $this->nilai_komponen();
+    }
 }

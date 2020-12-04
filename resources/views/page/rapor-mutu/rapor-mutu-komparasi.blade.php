@@ -178,7 +178,7 @@
                             <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->predikat : 0}}</td>
                             <td class="text-center">
                                 <?php
-                                $nilai_sekolah = ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0;
+                                $nilai_sekolah = ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : 0;
                                 $nilai_verifikasi = ($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0;
                                 $nilai_kinerja = ($sekolah->nilai_kinerja_verifikasi) ? number_format($sekolah->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0;
                                 $nilai_dampak = ($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0;
@@ -204,9 +204,9 @@
                                 @if($nilai_sekolah == $nilai_verifikasi)
                                 Rapor Mutu Sekolah = Rapor Mutu Verifikasi
                                 @elseif($nilai_sekolah < $nilai_verifikasi)
-                                Rapor Mutu Sekolah &gt; Rapor Mutu Verifikasi
-                                @elseif($nilai_sekolah > $nilai_verifikasi)
                                 Rapor Mutu Sekolah &lt; Rapor Mutu Verifikasi
+                                @elseif($nilai_sekolah > $nilai_verifikasi)
+                                Rapor Mutu Sekolah &gt; Rapor Mutu Verifikasi
                                 @endif
                             </td>
                         </tr>

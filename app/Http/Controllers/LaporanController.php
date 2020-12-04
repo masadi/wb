@@ -235,6 +235,11 @@ class LaporanController extends Controller
         }, 'nilai_akhir_verifikasi' => function($query){
             $query->whereNotNull('verifikator_id');
             $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_komponen' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_komponen_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }]/*)->where(function($query){
             if(request()->kode_wilayah){
                 $query->whereIn('kode_wilayah', function($query){
@@ -243,6 +248,115 @@ class LaporanController extends Controller
             }
         }*/)->orderBy('provinsi_id')->orderBy('kabupaten_id')->get();
         $i=1;
+        foreach($all_sekolah as $sekolah){
+            $keyed_terendah_sekolah = [];
+            if($sekolah->nilai_kinerja){
+                $nilai_terendah = $sekolah->nilai_kinerja->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed_terendah_sekolah = $nilai_terendah->keyBy('nilai')->toArray();
+            }
+            $terendah_sekolah = ($keyed_terendah_sekolah) ? ($keyed_terendah_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]) ? $keyed_terendah_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]['nama'] : '-' : '-';
+            $keyed_tertinggi_sekolah = [];
+            if($sekolah->nilai_kinerja){
+                $nilai_tertinggi = $sekolah->nilai_kinerja->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed_tertinggi_sekolah = $nilai_tertinggi->keyBy('nilai')->toArray();
+            }
+            $tertinggi_sekolah = ($keyed_tertinggi_sekolah) ? ($keyed_tertinggi_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]) ? $keyed_tertinggi_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]['nama'] : '-' : '-';
+            $keyed_terendah_verifikasi = [];
+            if($sekolah->nilai_kinerja_verifikasi){
+                $nilai_terendah_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed_terendah_verifikasi = $nilai_terendah_verifikasi->keyBy('nilai')->toArray();
+            }
+            $terendah_verifikasi = ($keyed_terendah_verifikasi) ? ($keyed_terendah_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]) ? $keyed_terendah_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]['nama'] : '-' : '-';
+            $keyed_tertinggi_verifikasi = [];
+            if($sekolah->nilai_kinerja_verifikasi){
+                $nilai_tertinggi_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed_tertinggi_verifikasi = $nilai_tertinggi_verifikasi->keyBy('nilai')->toArray();
+            }
+            $tertinggi_verifikasi = ($keyed_tertinggi_verifikasi) ? ($keyed_tertinggi_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]) ? $keyed_tertinggi_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
+            $nilai_sekolah = ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : 0;
+            $nilai_verifikasi = ($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0;
+            $nilai_kinerja = ($sekolah->nilai_kinerja_verifikasi) ? number_format($sekolah->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0;
+            $nilai_dampak = ($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0;
+            $afirmasi = '-';
+            if($nilai_verifikasi){
+                if($nilai_kinerja < 50 && $nilai_dampak < 50) {
+                    $afirmasi = 'Prioritas';
+                } elseif($nilai_kinerja < 50 && $nilai_dampak > 50){
+                    $afirmasi = 'Rekomendasi 1';
+                } elseif($nilai_kinerja > 50 && $nilai_dampak < 50){
+                    $afirmasi = 'Rekomendasi 2';
+                }
+            }
+            $status = '-';
+            if($nilai_sekolah == $nilai_verifikasi){
+                $status = 'Rapor Mutu Sekolah = Rapor Mutu Verifikasi';
+            } elseif($nilai_sekolah < $nilai_verifikasi){
+                $status = 'Rapor Mutu Sekolah < Rapor Mutu Verifikasi';
+            } elseif($nilai_sekolah > $nilai_verifikasi) {
+                $status = 'Rapor Mutu Sekolah > Rapor Mutu Verifikasi';
+            }
+            $set_nilai_sekolah[] = [
+                'No' => $i,
+                'Provinsi' => $sekolah->provinsi,
+                'Kabupaten/Kota' => $sekolah->kabupaten,
+                'Nama Sekolah' => $sekolah->nama,
+                'NPSN' => $sekolah->npsn,
+                'Nilai Input' => ($sekolah->nilai_input) ? $sekolah->nilai_input->total_nilai : '-',
+                'Nilai Proses' => ($sekolah->nilai_proses) ? $sekolah->nilai_proses->total_nilai : '-',
+                'Nilai Output' => ($sekolah->nilai_output) ? $sekolah->nilai_output->total_nilai : '-',
+                'Rerata' => ($sekolah->nilai_kinerja) ? number_format($sekolah->nilai_kinerja->avg('total_nilai'),2,'.','.') : 0,
+                'Nilai Terendah' => $terendah_sekolah,
+                'Nilai Tertinggi' => $tertinggi_sekolah,
+                'Nilai Outcome' => ($sekolah->nilai_outcome) ? $sekolah->nilai_outcome->total_nilai : '-',
+                'Nilai Impact' => ($sekolah->nilai_impact) ? $sekolah->nilai_impact->total_nilai : '-',
+                'Rerata' => ($sekolah->nilai_dampak) ? number_format($sekolah->nilai_dampak->avg('total_nilai'),2,'.','.') : 0,
+                'Nilai Rapor' => ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : 0,
+                'Predikat' => ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0,
+                'Hasil Rata-rata Komponen' => ($sekolah->nilai_komponen) ? number_format($sekolah->nilai_komponen->avg('total_nilai'),2,'.','.') : 0,
+            ];
+            $set_nilai_verifikasi[] = [
+                'No' => $i,
+                'Provinsi' => $sekolah->provinsi,
+                'Kabupaten/Kota' => $sekolah->kabupaten,
+                'Nama Sekolah' => $sekolah->nama,
+                'NPSN' => $sekolah->npsn,
+                'Nilai Input' => ($sekolah->nilai_input_verifikasi) ? $sekolah->nilai_input_verifikasi->total_nilai : '-',
+                'Nilai Proses' => ($sekolah->nilai_proses_verifikasi) ? $sekolah->nilai_proses_verifikasi->total_nilai : '-',
+                'Nilai Output' => ($sekolah->nilai_output_verifikasi) ? $sekolah->nilai_output_verifikasi->total_nilai : '-',
+                'Rerata' => ($sekolah->nilai_kinerja_verifikasi) ? number_format($sekolah->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0,
+                'Nilai Terendah' => $terendah_verifikasi,
+                'Nilai Tertinggi' => $tertinggi_verifikasi,
+                'Nilai Outcome' => ($sekolah->nilai_outcome_verifikasi) ? $sekolah->nilai_outcome_verifikasi->total_nilai : '-',
+                'Nilai Impact' => ($sekolah->nilai_impact_verifikasi) ? $sekolah->nilai_impact_verifikasi->total_nilai : '-',
+                'Rerata' => ($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0,
+                'Nilai Rapor' => ($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0,
+                'Predikat' => ($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->predikat : 0,
+                'Afirmasi' => $afirmasi,
+                'Nilai Sekolah >< Nilai Verifikasi' => $status,
+            ];
+            $i++;
+        }
+        $sheets = new SheetCollection([
+            'Nilai Sekolah' => $set_nilai_sekolah,
+            'Nilai Verifikasi' => $set_nilai_verifikasi,
+        ]);
+        return (new FastExcel($sheets))->download('Rekapitulasi Rapor Mutu SMK CoE Tahun 2020.xlsx');
         /*foreach ($all_sekolah as $sekolah){
             $rekap[] = [
                 'NO' => $i++,
