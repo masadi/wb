@@ -184,7 +184,7 @@
                                     });
                                     $keyed_dampak_verifikasi = $nilai_dampak_verifikasi->keyBy('nilai')->toArray();
                                 }
-                                $terendah_dampak_verifikasi = ($keyed_dampak_verifikasi) ? ($keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]) ? $keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
+                                $terendah_dampak_verifikasi = ($keyed_dampak_verifikasi) ? ($keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->min('total_nilai')]) ? $keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->min('total_nilai')]['nama'] : '-' : '-';
                                 $tertinggi_kinerja_verifikasi = ($keyed_dampak_verifikasi) ? ($keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]) ? $keyed_dampak_verifikasi[$sekolah->nilai_dampak_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
                                 ?>
                                 {{$terendah_dampak_verifikasi}}
