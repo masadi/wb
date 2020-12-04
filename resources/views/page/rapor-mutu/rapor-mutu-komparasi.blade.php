@@ -50,7 +50,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="komparasi">
                     <thead>
                         <tr>
                             <th rowspan="3" class="text-center" style="vertical-align: middle;">NO</th>
@@ -81,19 +81,121 @@
                             <th class="text-center">OUTCOME</th>
                             <th class="text-center">IMPACT</th>
                             <th class="text-center">RERATA</th>
-                            <th class="text-center">INPUT</th>
-                            <th class="text-center">PROSES</th>
-                            <th class="text-center">OUTPUT</th>
-                            <th class="text-center">RERATA</th>
-                            <th class="text-center">NILAI TERENDAH</th>
-                            <th class="text-center">NILAI TERTINGGI</th>
-                            <th class="text-center">OUTCOME</th>
-                            <th class="text-center">IMPACT</th>
-                            <th class="text-center">RERATA</th>
+                            <th class="text-center">INPUT2</th>
+                            <th class="text-center">PROSES2</th>
+                            <th class="text-center">OUTPUT2</th>
+                            <th class="text-center">RERATA2</th>
+                            <th class="text-center">NILAI TERENDAH2</th>
+                            <th class="text-center">NILAI TERTINGGI2</th>
+                            <th class="text-center">OUTCOME2</th>
+                            <th class="text-center">IMPACT2</th>
+                            <th class="text-center">RERATA2</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($all_sekolah as $sekolah)
                         <tr>
+                            <td class="text-center">{{$loop->iteration + $all_sekolah->firstItem() - 1}}</td>
+                            <td class="text-center">{{$sekolah->nama}}</td>
+                            <td class="text-center">{{$sekolah->npsn}}</td>
+                            <td class="text-center">{{($sekolah->nilai_input) ? $sekolah->nilai_input->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_proses) ? $sekolah->nilai_proses->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_output) ? $sekolah->nilai_output->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_kinerja) ? number_format($sekolah->nilai_kinerja->avg('total_nilai'),2,'.','.') : 0}}</td>
+                            <td class="text-center">
+                                <?php
+                                $keyed_terendah_sekolah = [];
+                                if($sekolah->nilai_kinerja){
+                                    $nilai_terendah = $sekolah->nilai_kinerja->map(function ($name) {
+                                        $return['nilai'] = $name->total_nilai;
+                                        $return['nama'] = $name->komponen->nama;
+                                        return $return;
+                                    });
+                                    $keyed_terendah_sekolah = $nilai_terendah->keyBy('nilai')->toArray();
+                                }
+                                $terendah_sekolah = ($keyed_terendah_sekolah) ? ($keyed_terendah_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]) ? $keyed_terendah_sekolah[$sekolah->nilai_kinerja->min('total_nilai')]['nama'] : '-' : '-';
+                                ?>
+                                {{$terendah_sekolah}}
+                            </td>
+                            <td class="text-center">
+                                <?php
+                                $keyed_tertinggi_sekolah = [];
+                                if($sekolah->nilai_kinerja){
+                                    $nilai_tertinggi = $sekolah->nilai_kinerja->map(function ($name) {
+                                        $return['nilai'] = $name->total_nilai;
+                                        $return['nama'] = $name->komponen->nama;
+                                        return $return;
+                                    });
+                                    $keyed_tertinggi_sekolah = $nilai_tertinggi->keyBy('nilai')->toArray();
+                                }
+                                $tertinggi_sekolah = ($keyed_tertinggi_sekolah) ? ($keyed_tertinggi_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]) ? $keyed_tertinggi_sekolah[$sekolah->nilai_kinerja->max('total_nilai')]['nama'] : '-' : '-';
+                                ?>
+                                {{$tertinggi_sekolah}}
+                            </td>
+                            <td class="text-center">{{($sekolah->nilai_outcome) ? $sekolah->nilai_outcome->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_impact) ? $sekolah->nilai_impact->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_dampak) ? number_format($sekolah->nilai_dampak->avg('total_nilai'),2,'.','.') : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_input_verifikasi) ? $sekolah->nilai_input_verifikasi->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_proses_verifikasi) ? $sekolah->nilai_proses_verifikasi->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_output_verifikasi) ? $sekolah->nilai_output_verifikasi->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_kinerja_verifikasi) ? number_format($sekolah->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0}}</td>
+                            <td class="text-center">
+                                <?php
+                                $keyed_terendah_verifikasi = [];
+                                if($sekolah->nilai_kinerja_verifikasi){
+                                    $nilai_terendah_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
+                                        $return['nilai'] = $name->total_nilai;
+                                        $return['nama'] = $name->komponen->nama;
+                                        return $return;
+                                    });
+                                    $keyed_terendah_verifikasi = $nilai_terendah_verifikasi->keyBy('nilai')->toArray();
+                                }
+                                $terendah_verifikasi = ($keyed_terendah_verifikasi) ? ($keyed_terendah_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]) ? $keyed_terendah_verifikasi[$sekolah->nilai_kinerja_verifikasi->min('total_nilai')]['nama'] : '-' : '-';
+                                ?>
+                                {{$terendah_verifikasi}}
+                            </td>
+                            <td class="text-center">
+                                <?php
+                                $keyed_tertinggi_verifikasi = [];
+                                if($sekolah->nilai_kinerja_verifikasi){
+                                    $nilai_tertinggi_verifikasi = $sekolah->nilai_kinerja_verifikasi->map(function ($name) {
+                                        $return['nilai'] = $name->total_nilai;
+                                        $return['nama'] = $name->komponen->nama;
+                                        return $return;
+                                    });
+                                    $keyed_tertinggi_verifikasi = $nilai_tertinggi_verifikasi->keyBy('nilai')->toArray();
+                                }
+                                $tertinggi_verifikasi = ($keyed_tertinggi_verifikasi) ? ($keyed_tertinggi_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]) ? $keyed_tertinggi_verifikasi[$sekolah->nilai_kinerja_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
+                                ?>
+                                {{$tertinggi_verifikasi}}
+                            </td>
+                            <td class="text-center">{{($sekolah->nilai_outcome_verifikasi) ? $sekolah->nilai_outcome_verifikasi->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_impact_verifikasi) ? $sekolah->nilai_impact_verifikasi->total_nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_dampak_verifikasi) ? number_format($sekolah->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0}}</td>
+                            <td class="text-center">{{($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->predikat : 0}}</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center">
+                                <?php
+                                $nilai_sekolah = ($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : 0;
+                                $nilai_verifikasi = ($sekolah->nilai_akhir_verifikasi) ? $sekolah->nilai_akhir_verifikasi->nilai : 0;
+                                ?>
+                                {{--
+                                    =IF(W6=L6;"Rapor Mutu Sekolah = Rapor Mutu Verifikasi";IF(L6<W6;"Rapor Mutu Sekolah < Rapor Mutu Verifikasi";"Rapor Mutu Sekolah > Rapor Mutu Verifikasi"))
+                                --}}
+                                @if($nilai_sekolah == $nilai_verifikasi)
+                                Rapor Mutu Sekolah = Rapor Mutu Verifikasi
+                                @elseif($nilai_sekolah < $nilai_verifikasi)
+                                Rapor Mutu Sekolah &lt; Rapor Mutu Verifikasi
+                                @elseif($nilai_sekolah > $nilai_verifikasi)
+                                Rapor Mutu Sekolah &gt; Rapor Mutu Verifikasi
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        <!--tr>
                             <td class="text-center">1</td>
                             <td>Sekolah Contoh</td>
                             <td>12345678</td>
@@ -121,9 +223,10 @@
                             <td class="text-center">22</td>
                             <td class="text-center">23</td>
                             <td class="text-center">24</td>
-                        </tr>
+                        </tr-->
                     </tbody>
                 </table>
+                {{$all_sekolah->links()}}
             </div>
         </div>
     </div>
@@ -285,10 +388,18 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://www.chartjs.org/dist/2.9.4/Chart.min.js"></script>
 <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="//cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 <!-- Resources -->
 <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
 <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+@endsection
+@section('css')
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 @section('js')
 <!-- Styles -->
@@ -300,6 +411,86 @@
 </style>
 <script>
 $('.select2').select2();
+/*var oTable = $('#komparasi').DataTable( {
+    retrieve: true,
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url: '{{ route('api.rapor_mutu.komparasi') }}',
+        data: function(d){
+            var provinsi_id = $('#provinsi_id').val();
+            var kabupaten_id = $('#kabupaten_id').val();
+            var sekolah_id = $('#sekolah_id').val();
+            if(provinsi_id){
+                d.provinsi_id = provinsi_id;
+            }
+            if(kabupaten_id){
+                    d.kabupaten_id = kabupaten_id;
+            }
+            if(sekolah_id){
+                d.sekolah_id = sekolah_id;
+            }
+        },
+    },
+    responsive: true,
+    columns: [
+        { data: 'DT_RowIndex', className: 'text-center', orderable: false, searchable: false },
+        {data: 'nama', name: 'nama', orderable: false},
+        {data: 'npsn', name: 'npsn', orderable: false, className: 'text-center'},
+        {data: 'nilai_input', name: 'nilai_input', orderable: false, className: 'text-center'},
+        {data: 'nilai_proses', name: 'nilai_proses', orderable: false, className: 'text-center'},
+        {data: 'nilai_output', name: 'nilai_output', orderable: false, className: 'text-center'},
+        {data: 'nilai_kinerja', name: 'nilai_kinerja', orderable: false, className: 'text-center'},
+        {data: 'terendah', name: 'terendah', orderable: false, className: 'text-center'},
+        {data: 'tertinggi', name: 'tertinggi', orderable: false, className: 'text-center'},
+        //{data: 'afirmasi', name: 'afirmasi', orderable: false, className: 'text-center'},
+        {data: 'nilai_outcome', name: 'nilai_outcome', orderable: false, className: 'text-center'},
+        {data: 'nilai_impact', name: 'nilai_impact', orderable: false, className: 'text-center'},
+        {data: 'nilai_dampak', name: 'nilai_dampak', orderable: false, className: 'text-center'},
+        {data: 'nilai_akhir', name: 'nilai_akhir', orderable: false, className: 'text-center'},
+        {data: 'predikat', name: 'predikat', orderable: false, className: 'text-center'},
+        {data: 'nilai_input_verifikasi', name: 'nilai_input_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'nilai_proses_verifikasi', name: 'nilai_proses_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'nilai_output_verifikasi', name: 'nilai_output_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'terendah_verifikasi', name: 'terendah_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'tertinggi_verifikasi', name: 'tertinggi_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'nilai_outcome_verifikasi', name: 'nilai_outcome_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'nilai_impact_verifikasi', name: 'nilai_impact_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'nilai_akhir_verifikasi', name: 'nilai_akhir_verifikasi', orderable: false, className: 'text-center'},
+        {data: 'satu', name: 'satu', orderable: false, className: 'text-center'},
+        {data: 'dua', name: 'dua', orderable: false, className: 'text-center'},
+        {data: 'tiga', name: 'tiga', orderable: false, className: 'text-center'},
+        {data: 'tiga', name: 'tiga', orderable: false, className: 'text-center'},
+        {data: 'tiga', name: 'tiga', orderable: false, className: 'text-center'},
+        //{data: 'nilai_impact_verifikasi', name: 'nilai_impact_verifikasi', orderable: false, className: 'text-center'},
+        //{data: 'nilai_impact_verifikasi', name: 'nilai_impact_verifikasi', orderable: false, className: 'text-center'},
+    ],
+    language: {
+        "decimal":        "",
+        "emptyTable":     "Tidak ada data untuk ditampilkan",
+        "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+        "infoEmpty":      "Menampilkan 0 sampai 0 dari 0 data",
+        "infoFiltered":   "(difilter dari _MAX_ total data)",
+        "infoPostFix":    "",
+        "thousands":      ",",
+        "lengthMenu":     "Menampilkan _MENU_ data",
+        "loadingRecords": "Loading...",
+        "processing":     "Memperoses data...",
+        "search":         "Cari:",
+        "zeroRecords":    "Tidak ada data yang sesuai dengan pencarian",
+        "paginate": {
+            "first":      "First",
+            "last":       "Last",
+            "next":       "Berikutnya",
+            "previous":   "Sebelumnya"
+        },
+        "aria": {
+            "sortAscending":  ": activate to sort column ascending",
+            "sortDescending": ": activate to sort column descending"
+        }
+    }
+});
+*/
 $('#provinsi_id').change(function(){
     $('#rekap_coe').show();
     $('#rekap_sekolah').hide();

@@ -65,6 +65,7 @@ Route::group(['prefix' => 'rapor-mutu'], function(){
     Route::post('/batal-pakta', 'RaporController@batal_pakta');
     Route::post('/kirim', 'RaporController@kirim');
     Route::post('/sekolah', 'RaporController@sekolah')->name('api.rapor_sekolah');
+    Route::get('/komparasi', 'RaporController@komparasi')->name('api.rapor_mutu.komparasi');
 });
 Route::group(['prefix' => 'validasi'], function(){
     Route::get('/', 'ValidasiController@index');

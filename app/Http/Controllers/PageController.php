@@ -135,11 +135,62 @@ class PageController extends Controller
         })->where(function($query){
             $query->where('id_level_wilayah', 1);
         })->orderBy('kode_wilayah')->get();
+        $all_sekolah = Sekolah::query()->has('sekolah_sasaran')->with(['nilai_input' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_proses' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_output' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_outcome' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_impact' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_input_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_proses_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_output_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_outcome_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_impact_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_kinerja' => function($query){
+            $query->whereNull('verifikator_id');
+            $query->with('komponen');
+        }, 'nilai_kinerja_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            $query->with('komponen');
+        }, 'nilai_dampak' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_dampak_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_akhir' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_akhir_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }]/*)->where(function($query){
+            if(request()->kode_wilayah){
+                $query->whereIn('kode_wilayah', function($query){
+                    $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kode_wilayah."'");
+                });
+            }
+        }*/)->orderBy('provinsi_id')->orderBy('kabupaten_id')->paginate(10);
+        //dd($all_sekolah);
         $params = [
             'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
             'komponen_kinerja' => Komponen::whereIn('id', [1,2,3])->get(),
             'komponen_dampak' => Komponen::whereIn('id', [4,5])->get(),
             'all_wilayah' => $all_wilayah,
+            'all_sekolah' => $all_sekolah,
         ];
         return view('page.rapor-mutu.'.$query)->with($params);
     }

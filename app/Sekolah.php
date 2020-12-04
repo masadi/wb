@@ -94,6 +94,9 @@ class Sekolah extends Model
             'user_id' // Local key on User table...
         )->whereIn('komponen_id', [1,2,3]);
     }
+    public function nilai_kinerja_verifikasi(){
+        return $this->nilai_kinerja();
+    }
     public function nilai_dampak()
     {
         return $this->hasManyThrough(
@@ -104,6 +107,9 @@ class Sekolah extends Model
             'sekolah_id', // Local key on Sekolah table...
             'user_id' // Local key on User table...
         )->whereIn('komponen_id', [4,5]);
+    }
+    public function nilai_dampak_verifikasi(){
+        return $this->nilai_dampak();
     }
     public function pendamping()
     {
@@ -196,5 +202,8 @@ class Sekolah extends Model
             'sekolah_id', // Local key on Sekolah table...
             'user_id' // Local key on User table...
         );
+    }
+    public function nilai_akhir_verifikasi(){
+        return $this->nilai_akhir();
     }
 }

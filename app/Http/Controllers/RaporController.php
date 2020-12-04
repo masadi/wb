@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Yajra\DataTables\Facades\DataTables;
 use App\Sekolah;
 use App\User;
 use App\Komponen;
@@ -357,5 +358,210 @@ class RaporController extends Controller
         }
         
         return response()->json($respone);
+    }
+    public function komparasi(Request $request){
+        $query = Sekolah::query()->has('sekolah_sasaran')->with(['nilai_input' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_proses' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_output' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_outcome' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_impact' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_input_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_proses_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_output_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_outcome_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_impact_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_kinerja' => function($query){
+            $query->whereNull('verifikator_id');
+            $query->with('komponen');
+        }, 'nilai_kinerja_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            $query->with('komponen');
+        }, 'nilai_dampak' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_dampak_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }, 'nilai_akhir' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_akhir_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        }]/*)->where(function($query){
+            if(request()->kode_wilayah){
+                $query->whereIn('kode_wilayah', function($query){
+                    $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->kode_wilayah."'");
+                });
+            }
+        }*/)->orderBy('provinsi_id')->orderBy('kabupaten_id');
+        return DataTables::eloquent($query)
+        ->addIndexColumn()
+        ->filter(function ($query) {
+            if (request()->has('provinsi_id')) {
+                /*$query->whereIn('kode_wilayah', function($query){
+                    $query->select('kode_wilayah')->from('wilayah')->whereRaw("trim(mst_kode_wilayah) = '". request()->provinsi_id."'");
+                });*/
+                $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
+            }
+            if (request()->has('kabupaten_id')) {
+                $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
+            }
+            if (request()->has('sekolah_id')) {
+                $query->where('sekolah_id', request('sekolah_id'));
+            }
+        }, true)
+        ->addColumn('nilai_input', function ($item) {
+            $links = ($item->nilai_input) ? $item->nilai_input->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_proses', function ($item) {
+            $links = ($item->nilai_proses) ? $item->nilai_proses->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_output', function ($item) {
+            $links = ($item->nilai_output) ? $item->nilai_output->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_kinerja', function ($item) {
+            $links = ($item->nilai_kinerja) ? number_format($item->nilai_kinerja->avg('total_nilai'),2,'.','.') : 0;
+            return $links;
+        })
+        ->addColumn('nilai_kinerja_verifikasi', function ($item) {
+            $links = ($item->nilai_kinerja_verifikasi) ? number_format($item->nilai_kinerja_verifikasi->avg('total_nilai'),2,'.','.') : 0;
+            return $links;
+        })
+        ->addColumn('terendah', function ($item) {
+            $keyed = [];
+            if($item->nilai_kinerja){
+                $nilai_terendah = $item->nilai_kinerja->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed = $nilai_terendah->keyBy('nilai')->toArray();
+            }
+            $links = ($keyed) ? ($keyed[$item->nilai_kinerja->min('total_nilai')]) ? $keyed[$item->nilai_kinerja->min('total_nilai')]['nama'] : '-' : '-';
+            return $links;
+        })
+        ->addColumn('tertinggi', function ($item) {
+            $keyed = [];
+            if($item->nilai_kinerja){
+                $nilai_terendah = $item->nilai_kinerja->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed = $nilai_terendah->keyBy('nilai')->toArray();
+            }
+            $links = ($keyed) ? ($keyed[$item->nilai_kinerja->max('total_nilai')]) ? $keyed[$item->nilai_kinerja->max('total_nilai')]['nama'] : '-' : '-';
+            return $links;
+        })
+        ->addColumn('afirmasi', function ($item) {
+            $links = '-';
+            return $links;
+        })
+        ->addColumn('nilai_outcome', function ($item) {
+            $links = ($item->nilai_outcome) ? $item->nilai_outcome->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_impact', function ($item) {
+            $links = ($item->nilai_impact) ? $item->nilai_impact->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_dampak', function ($item) {
+            $links = ($item->nilai_dampak) ? number_format($item->nilai_dampak->avg('total_nilai'),2,'.','.') : 0;
+            return $links;
+        })
+        ->addColumn('nilai_dampak_verifikasi', function ($item) {
+            $links = ($item->nilai_dampak_verifikasi) ? number_format($item->nilai_dampak_verifikasi->avg('total_nilai'),2,'.','.') : 0;
+            return $links;
+        })
+        ->addColumn('nilai_akhir', function ($item) {
+            $links = ($item->nilai_akhir) ? $item->nilai_akhir->nilai : 0;
+            return $links;
+        })
+        ->addColumn('predikat', function ($item) {
+            $links = ($item->nilai_akhir) ? $item->nilai_akhir->predikat : 0;
+            return $links;
+        })
+        ->addColumn('nilai_input_verifikasi', function ($item) {
+            $links = ($item->nilai_input_verifikasi) ? $item->nilai_input_verifikasi->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_proses_verifikasi', function ($item) {
+            $links = ($item->nilai_proses_verifikasi) ? $item->nilai_proses_verifikasi->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_output_verifikasi', function ($item) {
+            $links = ($item->nilai_output_verifikasi) ? $item->nilai_output_verifikasi->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('terendah_verifikasi', function ($item) {
+            $keyed = [];
+            if($item->nilai_kinerja_verifikasi){
+                $nilai_terendah_verifikasi = $item->nilai_kinerja_verifikasi->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed = $nilai_terendah_verifikasi->keyBy('nilai')->toArray();
+            }
+            $links = ($keyed) ? ($keyed[$item->nilai_kinerja_verifikasi->min('total_nilai')]) ? $keyed[$item->nilai_kinerja_verifikasi->min('total_nilai')]['nama'] : '-' : '-';
+            return $links;
+        })
+        ->addColumn('tertinggi_verifikasi', function ($item) {
+            $keyed = [];
+            if($item->nilai_kinerja_verifikasi){
+                $nilai_tertinggi_verifikasi = $item->nilai_kinerja_verifikasi->map(function ($name) {
+                    $return['nilai'] = $name->total_nilai;
+                    $return['nama'] = $name->komponen->nama;
+                    return $return;
+                });
+                $keyed = $nilai_tertinggi_verifikasi->keyBy('nilai')->toArray();
+            }
+            $links = ($keyed) ? ($keyed[$item->nilai_kinerja_verifikasi->max('total_nilai')]) ? $keyed[$item->nilai_kinerja_verifikasi->max('total_nilai')]['nama'] : '-' : '-';
+            return $links;
+        })
+        ->addColumn('nilai_outcome_verifikasi', function ($item) {
+            $links = ($item->nilai_outcome_verifikasi) ? $item->nilai_outcome_verifikasi->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_impact_verifikasi', function ($item) {
+            $links = ($item->nilai_impact_verifikasi) ? $item->nilai_impact_verifikasi->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('nilai_akhir_verifikasi', function ($item) {
+            $links = ($item->nilai_akhir_verifikasi) ? $item->nilai_akhir_verifikasi->total_nilai : 0;
+            return $links;
+        })
+        ->addColumn('satu', function ($item) {
+            $links = 'satu';
+            return $links;
+        })
+        ->addColumn('dua', function ($item) {
+            $links = 'dua';
+            return $links;
+        })
+        ->addColumn('tiga', function ($item) {
+            $links = 'tiga';
+            return $links;
+        })
+        ->rawColumns(['nama', 'npsn', 'nilai_input', 'nilai_proses', 'nilai_output', 'nilai_kinerja', 'terendah', 'tertinggi', 'afirmasi', 'nilai_outcome', 'nilai_impact', 'nilai_dampak', 'nilai_akhir', 'predikat', 'nilai_input_verifikasi', 'nilai_proses_verifikasi', 'nilai_output_verifikasi', 'terendah_verifikasi', 'tertinggi_verifikasi', 'nilai_outcome_verifikasi', 'nilai_impact_verifikasi', 'nilai_akhir_verifikasi'])
+        ->make(true);
     }
 }
