@@ -51,6 +51,7 @@ export default {
             user: user,
             fields: [
                 {key: 'sekolah_sasaran_id', 'label': 'Nama Sekolah', sortable: true},
+                {key: 'npsn', 'label': 'NPSN', sortable: true},
                 {key: 'verifikator_id', 'label': 'Nama Verifikator', sortable: true},
                 {key: 'tanggal_pelaksanaan', 'label': 'Tanggal Pelaksanaan', sortable: true},
                 {key: 'created_at', 'label': 'Tanggal Pelaporan', sortable: true},

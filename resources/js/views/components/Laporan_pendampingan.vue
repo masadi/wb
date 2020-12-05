@@ -33,6 +33,9 @@
       <template v-slot:cell(sekolah_sasaran_id)="row">
         {{ row.item.sekolah.nama }}
       </template>
+      <template v-slot:cell(npsn)="row">
+        {{ row.item.sekolah.npsn }}
+      </template>
       <template v-slot:cell(pendamping_id)="row">
         {{ row.item.pendamping.nama }}
       </template>

@@ -371,7 +371,20 @@ class LaporanController extends Controller
             } else {
                 $query->where('jenis_laporan_id', 1);
             }
-        })->orderBy(request()->sortby, request()->sortbydesc)
+        })->orderBy(function($query){
+            if(request()->sortby == 'npsn'){
+                $query->select('sekolah_id')
+                ->from('sekolah_sasaran')
+                ->whereColumn('sekolah_sasaran_id', 'laporan.sekolah_sasaran_id')
+                ->orderBy('sekolah_sasaran_id', request()->sortbydesc)
+                ->limit(1);
+            } else {
+                $query->select('laporan_id')
+                ->from('laporan')
+                ->orderBy(request()->sortby, request()->sortbydesc)
+                ->limit(1);
+            }
+        }, request()->sortbydesc)
             //->when(request()->q, function($all_data) {
                 //$all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
             ->when(request()->q, function($posts) {
