@@ -198,6 +198,30 @@ $user = auth()->user();
                     </ul>
                 </li>
                 @endif
+                @if($user->isAbleTo('referensi-update'))
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="javascript:{}">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>Laporan
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link tag="a" to="/laporan-pendampingan" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Pendampingan</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/laporan-verifikasi" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Verifikasi</p>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                @endif
                 <li class="nav-item">
                     <router-link tag="a" to="/profil" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>

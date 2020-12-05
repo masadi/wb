@@ -117,6 +117,16 @@ let routes = [{
         component: require('./views/pengesahan/pengesahan').default
     },
     {
+        path: '/laporan-pendampingan',
+        name: 'laporan_pendampingan',
+        component: require('./views/laporan/pendampingan').default
+    },
+    {
+        path: '/laporan-verifikasi',
+        name: 'laporan_verifikasi',
+        component: require('./views/laporan/verifikasi').default
+    },
+    {
         path: '/profil',
         name: 'profil',
         component: require('./views/profile').default

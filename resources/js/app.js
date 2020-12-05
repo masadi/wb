@@ -52,14 +52,14 @@ import Paginator from './utilities/Paginator';
 Vue.component('paginator', Paginator);
 import vSelect from 'vue-select'
 Vue.component('v-select', vSelect)
-    //import { VclFacebook, VclInstagram } from 'vue-content-loading';
-    //Vue.component('vcl-facebook', VclFacebook);
-    //Vue.component('vcl-instagram', VclInstagram);
+//import { VclFacebook, VclInstagram } from 'vue-content-loading';
+//Vue.component('vcl-facebook', VclFacebook);
+//Vue.component('vcl-instagram', VclInstagram);
 
 import { SpinnerPlugin } from 'bootstrap-vue'
 Vue.use(SpinnerPlugin)
 Vue.mixin({
-    data: function() {
+    data: function () {
         return {
             get detilUser() {
                 return user;
@@ -68,7 +68,7 @@ Vue.mixin({
         }
     },
     methods: {
-        hasRole: function(role) {
+        hasRole: function (role) {
             for (var i = 0; i < this.user.roles.length; i++) {
                 if (this.user.roles[i].name == role) {
                     return true
@@ -82,6 +82,13 @@ import loader from "vue-ui-preloader";
 Vue.use(loader);
 import myLoader from './utilities/Loader';
 Vue.component('my-loader', myLoader)
+import moment from 'moment'
+moment.locale('id');
+Vue.filter('formatDate', function (value) {
+    if (value) {
+        return moment(String(value)).format('LL')
+    }
+});
 new Vue({
     el: '#pmp_smk',
     router,
