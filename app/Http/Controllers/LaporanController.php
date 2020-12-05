@@ -409,9 +409,6 @@ class LaporanController extends Controller
                     ->orWhereHas('sekolah', function($query){
                         $query->where('npsn', 'LIKE', '%' . request()->q . '%');
                     })
-                    ->orWhereHas('pendamping', function($query){
-                        $query->where('nama', 'ILIKE', '%' . request()->q . '%');
-                    })
                     ->orWhereHas('verifikator', function($query){
                         $query->where('name', 'ILIKE', '%' . request()->q . '%');
                     });
@@ -466,9 +463,6 @@ class LaporanController extends Controller
                     })
                     ->orWhereHas('pendamping', function($query){
                         $query->where('nama', 'ILIKE', '%' . request()->q . '%');
-                    })
-                    ->orWhereHas('verifikator', function($query){
-                        $query->where('name', 'ILIKE', '%' . request()->q . '%');
                     });
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
