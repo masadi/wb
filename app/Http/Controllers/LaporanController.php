@@ -411,7 +411,7 @@ class LaporanController extends Controller
             ->when(request()->q, function($posts){
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
                 $posts = $posts->where(function($query){
-                        if(request()->permintaan == 'verifikasi'){
+                        if(request()->permintaan === 'verifikasi'){
                             $query->where('jenis_laporan_id', 1);
                         } else {
                             $query->where('jenis_laporan_id', 3);
