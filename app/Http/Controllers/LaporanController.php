@@ -386,6 +386,18 @@ class LaporanController extends Controller
                 ->whereColumn('sekolah_sasaran_id', 'laporan.sekolah_sasaran_id')
                 ->orderBy('sekolah.nama', request()->sortbydesc)
                 ->limit(1);
+            } elseif(request()->sortby == 'pendamping_id'){
+                $query->select('nama')
+                ->from('pendamping')
+                ->whereColumn('pendamping_id', 'laporan.pendamping_id')
+                ->orderBy('nama', request()->sortbydesc)
+                ->limit(1);
+            } elseif(request()->sortby == 'verifikator_id'){
+                $query->select('name')
+                ->from('users')
+                ->whereColumn('user_id', 'laporan.verifikator_id')
+                ->orderBy('name', request()->sortbydesc)
+                ->limit(1);
             } else {
                 $query->select('laporan_id')
                 ->from('laporan')
