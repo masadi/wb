@@ -364,9 +364,8 @@ class LaporanController extends Controller
         return (new FastExcel($sheets))->download('Rekapitulasi Rapor Mutu SMK CoE Tahun 2020.xlsx');
     }
     public function list_laporan(Request $request){
-        $permintaan = $request->route('query');
-        $all_data = Laporan::with(['sekolah', 'verifikator', 'pendamping'])->where(function($query) use ($permintaan){
-            if($permintaan == 'verifikasi'){
+        $all_data = Laporan::with(['sekolah', 'verifikator', 'pendamping'])->where(function($query){
+            if(request()->route()->getName() == 'verifikasi'){
                 $query->where('jenis_laporan_id', 3);
             } else {
                 $query->where('jenis_laporan_id', 1);
@@ -407,10 +406,10 @@ class LaporanController extends Controller
         }, request()->sortbydesc)
             //->when(request()->q, function($all_data) {
                 //$all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
-            ->when(request()->q, function($posts) {
+            ->when(request()->q, function($posts){
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
                 $posts = $posts->where(function($query){
-                        if($permintaan == 'verifikasi'){
+                        if(request()->route()->getName() == 'verifikasi'){
                             $query->where('jenis_laporan_id', 3);
                         } else {
                             $query->where('jenis_laporan_id', 1);
