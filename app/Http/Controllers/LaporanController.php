@@ -410,14 +410,14 @@ class LaporanController extends Controller
                 //$all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
             ->when(request()->q, function($posts){
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
-                /*$posts = $posts->where(function($query){
+                $posts = $posts->where(function($query){
                         if(request()->permintaan == 'verifikasi'){
                             $query->where('jenis_laporan_id', 1);
                         } else {
                             $query->where('jenis_laporan_id', 3);
                         }
-                    })*/
-                    $posts = $posts->whereHas('sekolah', function($query){
+                    })
+                    ->whereHas('sekolah', function($query){
                         $query->where('nama', 'ILIKE', '%' . request()->q . '%');
                     })
                     ->orWhereHas('sekolah', function($query){
