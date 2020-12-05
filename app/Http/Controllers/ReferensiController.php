@@ -454,6 +454,22 @@ class ReferensiController extends Controller
                     'icon' => 'error',
                 ];
             }
+        } elseif($request->permintaan == 'ganti'){
+            $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
+            $sekolah_sasaran->pendamping_id = $request->pendamping_id;
+            if($sekolah_sasaran->save()){
+                $response = [
+                    'title' => 'Berhasil',
+                    'text' => 'Pendamping berhasil diganti',
+                    'icon' => 'success',
+                ];
+            } else {
+                $response = [
+                    'title' => 'Gagal',
+                    'text' => 'Pendamping gagal diganti',
+                    'icon' => 'error',
+                ];
+            }
         } else {
             if($sekolah){
                 $sekolah->pendamping_id = NULL;
@@ -640,6 +656,14 @@ class ReferensiController extends Controller
         $data = [
             //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
             'verifikator' => User::whereRoleIs('penjamin_mutu')->pluck('name', 'user_id'),
+        ];
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    public function get_list_pendamping($request){
+        //$verifikator = User::whereRoleIs('penjamin_mutu')->select('name', 'token')->get();
+        $data = [
+            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'pendamping' => Pendamping::has('sekolah_sasaran')->pluck('nama', 'pendamping_id'),
         ];
         return response()->json(['status' => 'success', 'data' => $data]);
     }

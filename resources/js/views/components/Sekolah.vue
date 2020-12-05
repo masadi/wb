@@ -47,6 +47,7 @@
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="editVerifikator(row)"><i class="fas fa-exchange-alt"></i> Ganti Verifikator</b-dropdown-item>
+                <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="editPendamping(row)"><i class="fas fa-exchange-alt"></i> Ganti Pendamping</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="sektorCoe(row)"><i class="fas fa-sync-alt"></i> Sektor CoE</b-dropdown-item>
                 <b-dropdown-item v-show="!row.item.smk_coe" href="javascript:" @click="tetapkanCoe(row)"><i class="fas fa-check"></i> Tetapkan CoE</b-dropdown-item>
                 <b-dropdown-item v-show="row.item.smk_coe" href="javascript:" @click="batalkanCoe(row)"><i class="fas fa-times"></i> Batalkan CoE</b-dropdown-item>
@@ -519,6 +520,48 @@ export default {
                                 resolve()
                             } else {
                                 resolve('Verifikator_id tidak boleh kosong')
+                            }
+                        })
+                    }
+                })
+            })
+        },
+        editPendamping(row) {
+            axios.get(`/api/referensi/list-pendamping`, {
+                params: {
+                    sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
+                },
+            }).then((response) => {
+                let getData = response.data
+                //console.log(getData)
+                //return false;
+                Swal.fire({
+                    title: 'Pilih Pendamping',
+                    input: 'select',
+                    inputOptions: getData.data.pendamping,
+                    inputValue: (row.item.sekolah_sasaran.pendamping_id) ? row.item.sekolah_sasaran.pendamping_id : '',
+                    inputPlaceholder: 'Pilih Pendamping',
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                        return new Promise((resolve) => {
+                            if (value) {
+                                axios.post(`/api/referensi/sekolah-sasaran-pendamping`, {
+                                    sekolah_sasaran_id: row.item.sekolah_sasaran.sekolah_sasaran_id,
+                                    pendamping_id: value,
+                                    permintaan: 'ganti',
+                                }).then((response) => {
+                                    let getData = response.data
+                                    Swal.fire(
+                                        getData.title,
+                                        getData.text,
+                                        getData.icon
+                                    ).then(() => {
+                                        this.loadPerPage(10);
+                                    });
+                                })
+                                resolve()
+                            } else {
+                                resolve('Pendamping tidak boleh kosong')
                             }
                         })
                     }
