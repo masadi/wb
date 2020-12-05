@@ -109,8 +109,7 @@ Route::group(['prefix' => 'rekapitulasi'], function(){
     Route::post('/wilayah', 'RekapitulasiController@wilayah')->name('api.rekapitulasi.wilayah');
 });
 Route::group(['prefix' => 'laporan'], function(){
-    Route::get('/verifikasi', 'LaporanController@list_verifikasi')->name('api.laporan.verifikasi');
-    Route::get('/pendampingan', 'LaporanController@list_pendampingan')->name('api.laporan.pendampingan');
+    Route::get('/list-laporan', 'LaporanController@list_laporan')->name('api.laporan.list');
     Route::post('/validasi-token', 'LaporanController@validasi_token')->name('api.laporan.validasi_token');
     Route::post('/validasi-token-verifikator', 'LaporanController@validasi_token_verifikator')->name('api.laporan.validasi_token_verifikator');
     Route::post('/sekolah', 'LaporanController@get_sekolah')->name('api.laporan.sekolah');

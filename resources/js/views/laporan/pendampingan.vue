@@ -73,9 +73,10 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/laporan/pendampingan`, {
+            axios.get(`/api/laporan/list-laporan`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
+                    permintaan: 'pendampingan',
                     user_id: user.user_id,
                     page: current_page,
                     per_page: this.per_page,
