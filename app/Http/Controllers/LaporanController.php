@@ -365,7 +365,9 @@ class LaporanController extends Controller
     }
     public function list_laporan(Request $request){
         $all_data = Laporan::with(['sekolah', 'verifikator', 'pendamping'])->where(function($query){
-            if(request()->route('query') == 'verifikasi'){
+            //dd(request()->permintaan);
+            if(request()->permintaan === 'verifikasi'){
+                //dd(request()->route('query'));
                 $query->where('jenis_laporan_id', 3);
             } else {
                 $query->where('jenis_laporan_id', 1);
@@ -408,14 +410,14 @@ class LaporanController extends Controller
                 //$all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
             ->when(request()->q, function($posts){
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
-                $posts = $posts->where(function($query){
-                        if(request()->route('query') == 'verifikasi'){
-                            $query->where('jenis_laporan_id', 3);
-                        } else {
+                /*$posts = $posts->where(function($query){
+                        if(request()->permintaan == 'verifikasi'){
                             $query->where('jenis_laporan_id', 1);
+                        } else {
+                            $query->where('jenis_laporan_id', 3);
                         }
-                    })
-                    ->whereHas('sekolah', function($query){
+                    })*/
+                    $posts = $posts->whereHas('sekolah', function($query){
                         $query->where('nama', 'ILIKE', '%' . request()->q . '%');
                     })
                     ->orWhereHas('sekolah', function($query){
