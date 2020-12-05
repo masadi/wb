@@ -363,16 +363,8 @@ class LaporanController extends Controller
         ]);
         return (new FastExcel($sheets))->download('Rekapitulasi Rapor Mutu SMK CoE Tahun 2020.xlsx');
     }
-    public function list_laporan(Request $request){
-        $all_data = Laporan::with(['sekolah', 'verifikator', 'pendamping'])->where(function($query){
-            //dd(request()->permintaan);
-            if(request()->permintaan === 'verifikasi'){
-                //dd(request()->route('query'));
-                $query->where('jenis_laporan_id', 3);
-            } else {
-                $query->where('jenis_laporan_id', 1);
-            }
-        })->orderBy(function($query){
+    public function list_verifikasi(Request $request){
+        $all_data = Laporan::with(['sekolah', 'verifikator', 'pendamping'])->where('jenis_laporan_id', 3)->orderBy(function($query){
             if(request()->sortby == 'npsn'){
                 $query->select('sekolah.npsn')
                 ->from('sekolah_sasaran')
@@ -410,14 +402,61 @@ class LaporanController extends Controller
                 //$all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
             ->when(request()->q, function($posts){
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
-                $posts = $posts->where(function($query){
-                        if(request()->permintaan === 'verifikasi'){
-                            $query->where('jenis_laporan_id', 1);
-                        } else {
-                            $query->where('jenis_laporan_id', 3);
-                        }
+                $posts = $posts->whereHas('sekolah', function($query){
+                        $query->where('nama', 'ILIKE', '%' . request()->q . '%');
                     })
-                    ->whereHas('sekolah', function($query){
+                    ->orWhereHas('sekolah', function($query){
+                        $query->where('npsn', 'LIKE', '%' . request()->q . '%');
+                    })
+                    ->orWhereHas('pendamping', function($query){
+                        $query->where('nama', 'ILIKE', '%' . request()->q . '%');
+                    })
+                    ->orWhereHas('verifikator', function($query){
+                        $query->where('name', 'ILIKE', '%' . request()->q . '%');
+                    });
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function list_pendampingan(Request $request){
+        $all_data = Laporan::with(['sekolah', 'verifikator', 'pendamping'])->where('jenis_laporan_id', 1)->orderBy(function($query){
+            if(request()->sortby == 'npsn'){
+                $query->select('sekolah.npsn')
+                ->from('sekolah_sasaran')
+                ->join('sekolah', 'sekolah.sekolah_id', '=', 'sekolah_sasaran.sekolah_id')
+                ->whereColumn('sekolah_sasaran_id', 'laporan.sekolah_sasaran_id')
+                ->orderBy('sekolah.npsn', request()->sortbydesc)
+                ->limit(1);
+            } elseif(request()->sortby == 'sekolah_sasaran_id'){
+                $query->select('sekolah.nama')
+                ->from('sekolah_sasaran')
+                ->join('sekolah', 'sekolah.sekolah_id', '=', 'sekolah_sasaran.sekolah_id')
+                ->whereColumn('sekolah_sasaran_id', 'laporan.sekolah_sasaran_id')
+                ->orderBy('sekolah.nama', request()->sortbydesc)
+                ->limit(1);
+            } elseif(request()->sortby == 'pendamping_id'){
+                $query->select('nama')
+                ->from('pendamping')
+                ->whereColumn('pendamping_id', 'laporan.pendamping_id')
+                ->orderBy('nama', request()->sortbydesc)
+                ->limit(1);
+            } elseif(request()->sortby == 'verifikator_id'){
+                $query->select('name')
+                ->from('users')
+                ->whereColumn('user_id', 'laporan.verifikator_id')
+                ->orderBy('name', request()->sortbydesc)
+                ->limit(1);
+            } else {
+                $query->select('laporan_id')
+                ->from('laporan')
+                ->orderBy(request()->sortby, request()->sortbydesc)
+                ->limit(1);
+            }
+        }, request()->sortbydesc)
+            //->when(request()->q, function($all_data) {
+                //$all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
+            ->when(request()->q, function($posts){
+                //MAKA FUNGSI FILTER AKAN DIJALANKAN
+                $posts = $posts->whereHas('sekolah', function($query){
                         $query->where('nama', 'ILIKE', '%' . request()->q . '%');
                     })
                     ->orWhereHas('sekolah', function($query){
