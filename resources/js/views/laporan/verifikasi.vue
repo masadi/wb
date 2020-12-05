@@ -53,7 +53,7 @@ export default {
                 {key: 'sekolah_sasaran_id', 'label': 'Nama Sekolah', sortable: true},
                 {key: 'verifikator_id', 'label': 'Nama Verifikator', sortable: true},
                 {key: 'tanggal_pelaksanaan', 'label': 'Tanggal Pelaksanaan', sortable: true},
-                {key: 'created_at', 'label': 'Tanggal Pelaporan', sortable: false},
+                {key: 'created_at', 'label': 'Tanggal Pelaporan', sortable: true},
                 {key: 'detil', 'label': 'Detil Laporan', sortable: false},
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
