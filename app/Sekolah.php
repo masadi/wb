@@ -220,4 +220,15 @@ class Sekolah extends Model
     public function nilai_komponen_verifikasi(){
         return $this->nilai_komponen();
     }
+    public function laporan()
+    {
+        return $this->hasOneThrough(
+            'App\Laporan',
+            'App\Sekolah_sasaran',
+            'sekolah_id', // Foreign key on User table...
+            'sekolah_sasaran_id', // Foreign key on Nilai_instrumen table...
+            'sekolah_id', // Local key on Sekolah table...
+            'sekolah_sasaran_id' // Local key on User table...
+        );
+    }
 }
