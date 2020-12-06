@@ -86,6 +86,12 @@ class UnduhanController extends Controller
         })->get();
         $no=1;
         foreach($sekolah_belum_verifikasi as $data_belum_verifikasi){
+            $nama_verifikator = '-';
+            if($data_belum_verifikasi->sekolah_sasaran->verifikator){
+                if($data_belum_verifikasi->sekolah_sasaran->verifikator_id != '84ff9f29-1bd0-462f-976f-4c512dc22cc2'){
+                    $nama_verifikator = $data_belum_verifikasi->sekolah_sasaran->verifikator->name;
+                }
+            }
             $belum_verifikasi[] = [
                 'No' => $no,
                 'Provinsi' => $data_belum_verifikasi->provinsi,
@@ -93,7 +99,7 @@ class UnduhanController extends Controller
                 'Nama Sekolah' => $data_belum_verifikasi->nama,
                 'NPSN' => $data_belum_verifikasi->npsn,
                 'Sektor CoE' => ($data_belum_verifikasi->sekolah_sasaran->sektor) ? $data_belum_verifikasi->sekolah_sasaran->sektor->nama : '-',
-                'Nama Verifikator' => ($data_belum_verifikasi->sekolah_sasaran->verifikator) ? $data_belum_verifikasi->sekolah_sasaran->verifikator->name : '-',
+                'Nama Verifikator' => $nama_verifikator, 
                 'Tanggal Pelaksanaan' => '-',
                 'Tanggal Pelaporan' => '-',
                 'Keterangan' => '',
