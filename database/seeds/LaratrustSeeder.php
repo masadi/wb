@@ -84,7 +84,17 @@ class LaratrustSeeder extends Seeder
                         'password' => bcrypt('3l3ktr4&cyber')
                     ]);
                     $user->attachRole($role);
-                } /*else {
+                } 
+                /*
+                */
+                /*
+                else {
+                    asdas
+                    asdas
+                    adsa
+                    d
+                    ini kode login
+
                 // Create default user for each role
                     $user = \App\User::create([
                         'name' => ucwords(str_replace('_', ' ', $key)),

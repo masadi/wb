@@ -530,7 +530,9 @@ class ReferensiController extends Controller
                     $query->where('sekolah_sasaran.sekolah_id', request()->sekolah_id);
                 });
             }
-        })->has('sekolah_sasaran')->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
+            $query->whereNotNull('token');
+        //})->has('sekolah_sasaran')->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
+        })->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
@@ -556,12 +558,14 @@ class ReferensiController extends Controller
                 'email.required'	=> 'Email tidak boleh kosong',
                 'email.email'	=> 'Email tidak valid',
                 'nomor_hp.required'	=> 'Nomor Handphone tidak boleh kosong',
+                'token.required' => 'Token tidak boleh kosong',
             ];
             $validator = Validator::make(request()->all(), [
                 'nama' => 'required',
                 'instansi' => 'required',
                 'email' => 'required|email',
                 'nomor_hp' => 'required',
+                'token' => 'required',
             ],
             $messages
             )->validate();
@@ -572,6 +576,7 @@ class ReferensiController extends Controller
                 'instansi' => $request->instansi,
                 'email' => $request->email,
                 'nomor_hp' => $request->nomor_hp,
+                'token' => strtolower($request->token),
             ]);
             return response()->json(['status' => 'success', 'data' => $pendamping]);
         } elseif($request->route('query') == 'verifikator'){

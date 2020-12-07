@@ -82,6 +82,12 @@
                             <input v-model="form.nomor_hp" type="text" name="nomor_hp" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_hp') }">
                             <has-error :form="form" field="nomor_hp"></has-error>
                         </div>
+                        <div class="form-group">
+                            <label>Token</label>
+                            <input v-model="form.token" type="text" name="token" class="form-control" :class="{ 'is-invalid': form.errors.has('token') }">
+                            <has-error :form="form" field="token"></has-error>
+                        </div>
+        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -110,6 +116,7 @@ export default {
                 instansi: '',
                 email: '',
                 nomor_hp: '',
+                token: '',
             }),
             fields: [{
                     key: 'nama',

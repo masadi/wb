@@ -123,6 +123,11 @@
             <input v-model="form.nomor_hp" type="text" name="nomor_hp" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_hp') }">
             <has-error :form="form" field="nomor_hp"></has-error>
         </div>
+        <div class="form-group">
+            <label>Token</label>
+            <input v-model="form.token" type="text" name="token" class="form-control" :class="{ 'is-invalid': form.errors.has('token') }">
+            <has-error :form="form" field="token"></has-error>
+        </div>
         <template v-slot:modal-footer>
             <div class="w-100 float-right">
                 <b-button variant="secondary" size="sm" @click="hideModal">
@@ -195,6 +200,7 @@ export default {
                 instansi: '',
                 email: '',
                 nomor_hp: '',
+                token: '',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -293,6 +299,7 @@ export default {
             this.form.instansi = row.item.instansi
             this.form.email = row.item.email
             this.form.nomor_hp = row.item.nomor_hp
+            this.form.token = row.item.token
             /*this.editmode = true
             this.editModal = true
 
