@@ -667,8 +667,8 @@ class ReferensiController extends Controller
     public function get_list_pendamping($request){
         //$verifikator = User::whereRoleIs('penjamin_mutu')->select('name', 'token')->get();
         $data = [
-            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'pendamping' => Pendamping::has('sekolah_sasaran')->pluck('nama', 'pendamping_id'),
+            //'sekolah_sasaran' => Pendamping::has('sekolah_sasaran')->pluck('nama', 'pendamping_id'),
+            'pendamping' => Pendamping::whereNotNull('token')->pluck('nama', 'pendamping_id'),
         ];
         return response()->json(['status' => 'success', 'data' => $data]);
     }
