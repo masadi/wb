@@ -49,9 +49,9 @@ class LaporanController extends Controller
         if($pendamping){
             $sekolah = Sekolah::whereHas('sekolah_sasaran', function($query) use ($pendamping){
                 $query->where('pendamping_id', $pendamping->pendamping_id);
-                $query->whereHas('pakta_integritas', function($query){
-                    $query->where('terkirim', 1);
-                });
+                //$query->whereHas('pakta_integritas', function($query){
+                    //$query->where('terkirim', 1);
+                //});
             })->get();
         }
         $token = $request->token;//str_repeat('*', strlen($request->token));
