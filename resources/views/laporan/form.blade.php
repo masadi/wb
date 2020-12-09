@@ -139,65 +139,81 @@
 @endif
 @if($jenis_laporan == 5)
 <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th class="text-center">No</th>
-            <th>Program</th>
-            <th>Kegiatan</th>
-            <th>Indikator Keberhasilan</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($laporan as $item)
-        <tr>
-            <td class="text-center" rowspan="2">{{$loop->iteration}}</td>
-            <td>{{$item->nama}}</td>
-            <td>{!! $item->kegiatan !!}</td>
-            <td>{{$item->indikator}}</td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Dokumen yang ditelaah</th>
-                            <th class="text-center">Ada</th>
-                            <th class="text-center">Tidak ada</th>
-                            <th class="text-center">Kendala</th>
-                            <th class="text-center">Solusi</th>
-                            <th class="text-center">Tindak Lanjut</th>
-                        </tr>
-                    <tbody>
-                        @foreach ($item->dokumen_program as $dokumen_program)
-                        <tr>
-                            <td>{{$dokumen_program->nama}}</td>
-                            @if($dokumen_program->nilai_afirmasi)
-                            <td class="text-center">
-                                <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]" id="{{$dokumen_program->id}}" value="1" {{($dokumen_program->nilai_afirmasi->ada)  ? 'checked' : ''}} required>
-                            </td>
-                            <td class="text-center">
-                                <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]" id="{{$dokumen_program->id}}" value="0" {{($dokumen_program->nilai_afirmasi->ada)  ? '' : 'checked'}} required>
-                            </td>
-                            @else
-                            <td class="text-center">
-                                <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]" id="{{$dokumen_program->id}}" value="1" required>
-                            </td>
-                            <td class="text-center">
-                                <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]" id="{{$dokumen_program->id}}" value="0" required>
-                            </td>
-                            @endif
-                            <td><input type="text" class="form-control form-control-sm" name="kendala[{{$dokumen_program->id}}]" value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->kendala : ''}}"></td>
-                            <td><input type="text" class="form-control form-control-sm" name="solusi[{{$dokumen_program->id}}]" value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->solusi : ''}}"></td>
-                            <td><input type="text" class="form-control form-control-sm" name="tindak_lanjut[{{$dokumen_program->id}}]" value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->tindak_lanjut : ''}}"></td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    </thead>
-                </table>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
+    @foreach($laporan as $item)
+    <tr>
+        <th class="text-center">No</th>
+        <th>Program</th>
+        <th>Kegiatan</th>
+        <th>Indikator Keberhasilan</th>
+    </tr>
+    <tr>
+        <td class="text-center" rowspan="2">{{$loop->iteration}}</td>
+        <td>{{$item->nama}}</td>
+        <td>{!! $item->kegiatan !!}</td>
+        <td>{{$item->indikator}}</td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Dokumen yang ditelaah</th>
+                        <th class="text-center">Ada</th>
+                        <th class="text-center">Tidak ada</th>
+                        <th class="text-center">Kendala</th>
+                        <th class="text-center">Solusi</th>
+                        <th class="text-center">Tindak Lanjut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($item->dokumen_program as $dokumen_program)
+                    <tr>
+                        <td {{($dokumen_program->poin) ? '' : 'colspan=6'}}>
+                            {{--$dokumen_program--}}
+                            {{$dokumen_program->nama}}
+                        </td>
+                        @if($dokumen_program->poin)
+                        @if($dokumen_program->nilai_afirmasi)
+                        <td class="text-center">
+                            <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]"
+                                id="{{$dokumen_program->id}}" value="1"
+                                {{($dokumen_program->nilai_afirmasi->ada)  ? 'checked' : ''}} required>
+                        </td>
+                        <td class="text-center">
+                            <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]"
+                                id="{{$dokumen_program->id}}" value="0"
+                                {{($dokumen_program->nilai_afirmasi->ada)  ? '' : 'checked'}} required>
+                        </td>
+                        @else
+                        <td class="text-center">
+                            <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]"
+                                id="{{$dokumen_program->id}}" value="1" required>
+                        </td>
+                        <td class="text-center">
+                            <input type="radio" class="{{$dokumen_program->id}}" name="ada[{{$dokumen_program->id}}]"
+                                id="{{$dokumen_program->id}}" value="0" required>
+                        </td>
+                        @endif
+                        <td><input type="text" class="form-control form-control-sm"
+                                name="kendala[{{$dokumen_program->id}}]"
+                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->kendala : ''}}">
+                        </td>
+                        <td><input type="text" class="form-control form-control-sm"
+                                name="solusi[{{$dokumen_program->id}}]"
+                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->solusi : ''}}">
+                        </td>
+                        <td><input type="text" class="form-control form-control-sm"
+                                name="tindak_lanjut[{{$dokumen_program->id}}]"
+                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->tindak_lanjut : ''}}">
+                        </td>
+                        @endif
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    @endforeach
 </table>
 @endif
 <script>
