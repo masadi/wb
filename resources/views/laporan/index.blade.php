@@ -17,6 +17,11 @@
                         </div>
                     </div>
                 </div>
+                @role('admin')
+                <input type="hidden" id="admin" value="1">
+                @else
+                <input type="hidden" id="admin" value="0">
+                @endrole
                 <div id="result"></div>
             </div>
         </div>
@@ -46,6 +51,7 @@ $('#token').click(function(e){
             type: 'post',
             data: {
                 token: token,
+                admin: $('#admin').val(),
             },
             success: function(response){
                 $('.token').val(response.token)
