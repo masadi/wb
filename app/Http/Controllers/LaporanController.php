@@ -12,6 +12,8 @@ use App\Laporan;
 use App\Berkas_laporan;
 use App\User;
 use App\Nilai_komponen;
+use App\Program;
+use App\Nilai_afirmasi;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Rap2hpoutre\FastExcel\SheetCollection;
 class LaporanController extends Controller
@@ -55,7 +57,7 @@ class LaporanController extends Controller
             })->get();
         }
         $token = $request->token;//str_repeat('*', strlen($request->token));
-        $jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
+        $jenis_laporan = Jenis_laporan::whereIn('id', [1, 5])->get();
         $formulir = 'pendamping';
         return response()->json([
             'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan', 'formulir'))->render(),
@@ -64,9 +66,23 @@ class LaporanController extends Controller
     }
     public function get_sekolah(Request $request){
         $sekolah = Sekolah::with('sekolah_sasaran')->find($request->sekolah_id);
+        $pendamping = NULL;
+        $jenis_laporan = NULL;
+        $laporan = NULL;
+        if(!$sekolah){
+            return response()->json([
+                'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan', 'laporan'))->render(),
+            ]);    
+        }
         if($request->pendamping_id){
             $pendamping = Pendamping::find($request->pendamping_id);
-            $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
+            if($request->jenis_laporan_id == 5){
+                $laporan = Program::with(['dokumen_program.nilai_afirmasi' => function($query) use ($sekolah){
+                    $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
+                }])->orderBy('id')->get();
+            } else {
+                $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
+            }
         } else {
             $pendamping = User::find($request->verifikator_id);
             $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('verifikator_id', $request->verifikator_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
@@ -96,29 +112,47 @@ class LaporanController extends Controller
         $pendamping->nomor_hp = $request->nomor_hp;
         $pendamping->save();
         $sekolah_sasaran = Sekolah_sasaran::where('sekolah_id', $request->sekolah_id)->first();
-        $laporan = Laporan::updateOrCreate(
-            [
-                'jenis_laporan_id' => $request->jenis_laporan_id,
-                $key => ($request->pendamping_id) ? $request->pendamping_id : $request->verifikator_id,
-                'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
-            ],
-            [
-                'jumlah_iduka' => $request->jumlah_iduka,
-                'lulusan' => $request->lulusan,
-                'lulusan_all' => $request->lulusan_all,
-                'perkembangan_smk' => $request->perkembangan_smk,
-                'kesimpulan_saran' => $request->kesimpulan_saran,
-                'tanggal_pelaksanaan' => date('Y-m-d', strtotime($request->tanggal_pelaksanaan)),
-                'pengisian' => $request->pengisian,
-                'kendala' => $request->kendala,
-                'kondisi' => $request->kondisi,
-            ]
-        );
-        if($request->berkas){
-            foreach($request->berkas as $berkas){
-                Berkas_laporan::create(
-                    ['laporan_id' => $laporan->laporan_id,'file_path' => $berkas]
+        if($request->jenis_laporan_id == 5){
+            foreach($request->ada as $key => $ada){
+                Nilai_afirmasi::updateOrCreate(
+                    [
+                        'pendamping_id' => $request->pendamping_id,
+                        'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
+                        'dokumen_program_id' => $key,
+                    ],
+                    [
+                        'ada' => $ada,
+                        'kendala' => $request->kendala[$key],
+                        'solusi' => $request->solusi[$key],
+                        'tindak_lanjut' => $request->tindak_lanjut[$key],
+                    ]
                 );
+            }
+        } else {
+            $laporan = Laporan::updateOrCreate(
+                [
+                    'jenis_laporan_id' => $request->jenis_laporan_id,
+                    $key => ($request->pendamping_id) ? $request->pendamping_id : $request->verifikator_id,
+                    'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
+                ],
+                [
+                    'jumlah_iduka' => $request->jumlah_iduka,
+                    'lulusan' => $request->lulusan,
+                    'lulusan_all' => $request->lulusan_all,
+                    'perkembangan_smk' => $request->perkembangan_smk,
+                    'kesimpulan_saran' => $request->kesimpulan_saran,
+                    'tanggal_pelaksanaan' => date('Y-m-d', strtotime($request->tanggal_pelaksanaan)),
+                    'pengisian' => $request->pengisian,
+                    'kendala' => $request->kendala,
+                    'kondisi' => $request->kondisi,
+                ]
+            );
+            if($request->berkas){
+                foreach($request->berkas as $berkas){
+                    Berkas_laporan::create(
+                        ['laporan_id' => $laporan->laporan_id,'file_path' => $berkas]
+                    );
+                }
             }
         }
     }
