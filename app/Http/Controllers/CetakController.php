@@ -10,7 +10,7 @@ use App\Program;
 class CetakController extends Controller
 {
     public function monev($laporan_id){
-        dd($laporan_id);
+        //dd($laporan_id);
         $laporan = Laporan::with(['sekolah.pendamping'])->find($laporan_id);
         /*$nilai_afirmasi = Nilai_afirmasi::where(function($query) use ($laporan){
             $query->where('sekolah_sasaran_id', $laporan->sekolah_sasaran_id);
