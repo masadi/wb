@@ -104,7 +104,7 @@
     <p></p>
     <table class="table table-bordered">
         <tr>
-            <td width="50%">
+            <td width="50%" style="vertical-align: top;">
                 <strong>Hasil Monev</strong><br><br>
                 Perhitungan = jumlah dokumen yang ada (real) / total dokumen yang harus ada <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {{$nilai}} / 89 <br>
@@ -143,7 +143,7 @@
                     </tbody>
                 </table>
             </td>
-            <td width="50%">
+            <td width="50%" style="vertical-align: top;">
                 <strong>Catatan Hasil Monev</strong><br><br>
                 {{$laporan->catatan}}
             </td>
