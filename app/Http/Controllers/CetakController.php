@@ -30,7 +30,5 @@ class CetakController extends Controller
         ]);
         $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
         return $pdf->stream('Monev Hasil SMK CoE Tahun 2020.pdf');
-        dd($monev);
-        dd($laporan);
     }
 }

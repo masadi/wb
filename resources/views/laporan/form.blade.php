@@ -219,7 +219,7 @@
     @endforeach
 </table>
 <div class="form-group">
-    <label for="catatan_monev">Catatann Hasil Monev</label>
+    <label for="catatan_monev">Catatan Hasil Monev</label>
     <textarea name="catatan" id="catatan" class="form-control">{{($laporan) ? $laporan->catatan : ''}}</textarea>
 </div>
 @endif
