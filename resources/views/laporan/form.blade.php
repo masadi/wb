@@ -139,7 +139,7 @@
 @endif
 @if($jenis_laporan == 5)
 <table class="table table-bordered">
-    @foreach($laporan as $item)
+    @foreach($monev as $item)
     <tr>
         <th class="text-center">No</th>
         <th>Program</th>
@@ -194,17 +194,20 @@
                                 id="{{$dokumen_program->id}}" value="0" required>
                         </td>
                         @endif
-                        <td><input type="text" class="form-control form-control-sm"
+                        <td><!--input type="text" class="form-control form-control-sm"
                                 name="kendala[{{$dokumen_program->id}}]"
-                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->kendala : ''}}">
+                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->kendala : ''}}"-->
+                            <textarea name="kendala[{{$dokumen_program->id}}]" id="kendala[{{$dokumen_program->id}}]" class="form-control">{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->kendala : ''}}</textarea>
                         </td>
-                        <td><input type="text" class="form-control form-control-sm"
+                        <td><!--input type="text" class="form-control form-control-sm"
                                 name="solusi[{{$dokumen_program->id}}]"
-                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->solusi : ''}}">
+                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->solusi : ''}}"-->
+                            <textarea name="solusi[{{$dokumen_program->id}}]" id="solusi[{{$dokumen_program->id}}]" class="form-control">{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->solusi : ''}}</textarea>
                         </td>
-                        <td><input type="text" class="form-control form-control-sm"
+                        <td><!--input type="text" class="form-control form-control-sm"
                                 name="tindak_lanjut[{{$dokumen_program->id}}]"
-                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->tindak_lanjut : ''}}">
+                                value="{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->tindak_lanjut : ''}}"-->
+                            <textarea name="tindak_lanjut[{{$dokumen_program->id}}]" id="tindak_lanjut[{{$dokumen_program->id}}]" class="form-control">{{($dokumen_program->nilai_afirmasi)  ? $dokumen_program->nilai_afirmasi->tindak_lanjut : ''}}</textarea>
                         </td>
                         @endif
                     </tr>
@@ -215,6 +218,10 @@
     </tr>
     @endforeach
 </table>
+<div class="form-group">
+    <label for="catatan_monev">Catatann Hasil Monev</label>
+    <textarea name="catatan" id="catatan" class="form-control">{{($laporan) ? $laporan->catatan : ''}}</textarea>
+</div>
 @endif
 <script>
     $('.datepicker').datepicker();

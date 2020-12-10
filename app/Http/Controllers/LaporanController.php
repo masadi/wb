@@ -73,6 +73,7 @@ class LaporanController extends Controller
         $pendamping = NULL;
         $jenis_laporan = NULL;
         $laporan = NULL;
+        $monev = NULL;
         if(!$sekolah){
             return response()->json([
                 'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan', 'laporan'))->render(),
@@ -81,19 +82,18 @@ class LaporanController extends Controller
         if($request->pendamping_id){
             $pendamping = Pendamping::find($request->pendamping_id);
             if($request->jenis_laporan_id == 5){
-                $laporan = Program::with(['dokumen_program.nilai_afirmasi' => function($query) use ($sekolah){
+                $monev = Program::with(['dokumen_program.nilai_afirmasi' => function($query) use ($sekolah){
                     $query->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id);
                 }])->orderBy('id')->get();
-            } else {
-                $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
             }
+            $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('pendamping_id', $request->pendamping_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
         } else {
             $pendamping = User::find($request->verifikator_id);
             $laporan = Laporan::where('jenis_laporan_id', $request->jenis_laporan_id)->where('verifikator_id', $request->verifikator_id)->where('sekolah_sasaran_id', $sekolah->sekolah_sasaran->sekolah_sasaran_id)->first();
         }
         $jenis_laporan = $request->jenis_laporan_id;
         return response()->json([
-            'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan', 'laporan'))->render(),
+            'body' => view('laporan.form', compact('sekolah', 'pendamping', 'jenis_laporan', 'laporan', 'monev'))->render(),
         ]);
     }
     public function formulir(Request $request){
@@ -132,6 +132,17 @@ class LaporanController extends Controller
                     ]
                 );
             }
+            $laporan = Laporan::updateOrCreate(
+                [
+                    'jenis_laporan_id' => $request->jenis_laporan_id,
+                    'pendamping_id' => $request->pendamping_id,
+                    'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
+                ],
+                [
+                    'tanggal_pelaksanaan' => date('Y-m-d'),
+                    'catatan' => $request->catatan,
+                ]
+            );
         } else {
             $laporan = Laporan::updateOrCreate(
                 [
@@ -159,6 +170,7 @@ class LaporanController extends Controller
                 }
             }
         }
+        return response()->json(['laporan_id'=> $laporan->laporan_id, 'jenis_laporan_id' => $request->jenis_laporan_id]);
     }
     public function upload(Request $request)
     {

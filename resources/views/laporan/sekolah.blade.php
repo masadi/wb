@@ -116,8 +116,28 @@ $("form").on("submit", function(event){
     $.post("{{route('api.laporan.simpan')}}", formValues, function(data){
         // Display the returned data in browser
         $("#result").html('');
-        $('#provinsi_id').val('').trigger("change");
-        Swal.fire('Terima Kasih', '', 'success')
+        //
+        if(data.jenis_laporan_id == 5){
+            Swal.fire({
+                title: 'Berhasil',
+                text: 'Hasil monev berhasil disimpan',
+                icon: 'success',
+                showDenyButton: true,
+                //showCancelButton: true,
+                confirmButtonText: 'Cetak Sekarang',
+                denyButtonText: 'Cetak Nanti',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Terima Kasih', '', 'success')
+                    window.open('{{url('cetak-hasil-monev')}}/'+data.laporan_id)
+                } else if (result.isDenied) {
+                    Swal.fire('Terima Kasih', '', 'info')
+                }
+            })
+        } else {
+            Swal.fire('Terima Kasih', '', 'success')
+        }
     });
 });
 </script>
