@@ -140,7 +140,7 @@ class LaporanController extends Controller
                     'sekolah_sasaran_id' => $sekolah_sasaran->sekolah_sasaran_id,
                 ],
                 [
-                    'tanggal_pelaksanaan' => date('Y-m-d'),
+                    'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
                     'catatan' => $request->catatan,
                 ]
             );
