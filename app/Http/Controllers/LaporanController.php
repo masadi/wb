@@ -57,11 +57,12 @@ class LaporanController extends Controller
             })->get();
         }
         $token = $request->token;//str_repeat('*', strlen($request->token));
-        if($request->admin){
+        /*if($request->admin){
             $jenis_laporan = Jenis_laporan::whereIn('id', [1, 5])->get();
         } else {
             $jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
-        }
+        }*/
+        $jenis_laporan = Jenis_laporan::whereIn('id', [1, 5])->get();
         $formulir = 'pendamping';
         return response()->json([
             'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan', 'formulir'))->render(),
