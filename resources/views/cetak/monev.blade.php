@@ -173,7 +173,7 @@
                     NIP. {{$laporan->sekolah->nip_kepsek}}</p>
             </td>
             <td width="33%" class="text-center" style="padding-top: 0px;">
-                <p class="text-right">{{$laporan->sekolah->kabupaten}}, {{Helper::TanggalIndo($now)}}</p>
+                <p class="text-right">{{$laporan->sekolah->kabupaten}}, {{Helper::TanggalIndo($laporan->tanggal_pelaksanaan)}}</p>
                 <p>Petugas Monev</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>

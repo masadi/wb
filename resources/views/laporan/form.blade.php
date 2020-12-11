@@ -222,6 +222,11 @@
     <label for="catatan_monev">Catatan Hasil Monev</label>
     <textarea name="catatan" id="catatan" class="form-control">{{($laporan) ? $laporan->catatan : ''}}</textarea>
 </div>
+<div class="form-group">
+    <label for="tanggal_pelaksanaan">Tanggal Pelaksanaan Pendampingan <span class="text-red">*</span></label>
+    <input class="datepicker form-control" name="tanggal_pelaksanaan"
+        value="{{($laporan) ? date('m/d/Y', strtotime($laporan->tanggal_pelaksanaan)) : ''}}">
+</div>
 @endif
 <script>
     $('.datepicker').datepicker();
