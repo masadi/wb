@@ -62,8 +62,8 @@ class LaporanController extends Controller
         } else {
             $jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
         }*/
-        //$jenis_laporan = Jenis_laporan::whereIn('id', [1, 5])->get();
-        $jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
+        $jenis_laporan = Jenis_laporan::whereIn('id', [1, 5])->get();
+        //$jenis_laporan = Jenis_laporan::whereIn('id', [1])->get();
         $formulir = 'pendamping';
         return response()->json([
             'body' => view('laporan.sekolah', compact('sekolah', 'pendamping', 'jenis_laporan', 'formulir'))->render(),
