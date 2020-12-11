@@ -108,7 +108,7 @@
                 <strong>Hasil Monev</strong><br><br>
                 Perhitungan = jumlah dokumen yang ada (real) / total dokumen yang harus ada <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {{$nilai}} / 89 <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {{($nilai) ? number_format(($nilai / 0.89),2) : 0}} <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <strong class="font-weight-bold">{{($nilai) ? number_format(($nilai / 0.89),2) : 0}} ({{Helper::predikat(number_format(($nilai / 0.89),2), true)}})</strong><br>
                 <br>
                 <br>
                 Kriteria nilai :
