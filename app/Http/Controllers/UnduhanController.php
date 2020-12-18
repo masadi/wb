@@ -8,6 +8,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use Rap2hpoutre\FastExcel\SheetCollection;
 use App\Laporan;
 use App\Sekolah;
+use App\Jenis_rapor;
 use Carbon\Carbon;
 class UnduhanController extends Controller
 {
@@ -113,5 +114,59 @@ class UnduhanController extends Controller
             'Belum Verifikasi' => $belum_verifikasi,
         ]);
         return (new FastExcel($sheets))->download('Rekapitulasi Laporan Rapor Mutu SMK CoE Tahun 2020.xlsx');
+    }
+    public function get_verifikasi(){
+        $jenis = Jenis_rapor::where('jenis', 'verval')->first();
+        $sekolah_verifikasi = Sekolah::has('smk_coe')->whereHas('rapor_mutu', function($query) use ($jenis){
+            $query->where('jenis_rapor_id', $jenis->id);
+        })->get();
+        $sekolah_belum_verifikasi = Sekolah::has('smk_coe')->whereDoesntHave('rapor_mutu', function($query) use ($jenis){
+            $query->where('jenis_rapor_id', $jenis->id);
+        })->get();
+        $verifikasi = [];
+        $belum_verifikasi = [];
+        $no = 1;
+        foreach($sekolah_verifikasi as $s_verifikasi){
+            $nama_verifikator = '-';
+            if($s_verifikasi->sekolah_sasaran->verifikator){
+                if($s_verifikasi->sekolah_sasaran->verifikator_id != '84ff9f29-1bd0-462f-976f-4c512dc22cc2'){
+                    $nama_verifikator = $s_verifikasi->sekolah_sasaran->verifikator->name;
+                }
+            }
+            $verifikasi[] = [
+                'No' => $no,
+                'Provinsi' => $s_verifikasi->provinsi,
+                'Kabupaten/Kota' => $s_verifikasi->kabupaten,
+                'Nama Sekolah' => $s_verifikasi->nama,
+                'NPSN' => $s_verifikasi->npsn,
+                'Sektor CoE' => ($s_verifikasi->sekolah_sasaran->sektor) ? $s_verifikasi->sekolah_sasaran->sektor->nama : '-',
+                'Nama Verifikator' => $nama_verifikator, 
+            ];
+            $no++;
+        }
+        $no=1;
+        foreach($sekolah_belum_verifikasi as $s_belum_verifikasi){
+            $nama_verifikator = '-';
+            if($s_belum_verifikasi->sekolah_sasaran->verifikator){
+                if($s_belum_verifikasi->sekolah_sasaran->verifikator_id != '84ff9f29-1bd0-462f-976f-4c512dc22cc2'){
+                    $nama_verifikator = $s_belum_verifikasi->sekolah_sasaran->verifikator->name;
+                }
+            }
+            $belum_verifikasi[] = [
+                'No' => $no,
+                'Provinsi' => $s_belum_verifikasi->provinsi,
+                'Kabupaten/Kota' => $s_belum_verifikasi->kabupaten,
+                'Nama Sekolah' => $s_belum_verifikasi->nama,
+                'NPSN' => $s_belum_verifikasi->npsn,
+                'Sektor CoE' => ($s_belum_verifikasi->sekolah_sasaran->sektor) ? $s_belum_verifikasi->sekolah_sasaran->sektor->nama : '-',
+                'Nama Verifikator' => $nama_verifikator,
+            ];
+            $no++;
+        }
+        $sheets = new SheetCollection([
+            'Sudah Verifikasi' => $verifikasi,
+            'Belum Verifikasi' => $belum_verifikasi,
+        ]);
+        return (new FastExcel($sheets))->download('Rekapitulasi Laporan Verifikasi SMK CoE Tahun 2020.xlsx');
     }
 }
