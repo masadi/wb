@@ -74,6 +74,16 @@ class ProsesVerifikasi extends Command
                 }
                 $keterangan = array_filter($all_keterangan[$instrumen_id]);
                 if($content->verifikasi->{$instrumen_id}){
+                    Nilai_instrumen::where(function($query) use ($content, $sekolah){
+                        $query->where('verifikator_id', '<>', $content->verifikator_id);
+                        $query->whereNotNull('verifikator_id');
+                        $query->where('user_id', $sekolah->user->user_id);
+                    })->delete();
+                    Jawaban::where(function($query) use ($content, $sekolah){
+                        $query->where('verifikator_id', '<>', $content->verifikator_id);
+                        $query->whereNotNull('verifikator_id');
+                        $query->where('user_id', $sekolah->user->user_id);
+                    })->delete();
                     $save = Nilai_instrumen::updateOrCreate(
                         [
                             'user_id' => $sekolah->user->user_id,
@@ -86,7 +96,7 @@ class ProsesVerifikasi extends Command
                             'keterangan' => ($keterangan) ? implode('. ', $keterangan) : NULL,
                         ]
                     );
-                    Jawaban::updateOrCreate(
+                    $a = Jawaban::updateOrCreate(
                         [
                             'user_id' => $sekolah->user->user_id,
                             'verifikator_id' => $content->verifikator_id,
@@ -112,7 +122,7 @@ class ProsesVerifikasi extends Command
                 'jenis_rapor_id' => $jenis->id,
                 'keterangan' => 'Sudah di proses verifikasi',
             ]);
-            File::delete($file->getrealPath());
+            //File::delete($file->getrealPath());
         }
         $this->info('Proses Verifikasi Selesai');
     }

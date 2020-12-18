@@ -536,6 +536,11 @@ class HelperModel
                     $nilai_aspek_dibobot = $nilai * $aspek->bobot / $skor;
                     $nilai_aspek = $nilai * 100 / $skor;
                     $nilai_aspek = number_format($nilai_aspek,2,'.','.');
+                    Nilai_aspek::where(function($query) use ($verifikator_id, $user_id){
+                        $query->where('verifikator_id', '<>', $verifikator_id);
+                        $query->whereNotNull('verifikator_id');
+                        $query->where('user_id', $user_id);
+                    })->delete();
                     Nilai_aspek::updateOrCreate(
                         [
                             'user_id' => $user_id,
@@ -562,6 +567,11 @@ class HelperModel
                 $total_nilai_komponen = ($nilai_komponen * $all_bobot) / 100;
                 $nilai_komponen = number_format($nilai_komponen,2,'.','.');
                 $total_nilai_komponen = number_format($total_nilai_komponen,2,'.','.');
+                Nilai_komponen::where(function($query) use ($verifikator_id, $user_id){
+                    $query->where('verifikator_id', '<>', $verifikator_id);
+                    $query->whereNotNull('verifikator_id');
+                    $query->where('user_id', $user_id);
+                })->delete();
                 Nilai_komponen::updateOrCreate(
                     [
                         'user_id' => $user_id,
@@ -577,6 +587,11 @@ class HelperModel
             }
             $total_nilai += $total_nilai_komponen;
         }
+        Nilai_akhir::where(function($query) use ($verifikator_id, $user_id){
+            $query->where('verifikator_id', '<>', $verifikator_id);
+            $query->whereNotNull('verifikator_id');
+            $query->where('user_id', $user_id);
+        })->delete();
         Nilai_akhir::updateOrCreate(
             [
                 'user_id' => $user_id,

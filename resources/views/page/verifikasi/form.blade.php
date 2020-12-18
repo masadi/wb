@@ -104,18 +104,21 @@
                 </td>
                 <td class="text-center">{{($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : '-'}}</td>
                 <td>
-                    @if($dokumen_verifikasi)
+                    {{--dd($item->jawaban)--}}
+                    <?php 
+                    $nilai_jawaban = 0;
+                    if($item->jawaban){
+                        $nilai_jawaban = $item->jawaban->nilai;
+                    } else {
+                        if($item->jawaban_sekolah){
+                            $nilai_jawaban = $item->jawaban_sekolah->nilai;
+                        }
+                    }
+                    ?>
                     <input type="text" class="form-control form-control-sm verifikasi-{{$item->instrumen_id}}"
-                        style="width: 100%" value="{{ $dokumen_verifikasi->verifikasi->{$item->instrumen_id} }}"
-                        readonly>
+                        style="width: 100%" value="{{$nilai_jawaban}}" readonly>
                     <input type="hidden" class="form-control form-control-sm" name="verifikasi[{{$item->instrumen_id}}]"
-                        style="width: 100%" value="{{ $dokumen_verifikasi->verifikasi->{$item->instrumen_id} }}"> 
-                    @else
-                    <input type="text" class="form-control form-control-sm verifikasi-{{$item->instrumen_id}}"
-                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : ($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : 0 }}" readonly>
-                    <input type="hidden" class="form-control form-control-sm" name="verifikasi[{{$item->instrumen_id}}]"
-                        style="width: 100%" value="{{($item->jawaban) ? $item->jawaban->nilai : ($item->jawaban_sekolah) ? $item->jawaban_sekolah->nilai : 0 }}">
-                    @endif
+                        style="width: 100%" value="{{$nilai_jawaban}}">
                     <?php
                     /*
                     <select name="verifikasi[{{$item->instrumen_id}}]" class="form-control form-control-sm">
