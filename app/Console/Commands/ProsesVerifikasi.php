@@ -122,7 +122,7 @@ class ProsesVerifikasi extends Command
                 'jenis_rapor_id' => $jenis->id,
                 'keterangan' => 'Sudah di proses verifikasi',
             ]);
-            //File::delete($file->getrealPath());
+            File::delete($file->getrealPath());
         }
         $this->info('Proses Verifikasi Selesai');
     }
