@@ -40,11 +40,23 @@ class GenerateTanggal extends Command
     {
         $all_laporan = Laporan::get();
         foreach($all_laporan as $laporan){
+            if($this->validateDate($laporan->tanggal_pelaksanaan, 'Y-m-d')){
+                $laporan->tgl_pelaksanaan = date('Y-m-d', strtotime($laporan->tanggal_pelaksanaan));
+                $laporan->save();
+            }
+            //if($laporan->tanggal_pelaksanaan && is_date($laporan->tanggal_pelaksanaan)){
+
+            //}
             //echo date('Y-m-d', strtotime($laporan->tanggal_pelaksanaan));
-            echo $laporan->created_at;
+            /*echo $laporan->created_at;
             $created_at = Carbon::parse($laporan->created_at)->locale('id');
             dd($created_at->isoFormat('Do MMMM YYYY'));
-            dd($laporan);
+            dd($laporan);*/
         }
+    }
+    private function validateDate($date, $format = 'Y-m-d H:i:s')
+    {
+        $d = \DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 }
