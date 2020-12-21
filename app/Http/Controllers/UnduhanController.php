@@ -52,7 +52,7 @@ class UnduhanController extends Controller
                 'Nama Sekolah' => $data_verifikasi->sekolah->nama,
                 'NPSN' => $data_verifikasi->sekolah->npsn,
                 'Sektor CoE' => ($data_verifikasi->sekolah->sekolah_sasaran->sektor) ? $data_verifikasi->sekolah->sekolah_sasaran->sektor->nama : '-',
-                'Nama Verifikator' => ($data_verifikasi->verifikator) ? $data_verifikasi->verifikator->name : '-',
+                'Nama Pendamping' => ($data_verifikasi->verifikator) ? $data_verifikasi->verifikator->name : '-',
                 'Tanggal Pelaksanaan' => $tanggal_pelaksanaan->isoFormat('Do MMMM YYYY'),
                 'Tanggal Pelaporan' => $created_at->isoFormat('Do MMMM YYYY'),
                 'Keterangan' => '',
@@ -107,11 +107,59 @@ class UnduhanController extends Controller
             ];
             $no++;
         }
+        /************************ */
+        $sekolah_belum_monev = Sekolah::has('sekolah_sasaran')->with(['sekolah_sasaran' => function($query){
+            $query->with(['sektor', 'pendamping']);
+        }])->whereDoesntHave('laporan', function (Builder $query) {
+            $query->where('jenis_laporan_id', 5);
+        })->get();
+        $no=1;
+        foreach($sekolah_belum_monev as $data_belum_monev){
+            $belum_monev[] = [
+                'No' => $no,
+                'Provinsi' => $data_belum_monev->provinsi,
+                'Kabupaten/Kota' => $data_belum_monev->kabupaten,
+                'Nama Sekolah' => $data_belum_monev->nama,
+                'NPSN' => $data_belum_monev->npsn,
+                'Sektor CoE' => ($data_belum_monev->sekolah_sasaran->sektor) ? $data_belum_monev->sekolah_sasaran->sektor->nama : '-',
+                'Nama Verifikator' => ($data_belum_monev->sekolah_sasaran->pendamping) ? $data_belum_monev->sekolah_sasaran->pendamping->nama : '-',
+                'Tanggal Pelaksanaan' => '-',
+                'Tanggal Pelaporan' => '-',
+                'Keterangan' => '',
+            ];
+            $no++;
+        }
+        $sekolah_sudah_monev = Sekolah::has('sekolah_sasaran')->with(['laporan', 'sekolah_sasaran' => function($query){
+            $query->with(['sektor', 'pendamping']);
+        }])->whereHas('laporan', function (Builder $query) {
+            $query->where('jenis_laporan_id', 5);
+        })->get();
+        $no=1;
+        foreach($sekolah_sudah_monev as $data_sudah_monev){
+            $tanggal_pelaksanaan = Carbon::parse($data_sudah_monev->tanggal_pelaksanaan)->locale('id');
+            $created_at = Carbon::parse($data_sudah_monev->created_at)->locale('id');
+            $sudah_monev[] = [
+                'No' => $no,
+                'Provinsi' => $data_sudah_monev->provinsi,
+                'Kabupaten/Kota' => $data_sudah_monev->kabupaten,
+                'Nama Sekolah' => $data_sudah_monev->nama,
+                'NPSN' => $data_sudah_monev->npsn,
+                'Sektor CoE' => ($data_sudah_monev->sekolah_sasaran->sektor) ? $data_sudah_monev->sekolah_sasaran->sektor->nama : '-',
+                'Nama Verifikator' => ($data_sudah_monev->sekolah_sasaran->pendamping) ? $data_sudah_monev->sekolah_sasaran->pendamping->nama : '-',
+                'Tanggal Pelaksanaan' => $tanggal_pelaksanaan->isoFormat('Do MMMM YYYY'),
+                'Tanggal Pelaporan' => $created_at->isoFormat('Do MMMM YYYY'),
+                'Keterangan' => '',
+            ];
+            $no++;
+        }
+        /** */
         $sheets = new SheetCollection([
             'Sudah Pendampingan' => $pendampingan,
             'Belum Pendampingan' => $belum_pendampingan,
             'Sudah Verifikasi' => $verifikasi,
             'Belum Verifikasi' => $belum_verifikasi,
+            'Sudah Monev' => $sudah_monev,
+            'Belum Monev' => $belum_monev,
         ]);
         return (new FastExcel($sheets))->download('Rekapitulasi Laporan Rapor Mutu SMK CoE Tahun 2020.xlsx');
     }
