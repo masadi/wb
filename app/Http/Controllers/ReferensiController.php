@@ -605,12 +605,14 @@ class ReferensiController extends Controller
                 'email.required'	=> 'Email tidak boleh kosong',
                 'email.email'	=> 'Email tidak valid',
                 'nomor_hp.required'	=> 'Nomor Handphone tidak boleh kosong',
+                'token.required'	=> 'Token tidak boleh kosong',
             ];
             $validator = Validator::make(request()->all(), [
                 'nama' => 'required',
                 'instansi' => 'required',
                 'email' => 'required|email',
                 'nomor_hp' => 'required',
+                'token' => 'required',
             ],
             $messages
             )->validate();
@@ -621,6 +623,7 @@ class ReferensiController extends Controller
             $pendamping->instansi = $request->instansi;
             $pendamping->email = $request->email;
             $pendamping->nomor_hp = $request->nomor_hp;
+            $pendamping->token = $request->token;
             if($pendamping->save()){
                 return response()->json(['status' => 'success', 'message' => 'Data Pendamping berhasil diperbaharui']);
             } else {
