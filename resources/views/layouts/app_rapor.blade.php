@@ -148,12 +148,12 @@ if($laman == 'login'){
                               <p>Verifikasi</p>
                             </a>
                           </li>
-                          <li class="nav-item">
+                          <!--li class="nav-item">
                             <a href="{{route('page', ['query' => 'rapor-mutu-afirmasi'])}}" class="nav-link text-white{{$aktif_rapor_mutu_afirmasi}}">
                               <i class="fas fa-check nav-icon"></i>
                               <p>Afirmasi</p>
                             </a>
-                          </li>
+                          </li-->
                           <li class="nav-item">
                             <a href="{{route('page', ['query' => 'rapor-mutu-komparasi'])}}" class="nav-link text-white{{$aktif_rapor_mutu_komparasi}}">
                               <i class="fas fa-check nav-icon"></i>

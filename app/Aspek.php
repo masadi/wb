@@ -25,6 +25,12 @@ class Aspek extends Model
         return $this->hasOne('App\Nilai_aspek', 'aspek_id', 'id');
     }
     public function all_nilai_aspek(){
-        return $this->hasMany('App\Nilai_aspek', 'aspek_id', 'id');
+        return $this->hasMany('App\Nilai_aspek', 'aspek_id', 'id')->whereNull('verifikator_id');
+    }
+    public function nilai_aspek_verifikasi(){
+        return $this->hasOne('App\Nilai_aspek', 'aspek_id', 'id');
+    }
+    public function all_nilai_aspek_verifikasi(){
+        return $this->hasMany('App\Nilai_aspek', 'aspek_id', 'id')->whereNotNull('verifikator_id')->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
     }
 }
