@@ -60,4 +60,52 @@ class DapodikController extends Controller
         $pendamping = Pendamping::has('sekolah_sasaran')->select('nama', 'instansi', 'nip', 'nuptk', 'email', 'nomor_hp', 'token')->get();
         return (new FastExcel($pendamping))->download('data_pendamping_apm.xlsx');
     }
+    public function nama_table(){
+        $schemas = DB::select("SELECT *
+        FROM pg_catalog.pg_tables
+        WHERE schemaname != 'pg_catalog' AND 
+            schemaname != 'information_schema';");
+        foreach($schemas as $schema){
+            $tableName = ($schema->schemaname == 'public') ? $schema->tablename : $schema->schemaname.'.'.$schema->tablename;
+            $tables = DB::select("SELECT 
+            *
+         FROM 
+            information_schema.columns
+         WHERE 
+            table_name = '$tableName';");
+            echo '<br>'.$tableName;
+            echo '<table border=1>';
+            echo '<tr>';
+            echo '<td>';
+            echo 'Kolom';
+            echo '</td>';
+            echo '<td>';
+            echo 'Tipe';
+            echo '</td>';
+            echo '<td>';
+            echo 'Relasi Table';
+            echo '</td>';
+            echo '<td>';
+            echo 'Relasi Key';
+            echo '</td>';
+            echo '</tr>';
+            foreach($tables as $table){
+                echo '<tr>';
+                echo '<td>';
+                echo $table->column_name;
+                echo '</td>';
+                echo '<td>';
+                echo $table->data_type;
+                echo '</td>';
+                echo '<td>';
+                echo '';
+                echo '</td>';
+                echo '<td>';
+                echo '';
+                echo '</td>';
+                echo '</tr>';
+            }
+            echo '</table>';
+        }
+    }
 }

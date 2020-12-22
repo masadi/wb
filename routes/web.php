@@ -17,6 +17,7 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+Route::get('/table', 'DapodikController@nama_table')->name('dashboard.nama_table');
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
 Route::get('/rapor-mutu/{query}', 'DashboardController@rapor_mutu')->name('dashboard.rapor_mutu');
 Route::post('/login-dashboard', 'PageController@login_dashboard')->name('login_dashboard');
