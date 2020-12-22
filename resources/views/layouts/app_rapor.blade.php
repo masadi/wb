@@ -163,7 +163,13 @@ if($laman == 'login'){
                         </ul>
                       </li>
                       @auth
-                      <li class="nav-item has-treeview {{$active_progres_data}}">
+                      <li class="nav-item">
+                        <a class="nav-link text-white{{$aktif_instrumen}}{{$aktif_rapor_mutu}}{{$aktif_pakta_integritas}}{{$aktif_verval}}{{$aktif_verifikasi}}{{$aktif_pengesahan}}" href="{{route('page', ['query' => 'progres-data'])}}">
+                          <i class="nav-icon fas fa-sync"></i>
+                          <p>Progres Data</p>
+                        </a>
+                      </li>
+                      <li class="nav-item has-treeview {{$active_progres_data}}" style="display: none;">
                         <a href="#" class="nav-link text-white{{$aktif_instrumen}}{{$aktif_rapor_mutu}}{{$aktif_pakta_integritas}}{{$aktif_verval}}{{$aktif_verifikasi}}{{$aktif_pengesahan}}">
                           <i class="nav-icon fas fa-sync"></i>
                           <p>
@@ -231,12 +237,12 @@ if($laman == 'login'){
                               <p>Rekapitulasi</p>
                             </a>
                           </li>
-                          <li class="nav-item">
+                          <!--li class="nav-item">
                             <a href="{{route('page', ['query' => 'afirmasi'])}}" class="nav-link text-white{{$active_laporan_afirmasi}}">
                               <i class="fas fa-check nav-icon"></i>
                               <p>Afirmasi</p>
                             </a>
-                          </li>
+                          </li-->
                         </ul>
                       </li>
                       <li class="nav-item">
