@@ -110,10 +110,7 @@ class PageController extends Controller
             $query->where('id_level_wilayah', 1);
         })->orderBy('kode_wilayah')->get();
         $params = [
-            'komponen' => Komponen::with(['all_nilai_komponen_verifikasi', 'aspek.all_nilai_aspek' => function($query){
-                $query->whereNotNull('verifikator_id');
-                $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
-            }])->get(),
+            'komponen' => Komponen::with(['all_nilai_komponen_verifikasi', 'aspek.all_nilai_aspek_verifikasi'])->get(),
             'komponen_kinerja' => Komponen::whereIn('id', [1,2,3])->get(),
             'komponen_dampak' => Komponen::whereIn('id', [4,5])->get(),
             'all_wilayah' => $all_wilayah,
