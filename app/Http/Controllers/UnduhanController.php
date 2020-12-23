@@ -171,6 +171,7 @@ class UnduhanController extends Controller
             $query->whereNull('verifikator_id');
         }, 'nilai_akhir_verifikasi' => function($query){
             $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }])->get();
         $sekolah_belum_verifikasi = Sekolah::has('smk_coe')->whereDoesntHave('rapor_mutu', function($query) use ($jenis){
             $query->where('jenis_rapor_id', $jenis->id);
