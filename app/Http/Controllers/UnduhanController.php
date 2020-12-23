@@ -167,7 +167,11 @@ class UnduhanController extends Controller
         $jenis = Jenis_rapor::where('jenis', 'verval')->first();
         $sekolah_verifikasi = Sekolah::has('smk_coe')->whereHas('rapor_mutu', function($query) use ($jenis){
             $query->where('jenis_rapor_id', $jenis->id);
-        })->get();
+        })->with(['nilai_akhir' => function($query){
+            $query->whereNull('verifikator_id');
+        }, 'nilai_akhir_verifikasi' => function($query){
+            $query->whereNotNull('verifikator_id');
+        }])->get();
         $sekolah_belum_verifikasi = Sekolah::has('smk_coe')->whereDoesntHave('rapor_mutu', function($query) use ($jenis){
             $query->where('jenis_rapor_id', $jenis->id);
         })->get();
@@ -188,7 +192,9 @@ class UnduhanController extends Controller
                 'Nama Sekolah' => $s_verifikasi->nama,
                 'NPSN' => $s_verifikasi->npsn,
                 'Sektor CoE' => ($s_verifikasi->sekolah_sasaran->sektor) ? $s_verifikasi->sekolah_sasaran->sektor->nama : '-',
-                'Nama Verifikator' => $nama_verifikator, 
+                'Nama Verifikator' => $nama_verifikator,
+                'Nilai Sekolah' => $s_verifikasi->nilai_akhir->nilai,
+                'Nilai Verifikasi' => $s_verifikasi->nilai_akhir_verifikasi->nilai,
             ];
             $no++;
         }
