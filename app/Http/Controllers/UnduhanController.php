@@ -59,7 +59,7 @@ class UnduhanController extends Controller
             ];
             $no++;
         }
-        $sekolah_belum_pendampingan = Sekolah::has('sekolah_sasaran')->with(['sekolah_sasaran' => function($query){
+        $sekolah_belum_pendampingan = Sekolah::has('sekolah_sasaran')->has('smk_coe')->with(['sekolah_sasaran' => function($query){
             $query->with(['sektor', 'pendamping']);
         }])->whereDoesntHave('laporan', function (Builder $query) {
             $query->where('jenis_laporan_id', 1);
@@ -80,7 +80,7 @@ class UnduhanController extends Controller
             ];
             $no++;
         }
-        $sekolah_belum_verifikasi = Sekolah::has('sekolah_sasaran')->with(['sekolah_sasaran' => function($query){
+        $sekolah_belum_verifikasi = Sekolah::has('sekolah_sasaran')->has('smk_coe')->with(['sekolah_sasaran' => function($query){
             $query->with(['sektor', 'pendamping']);
         }])->whereDoesntHave('laporan', function (Builder $query) {
             $query->where('jenis_laporan_id', 3);
@@ -108,7 +108,7 @@ class UnduhanController extends Controller
             $no++;
         }
         /************************ */
-        $sekolah_belum_monev = Sekolah::has('sekolah_sasaran')->with(['sekolah_sasaran' => function($query){
+        $sekolah_belum_monev = Sekolah::has('sekolah_sasaran')->has('smk_coe')->with(['sekolah_sasaran' => function($query){
             $query->with(['sektor', 'pendamping']);
         }])->whereDoesntHave('laporan', function (Builder $query) {
             $query->where('jenis_laporan_id', 5);
@@ -129,7 +129,7 @@ class UnduhanController extends Controller
             ];
             $no++;
         }
-        $sekolah_sudah_monev = Sekolah::has('sekolah_sasaran')->with(['laporan', 'sekolah_sasaran' => function($query){
+        $sekolah_sudah_monev = Sekolah::has('sekolah_sasaran')->has('smk_coe')->with(['laporan', 'sekolah_sasaran' => function($query){
             $query->with(['sektor', 'pendamping']);
         }])->whereHas('laporan', function (Builder $query) {
             $query->where('jenis_laporan_id', 5);
