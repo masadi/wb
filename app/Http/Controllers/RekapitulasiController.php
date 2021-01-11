@@ -133,7 +133,7 @@ class RekapitulasiController extends Controller
             $query->whereHas('smk_coe');
             $query->whereHas('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
-                $query->whereBetween('nilai', [91, 100]);
+                $query->whereBetween('nilai', [91.00, 100.00]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
                     $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
@@ -199,7 +199,7 @@ class RekapitulasiController extends Controller
             $query->whereHas('smk_coe');
             $query->whereHas('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
-                $query->whereBetween('nilai', [91, 100]);
+                $query->whereBetween('nilai', [91.00, 100.00]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
                     $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
@@ -269,7 +269,7 @@ class RekapitulasiController extends Controller
             $query->whereHas('smk_coe');
             $query->whereHas('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
-                $query->whereBetween('nilai', [91, 100]);
+                $query->whereBetween('nilai', [91.00, 100.00]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
                     $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
