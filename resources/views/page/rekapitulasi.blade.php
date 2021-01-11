@@ -10,7 +10,16 @@
             <div class="card-body">
                 <form id="form">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Jenis Rapor Mutu</label>
+                                <select class="form-control select2" id="jenis_rapor_mutu" style="width: 100%;">
+                                    <option value="verifikasi">Hasil Verifikasi</option>
+                                    <option value="sekolah">Sekolah</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Provinsi</label>
                                 <select class="form-control select2" id="provinsi_id" style="width: 100%;">
@@ -21,7 +30,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Filter Kabupaten/Kota</label>
                                 <select class="form-control select2" id="kabupaten_id" style="width: 100%;">
@@ -76,6 +85,10 @@
                                     <td class="text-center">Tidak Baik</td>
                                     <td class="text-center tidak_baik_nasional">0</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right">Total</td>
+                                    <td class="text-center jumlah_nasional">0</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -122,6 +135,10 @@
                                     <td class="text-center">0-45</td>
                                     <td class="text-center">Tidak Baik</td>
                                     <td class="text-center tidak_baik_provinsi">0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right">Total</td>
+                                    <td class="text-center jumlah_provinsi">0</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -170,6 +187,10 @@
                                     <td class="text-center">Tidak Baik</td>
                                     <td class="text-center tidak_baik_kabupaten">0</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right">Total</td>
+                                    <td class="text-center jumlah_kabupaten">0</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -207,26 +228,43 @@ function setData(response){
     $('.cukup_baik_nasional').html(response.data.rekap_nasional.cukup_baik)
     $('.kurang_baik_nasional').html(response.data.rekap_nasional.kurang_baik)
     $('.tidak_baik_nasional').html(response.data.rekap_nasional.tidak_baik)
+    $('.jumlah_nasional').html(response.data.rekap_nasional.jumlah)
 
     $('.sangat_baik_provinsi').html(response.data.rekap_provinsi.sangat_baik)
     $('.baik_provinsi').html(response.data.rekap_provinsi.baik)
     $('.cukup_baik_provinsi').html(response.data.rekap_provinsi.cukup_baik)
     $('.kurang_baik_provinsi').html(response.data.rekap_provinsi.kurang_baik)
     $('.tidak_baik_provinsi').html(response.data.rekap_provinsi.tidak_baik)
+    $('.jumlah_provinsi').html(response.data.rekap_provinsi.jumlah)
 
     $('.sangat_baik_kabupaten').html(response.data.rekap_kabupaten.sangat_baik)
     $('.baik_kabupaten').html(response.data.rekap_kabupaten.baik)
     $('.cukup_baik_kabupaten').html(response.data.rekap_kabupaten.cukup_baik)
     $('.kurang_baik_kabupaten').html(response.data.rekap_kabupaten.kurang_baik)
     $('.tidak_baik_kabupaten').html(response.data.rekap_kabupaten.tidak_baik)
+    $('.jumlah_kabupaten').html(response.data.rekap_kabupaten.jumlah)
 }
 var chartNasional;
-$.get( "{{route('api.rekapitulasi.wilayah')}}", function( response ) {
+var jenis_rapor_mutu = $('#jenis_rapor_mutu').val();
+console.log(jenis_rapor_mutu)
+/*$.get( "{{route('api.rekapitulasi.wilayah')}}", function( response ) {
     console.log(response);
     setData(response)
     tampilChart(response)
-    //tampilChart(data)
+});*/
+$.get( "{{route('api.rekapitulasi.wilayah')}}", { jenis_rapor_mutu: jenis_rapor_mutu } ).done(function( response ) {
+    console.log(response);
+    setData(response)
+    tampilChart(response)
 });
+$('#jenis_rapor_mutu').change(function(){
+    var ini = $(this).val();
+    $.get( "{{route('api.rekapitulasi.wilayah')}}", { jenis_rapor_mutu: ini } ).done(function( response ) {
+        console.log(response);
+        setData(response)
+        tampilChart(response)
+    });
+})
 $('#provinsi_id').change(function(){
     var ini = $(this).val();
     if(ini){
