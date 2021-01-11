@@ -87,7 +87,7 @@ class SedotPD extends Command
     private function get_sedot($url){
         $response = Http::withOptions([
             'verify' => false,
-            'connect_timeout' => 10
+            'connect_timeout' => 0
         ])->get($url);
         return $response->json();
     }
