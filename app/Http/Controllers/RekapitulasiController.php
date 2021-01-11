@@ -10,7 +10,7 @@ use App\Nilai_akhir;
 class RekapitulasiController extends Controller
 {
     public function index(Request $request){
-        $query = Sekolah::query()->has('sekolah_sasaran')->with(['nilai_input' => function($query){
+        $query = Sekolah::query()->has('smk_coe')->with(['nilai_input' => function($query){
             $query->whereNotNull('verifikator_id');
             $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_proses' => function($query){
