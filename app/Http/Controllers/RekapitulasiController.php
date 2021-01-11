@@ -131,7 +131,7 @@ class RekapitulasiController extends Controller
         $jenis_rapor_mutu = $request->jenis_rapor_mutu;
         $sangat_baik = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [91, 100]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -144,7 +144,7 @@ class RekapitulasiController extends Controller
         })->count();
         $baik = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [76, 90.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -157,7 +157,7 @@ class RekapitulasiController extends Controller
         })->count();
         $cukup_baik = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [61, 75.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -170,7 +170,7 @@ class RekapitulasiController extends Controller
         })->count();
         $kurang_baik = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [46, 60.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -183,7 +183,7 @@ class RekapitulasiController extends Controller
         })->count();
         $tidak_baik = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [0, 45.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -197,7 +197,7 @@ class RekapitulasiController extends Controller
         $sangat_baik_provinsi = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [91, 100]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -211,7 +211,7 @@ class RekapitulasiController extends Controller
         $baik_provinsi = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [76, 90.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -225,7 +225,7 @@ class RekapitulasiController extends Controller
         $cukup_baik_provinsi = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [61, 75.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -239,7 +239,7 @@ class RekapitulasiController extends Controller
         $kurang_baik_provinsi = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [46, 60.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -253,7 +253,7 @@ class RekapitulasiController extends Controller
         $tidak_baik_provinsi = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(provinsi_id) = '". request()->provinsi_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [0, 45.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -267,7 +267,7 @@ class RekapitulasiController extends Controller
         $sangat_baik_kabupaten = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [91, 100]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -281,7 +281,7 @@ class RekapitulasiController extends Controller
         $baik_kabupaten = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [76, 90.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -295,7 +295,7 @@ class RekapitulasiController extends Controller
         $cukup_baik_kabupaten = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [61, 75.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -309,7 +309,7 @@ class RekapitulasiController extends Controller
         $kurang_baik_kabupaten = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [46, 60.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
@@ -323,7 +323,7 @@ class RekapitulasiController extends Controller
         $tidak_baik_kabupaten = Sekolah::where(function($query) use ($jenis_rapor_mutu){
             $query->whereRaw("trim(kabupaten_id) = '". request()->kabupaten_id."'");
             $query->has('smk_coe');
-            $query->has('sekolah_sasaran');
+            //$query->has('sekolah_sasaran');
             $query->whereHas('nilai_akhir', function($query) use ($jenis_rapor_mutu){
                 $query->whereBetween('nilai', [0, 45.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
