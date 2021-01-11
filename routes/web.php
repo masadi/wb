@@ -59,7 +59,6 @@ Route::get('/verifikasi', function(){
 Route::post('/verifikasi', 'VerifikasiController@verifikasi_front');
 Route::get('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen')->name('verifikasi_instrumen');
 Route::post('/verifikasi-instrumen', 'VerifikasiController@verifikasi_instrumen');
-Route::get('/dapodik', 'DapodikController@index');
 Route::get('/pendamping', 'DapodikController@get_pendamping');
 Route::get('/cetak-hasil-verifikasi/{sekolah_id}', 'VerifikasiController@cetak');
 Route::get('/cetak-hasil-monev/{laporan_id}', 'CetakController@monev');
@@ -79,4 +78,8 @@ Route::get('/laporan-pendampingan', 'LaporanController@index')->name('laporan.pe
 Route::get('/laporan-verifikasi', 'LaporanController@verifikasi')->name('laporan.verifikasi');
 Route::group(['prefix' => 'unduhan'], function(){
     Route::get('/{query}', 'UnduhanController@index')->name('unduhan.laporan');
+});
+Route::group(['prefix' => 'dapodik'], function(){
+    Route::get('/', 'DapodikController@index')->name('dapodik.data_verifikator_apm');
+    Route::get('/sedot', 'DapodikController@sedot_data')->name('dapodik.sedot_data');
 });

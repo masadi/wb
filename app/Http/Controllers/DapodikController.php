@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Helpers\Encrypt;
 use App\Sekolah;
+use App\Rekap_pd;
 use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\User;
@@ -107,5 +108,49 @@ class DapodikController extends Controller
             }
             echo '</table>';
         }
+    }
+    public function sedot_data(){
+        $a = $this->get_sedot('https://dapo.kemdikbud.go.id/rekap/progres-smk?id_level_wilayah=0&kode_wilayah=000000&semester_id=20201');
+        foreach($a as $b){
+            $b = (object) $b;
+            $c = $this->get_sedot('https://dapo.kemdikbud.go.id/rekap/progres-smk?id_level_wilayah=1&kode_wilayah='.trim($b->kode_wilayah).'&semester_id=20201');
+            foreach($c as $d){
+                $d = (object) $d;
+                $e = $this->get_sedot('https://dapo.kemdikbud.go.id/rekap/progres-smk?id_level_wilayah=2&kode_wilayah='.trim($d->kode_wilayah).'&semester_id=20201');
+                foreach($e as $f){
+                    $f = (object) $f;
+                    $g = $this->get_sedot('https://dapo.kemdikbud.go.id/rekap/progresSP-smk?id_level_wilayah=3&kode_wilayah='.trim($f->kode_wilayah).'&semester_id=20201');
+                    foreach($g as $h){
+                        $h = (object) $h;
+                        $sekolah = Sekolah::find($h->sekolah_id);
+                        if($sekolah){
+                            $i = $this->get_sedot('https://dapo.kemdikbud.go.id/rekap/sekolahDetail?semester_id=20201&sekolah_id='.$h->sekolah_id_enkrip);
+                            foreach($i as $j){
+                                $j = (object) $j;
+                                Rekap_pd::updateOrCreate(
+                                    [
+                                        'sekolah_id' => $sekolah->sekolah_id,
+                                    ],
+                                    [
+                                        'pd_kelas_10_laki' => $j->pd_kelas_10_laki,
+                                        'pd_kelas_10_perempuan' => $j->pd_kelas_10_perempuan,
+                                        'pd_kelas_11_laki' => $j->pd_kelas_11_laki,
+                                        'pd_kelas_11_perempuan' => $j->pd_kelas_11_perempuan,
+                                        'pd_kelas_12_laki' => $j->pd_kelas_12_laki,
+                                        'pd_kelas_12_perempuan' => $j->pd_kelas_12_perempuan,
+                                        'pd_kelas_13_laki' => $j->pd_kelas_13_laki,
+                                        'pd_kelas_13_perempuan' => $j->pd_kelas_13_perempuan,
+                                    ]
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private function get_sedot($url){
+        $response = Http::get($url);
+        return $response->json();
     }
 }
