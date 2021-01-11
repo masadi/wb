@@ -199,7 +199,7 @@ class Wilayah extends Model
         });
     }
     public function sekolah_waiting_provinsi(){
-        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->has('smk_coe')->whereHas('sekolah_sasaran', function($query){
             $query->whereHas('waiting');
         });
         return $this->hasManyDeep(
@@ -221,12 +221,12 @@ class Wilayah extends Model
         )->whereHas('waiting');
     }
     public function sekolah_waiting_kabupaten(){
-        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->has('smk_coe')->whereHas('sekolah_sasaran', function($query){
             $query->whereHas('waiting');
         });
     }
     public function sekolah_waiting_kecamatan(){
-        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){
+        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->has('smk_coe')->whereHas('sekolah_sasaran', function($query){
             $query->whereHas('waiting');
         });
     }
