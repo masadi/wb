@@ -68,7 +68,7 @@
                                     <td class="text-center baik_nasional">0</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">2</td>
+                                    <td class="text-center">3</td>
                                     <td class="text-center">61-75</td>
                                     <td class="text-center">Cukup Baik</td>
                                     <td class="text-center cukup_baik_nasional">0</td>
@@ -119,7 +119,7 @@
                                     <td class="text-center baik_provinsi">0</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">2</td>
+                                    <td class="text-center">3</td>
                                     <td class="text-center">61-75</td>
                                     <td class="text-center">Cukup Baik</td>
                                     <td class="text-center cukup_baik_provinsi">0</td>
@@ -170,7 +170,7 @@
                                     <td class="text-center baik_kabupaten">0</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">2</td>
+                                    <td class="text-center">3</td>
                                     <td class="text-center">61-75</td>
                                     <td class="text-center">Cukup Baik</td>
                                     <td class="text-center cukup_baik_kabupaten">0</td>
