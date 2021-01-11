@@ -150,7 +150,9 @@ class DapodikController extends Controller
         }
     }
     private function get_sedot($url){
-        $response = Http::get($url);
+        $response = Http::withOptions([
+            'verify' => false
+        ])->get($url);
         return $response->json();
     }
 }
