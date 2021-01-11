@@ -85,7 +85,9 @@ class SedotPD extends Command
         $this->info('Proses sedot PD Selesai');
     }
     private function get_sedot($url){
-        $response = Http::get($url);
+        $response = Http::withOptions([
+            'verify' => false
+        ])->get($url);
         return $response->json();
     }
 }
