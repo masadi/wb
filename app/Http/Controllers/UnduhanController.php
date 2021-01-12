@@ -10,6 +10,8 @@ use App\Laporan;
 use App\Sekolah;
 use App\Jenis_rapor;
 use Carbon\Carbon;
+use Excel;
+use App\Exports\NilaiExport;
 class UnduhanController extends Controller
 {
     public function index(Request $request){
@@ -223,5 +225,9 @@ class UnduhanController extends Controller
             'Belum Verifikasi' => $belum_verifikasi,
         ]);
         return (new FastExcel($sheets))->download('Rekapitulasi Laporan Verifikasi SMK CoE Tahun 2020.xlsx');
+    }
+    public function isian_instrumen($sekolah_id){
+        $sekolah = Sekolah::find($sekolah_id);
+        return Excel::download(new NilaiExport($sekolah_id), 'NILAI INSTRUMEN '.$sekolah->nama.'.xlsx');
     }
 }

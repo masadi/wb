@@ -78,6 +78,7 @@ Route::get('/laporan-pendampingan', 'LaporanController@index')->name('laporan.pe
 Route::get('/laporan-verifikasi', 'LaporanController@verifikasi')->name('laporan.verifikasi');
 Route::group(['prefix' => 'unduhan'], function(){
     Route::get('/{query}', 'UnduhanController@index')->name('unduhan.laporan');
+    Route::get('/instrumen/{sekolah_id}', 'UnduhanController@isian_instrumen')->name('unduhan.instrumen');
 });
 Route::group(['prefix' => 'dapodik'], function(){
     Route::get('/', 'DapodikController@index')->name('dapodik.data_verifikator_apm');

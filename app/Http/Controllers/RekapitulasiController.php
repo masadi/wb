@@ -124,7 +124,11 @@ class RekapitulasiController extends Controller
             $links = ($item->nilai_akhir) ? $item->nilai_akhir->predikat : 0;
             return $links;
         })
-        ->rawColumns(['nama', 'npsn', 'nilai_input', 'nilai_proses', 'nilai_output', 'nilai_kinerja', 'terendah', 'tertinggi', 'afirmasi', 'nilai_outcome', 'nilai_impact', 'nilai_dampak', 'nilai_akhir', 'predikat'])
+        ->addColumn('unduh_detil', function ($item) {
+            $links = '<a class="btn btn-sm btn-success" href="'.route('unduhan.instrumen', ['sekolah_id' => $item->sekolah_id]).'"><i class="fas fa-download"></i></a>';
+            return $links;
+        })
+        ->rawColumns(['nama', 'npsn', 'nilai_input', 'nilai_proses', 'nilai_output', 'nilai_kinerja', 'terendah', 'tertinggi', 'afirmasi', 'nilai_outcome', 'nilai_impact', 'nilai_dampak', 'nilai_akhir', 'predikat', 'unduh_detil'])
         ->make(true);
     }
     public function wilayah(Request $request){

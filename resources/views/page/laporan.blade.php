@@ -46,6 +46,7 @@
                             <th colspan="3" class="text-center">Dampak</th>
                             <th rowspan="2" style="vertical-align: middle;">Nilai Rapor Mutu</th>
                             <th rowspan="2" style="vertical-align: middle;">Predikat</th>
+                            <th rowspan="2" style="vertical-align: middle;">Unduh Detil</th>
                         </tr>
                         <tr>
                             <th>Input</th>
@@ -106,6 +107,7 @@
             {data: 'nilai_dampak', name: 'nilai_dampak', orderable: false, className: 'text-center'},
             {data: 'nilai_akhir', name: 'nilai_akhir', orderable: false, className: 'text-center'},
             {data: 'predikat', name: 'predikat', orderable: false, className: 'text-center'},
+            {data: 'unduh_detil', name: 'unduh_detil', orderable: false, className: 'text-center'},
         ],
         language: {
             "decimal":        "",
