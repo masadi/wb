@@ -13,7 +13,8 @@ class InstrumenExport implements FromView
     public function view(): View
     {
         $sekolah = Sekolah::has('smk_coe')->has('sekolah_sasaran')->with(['rekap_pd', 'user' => function($query){
-            $query->with(['jawaban', 'jawaban_sekolah']);
+            $query->with(['jawaban_sekolah']);
+            //$query->with(['jawaban', 'jawaban_sekolah']);
         }, 'sekolah_sasaran' => function($query){
             $query->with(['verifikator', 'sektor']);
         }])->orderBy('provinsi_id')->orderBy('kabupaten_id')->get();

@@ -21,7 +21,7 @@ class UnduhanController extends Controller
         return $this->{$function}($request);
     }
     public function get_nilai_instrumen(){
-        return Excel::download(new InstrumenExport, 'NILAI INSTRUMEN.xlsx');
+        return Excel::store(new InstrumenExport, 'NILAI INSTRUMEN.xlsx');
     }
     public function get_laporan($request){
         $all_pendampingan = Laporan::with(['sekolah.sekolah_sasaran.sektor', 'pendamping'])->where('jenis_laporan_id', 1)->get();

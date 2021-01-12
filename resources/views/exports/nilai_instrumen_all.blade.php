@@ -72,7 +72,7 @@
                 @foreach ($aspek->instrumen as $instrumen)
         <td>
             <?php
-            $jawaban = $s->user->jawaban()->where('instrumen_id', $instrumen->instrumen_id)->first();
+            $jawaban = NULL;//$s->user->jawaban()->where('instrumen_id', $instrumen->instrumen_id)->first();
             ?>
             {{($jawaban) ? $jawaban->nilai : '-'}}
         </td>
