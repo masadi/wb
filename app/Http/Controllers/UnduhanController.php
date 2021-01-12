@@ -12,11 +12,16 @@ use App\Jenis_rapor;
 use Carbon\Carbon;
 use Excel;
 use App\Exports\NilaiExport;
+use App\Exports\InstrumenExport;
 class UnduhanController extends Controller
 {
     public function index(Request $request){
         $function = 'get_'.request()->route('query');
+        $function = str_replace('-','_', $function);
         return $this->{$function}($request);
+    }
+    public function get_nilai_instrumen(){
+        return Excel::download(new InstrumenExport, 'NILAI INSTRUMEN.xlsx');
     }
     public function get_laporan($request){
         $all_pendampingan = Laporan::with(['sekolah.sekolah_sasaran.sektor', 'pendamping'])->where('jenis_laporan_id', 1)->get();

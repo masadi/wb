@@ -74,4 +74,10 @@ class User extends Authenticatable
     public function getTokenAttribute($value){
         return strtoupper($value);
     }
+    public function jawaban(){
+        return $this->hasMany('App\Jawaban', 'user_id', 'user_id')->whereNotNull('verifikator_id')->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+    }
+    public function jawaban_sekolah(){
+        return $this->hasMany('App\Jawaban', 'user_id', 'user_id')->whereNull('verifikator_id');
+    }
 }

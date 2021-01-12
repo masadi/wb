@@ -242,4 +242,7 @@ class Sekolah extends Model
             'sekolah_sasaran_id' // Local key on Sekolah_sasaran table...
         );
     }
+    public function rekap_pd(){
+        return $this->hasOne('App\Rekap_pd', 'sekolah_id', 'sekolah_id');
+    }
 }
