@@ -73,6 +73,7 @@ Route::group(['prefix' => 'laporan'], function(){
     });
     Route::get('/rekap', 'LaporanController@rekap')->name('laporan.rekap');
     Route::get('/rekapitulasi', 'LaporanController@rekapitulasi')->name('laporan.rekapitulasi');
+    Route::get('/detil-rekap/{query}/{jenis_rapor_mutu}', 'RekapitulasiController@detil_rekap')->name('laporan.detil_rekap');
 });
 Route::get('/laporan-pendampingan', 'LaporanController@index')->name('laporan.pendampingan');
 Route::get('/laporan-verifikasi', 'LaporanController@verifikasi')->name('laporan.verifikasi');

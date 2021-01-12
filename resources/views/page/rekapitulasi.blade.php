@@ -243,6 +243,7 @@ function setData(response){
     $('.kurang_baik_kabupaten').html(response.data.rekap_kabupaten.kurang_baik)
     $('.tidak_baik_kabupaten').html(response.data.rekap_kabupaten.tidak_baik)
     $('.jumlah_kabupaten').html(response.data.rekap_kabupaten.jumlah)
+    turn_on_icheck()
 }
 var chartNasional;
 var jenis_rapor_mutu = $('#jenis_rapor_mutu').val();
@@ -323,6 +324,22 @@ $('#provinsi_id').change(function(){
         });
     }
 });
+turn_on_icheck()
+function turn_on_icheck(){
+	$('a.toggle-modal').bind('click',function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		if (url.indexOf('#') == 0) {
+			$('#modal_content').modal('open');
+	        $('.editor').wysihtml5();
+		} else {
+			$.get(url, function(data) {
+				$('#modal_content').modal();
+				$('#modal_content').html(data);
+			});
+		}
+    });
+}
 $('#kabupaten_id').change(function(){
     var ini = $(this).val();
     $.ajax({
