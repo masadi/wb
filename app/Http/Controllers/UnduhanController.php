@@ -20,8 +20,8 @@ class UnduhanController extends Controller
         $function = str_replace('-','_', $function);
         return $this->{$function}($request);
     }
-    public function get_nilai_instrumen(){
-        return Excel::store(new InstrumenExport, 'NILAI INSTRUMEN.xlsx');
+    public function nilai_instrumen($page){
+        return Excel::download(new InstrumenExport($page), 'NILAI INSTRUMEN.xlsx');
     }
     public function get_laporan($request){
         $all_pendampingan = Laporan::with(['sekolah.sekolah_sasaran.sektor', 'pendamping'])->where('jenis_laporan_id', 1)->get();

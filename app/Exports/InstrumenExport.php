@@ -10,6 +10,12 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class InstrumenExport implements FromView
 {
+    private $per_page;
+
+    public function __construct($per_page) 
+    {
+        $this->per_page = $per_page;
+    }
     public function view(): View
     {
         $sekolah = Sekolah::has('smk_coe')->has('sekolah_sasaran')->with(['rekap_pd', 'user' => function($query){
@@ -17,7 +23,7 @@ class InstrumenExport implements FromView
             //$query->with(['jawaban', 'jawaban_sekolah']);
         }, 'sekolah_sasaran' => function($query){
             $query->with(['verifikator', 'sektor']);
-        }])->orderBy('provinsi_id')->orderBy('kabupaten_id')->get();
+        }])->orderBy('provinsi_id')->orderBy('kabupaten_id')->paginate($this->per_page);
         $instrumens = Instrumen::where('urut', 0)->orderBy('indikator_id')->get();
         $komponen = Komponen::with(['aspek' => function($query){
             $query->with(['instrumen' => function($query){

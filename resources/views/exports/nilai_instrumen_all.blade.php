@@ -15,7 +15,7 @@
         <td></td>
         <td></td>
         @foreach ($komponen as $item)
-        <td colspan="{{$item->aspek->sum('instrumen_count')}}">{{$item->nama}}=>{{$item->aspek->sum('instrumen_count')}}</td>
+        <td colspan="{{$item->aspek->sum('instrumen_count')}}">{{$item->nama}}</td>
         @endforeach
         @foreach ($komponen as $item)
         <td colspan="{{$item->aspek->sum('instrumen_count')}}">{{$item->nama}}</td>
@@ -72,7 +72,7 @@
                 @foreach ($aspek->instrumen as $instrumen)
         <td>
             <?php
-            $jawaban = NULL;//$s->user->jawaban()->where('instrumen_id', $instrumen->instrumen_id)->first();
+            $jawaban = $s->user->jawaban()->where('instrumen_id', $instrumen->instrumen_id)->first();
             ?>
             {{($jawaban) ? $jawaban->nilai : '-'}}
         </td>
@@ -81,4 +81,7 @@
         @endforeach
     </tr>
     @endforeach
+    <tr>
+        <td></td>
+    </tr>
 </table>
