@@ -23,7 +23,7 @@ class InstrumenExport implements FromView
             //$query->with(['jawaban', 'jawaban_sekolah']);
         }, 'sekolah_sasaran' => function($query){
             $query->with(['verifikator', 'sektor']);
-        }])->orderBy('provinsi_id')->orderBy('kabupaten_id')->paginate($this->limit);
+        }])->orderBy('provinsi_id')->orderBy('kabupaten_id')->orderBy('npsn')->paginate($this->limit);
         $instrumens = Instrumen::where('urut', 0)->orderBy('indikator_id')->get();
         $komponen = Komponen::with(['aspek' => function($query){
             $query->with(['instrumen' => function($query){
