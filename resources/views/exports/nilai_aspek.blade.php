@@ -6,8 +6,8 @@
         <td></td>
         <td></td>
         <td></td>
-        <td colspan="58">Isian Sekolah</td>
-        <td colspan="58">Hasil Verifikasi</td>
+        <td colspan="22">Isian Sekolah</td>
+        <td colspan="22">Hasil Verifikasi</td>
     </tr>
     <tr>
         <td></td>
@@ -17,10 +17,10 @@
         <td></td>
         <td></td>
         @foreach ($komponen as $item)
-        <td colspan="{{$item->aspek->sum('instrumen_count')}}">{{$item->nama}}</td>
+        <td colspan="{{$item->aspek_count}}">{{$item->nama}}</td>
         @endforeach
         @foreach ($komponen as $item)
-        <td colspan="{{$item->aspek->sum('instrumen_count')}}">{{$item->nama}}</td>
+        <td colspan="{{$item->aspek_count}}">{{$item->nama}}</td>
         @endforeach
     </tr>
     <tr>
@@ -32,16 +32,12 @@
         <td>Jumlah Siswa</td>
         @foreach ($komponen as $item)
             @foreach ($item->aspek as $aspek)
-                @foreach ($aspek->instrumen as $instrumen)
-                <td>{{$instrumen->pertanyaan}}</td>
-                @endforeach
+                <td>{{$aspek->nama}}</td>
             @endforeach
         @endforeach
         @foreach ($komponen as $item)
             @foreach ($item->aspek as $aspek)
-                @foreach ($aspek->instrumen as $instrumen)
-                <td>{{$instrumen->pertanyaan}}</td>
-                @endforeach
+                <td>{{$aspek->nama}}</td>
             @endforeach
         @endforeach
     </tr>
@@ -61,26 +57,22 @@
         <td>{{$jumlah_siswa}}</td>
         @foreach ($komponen as $item)
             @foreach ($item->aspek as $aspek)
-                @foreach ($aspek->instrumen as $instrumen)
         <td>
             <?php
-            $jawaban_sekolah = $s->user->jawaban_sekolah()->where('instrumen_id', $instrumen->instrumen_id)->first();
+            $nilai_aspek_sekolah = $s->user->nilai_aspek_sekolah()->where('aspek_id', $aspek->id)->first();
             ?>
-            {{($jawaban_sekolah) ? $jawaban_sekolah->nilai : '-'}}
+            {{($nilai_aspek_sekolah) ? $nilai_aspek_sekolah->total_nilai : $s->user->user_id}}
         </td>
-                @endforeach
             @endforeach
         @endforeach
         @foreach ($komponen as $item)
             @foreach ($item->aspek as $aspek)
-                @foreach ($aspek->instrumen as $instrumen)
         <td>
             <?php
-            $jawaban = $s->user->jawaban()->where('instrumen_id', $instrumen->instrumen_id)->first();
+            $nilai_aspek_verifikasi = $s->user->nilai_aspek_verifikasi()->where('aspek_id', $aspek->id)->first();
             ?>
-            {{($jawaban) ? $jawaban->nilai : '-'}}
+            {{($nilai_aspek_verifikasi) ? $nilai_aspek_verifikasi->total_nilai : '-'}}
         </td>
-                @endforeach
             @endforeach
         @endforeach
     </tr>

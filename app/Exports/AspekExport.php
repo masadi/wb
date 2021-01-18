@@ -2,13 +2,13 @@
 
 namespace App\Exports;
 
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use App\Instrumen;
 use App\Sekolah;
 use App\Komponen;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
 
-class InstrumenExport implements FromView
+class AspekExport implements FromView
 {
     private $limit;
 
@@ -19,7 +19,7 @@ class InstrumenExport implements FromView
     public function view(): View
     {
         $sekolah = Sekolah::has('smk_coe')->has('sekolah_sasaran')->with(['rekap_pd', 'user' => function($query){
-            $query->with(['jawaban_sekolah']);
+            $query->with(['nilai_aspek_sekolah', 'nilai_aspek_verifikasi']);
             //$query->with(['jawaban', 'jawaban_sekolah']);
         }, 'sekolah_sasaran' => function($query){
             $query->with(['verifikator', 'sektor']);
@@ -31,8 +31,8 @@ class InstrumenExport implements FromView
                 $query->with('subs');
                 $query->orderBy('indikator_id');
             }]);
-        }])->get();
-        return view('exports.nilai_instrumen_all', [
+        }])->withCount('aspek')->get();
+        return view('exports.nilai_aspek', [
             'sekolah' => $sekolah,
             'instrumens' => $instrumens,
             'komponen' => $komponen,

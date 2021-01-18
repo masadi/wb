@@ -80,7 +80,8 @@ Route::get('/laporan-verifikasi', 'LaporanController@verifikasi')->name('laporan
 Route::group(['prefix' => 'unduhan'], function(){
     Route::get('/{query}', 'UnduhanController@index')->name('unduhan.laporan');
     Route::get('/instrumen/{sekolah_id}', 'UnduhanController@isian_instrumen')->name('unduhan.instrumen');
-    Route::get('/nilai-instrumen/{page}', 'UnduhanController@nilai_instrumen')->name('unduhan.nilai_instrumen');
+    Route::get('/nilai-instrumen/{limit}', 'UnduhanController@nilai_instrumen')->name('unduhan.nilai_instrumen');
+    Route::get('/nilai-aspek/{limit}', 'UnduhanController@nilai_aspek')->name('unduhan.nilai_aspek');
 });
 Route::group(['prefix' => 'dapodik'], function(){
     Route::get('/', 'DapodikController@index')->name('dapodik.data_verifikator_apm');

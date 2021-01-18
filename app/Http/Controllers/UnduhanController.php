@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Excel;
 use App\Exports\NilaiExport;
 use App\Exports\InstrumenExport;
+use App\Exports\AspekExport;
 class UnduhanController extends Controller
 {
     public function index(Request $request){
@@ -20,8 +21,11 @@ class UnduhanController extends Controller
         $function = str_replace('-','_', $function);
         return $this->{$function}($request);
     }
-    public function nilai_instrumen($page){
-        return Excel::download(new InstrumenExport($page), 'NILAI INSTRUMEN.xlsx');
+    public function nilai_instrumen($limit){
+        return Excel::download(new InstrumenExport($limit), 'NILAI INSTRUMEN.xlsx');
+    }
+    public function nilai_aspek($limit){
+        return Excel::download(new AspekExport($limit), 'NILAI ASPEK.xlsx');
     }
     public function get_laporan($request){
         $all_pendampingan = Laporan::with(['sekolah.sekolah_sasaran.sektor', 'pendamping'])->where('jenis_laporan_id', 1)->get();
