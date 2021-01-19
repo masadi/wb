@@ -111,6 +111,7 @@ class NilaiController extends Controller
             [
                 'nilai' => $total_nilai,
                 'predikat' => HelperModel::predikat($total_nilai, true),
+                'peringkat' => HelperModel::peringkat($total_nilai),
             ]
         );
         Nilai_akhir::updateOrCreate(
@@ -121,6 +122,7 @@ class NilaiController extends Controller
             [
                 'nilai' => $total_nilai,
                 'predikat' => HelperModel::predikat($total_nilai, true),
+                'peringkat' => HelperModel::peringkat($total_nilai),
             ]
         );
         return response()->json(['status' => 'success', 'data' => '']);

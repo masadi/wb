@@ -469,18 +469,34 @@ class HelperModel
         $result = ($nilai / 5) / 5;
         return $result - 3;
     }
+    public static function peringkat($nilai){
+        if ($nilai > 0.00 && $nilai < 46.00){
+            $peringkat = 5;
+        } elseif($nilai >= 46.00 && $nilai < 61.00) {
+            $peringkat = 4;
+        } elseif($nilai >= 61.00 && $nilai < 76.00) {
+            $peringkat = 3;
+        } elseif($nilai >= 76.00 && $nilai < 91.00) {
+            $peringkat = 2;
+        } elseif($nilai >= 91.00) {
+            $peringkat = 1;
+        } else {
+            $peringkat = 0;
+        }
+        return $peringkat;
+    }
 	public static function predikat($nilai, $puluhan = false){
 		$predikat = '-';
 		if($puluhan){
-            if ($nilai > 0 && $nilai <= 45){
+            if ($nilai > 0.00 && $nilai < 46.00){
                 $predikat = 'Tidak Baik';
-            } elseif($nilai > 45 && $nilai <= 60) {
+            } elseif($nilai >= 46.00 && $nilai < 61.00) {
                 $predikat = 'Kurang Baik';
-            } elseif($nilai > 60 && $nilai <= 75) {
+            } elseif($nilai >= 61.00 && $nilai < 76.00) {
                 $predikat = 'Cukup Baik';
-            } elseif($nilai > 75 && $nilai <= 90) {
+            } elseif($nilai >= 76.00 && $nilai < 91.00) {
                 $predikat = 'Baik';
-            } elseif($nilai > 90) {
+            } elseif($nilai >= 91.00) {
                 $predikat = 'Sangat Baik';
             } else {
                 $predikat = '-';

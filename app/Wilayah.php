@@ -202,23 +202,6 @@ class Wilayah extends Model
         return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->has('smk_coe')->whereHas('sekolah_sasaran', function($query){
             $query->whereHas('waiting');
         });
-        return $this->hasManyDeep(
-            'App\Rapor_mutu',
-            [
-                'App\Sekolah',
-                'App\Sekolah_sasaran',
-            ], // Intermediate models, beginning at the far parent (Country).
-            [
-               'provinsi_id', // Foreign key on the "Sekolah" table.
-               'sekolah_id',    // Foreign key on the "Sekolah_sasaran" table.
-               'sekolah_sasaran_id'     // Foreign key on the "Rapor_mutu" table.
-            ],
-            [
-              'kode_wilayah', // Local key on the "Wilayah" table.
-              'sekolah_id', // Local key on the "Sekolah" table.
-              'sekolah_sasaran_id'  // Local key on the "Sekolah_sasaran" table.
-            ]
-        )->whereHas('waiting');
     }
     public function sekolah_waiting_kabupaten(){
         return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->has('smk_coe')->whereHas('sekolah_sasaran', function($query){
@@ -228,6 +211,24 @@ class Wilayah extends Model
     public function sekolah_waiting_kecamatan(){
         return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->has('smk_coe')->whereHas('sekolah_sasaran', function($query){
             $query->whereHas('waiting');
+        });
+    }
+    public function sekolah_nilai_akhir_provinsi(){
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->has('smk_coe')->has('sekolah_sasaran')->whereHas('nilai_akhir', function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        });
+    }
+    public function sekolah_nilai_akhir_kabupaten(){
+        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->has('smk_coe')->has('sekolah_sasaran')->whereHas('nilai_akhir', function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+        });
+    }
+    public function sekolah_nilai_akhir_kecamatan(){
+        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->has('smk_coe')->has('sekolah_sasaran')->whereHas('nilai_akhir', function($query){
+            $query->whereNotNull('verifikator_id');
+            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         });
     }
     public function sekolah_proses_provinsi(){

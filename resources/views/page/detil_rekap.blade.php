@@ -11,6 +11,8 @@
 			<th>Sektor CoE</th>
 			<th>Kabupaten/Kota</th>
 			<th>Provinsi</th>
+			<th>Nilai Rapor Mutu</th>
+			<th>Predikat</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -22,6 +24,8 @@
 			<td>{{($sekolah->sekolah_sasaran) ? ($sekolah->sekolah_sasaran->sektor) ? $sekolah->sekolah_sasaran->sektor->nama : '-' : '-'}}</td>
 			<td>{{$sekolah->kabupaten}}</td>
 			<td>{{$sekolah->provinsi}}</td>
+			<td>{{($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->nilai : '-'}}</td>
+			<td>{{($sekolah->nilai_akhir) ? $sekolah->nilai_akhir->predikat : '-'}}</td>
 		</tr>
 	@empty
 		<tr>

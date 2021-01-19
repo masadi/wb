@@ -56,6 +56,7 @@ class GeneratePredikat extends Command
         foreach($nilai_akhir as $akhir){
             $predikat_akhir = HelperModel::predikat($akhir->nilai, true);
             $akhir->predikat = $predikat_akhir;
+            $akhir->peringkat = HelperModel::peringkat($akhir->nilai);
             $akhir->save();
         }
         $this->info('Proses Generate Predikat Verifikator Selesai');
@@ -75,6 +76,7 @@ class GeneratePredikat extends Command
         foreach($nilai_akhir as $akhir){
             $predikat_akhir = HelperModel::predikat($akhir->nilai, true);
             $akhir->predikat = $predikat_akhir;
+            $akhir->peringkat = HelperModel::peringkat($akhir->nilai);
             $akhir->save();
         }
         $this->info('Proses Generate Predikat Sekolah Selesai');

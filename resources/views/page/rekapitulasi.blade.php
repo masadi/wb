@@ -275,6 +275,7 @@ $('#provinsi_id').change(function(){
             data: {
                 id_level_wilayah: 1,
                 kode_wilayah: ini.trim(),
+                jenis_rapor_mutu: $('#jenis_rapor_mutu').val(),
             },
             success: function(response){
                 $('#kabupaten_id').html('<option value="">Semua Kab/Kota</option>');
@@ -289,6 +290,7 @@ $('#provinsi_id').change(function(){
                     type: 'post',
                     data: {
                         provinsi_id: ini.trim(),
+                        jenis_rapor_mutu: $('#jenis_rapor_mutu').val(),
                     },
                     success: function(response){
                         console.log(response);
@@ -348,6 +350,7 @@ $('#kabupaten_id').change(function(){
         data: {
             provinsi_id: $('#provinsi_id').val().trim(),
             kabupaten_id: ini.trim(),
+            jenis_rapor_mutu: $('#jenis_rapor_mutu').val(),
         },
         success: function(response){
             setData(response)

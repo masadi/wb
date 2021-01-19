@@ -215,13 +215,14 @@ class PageController extends Controller
         $with_proses = 'sekolah_proses'.$wilayah;
         $with_terima = 'sekolah_terima'.$wilayah;
         $with_tolak = 'sekolah_tolak'.$wilayah;
+        $with_nilai_akhir = 'sekolah_nilai_akhir'.$wilayah;
         $data_count = 'sekolah'.$wilayah.'_count';
         $data_count_coe = 'sekolah_coe'.$wilayah.'_count';
         $all_wilayah = Wilayah::whereHas('negara', function($query){
             $query->where('negara_id', 'ID');
         })->where(function($query){
             $query->where('id_level_wilayah', 1);
-        })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak])->orderBy('kode_wilayah')->get();
+        })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak, $with_nilai_akhir])->orderBy('kode_wilayah')->get();
         $sekolah_coe_count = 0;
         $sekolah_instrumen_count = 0;
         $sekolah_rapor_mutu_count = 0;
@@ -230,6 +231,7 @@ class PageController extends Controller
         $sekolah_proses_count = 0;
         $sekolah_terima_count = 0;
         $sekolah_tolak_count = 0;
+        $sekolah_akhir_count = 0;
         $coe_count = $with_coe.'_count';
         $instrumen_count = $with_instrumen.'_count';
         $pakta_integritas_count = $with_pakta_integritas.'_count';
@@ -238,6 +240,7 @@ class PageController extends Controller
         $proses_count = $with_proses.'_count';
         $terima_count = $with_terima.'_count';
         $tolak_count = $with_tolak.'_count';
+        $nilai_akhir_count = $with_nilai_akhir.'_count';
         foreach($all_wilayah as $wilayah){
             $sekolah_coe_count += $wilayah->$coe_count;
             $sekolah_instrumen_count += $wilayah->$instrumen_count;
@@ -247,6 +250,7 @@ class PageController extends Controller
             $sekolah_proses_count += $wilayah->$proses_count;
             $sekolah_terima_count += $wilayah->$terima_count;
             $sekolah_tolak_count += $wilayah->$tolak_count;
+            $sekolah_akhir_count += $wilayah->$nilai_akhir_count;
         }
         $counting = [
             $sekolah_coe_count, 
@@ -262,6 +266,7 @@ class PageController extends Controller
             $sekolah_coe_count - $sekolah_proses_count,
             $sekolah_terima_count, 
             $sekolah_coe_count - $sekolah_terima_count,
+            $sekolah_akhir_count,
         ];
         $komponen_kinerja = Komponen::whereIn('id', [1,2,3])->get();
         $komponen_dampak = Komponen::whereIn('id', [4,5])->get();
