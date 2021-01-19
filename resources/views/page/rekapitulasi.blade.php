@@ -333,7 +333,6 @@ function turn_on_icheck(){
 		var url = $(this).attr('href');
 		if (url.indexOf('#') == 0) {
 			$('#modal_content').modal('open');
-	        $('.editor').wysihtml5();
 		} else {
 			$.get(url, function(data) {
 				$('#modal_content').modal();

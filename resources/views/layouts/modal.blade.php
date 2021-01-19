@@ -1,4 +1,4 @@
-<div class="modal-dialog <?php echo isset($modal_s) ? $modal_s : 'modal-lg'; ?>">
+<div class="modal-dialog <?php echo isset($modal_s) ? $modal_s : 'modal-xl'; ?>">
 	<div class="modal-content panel-warning">
 		<div class="modal-header">
 			<h5 class="modal-title" id="myModalLabel">@yield('title')</h5>
