@@ -616,6 +616,7 @@ class HelperModel
             [
                 'nilai' => $total_nilai,
                 'predikat' => self::predikat($total_nilai, true),
+                'peringkat' => self::peringkat($total_nilai),
             ]
         );
     }
