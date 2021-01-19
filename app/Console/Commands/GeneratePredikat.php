@@ -80,5 +80,8 @@ class GeneratePredikat extends Command
             $akhir->save();
         }
         $this->info('Proses Generate Predikat Sekolah Selesai');
+        Nilai_akhir::where('verifikator_id', '84ff9f29-1bd0-462f-976f-4c512dc22cc2')->delete();
+        Nilai_akhir::whereIn('nilai_akhir_id', ['9273c9f4-ddab-4116-97c5-7dcdedfc0f8f','a2788a02-d678-4483-9efc-facda92ac674','66f94be6-20e8-404c-b4b4-048666b2904a','9b27fd8b-f711-4a00-98c4-d67d63d8a4c5'])->delete();
+        $this->info('Proses cleansing Nilai Akhir');
     }
 }

@@ -214,22 +214,13 @@ class Wilayah extends Model
         });
     }
     public function sekolah_nilai_akhir_provinsi(){
-        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->has('smk_coe')->has('sekolah_sasaran')->whereHas('nilai_akhir', function($query){
-            $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
-        });
+        return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah');
     }
     public function sekolah_nilai_akhir_kabupaten(){
-        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah')->has('smk_coe')->has('sekolah_sasaran')->whereHas('nilai_akhir', function($query){
-            $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
-        });
+        return $this->hasMany('App\Sekolah', 'kabupaten_id', 'kode_wilayah');
     }
     public function sekolah_nilai_akhir_kecamatan(){
-        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah')->has('smk_coe')->has('sekolah_sasaran')->whereHas('nilai_akhir', function($query){
-            $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
-        });
+        return $this->hasMany('App\Sekolah', 'kecamatan_id', 'kode_wilayah');
     }
     public function sekolah_proses_provinsi(){
         return $this->hasMany('App\Sekolah', 'provinsi_id', 'kode_wilayah')->whereHas('sekolah_sasaran', function($query){

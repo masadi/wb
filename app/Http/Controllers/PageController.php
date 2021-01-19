@@ -222,7 +222,21 @@ class PageController extends Controller
             $query->where('negara_id', 'ID');
         })->where(function($query){
             $query->where('id_level_wilayah', 1);
-        })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak, $with_nilai_akhir])->orderBy('kode_wilayah')->get();
+        })->withCount([$with, $with_coe, $with_instrumen, $with_rapor_mutu, $with_pakta_integritas, $with_waiting, $with_proses, $with_terima, $with_tolak, $with_nilai_akhir => function($query){
+            $query->has('smk_coe');
+            $query->has('sekolah_sasaran');
+            $query->whereHas('user', function($q){
+                $q->whereHas('nilai_akhir', function($sq){
+                    $sq->whereNotNull('verifikator_id');
+                    $sq->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                });
+            });
+            //$query->whereHas('nilai_akhir', function($query){
+                //$query->whereNotNull('verifikator_id');
+                //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                //$query->where('peringkat', 5);
+            //});
+        }])->orderBy('kode_wilayah')->get();
         $sekolah_coe_count = 0;
         $sekolah_instrumen_count = 0;
         $sekolah_rapor_mutu_count = 0;
@@ -260,13 +274,14 @@ class PageController extends Controller
             $sekolah_coe_count - $sekolah_rapor_mutu_count,
             $sekolah_pakta_integritas_count, 
             $sekolah_coe_count - $sekolah_pakta_integritas_count,
-            $sekolah_waiting_count, 
-            $sekolah_coe_count - $sekolah_waiting_count,
+            //$sekolah_waiting_count, 
+            //$sekolah_coe_count - $sekolah_waiting_count,
+            $sekolah_akhir_count,
+            $sekolah_coe_count - $sekolah_akhir_count,
             $sekolah_proses_count, 
             $sekolah_coe_count - $sekolah_proses_count,
             $sekolah_terima_count, 
             $sekolah_coe_count - $sekolah_terima_count,
-            $sekolah_akhir_count,
         ];
         $komponen_kinerja = Komponen::whereIn('id', [1,2,3])->get();
         $komponen_dampak = Komponen::whereIn('id', [4,5])->get();

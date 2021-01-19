@@ -12,29 +12,29 @@ class RekapitulasiController extends Controller
     public function index(Request $request){
         $query = Sekolah::query()->has('smk_coe')->with(['nilai_input' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_proses' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_output' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_outcome' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_impact' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_kinerja' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
             $query->with('komponen');
         }, 'nilai_dampak' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }, 'nilai_akhir' => function($query){
             $query->whereNotNull('verifikator_id');
-            $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+            //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
         }]/*)->where(function($query){
             if(request()->kode_wilayah){
                 $query->whereIn('kode_wilayah', function($query){
@@ -143,7 +143,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 1);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -159,7 +159,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 2);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -175,7 +175,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 3);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -191,7 +191,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 4);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -207,7 +207,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 5);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -221,7 +221,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 1);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -235,7 +235,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 2);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -249,7 +249,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 3);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -263,7 +263,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 4);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -277,7 +277,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 5);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -291,7 +291,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 1);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -305,7 +305,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 2);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -319,7 +319,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 3);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -333,7 +333,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 4);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -347,7 +347,7 @@ class RekapitulasiController extends Controller
                 $query->where('peringkat', 5);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -421,7 +421,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [91.00, 100.00]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -432,7 +432,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [91.00, 100.00]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -443,7 +443,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [76, 90.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -454,7 +454,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [76, 90.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -465,7 +465,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [61, 75.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -476,7 +476,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [61, 75.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -487,7 +487,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [46, 60.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -498,7 +498,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [46, 60.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -509,7 +509,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [0, 45.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -520,7 +520,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [0, 45.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -532,7 +532,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [91.00, 100.00]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -544,7 +544,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [91.00, 100.00]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -555,7 +555,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [76, 90.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -567,7 +567,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [76, 90.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -578,7 +578,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [61, 75.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -590,7 +590,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [61, 75.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -601,7 +601,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [46, 60.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -613,7 +613,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [46, 60.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -624,7 +624,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [0, 45.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -636,7 +636,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [0, 45.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -648,7 +648,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [91.00, 100.00]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -660,7 +660,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [91.00, 100.00]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -671,7 +671,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [76, 90.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -683,7 +683,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [76, 90.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -694,7 +694,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [61, 75.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -706,7 +706,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [61, 75.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -717,7 +717,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [46, 60.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -729,7 +729,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [46, 60.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
@@ -740,7 +740,7 @@ class RekapitulasiController extends Controller
                 $query->whereBetween('nilai', [0, 45.99]);
                 if($jenis_rapor_mutu == 'verifikasi'){
                     $query->whereNotNull('verifikator_id');
-                    $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                    //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                 } else {
                     $query->whereNull('verifikator_id');
                 }
@@ -752,7 +752,7 @@ class RekapitulasiController extends Controller
                     $query->whereBetween('nilai', [0, 45.99]);
                     if($jenis_rapor_mutu == 'verifikasi'){
                         $query->whereNotNull('verifikator_id');
-                        $query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
+                        //$query->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
                     } else {
                         $query->whereNull('verifikator_id');
                     }
