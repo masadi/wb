@@ -27,6 +27,63 @@ class UnduhanController extends Controller
     public function nilai_aspek($limit){
         return Excel::download(new AspekExport($limit), 'NILAI ASPEK.xlsx');
     }
+    public function get_detil_laporan(){
+        $all_pendampingan = Laporan::with(['sekolah.sekolah_sasaran.sektor', 'pendamping'])->where('jenis_laporan_id', 1)->get();
+        $no=1;
+        $pendampingan = [];
+        $belum_pendampingan = [];
+        $verifikasi = [];
+        $belum_verifikasi = [];
+        foreach($all_pendampingan as $data_pendampingan){
+            $tanggal_pelaksanaan = Carbon::parse($data_pendampingan->tanggal_pelaksanaan)->locale('id');
+            $created_at = Carbon::parse($data_pendampingan->created_at)->locale('id');
+            $pendampingan[] = [
+                'No' => $no,
+                'Provinsi' => $data_pendampingan->sekolah->provinsi,
+                'Kabupaten/Kota' => $data_pendampingan->sekolah->kabupaten,
+                'Nama Sekolah' => $data_pendampingan->sekolah->nama,
+                'NPSN' => $data_pendampingan->sekolah->npsn,
+                'Sektor CoE' => ($data_pendampingan->sekolah->sekolah_sasaran->sektor) ? $data_pendampingan->sekolah->sekolah_sasaran->sektor->nama : '-',
+                'Nama Pendamping' => ($data_pendampingan->pendamping) ? $data_pendampingan->pendamping->nama : '-',
+                'Tanggal Pelaksanaan' => $tanggal_pelaksanaan->isoFormat('Do MMMM YYYY'),
+                'Tanggal Pelaporan' => $created_at->isoFormat('Do MMMM YYYY'),
+                'Jumlah dan nama IDUKA' => $data_pendampingan->jumlah_iduka,
+                'Berapakah jumlah lulusan dari sekolah yang bapak/ibu dampingi dapat diserap oleh IDUKA?' => $data_pendampingan->lulusan,
+                'Berapakah jumlah lulusan dari sekolah yang bapak/ibu dampingi sudah diserap oleh IDUKA?' => $data_pendampingan->lulusan_all,
+                'Perkembangan SMK' => $data_pendampingan->perkembangan_smk,
+                'Kesimpulan dan Saran' => $data_pendampingan->kesimpulan_saran,
+            ];
+            $no++;
+        }
+        $sekolah_sudah_monev = Sekolah::has('sekolah_sasaran')->has('smk_coe')->with(['laporan', 'sekolah_sasaran' => function($query){
+            $query->with(['sektor', 'pendamping']);
+        }])->whereHas('laporan', function (Builder $query) {
+            $query->where('jenis_laporan_id', 5);
+        })->get();
+        /*$no=1;
+        foreach($sekolah_sudah_monev as $data_sudah_monev){
+            $tanggal_pelaksanaan_monev = Carbon::parse($data_sudah_monev->tanggal_pelaksanaan)->locale('id');
+            $created_at_monev = Carbon::parse($data_sudah_monev->laporan->created_at)->locale('id');
+            $sudah_monev[] = [
+                'No' => $no,
+                'Provinsi' => $data_sudah_monev->provinsi,
+                'Kabupaten/Kota' => $data_sudah_monev->kabupaten,
+                'Nama Sekolah' => $data_sudah_monev->nama,
+                'NPSN' => $data_sudah_monev->npsn,
+                'Sektor CoE' => ($data_sudah_monev->sekolah_sasaran->sektor) ? $data_sudah_monev->sekolah_sasaran->sektor->nama : '-',
+                'Nama Pendamping' => ($data_sudah_monev->sekolah_sasaran->pendamping) ? $data_sudah_monev->sekolah_sasaran->pendamping->nama : '-',
+                'Tanggal Pelaksanaan' => $tanggal_pelaksanaan->isoFormat('Do MMMM YYYY'),
+                'Tanggal Pelaporan' => $created_at->isoFormat('Do MMMM YYYY'),
+                'Keterangan' => '',
+            ];
+            $no++;
+        }*/
+        $sheets = new SheetCollection([
+            'Laporan Pendampingan' => $pendampingan,
+            //'Laporan Monev' => $sudah_monev,
+        ]);
+        return (new FastExcel($sheets))->download('Detil Laporan Pendampingan Penjaminan Mutu SMK CoE Tahun 2020.xlsx');
+    }
     public function get_laporan($request){
         $all_pendampingan = Laporan::with(['sekolah.sekolah_sasaran.sektor', 'pendamping'])->where('jenis_laporan_id', 1)->get();
         $no=1;
