@@ -230,7 +230,7 @@ export default {
                     user_id: user.user_id,
                 })
                 .then((response) => {
-                    this.no_coe = 'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
+                    this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                     this.loading = false
                     let getData = response.data.data
                     if (!getData) {

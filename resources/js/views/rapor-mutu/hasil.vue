@@ -518,7 +518,7 @@ export default {
                     }
                 })
                 vm.createChart('chartdiv', DataKeterangan)
-                this.no_coe = 'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
+                this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                 this.is_coe = (getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
             });
         },

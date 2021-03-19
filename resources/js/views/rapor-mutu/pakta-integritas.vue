@@ -291,7 +291,7 @@ export default {
                     this.tanggal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at) : '-' : '-'
                     this.tanggal_ttd = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? this.tanggalIndo(getData.user.sekolah.sekolah_sasaran.pakta_integritas.created_at, false) : this.tanggalIndo(formatted_date, false) : this.tanggalIndo(formatted_date, false)
                     this.isBatal = (getData.user.sekolah.sekolah_sasaran) ? (getData.user.sekolah.sekolah_sasaran.pakta_integritas) ? false : true : true
-                    this.no_coe = 'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
+                    this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                     this.is_coe = (getData.user.sekolah) ? getData.user.sekolah.smk_coe : null
                     if (getData.user.nilai_akhir && this.isBatal) {
                         this.isCheckbox = false
