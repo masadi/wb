@@ -60,7 +60,7 @@ class LoginController extends Controller
         $auth = request()->merge([$fieldType => $login]);
         return $fieldType;
     }
-    public function login(Request $request)
+    /*public function login(Request $request)
     {
         //dd($request->all());
         if ($request->has('username')) {
@@ -75,5 +75,5 @@ class LoginController extends Controller
         } else {
             return redirect()->intended('/login')->withError('Please activate your account before logging in.');
         }
-    }
+    }*/
 }
