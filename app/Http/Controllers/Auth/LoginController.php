@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -57,5 +59,21 @@ class LoginController extends Controller
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         $auth = request()->merge([$fieldType => $login]);
         return $fieldType;
+    }
+    public function login(Request $request)
+    {
+        //dd($request->all());
+        if ($request->has('username')) {
+            $credentials = ['username' => $request->username, 'password' => $request->password, 'active' => 1];//$request->only('username', 'password');
+        } else {
+            $credentials = ['email' => $request->email, 'password' => $request->password, 'active' => 1];//$request->only('email', 'password');
+        }
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->intended('/');
+        } else {
+            return redirect()->intended('/login')->withError('Please activate your account before logging in.');
+        }
     }
 }

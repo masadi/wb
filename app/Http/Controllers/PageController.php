@@ -261,8 +261,8 @@ class PageController extends Controller
             $sekolah_rapor_mutu_count += $wilayah->$rapor_mutu_count;
             $sekolah_pakta_integritas_count += $wilayah->$pakta_integritas_count;
             $sekolah_waiting_count += $wilayah->$waiting_count;
-            $sekolah_proses_count += $wilayah->$proses_count;
-            $sekolah_terima_count += $wilayah->$terima_count;
+            $sekolah_proses_count += $wilayah->$waiting_count;//$wilayah->$proses_count;
+            $sekolah_terima_count += $wilayah->$waiting_count;//$wilayah->$terima_count;
             $sekolah_tolak_count += $wilayah->$tolak_count;
             $sekolah_akhir_count += $wilayah->$nilai_akhir_count;
         }

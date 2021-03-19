@@ -86,10 +86,14 @@
                             <td class="text-center">{{($persen_pakta_integritas) ? number_format($persen_pakta_integritas,0).'%' : '0%'}}</td>
                             <td class="text-center">{{$item->$count_waiting}}</td>
                             <td class="text-center">{{($persen_waiting) ? number_format($persen_waiting,0).'%' : '0%'}}</td>
-                            <td class="text-center">{{$item->$count_proses}}</td>
+                            <!--td class="text-center">{{$item->$count_proses}}</td>
                             <td class="text-center">{{($persen_proses) ? number_format($persen_proses,0).'%' : '0%'}}</td>
                             <td class="text-center">{{$item->$count_terima}}</td>
-                            <td class="text-center">{{($persen_terima) ? number_format($persen_terima,0).'%' : '0%'}}</td>
+                            <td class="text-center">{{($persen_terima) ? number_format($persen_terima,0).'%' : '0%'}}</td-->
+                            <td class="text-center">{{$item->$count_waiting}}</td>
+                            <td class="text-center">{{($persen_waiting) ? number_format($persen_waiting,0).'%' : '0%'}}</td>
+                            <td class="text-center">{{$item->$count_waiting}}</td>
+                            <td class="text-center">{{($persen_waiting) ? number_format($persen_waiting,0).'%' : '0%'}}</td>
                         </tr>
                         @empty
                         <tr>
