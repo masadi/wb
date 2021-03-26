@@ -40,6 +40,26 @@
                                                     <label v-bind:for="item.instrumen_id+subs.urut" class="custom-control-label" style="font-weight: normal;">{{subs.urut}}. {{subs.pertanyaan}}</label>
                                                 </div>
                                             </div>
+                                            <div class="form-group" v-for="breakdown in item.breakdown">
+                                                <table class="table table-bordered">
+                                                    <tr>
+                                                        <th>{{breakdown.breakdown}}</th>
+                                                        <template v-for="question in breakdown.question.slice(0,1)">
+                                                            <th v-for="answer in question.answer" width="150">{{answer.answer}}</th>
+                                                        </template>
+                                                    </tr>
+                                                    <tr v-for="question in breakdown.question">
+                                                        <td>{{question.question}}</td>
+                                                        <td v-for="answer in question.answer">
+                                                            <input v-if="answer.type === 'number'" class="form-control input-sm" type="number" step="1" min="0" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" @input="filterInput">
+                                                            <div class="custom-control custom-radio mt-1">
+                                                            <input v-if="answer.type === 'radio'" class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
+                                                            <label v-if="answer.type === 'radio'" v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </li>
                                     </ol>
                                 </div>
@@ -99,6 +119,7 @@ export default {
                 aspek_id: {},
                 komponen_id: {},
                 instrumen_id: {},
+                answer_id: {},
             }),
             articles: [],
             items: [],
@@ -116,6 +137,9 @@ export default {
         }
     },
     methods: {
+        filterInput(e){
+            e.target.value = e.target.value.replace(/[^0-9]+/g, '');
+        },
         newPage(new_page, intern = false) {
             if (new_page) {
                 this.url = `/api/get-kuisioner?user_id=${this.user_id}&komponen_id=${new_page}`

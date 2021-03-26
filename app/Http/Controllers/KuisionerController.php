@@ -36,7 +36,7 @@ class KuisionerController extends Controller
             $callback = function($query) use ($request, $a){
                 $query->where('id', $a->id);
             };
-            $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek', $callback)->with(['jawaban' => $callback_jawaban, 'subs', 'indikator.atribut.aspek' => $callback])->get();
+            $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek', $callback)->with(['jawaban' => $callback_jawaban, 'subs', 'indikator.atribut.aspek' => $callback, 'breakdown.question.answer'])->get();
             $output = [];
             foreach($instrumens as $instrumen){
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;

@@ -30,6 +30,10 @@ use File;
 use Validator;
 use PDF;
 use Artisan;
+use App\Breakdown;
+use App\Question;
+use App\Answer;
+
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
@@ -213,7 +217,7 @@ class ReferensiController extends Controller
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
-    public function upload(Request $request){
+    public function upload_old(Request $request){
         $messages = [
             'file.required'	=> 'File Upload tidak boleh kosong',
             'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
@@ -275,6 +279,65 @@ class ReferensiController extends Controller
             $data = [
                 'title' => 'Gagal',
                 'text' => 'Data Instrumen gagal disimpan',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($data);
+    }
+    public function upload(Request $request){
+        $messages = [
+            'file.required'	=> 'File Upload tidak boleh kosong',
+            'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
+        ];
+        $validator = Validator::make(request()->all(), [
+            'file' => 'required|mimes:xlsx',
+            //'file' => 'required',
+        ],
+        $messages
+        )->validate();
+        $file = $request->file('file');
+        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move('uploads', $fileExcel);
+        $insert = 0;
+        $komponen = (new FastExcel)->import('uploads/'.$fileExcel, function ($item) use ($request, &$insert){
+            //dd($item);
+            $find = Instrumen::where(function($query) use ($item){
+                $query->where('indikator_id', $item['nomor']);
+                $query->where('urut', 0);
+            })->first();
+            if($find && $item['no_breakdown']){
+                $breakdown = Breakdown::updateOrCreate([
+                    'instrumen_id' => $find->instrumen_id,
+                    'urut' => $item['no_breakdown'],
+                    'breakdown' => $item['breakdown'],
+                ]);
+                $question = Question::updateOrCreate([
+                    'breakdown_id' => $breakdown->breakdown_id,
+                    'urut' => $item['no_isian'],
+                    'question' => $item['question'],
+                    //'answer' => $item['answer'],
+                ]);
+                $answer = Answer::updateOrCreate([
+                    'question_id' => $question->question_id,
+                    'urut' => $item['urut_answer'],
+                    'answer' => $item['answer'],
+                    'type' => $item['type'],
+                ]);
+            }
+            //dd($find);
+            $insert++;
+        });
+        File::delete(public_path('uploads/'.$fileExcel));
+        if($insert){
+            $data = [
+                'title' => 'Berhasil',
+                'text' => 'Data breakdown berhasil disimpan',
+                'icon' => 'success',
+            ];
+        } else {
+            $data = [
+                'title' => 'Gagal',
+                'text' => 'Data breakdown gagal disimpan',
                 'icon' => 'error',
             ];
         }
