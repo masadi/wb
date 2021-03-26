@@ -69,7 +69,7 @@ export default {
     data() {
         return {
             no_coe: 'Loading....',
-            is_coe: null,
+            is_coe: true,
             persen_utama: 0,
             persen: [],
             jumlah_kuisioner: [],
