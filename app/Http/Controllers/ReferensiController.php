@@ -300,7 +300,6 @@ class ReferensiController extends Controller
         $file->move('uploads', $fileExcel);
         $insert = 0;
         $komponen = (new FastExcel)->import('uploads/'.$fileExcel, function ($item) use ($request, &$insert){
-            //dd($item);
             $find = Instrumen::where(function($query) use ($item){
                 $query->where('indikator_id', $item['nomor']);
                 $query->where('urut', 0);
