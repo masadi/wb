@@ -41,7 +41,7 @@
             <b-badge v-show="!row.item.smk_coe" variant="danger">Tidak</b-badge>
         </template>
         <template v-slot:cell(sektor_coe)="row">
-            {{(row.item.smk_coe) ? (row.item.sekolah_sasaran.sektor) ? row.item.sekolah_sasaran.sektor.nama : '-' : '-'}}
+            {{(row.item.smk_coe && row.item.sekolah_sasaran) ? (row.item.sekolah_sasaran.sektor) ? row.item.sekolah_sasaran.sektor.nama : '-' : '-'}}
         </template>
         <template v-slot:cell(actions)="row">
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
