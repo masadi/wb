@@ -18,7 +18,7 @@
         <!-- BLOCK INI AKAN MENG-HANDLE PENCARIAN DATA -->
         <div class="col-md-4 offset-md-4">
             <div class="form-inline float-right">
-                <label class="mr-2">Cari</label>
+                <label class="mr-2">Search</label>
                 <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
                 <input type="text" class="form-control" @input="search">
             </div>
@@ -39,8 +39,8 @@
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success" class="m-2">
                         <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-search"></i> Detil</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="openEditModal(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
-                        <b-dropdown-item href="javascript:" @click="openDeleteModal(row)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
+                        <b-dropdown-item href="javascript:" @click="deleteData(row.item.instrumen_id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
                 </template>
             </b-table>   
@@ -48,7 +48,7 @@
       	<!-- BAGIAN INI AKAN MENAMPILKAN JUMLAH DATA YANG DI-LOAD -->
           <div class="row">
         <div class="col-md-6">
-            <p>Menampilkan {{ meta.from }} sampai {{ meta.to }} dari {{ meta.total }} entri</p>
+            <p>Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} items</p>
         </div>
       
       	<!-- BLOCK INI AKAN MENJADI PAGINATION DARI DATA YANG DITAMPILKAN -->
@@ -106,35 +106,40 @@
                 </div>
             </template>
         </b-modal>
-        <b-modal id="modal-prevent-closing" size="xl" v-model="editModal" title="Edit Instrumen" @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk">
-            <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          :state="nameState"
-          label="Name"
-          label-for="name-input"
-          invalid-feedback="Name is required"
-        >
-          <b-form-input
-            id="name-input"
-            v-model="name"
-            :state="nameState"
-            required
-          ></b-form-input>
-        </b-form-group>
-      </form>
-      <template v-slot:modal-footer="{ ok, cancel, hide }">
-            <!--b>Custom Footer</b-->
-            <!-- Emulate built in modal footer ok and cancel button actions -->
-            <b-button size="sm" variant="success" @click="ok()">
-                Simpan
-            </b-button>
-            <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
-                Batal
-            </b-button>
-        </template>
-        </b-modal>
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEdit" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Perbaharui Instrumen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form @submit.prevent="updateData()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Aspek</label>
+                            <input v-model="form.id" type="hidden" name="id"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
+                            <input v-model="form.pertanyaan" type="text" name="pertanyaan"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('pertanyaan') }">
+                            <has-error :form="form" field="pertanyaan"></has-error>
+                            <!--label>Nomor Urut</label>
+                            <input v-model="form.urut" type="text" name="urut"
+                                class="form-control" :class="{ 'is-invalid': form.errors.has('urut') }">
+                            <has-error :form="form" field="urut"></has-error-->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -169,9 +174,12 @@ export default {
     },
     data() {
         return {
-            name: '',
-            nameState: null,
-            submittedNames: [],
+            editmode: false,
+            form: new Form({
+                id : '',
+                pertanyaan: '',
+                urut: '',
+            }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
             sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
@@ -204,6 +212,12 @@ export default {
         }
     },
     methods: {
+        openShowModal(row) {
+            console.log(row.item.title);
+            this.showModal = true
+            this.modalText = row.item
+            this.selected = row.item
+        },
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
@@ -221,50 +235,58 @@ export default {
             //KIRIM EMIT DENGAN NAMA SEARCH DAN VALUE SESUAI YANG DIKETIKKAN OLEH USER
             this.$emit('search', e.target.value)
         }, 500),
-        openDeleteModal(row) {
-            this.deleteModal = true
-            this.selected = row.item
+        deleteData(id){
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini tidak dapat dikembalikan!",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.value) {
+                    return fetch('/api/instrumen/'+id, {
+                        method: 'DELETE',
+                    }).then(()=>{
+                    //this.form.delete('api/komponen/'+id).then(()=>{
+                        Swal.fire(
+                            'Berhasil!',
+                            'Data Instrumen berhasil dihapus',
+                            'success'
+                        ).then(()=>{
+                            this.loadPerPage(10);
+                        });
+                    }).catch((data)=> {
+                        Swal.fire("Failed!", data.message, "warning");
+                    });
+                }
+            })
         },
-        deleteModalButton() {
-            this.$emit('delete', this.selected)
-            this.deleteModal = false
-        },
-        openShowModal(row) {
-            console.log(row.item.title);
-            this.showModal = true
-            this.modalText = row.item
-            this.selected = row.item
-        },
-        openEditModal(row) {
+        editData(row) {
+            console.log(row);
+            this.editmode = true
             this.editModal = true
+            this.form.id = row.item.instrumen_id
+            this.form.pertanyaan = row.item.pertanyaan
+            //this.form.urut = row.item.urut
+            $('#modalEdit').modal('show');
         },
-        checkFormValidity() {
-            const valid = this.$refs.form.checkValidity()
-            this.nameState = valid
-            return valid
-        },
-        resetModal() {
-            this.name = ''
-            this.nameState = null
-        },
-        handleOk(bvModalEvt) {
-            // Prevent modal from closing
-            bvModalEvt.preventDefault()
-            // Trigger submit handler
-            this.handleSubmit()
-        },
-        handleSubmit() {
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return
-            }
-            // Push the name to submitted names
-            this.submittedNames.push(this.name)
-            console.log(this.submittedNames)
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.$bvModal.hide('modal-prevent-closing')
-                this.editModal = false
+        updateData(){
+            let id = this.form.id;
+            this.form.put('/api/instrumen/'+id).then((response)=>{
+                $('#modalEdit').modal('hide');
+                Toast.fire({
+                    icon: 'success',
+                    title: response.message
+                });
+                this.loadPerPage(10);
+            }).catch((e)=>{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
             })
         },
     }

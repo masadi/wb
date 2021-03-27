@@ -36,7 +36,7 @@
 </template>
 <script>
     // VueJS components will run here.
-    import Datatable from './../components/Komponen.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './../components/Aspek.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
     import objectToFormData from "./../components/objectToFormData"; 
     //window.objectToFormData = objectToFormData;

@@ -7,6 +7,8 @@ use App\Instrumen;
 use App\telaah_dokumen;
 use App\Komponen;
 use PDF;
+use Validator;
+
 class InstrumenController extends Controller
 {
     public function index()
@@ -42,12 +44,6 @@ class InstrumenController extends Controller
                     //->orWhere('category', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $instrumens]);
-    }
-    public function destroy($id)
-    {
-        $instrumen = Instrumen::find($id);
-        $instrumen->delete();
-        return response()->json(['status' => 'success']);
     }
     public function validasi_instrumen(Request $request){
         if ($request->isMethod('post')) {
@@ -111,4 +107,34 @@ class InstrumenController extends Controller
         $pdf->getMpdf()->SetFooter('|{PAGENO}|Dicetak dari Aplikasi APM SMK v.1.0.0');
         return $pdf->stream('hasil_validasi_instrumen.pdf');
     }
+    public function update(Request $request, $id)
+    {
+        $messages = [
+            'pertanyaan.required'         => 'Nama Instrumen tidak boleh kosong',
+            'pertanyaan.unique'         => 'Nama Instrumen terdeteksi existing',
+		];
+		$validator = Validator::make(request()->all(), [
+			'pertanyaan'          => 'required|unique:instrumen,pertanyaan,'.$id.',instrumen_id',
+		],
+		$messages
+        )->validate();
+        $data = Instrumen::find($id);
+        $data->pertanyaan = $request->pertanyaan;
+        $data->save();
+        return response()->json(['message' => 'Instrumen berhasil diperbaharui']);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $instrumen = Instrumen::find($id);
+        $instrumen->delete();
+        return response()->json(['status' => 'success']);
+    }
+    
 }
