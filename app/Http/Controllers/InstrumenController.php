@@ -120,8 +120,14 @@ class InstrumenController extends Controller
         )->validate();
         $data = Instrumen::find($id);
         $data->pertanyaan = $request->pertanyaan;
+        $data->petunjuk_pengisian = $request->petunjuk_pengisian;
         $data->save();
-        return response()->json(['message' => 'Instrumen berhasil diperbaharui']);
+        foreach($request->pertanyaan_sub as $instrumen_id => $pertanyaan){
+            $data_sub = Instrumen::find($instrumen_id);
+            $data_sub->pertanyaan = $pertanyaan;
+            $data_sub->save();
+        }
+        return response()->json(['message' => 'Instrumen berhasil diperbaharui1']);
     }
 
     /**

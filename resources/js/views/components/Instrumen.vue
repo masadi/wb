@@ -125,11 +125,19 @@
                             <input v-model="form.pertanyaan" type="text" name="pertanyaan"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('pertanyaan') }">
                             <has-error :form="form" field="pertanyaan"></has-error>
-                            <!--label>Nomor Urut</label>
-                            <input v-model="form.urut" type="text" name="urut"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('urut') }">
-                            <has-error :form="form" field="urut"></has-error-->
                         </div>
+                        <div class="form-group">
+                            <label>Petunjuk Pengisian</label>
+                            <textarea rows="10" cols="5" class="form-control" v-model="form.petunjuk_pengisian"></textarea>
+                            <has-error :form="form" field="petunjuk_pengisian"></has-error>
+                        </div>
+                            <template v-for="sub in data_subs">
+                                <div class="form-group">
+                                    <label>Jawaban Instrumen {{sub.urut}}</label>
+                                    <input v-model="form.pertanyaan_sub[sub.instrumen_id]" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('pertanyaan_sub') }">
+                                    <has-error :form="form" field="pertanyaan_sub"></has-error>
+                                </div>
+                            </template>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -174,11 +182,13 @@ export default {
     },
     data() {
         return {
+            data_subs: [],
             editmode: false,
             form: new Form({
                 id : '',
                 pertanyaan: '',
-                urut: '',
+                petunjuk_pengisian: '',
+                pertanyaan_sub: {},
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -265,11 +275,20 @@ export default {
             })
         },
         editData(row) {
-            console.log(row);
             this.editmode = true
             this.editModal = true
             this.form.id = row.item.instrumen_id
             this.form.pertanyaan = row.item.pertanyaan
+            this.form.petunjuk_pengisian = row.item.petunjuk_pengisian
+            this.data_subs = row.item.subs
+            var tempSubID = {};
+            var SoalSub = {}
+            $.each(row.item.subs, function(key, value) {
+                tempSubID[value.instrumen_id] = value.instrumen_id
+                SoalSub[value.instrumen_id] = value.pertanyaan
+            });
+            console.log(SoalSub);
+            this.form.pertanyaan_sub = SoalSub
             //this.form.urut = row.item.urut
             $('#modalEdit').modal('show');
         },
