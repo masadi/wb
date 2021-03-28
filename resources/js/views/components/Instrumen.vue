@@ -122,8 +122,8 @@
                             <label>Nama Aspek</label>
                             <input v-model="form.id" type="hidden" name="id"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
-                            <input v-model="form.pertanyaan" type="text" name="pertanyaan"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('pertanyaan') }">
+                            <!--input v-model="form.pertanyaan" type="text" name="pertanyaan" class="form-control" :class="{ 'is-invalid': form.errors.has('pertanyaan') }"-->
+                            <textarea rows="5" cols="5" class="form-control" v-model="form.pertanyaan"></textarea>
                             <has-error :form="form" field="pertanyaan"></has-error>
                         </div>
                         <div class="form-group">
