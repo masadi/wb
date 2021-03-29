@@ -100,6 +100,27 @@ $user = auth()->user();
                                 <p>Sekolah</p>
                             </router-link>
                         </li>
+                        @if($user->isAbleTo('jawaban-create'))
+                        <li class="nav-item">
+                            <router-link tag="a" to="/komli" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Kompetensi Keahlian</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/ptk" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>PTK</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/pd" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Peserta Didik</p>
+                            </router-link>
+                        </li>
+                        
+                        @endif
                         @if($user->isAbleTo('users-create'))
                         <li class="nav-item">
                             <router-link tag="a" to="/pengguna" class="nav-link">
@@ -129,7 +150,31 @@ $user = auth()->user();
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/hasil" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu</p>
+                                <p>Hasil Rapor Mutu APM</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/snp" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Rapor Mutu SNP</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/renstra" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Rapor Mutu Renstra</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/link-match" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Rapor Mutu 8+i</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/bsc" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Rapor Mutu BSC</p>
                             </router-link>
                         </li>
                         <li class="nav-item">

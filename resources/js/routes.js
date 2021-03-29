@@ -62,6 +62,21 @@ let routes = [{
         component: require('./views/referensi/sekolah').default
     },
     {
+        path: '/komli',
+        name: 'komli',
+        component: require('./views/referensi/komli').default
+    },
+    {
+        path: '/ptk',
+        name: 'ptk',
+        component: require('./views/referensi/ptk').default
+    },
+    {
+        path: '/pd',
+        name: 'pd',
+        component: require('./views/referensi/pd').default
+    },
+    {
         path: '/pengguna',
         name: 'pengguna',
         component: require('./views/referensi/users').default
@@ -85,6 +100,26 @@ let routes = [{
         path: '/rapor-mutu/hasil',
         name: 'hasil_rapor',
         component: require('./views/rapor-mutu/hasil').default
+    },
+    {
+        path: '/rapor-mutu/snp',
+        name: 'hasil_rapor_snp',
+        component: require('./views/rapor-mutu/snp').default
+    },
+    {
+        path: '/rapor-mutu/renstra',
+        name: 'hasil_rapor_renstra',
+        component: require('./views/rapor-mutu/renstra').default
+    },
+    {
+        path: '/rapor-mutu/link-match',
+        name: 'hasil_rapor_link_match',
+        component: require('./views/rapor-mutu/link-match').default
+    },
+    {
+        path: '/rapor-mutu/bsc',
+        name: 'hasil_rapor_bsc',
+        component: require('./views/rapor-mutu/bsc').default
     },
     {
         path: '/rapor-mutu/pakta-integritas',

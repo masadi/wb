@@ -7,9 +7,24 @@
             </div>
             <div class="card-body" v-show="is_coe">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <h2>Perangkat Kuesioner</h2>
                         <h1>Pemetaan Penjaminan Mutu SMK</h1>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="info-box bg-success">
+                            <div class="info-box-content">
+                                <span class="info-box-text">Progres Pengisian Breakdown</span>
+                                <span class="info-box-number">{{persen_utama}}%</span>
+
+                                <div class="progress">
+                                    <div class="progress-bar" v-bind:style="'width: '+persen_utama+'%;'"></div>
+                                </div>
+                                <span class="progress-description">
+                                    <button class="btn btn-warning btn-sm btn-block btn-flat"><i class="fas fa-print"></i> Cetak Breakdown</button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <div class="info-box bg-info">

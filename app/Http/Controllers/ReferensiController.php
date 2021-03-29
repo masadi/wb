@@ -756,4 +756,18 @@ class ReferensiController extends Controller
         }
         return response()->json($response);
     }
+    public function get_komli(Request $request){
+        /*
+        $data = [
+            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
+            'jurusan' => Jurusan::where('level_bidang_id', 12)->pluck('nama_jurusan', 'jurusan_id'),
+        ];
+        return response()->json(['status' => 'success', 'data' => $data]);
+        */
+        $all_data = Jurusan::orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('nama_jurusan', 'ilike', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
 }

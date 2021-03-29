@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </section>
-                    <div class="card">
+                    <div class="card" style="display:none;">
                         <div class="card-body">
                             <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
                                 <div class="container" v-show="is_coe">
