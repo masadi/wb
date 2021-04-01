@@ -10,6 +10,8 @@ use App\Role;
 use App\Sekolah_sasaran;
 use App\Smk_coe;
 use App\HelperModel;
+use Illuminate\Support\Facades\Storage;
+
 class SekolahSeeder extends Seeder
 {
     /**
@@ -19,6 +21,58 @@ class SekolahSeeder extends Seeder
      */
     public function run()
     {
+        $response = Http::post('http://api.erapor-smk.net/api/v1/count_sekolah');
+        $data = json_decode($response->body());
+        $count = $data->data;
+        $i=1;
+        $limit = 500;
+        for ($counter = 0; $counter <= $count; $counter += $limit) {
+            $response = Http::post('http://api.erapor-smk.net/api/v1/all_sekolah', [
+                'offset' => $counter,
+            ]);
+            $data_sekolah = json_decode($response->body());
+            foreach($data_sekolah->data as $sekolah){
+                Sekolah::updateOrCreate(
+                    ['sekolah_id' => $sekolah->sekolah_id],
+                    [
+                        'npsn' => $sekolah->npsn,
+                        'nama' => $sekolah->nama,
+                        'nss' => $sekolah->nss,
+                        'alamat' => $sekolah->alamat,
+                        'desa_kelurahan' => $sekolah->desa_kelurahan,
+                        'kecamatan' => $sekolah->kecamatan,
+                        'kode_wilayah' => $sekolah->kode_wilayah,
+                        'kabupaten' => $sekolah->kabupaten,
+                        'provinsi' => $sekolah->provinsi,
+                        'kode_pos' => $sekolah->kode_pos,
+                        'lintang' => $sekolah->lintang,
+                        'bujur' => $sekolah->bujur,
+                        'no_telp' => $sekolah->no_telp,
+                        'no_fax' => $sekolah->no_fax,
+                        'email' => $sekolah->email,
+                        'website' => $sekolah->website,
+                        'status_sekolah' => $sekolah->status_sekolah,
+                    ]
+                );
+                $email = ($sekolah->email) ? $sekolah->email : $sekolah->npsn.'@apmsmk.net';
+                $user_sekolah = User::updateOrCreate(
+                    ['email' => $email],
+                    [
+                        'sekolah_id' => $sekolah->sekolah_id,
+                        'username' => $sekolah->npsn,
+                        'name' => $sekolah->nama,
+                        'password' => bcrypt($sekolah->npsn)
+                    ]
+                );
+                if(!$user_sekolah->hasRole('sekolah')){
+                    $role = Role::where('name', 'sekolah')->first();
+                    $user_sekolah->attachRole($role);
+                }
+            }
+            Storage::disk('public')->put('sekolah/'.$i.'.json', $response->body());
+            $i++;
+        }
+        dd($i);
         $komponen = (new FastExcel)->import('public/template_sekolah.xlsx', function ($item){
             $response = Http::post('http://api.erapor-smk.net/api/v1/sekolah', [
                 'npsn' => $item['npsn'],

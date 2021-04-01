@@ -19,7 +19,7 @@ class WilayahSekolahSeeder extends Seeder
                 }
             }
         });
-        Sekolah::with('wilayah')->chunk(200, function ($data) {
+        Sekolah::with('wilayah')->orderBy('sekolah_id')->chunk(200, function ($data) {
             foreach ($data as $sekolah) {
                 if($sekolah->wilayah){
                     $sekolah->kecamatan_id = $sekolah->wilayah->parrentRecursive->kode_wilayah;
