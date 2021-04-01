@@ -33,6 +33,8 @@ use Artisan;
 use App\Breakdown;
 use App\Question;
 use App\Answer;
+use App\Standar;
+use App\Isi_standar;
 
 class ReferensiController extends Controller
 {
@@ -217,6 +219,156 @@ class ReferensiController extends Controller
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
+    public function upload(Request $request){
+        $messages = [
+            'file.required'	=> 'File Upload tidak boleh kosong',
+            'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
+        ];
+        $validator = Validator::make(request()->all(), [
+            'file' => 'required|mimes:xlsx',
+            //'file' => 'required',
+        ],
+        $messages
+        )->validate();
+        $file = $request->file('file');
+        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move('uploads', $fileExcel);
+        $insert = 0;
+        $snp = Standar::updateOrCreate(['kode' => 'snp', 'nama' => 'Standar Nasional Pendidikan']);
+        $bsc = Standar::updateOrCreate(['kode' => 'bsc', 'nama' => 'Balanced Scorecard']);
+        $link_match = Standar::updateOrCreate(['kode' => 'link match', 'nama' => 'Link & Match']);
+        $renstra = Standar::updateOrCreate(['kode' => 'renstra', 'nama' => 'Rencana Strategis']);
+        $data_snp = (new FastExcel)->sheet(1)->import('uploads/'.$fileExcel);
+        foreach($data_snp as $isi_snp){
+            Isi_standar::updateOrCreate([
+                'standar_id' => $snp->id,
+                'kode' => $isi_snp['kode'],
+                'nama' => $isi_snp['nama'],
+            ]);
+        }
+        $data_bsc = (new FastExcel)->sheet(2)->import('uploads/'.$fileExcel);
+        foreach($data_bsc as $isi_bsc){
+            $induk = Isi_standar::updateOrCreate([
+                'standar_id' => $bsc->id,
+                'kode' => $isi_bsc['kode_induk'],
+                'nama' => $isi_bsc['isi'],
+            ]);
+            $sub = Isi_standar::updateOrCreate([
+                'standar_id' => $bsc->id,
+                'isi_standar_id' => $induk->id,
+                'kode' => $isi_bsc['kode_sub'],
+                'nama' => $isi_bsc['isi_sub'],
+            ]);
+            $sub_sub = Isi_standar::updateOrCreate([
+                'standar_id' => $bsc->id,
+                'isi_standar_id' => $sub->id,
+                'kode' => $isi_bsc['kode_sub_sub'],
+                'nama' => $isi_bsc['isi_sub_sub'],
+            ]);
+        }
+        $data_link_match = (new FastExcel)->sheet(3)->import('uploads/'.$fileExcel);
+        foreach($data_link_match as $isi_link_match){
+            Isi_standar::updateOrCreate([
+                'standar_id' => $link_match->id,
+                'kode' => $isi_link_match['kode'],
+                'nama' => $isi_link_match['nama'],
+            ]);
+        }
+        $data_renstra = (new FastExcel)->sheet(4)->import('uploads/'.$fileExcel);
+        foreach($data_renstra as $isi_renstra){
+            $induk_renstra = Isi_standar::updateOrCreate([
+                'standar_id' => $renstra->id,
+                'kode' => $isi_renstra['kode'],
+                'nama' => $isi_renstra['renstra'],
+            ]);
+            Isi_standar::updateOrCreate([
+                'standar_id' => $renstra->id,
+                'isi_standar_id' => $induk_renstra->id,
+                'kode' => $isi_renstra['kode'],
+                'nama' => $isi_renstra['sub_renstra'],
+            ]);
+        }
+        $data_instrumen = (new FastExcel)->sheet(5)->import('uploads/'.$fileExcel);
+        foreach($data_instrumen as $item){
+            if($item['Komponen']){
+                $komponen = Komponen::updateOrCreate([
+                    'nama' => $item['Komponen'],
+                ]);
+                $aspek = Aspek::updateOrCreate([
+                    'komponen_id' => $komponen->id,
+                    'nama' => $item['Aspek'],
+                    'bobot' => $item['Bobot'],
+                ]);
+                $atribut = Atribut::updateOrCreate([
+                    'aspek_id' => $aspek->id,
+                    'nama' => $item['Atribut'],
+                ]);
+                $indikator = Indikator::updateOrCreate([
+                    'atribut_id' => $atribut->id,
+                    'nama' => $item['Indikator Kinerja'],
+                ]);
+                $instrumen = Instrumen::updateOrCreate([
+                    'indikator_id' => $indikator->id,
+                    'urut' => 0,
+                    'pertanyaan' => $item['Rumusan Pertanyaan'],
+                    'petunjuk_pengisian' => $item['petunjuk pengisian'],
+                    'skor' => 5,
+                ]);
+                for($i=1;$i<=5;$i++){
+                    Instrumen::updateOrCreate([
+                        'indikator_id' => $indikator->id,
+                        'ins_id' => $instrumen->instrumen_id,
+                        'urut' => $i,
+                        'pertanyaan' => $item['Capaian '.$i],
+                        'petunjuk_pengisian' => $item['petunjuk pengisian'],
+                        'skor' => 5,
+                    ]);
+                }
+                $find = Instrumen::where(function($query) use ($item){
+                    $query->where('indikator_id', $item['No']);
+                    $query->where('urut', 0);
+                })->first();
+                if($find && $item['no_breakdown']){
+                    $breakdown = Breakdown::updateOrCreate([
+                        'instrumen_id' => $find->instrumen_id,
+                        'urut' => $item['no_breakdown'],
+                        'breakdown' => $item['breakdown'],
+                    ]);
+                    $question = Question::updateOrCreate([
+                        'breakdown_id' => $breakdown->breakdown_id,
+                        'urut' => $item['no_isian'],
+                        'question' => $item['question'],
+                        //'answer' => $item['answer'],
+                    ]);
+                    $answer = Answer::updateOrCreate([
+                        'question_id' => $question->question_id,
+                        'urut' => $item['urut_answer'],
+                        'answer' => $item['answer'],
+                        'type' => $item['type'],
+                    ]);
+                }
+            }
+        }
+        if(File::delete(public_path('uploads/'.$fileExcel))){
+            $data = [
+                'title' => 'Berhasil',
+                'text' => 'Data breakdown berhasil disimpan',
+                'icon' => 'success',
+            ];
+        } else {
+            $data = [
+                'title' => 'Gagal',
+                'text' => 'Data breakdown gagal disimpan',
+                'icon' => 'error',
+            ];
+        }
+        return response()->json($data);
+        $sheets = (new FastExcel)->importSheets('uploads/'.$fileExcel);
+        foreach($sheets as $sheet){
+            dd($sheet);
+        }
+        dd($sheets);
+    }
     public function upload_old(Request $request){
         $messages = [
             'file.required'	=> 'File Upload tidak boleh kosong',
@@ -284,7 +436,7 @@ class ReferensiController extends Controller
         }
         return response()->json($data);
     }
-    public function upload(Request $request){
+    public function upload_new(Request $request){
         $messages = [
             'file.required'	=> 'File Upload tidak boleh kosong',
             'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
