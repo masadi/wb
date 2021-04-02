@@ -29,7 +29,7 @@
                             <div class="d-flex justify-content-center">
                                 <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SEKOLAH</span></button>
                             </div>
-                            <div class="row">
+                            <div class="row" style="display:none;">
                                 <ul class="timeline" id="timeline">
                                     <li class="li" v-bind:class="{ complete: rapor_mutu.instrumen }">
                                         <div class="timestamp">

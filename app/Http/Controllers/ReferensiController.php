@@ -35,7 +35,7 @@ use App\Question;
 use App\Answer;
 use App\Standar;
 use App\Isi_standar;
-
+use App\Breakdown_standar;
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
@@ -334,6 +334,64 @@ class ReferensiController extends Controller
                         'urut' => $item['no_breakdown'],
                         'breakdown' => $item['breakdown'],
                     ]);
+                    if($item['renstra']){
+                        $renstra_a = explode(";",$item['renstra']);
+                        foreach($renstra_a as $aa){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'renstra');
+                            })->where('kode', $aa)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Breakdown_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'breakdown_id' => $breakdown->breakdown_id,
+                                ]);
+                            }
+                        }
+                    }
+                    if($item['link match']){
+                        $link_match_a = explode(";",$item['link match']);
+                        foreach($link_match_a as $ab){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'link match');
+                            })->where('kode', $ab)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Breakdown_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'breakdown_id' => $breakdown->breakdown_id,
+                                ]);
+                            }
+                        }
+                    }
+                    if($item['bsc']){
+                        $bsc_a = explode(";",$item['bsc']);
+                        foreach($bsc_a as $ac){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'bsc');
+                            })->where('kode', $ac)->whereNull('isi_standar_id')->first();
+                            //$find_standar = Standar::where('kode', 'link match')->where('kode', $ac)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Breakdown_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'breakdown_id' => $breakdown->breakdown_id,
+                                ]);
+                            }
+                        }
+                    }
+                    if($item['snp']){
+                        $snp_a = explode(";",$item['snp']);
+                        foreach($snp_a as $ad){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'snp');
+                            })->where('kode', $ad)->whereNull('isi_standar_id')->first();
+                            //$find_standar = Standar::where('kode', 'link match')->where('kode', $ad)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Breakdown_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'breakdown_id' => $breakdown->breakdown_id,
+                                ]);
+                            }
+                        }
+                    }
                     $question = Question::updateOrCreate([
                         'breakdown_id' => $breakdown->breakdown_id,
                         'urut' => $item['no_isian'],

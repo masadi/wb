@@ -56,6 +56,10 @@ Route::group(['prefix' => 'verifikasi'], function(){
 });
 Route::group(['prefix' => 'rapor-mutu'], function(){
     Route::post('/hasil', 'RaporController@index');
+    Route::post('/snp', 'RaporController@snp');
+    Route::post('/bsc', 'RaporController@bsc');
+    Route::post('/link-match', 'RaporController@link_match');
+    Route::post('/renstra', 'RaporController@renstra');
     //Route::get('/hasil', 'RaporController@index');
     Route::post('/pakta', 'RaporController@pakta');
     Route::post('/pra-cetak-pakta', 'RaporController@pra_cetak_pakta');

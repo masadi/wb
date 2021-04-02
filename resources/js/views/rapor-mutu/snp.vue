@@ -27,61 +27,7 @@
                         </div>
                         <div class="card-body" v-show="is_coe">
                             <div class="d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SEKOLAH</span></button>
-                            </div>
-                            <div class="row">
-                                <ul class="timeline" id="timeline">
-                                    <li class="li" v-bind:class="{ complete: rapor_mutu.instrumen }">
-                                        <div class="timestamp">
-                                            <span class="date">{{(rapor_mutu.instrumen) ? rapor_mutu.instrumen : '-'}}</span>
-                                        </div>
-                                        <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.instrumen }"> Mengisi Kuisioner </h4>
-                                        </div>
-                                    </li>
-                                    <li class="li" v-bind:class="{ complete: rapor_mutu.hitung }">
-                                        <div class="timestamp">
-                                            <span class="date">{{(rapor_mutu.hitung) ? rapor_mutu.hitung : '-'}}</span>
-                                        </div>
-                                        <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.hitung }"> Hitung Rapor Mutu Sekolah </h4>
-                                        </div>
-                                    </li>
-                                    <li class="li" v-bind:class="{ complete: rapor_mutu.pakta }">
-                                        <div class="timestamp">
-                                            <span class="date">{{(rapor_mutu.pakta) ? rapor_mutu.pakta : '-'}}</span>
-                                        </div>
-                                        <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.pakta }"> Kirim Rapor Mutu Sekolah </h4>
-                                        </div>
-                                    </li>
-                                    <li class="li" v-bind:class="{ complete: rapor_mutu.verval }">
-                                        <div class="timestamp">
-                                            <span class="date">{{(rapor_mutu.verval) ? rapor_mutu.verval : '-'}}</span>
-                                        </div>
-                                        <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.verval }"> Verval oleh Tim Penjamin Mutu </h4>
-                                        </div>
-                                    </li>
-                                    <li class="li" v-bind:class="{ complete: rapor_mutu.proses }">
-                                        <div class="timestamp">
-                                            <span class="date">{{(rapor_mutu.proses) ? rapor_mutu.proses : '-'}}</span>
-                                        </div>
-                                        <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.proses }"> Verifikasi oleh Direktorat </h4>
-                                        </div>
-                                    </li>
-                                    <li class="li" v-bind:class="{ complete: rapor_mutu.terima }">
-                                        <div class="timestamp">
-                                            <span class="date" v-show="rapor_mutu.terima">{{(rapor_mutu.terima) ? rapor_mutu.terima :'-'}}</span>
-                                            <span class="date" v-show="rapor_mutu.tolak">{{(rapor_mutu.tolak) ? rapor_mutu.tolak :'-'}}</span>
-                                            <span class="date" v-show="!rapor_mutu.tolak && !rapor_mutu.terima">-</span>
-                                        </div>
-                                        <div class="status">
-                                            <h4 class="khusus_timeline text-center" v-bind:class="{ checklist: rapor_mutu.terima, unchecklist : rapor_mutu.tolak }"> Pengesahan oleh Direktorat </h4>
-                                        </div>
-                                    </li>
-                                </ul>
+                                <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SNP</span></button>
                             </div>
                         </div>
                     </div>
