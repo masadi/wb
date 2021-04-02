@@ -12,4 +12,13 @@ class Answer extends Model
 	protected $table = 'answers';
 	protected $primaryKey = 'answer_id';
     protected $guarded = [];
+    /**
+     * Get the user associated with the Answer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function nilai_answer()
+    {
+        return $this->hasOne('App\Nilai_answer', 'answer_id', 'answer_id');
+    }
 }

@@ -9,6 +9,7 @@ use App\Instrumen;
 use App\Jawaban;
 use App\Nilai_aspek;
 use App\Nilai_instrumen;
+use App\Nilai_answer;
 use App\User;
 use App\HelperModel;
 class KuisionerController extends Controller
@@ -36,7 +37,9 @@ class KuisionerController extends Controller
             $callback = function($query) use ($request, $a){
                 $query->where('id', $a->id);
             };
-            $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek', $callback)->with(['jawaban' => $callback_jawaban, 'subs', 'indikator.atribut.aspek' => $callback, 'breakdown.question.answer'])->get();
+            $instrumens = Instrumen::where('urut', 0)->whereHas('indikator.atribut.aspek', $callback)->with(['jawaban' => $callback_jawaban, 'subs', 'indikator.atribut.aspek' => $callback, 'breakdown.question.answer.nilai_answer' => function($query) use ($request){
+                $query->where('user_id', $request->user_id);
+            }])->get();
             $output = [];
             foreach($instrumens as $instrumen){
                 $output[$instrumen->indikator->atribut->aspek->nama][] = $instrumen;
@@ -47,6 +50,19 @@ class KuisionerController extends Controller
         return response()->json(['status' => 'success', 'data' => $output, 'title' => $komponen->nama, 'aspek' => $aspek, 'previous' => $previous, 'next' => $next, 'pakta_integritas' => ($pakta_integritas) ? TRUE : FALSE, 'user' => $pakta_integritas]);
     }
     public function simpan_jawaban(Request $request){
+        if($request->answer_id){
+            foreach($request->answer_id as $answer_id => $answer){
+                Nilai_answer::updateOrCreate(
+                    [
+                        'answer_id' => $answer_id,
+                        'user_id' => $request->user_id,
+                    ],
+                    [
+                        'answer' => $answer,
+                    ]
+                );
+            }
+        }
         if($request->instrumen_id){
             foreach($request->instrumen_id as $instrumen_id => $nilai){
                 $del_sekolah = Jawaban::where(function($query) use ($request, $instrumen_id){

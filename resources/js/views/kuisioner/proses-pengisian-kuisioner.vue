@@ -51,7 +51,7 @@
                                                     <tr v-for="question in breakdown.question">
                                                         <td>{{question.question}}</td>
                                                         <td v-for="answer in question.answer">
-                                                            <input v-if="answer.type === 'number'" class="form-control input-sm" type="number" step="1" min="0" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" @input="filterInput">
+                                                            <input v-if="answer.type === 'number'" class="form-control input-sm" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
                                                             <div class="custom-control custom-radio mt-1">
                                                             <input v-if="answer.type === 'radio'" class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
                                                             <label v-if="answer.type === 'radio'" v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
@@ -138,7 +138,8 @@ export default {
     },
     methods: {
         filterInput(e){
-            e.target.value = e.target.value.replace(/[^0-9]+/g, '');
+            console.log(e.target)
+            //e.target.value = e.target.value.replace(/[^0-9]+/g, '');
         },
         newPage(new_page, intern = false) {
             if (new_page) {
@@ -175,6 +176,8 @@ export default {
             } else if (getData.user.sekolah.sekolah_sasaran.pakta_integritas) {
                 this.pakta_integritas = true
             }
+            //console.log(this.pakta_integritas)
+            this.pakta_integritas = false
             this.current_page = getData.aspek.current_page
             this.total = getData.aspek.total
             this.per_page = getData.aspek.per_page
@@ -187,8 +190,21 @@ export default {
             var tempKomponen = {};
             var tempPetunjuk = {};
             var tempDetilPetunjuk = {};
+            var tempAnswer = {};
             $.each(getData.data, function (key, value) {
                 $.each(value, function (index, val) {
+                    $.each(val.breakdown, function (i, v) {
+                        //console.log(v.question);
+                        $.each(v.question, function (iq, vq) {
+                            //console.log(vq.answer);
+                            $.each(vq.answer, function (answer_id, answer) {
+                                console.log(answer);
+                                if(answer.nilai_answer){
+                                    tempAnswer[answer.answer_id] = answer.nilai_answer.answer
+                                }
+                            })
+                        })
+                    })
                     tempIndikator[val.instrumen_id] = val.indikator_id;
                     tempAtribut[val.instrumen_id] = val.indikator.atribut_id;
                     tempAspek[val.instrumen_id] = val.indikator.atribut.aspek_id;
@@ -209,6 +225,7 @@ export default {
             this.form.aspek_id = tempAspek;
             this.form.komponen_id = tempKomponen;
             this.form.instrumen_id = tempData;
+            this.form.answer_id = tempAnswer;
             this.previous = getData.previous
             this.next = getData.next
             this.content = tempPetunjuk
