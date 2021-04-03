@@ -28,6 +28,7 @@ class InstrumenSeeder extends Seeder
         DB::table('jawaban')->truncate();
         DB::table('nilai_aspek')->truncate();
         DB::table('nilai_komponen')->truncate();
+        DB::table('nilai_answer')->truncate();
         DB::table('instrumen')->truncate();
         DB::table('aspek')->truncate();
         DB::table('komponen')->truncate();
