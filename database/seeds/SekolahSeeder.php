@@ -26,6 +26,7 @@ class SekolahSeeder extends Seeder
         $count = $data->data;
         $i=1;
         $limit = 500;
+        $npsn = ['20233680', '20606817', '20606899', '10110535', '30105231', '69934979', '20539247', '20404180', '20337604', '20613916'];
         for ($counter = 0; $counter <= $count; $counter += $limit) {
             $response = Http::post('http://api.erapor-smk.net/api/v1/all_sekolah', [
                 'offset' => $counter,
@@ -67,6 +68,18 @@ class SekolahSeeder extends Seeder
                 if(!$user_sekolah->hasRole('sekolah')){
                     $role = Role::where('name', 'sekolah')->first();
                     $user_sekolah->attachRole($role);
+                }
+                if(in_array($sekolah->npsn, $npsn)){
+                    $verifikator = User::where('username', 'verifikator')->first();
+                    Sekolah_sasaran::updateOrCreate([
+                        'sekolah_id' => $sekolah->sekolah_id,
+                        'verifikator_id' => $verifikator->user_id,
+                        'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
+                    ]);
+                    Smk_coe::updateOrCreate([
+                        'sekolah_id' => $sekolah->sekolah_id,
+                        'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
+                    ]);
                 }
             }
             Storage::disk('public')->put('sekolah/'.$i.'.json', $response->body());
