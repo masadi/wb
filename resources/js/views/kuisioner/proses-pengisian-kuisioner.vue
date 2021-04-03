@@ -144,6 +144,8 @@ export default {
     methods: {
         filterInput(e){
             console.log(e.target)
+            var a = $(e.target).prevAll().find('.jumlah')
+            console.log(a);
             e.target.value = e.target.value.replace(/[^0-9]+/g, '');
         },
         newPage(new_page, intern = false) {
