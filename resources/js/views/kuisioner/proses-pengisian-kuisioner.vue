@@ -51,10 +51,15 @@
                                                     <tr v-for="question in breakdown.question">
                                                         <td>{{question.question}}</td>
                                                         <td v-for="answer in question.answer">
-                                                            <input v-if="answer.type === 'number'" class="form-control input-sm" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
-                                                            <div class="custom-control custom-radio mt-1">
-                                                            <input v-if="answer.type === 'radio'" class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
-                                                            <label v-if="answer.type === 'radio'" v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
+                                                            <template v-if="answer.answer === 'Jumlah Total' && question.answer.length > 1">
+                                                                <input v-if="answer.type === 'number'" class="form-control input-sm jumlah" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" readonly>
+                                                            </template>
+                                                            <template v-else>
+                                                                <input v-if="answer.type === 'number'" class="form-control input-sm hitung" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
+                                                            </template>
+                                                            <div v-if="answer.type === 'radio'" class="custom-control custom-radio mt-1">
+                                                            <input class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
+                                                            <label v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -139,7 +144,7 @@ export default {
     methods: {
         filterInput(e){
             console.log(e.target)
-            //e.target.value = e.target.value.replace(/[^0-9]+/g, '');
+            e.target.value = e.target.value.replace(/[^0-9]+/g, '');
         },
         newPage(new_page, intern = false) {
             if (new_page) {
