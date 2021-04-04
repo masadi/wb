@@ -58,7 +58,7 @@ class KuisionerController extends Controller
                         'user_id' => $request->user_id,
                     ],
                     [
-                        'answer' => $answer,
+                        'answer' => ($answer) ? $answer : 0,
                     ]
                 );
             }

@@ -50,9 +50,9 @@
                                                     </tr>
                                                     <tr v-for="question in breakdown.question">
                                                         <td>{{question.question}}</td>
-                                                        <td v-for="answer in question.answer">
+                                                        <td v-for="(answer, index) in question.answer">
                                                             <template v-if="answer.answer === 'Jumlah Total' && question.answer.length > 1">
-                                                                <input v-if="answer.type === 'number'" class="form-control input-sm jumlah" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" readonly>
+                                                                <input v-if="answer.type === 'number'" class="form-control input-sm jumlah" type="number" name="jumlah" step="1" min="0" v-model="form.answer_id[answer.answer_id]">
                                                             </template>
                                                             <template v-else>
                                                                 <input v-if="answer.type === 'number'" class="form-control input-sm hitung" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
@@ -143,10 +143,20 @@ export default {
     },
     methods: {
         filterInput(e){
-            console.log(e.target)
-            var a = $(e.target).prevAll().find('.jumlah')
-            console.log(a);
+            //console.log(e.target)
+            var target = e.target;
             e.target.value = e.target.value.replace(/[^0-9]+/g, '');
+            /*$('table input').on('input', function() {
+                if($(this).hasClass("hitung")){
+                    var $tr = $(this).closest('tr'); // get tr which contains the input
+                    var tot = 0; // variable to sore sum
+                    $('input.hitung', $tr).each(function() { // iterate over inputs
+                        tot += Number($(this).val()) || 0; // parse and add value, if NaN then add 0
+                    });
+                    //$('td:last', $tr).text(tot); // update last column value
+                    $('td:last', $tr).html('<input v-if="answer.type === \'number\'" class="form-control input-sm jumlah" type="number" name="jumlah" step="1" min="0" v-model="form.answer_id[answer.answer_id]" value="'+tot+'" readonly>');
+                }
+            }).trigger('input'); // trigger input to set initial value in column*/
         },
         newPage(new_page, intern = false) {
             if (new_page) {
@@ -205,8 +215,8 @@ export default {
                         $.each(v.question, function (iq, vq) {
                             //console.log(vq.answer);
                             $.each(vq.answer, function (answer_id, answer) {
-                                console.log(answer);
                                 if(answer.nilai_answer){
+                                    var anu = answer.answer_id
                                     tempAnswer[answer.answer_id] = answer.nilai_answer.answer
                                 }
                             })
