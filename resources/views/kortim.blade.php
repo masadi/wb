@@ -16,27 +16,27 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img class="d-block w-100"
-                                src="{{asset('images/kortim/1.jpeg')}}"
+                                src="{{asset('vendor/img/kortim/1.jpeg')}}"
                                 alt="Alur Aplikasi Penjaminan Mutu">
                         </div>
                         <div class="carousel-item">
                             <img class="d-block w-100"
-                                src="{{asset('images/kortim/2.jpeg')}}"
+                                src="{{asset('vendor/img/kortim/2.jpeg')}}"
                                 alt="Alur Aplikasi Akses Sekolah">
                         </div>
                         <div class="carousel-item">
                             <img class="d-block w-100"
-                                src="{{asset('images/kortim/3.jpeg')}}"
+                                src="{{asset('vendor/img/kortim/3.jpeg')}}"
                                 alt="Alur Aplikasi Akses Tim Penjamin Mutu">
                         </div>
                         <div class="carousel-item">
                             <img class="d-block w-100"
-                                src="{{asset('images/kortim/4.jpeg')}}"
+                                src="{{asset('vendor/img/kortim/4.jpeg')}}"
                                 alt="Alur Aplikasi Akses Direktorat">
                         </div>
                         <div class="carousel-item">
                             <img class="d-block w-100"
-                                src="{{asset('images/kortim/5.jpeg')}}"
+                                src="{{asset('vendor/img/kortim/5.jpeg')}}"
                                 alt="Domain Aplikasi Penjaminan Mutu">
                         </div>
                     </div>
