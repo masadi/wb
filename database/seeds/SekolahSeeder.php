@@ -29,10 +29,11 @@ class SekolahSeeder extends Seeder
         $limit = 500;
         $npsn = ['20233680', '20606817', '20606899', '10110535', '30105231', '69934979', '20539247', '20404180', '20337604', '20613916'];
         for ($counter = 0; $counter <= $count; $counter += $limit) {
-            $response = Http::post('http://api.erapor-smk.net/api/v1/all_sekolah', [
+            $response = Http::retry(3, 100)->post('http://api.erapor-smk.net/api/v1/all_sekolah', [
                 'offset' => $counter,
             ]);
             $data_sekolah = json_decode($response->body());
+            dd($data_sekolah);
             foreach($data_sekolah->data as $sekolah){
                 Sekolah::updateOrCreate(
                     ['sekolah_id' => $sekolah->sekolah_id],
