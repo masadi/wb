@@ -26,7 +26,7 @@ class SekolahSeeder extends Seeder
         $data = json_decode($response->body());
         $count = $data->data;
         $i=1;
-        $limit = 500;
+        $limit = 100;
         $npsn = ['20233680', '20606817', '20606899', '10110535', '30105231', '69934979', '20539247', '20404180', '20337604', '20613916'];
         for ($counter = 0; $counter <= $count; $counter += $limit) {
             $response = Http::retry(3, 100)->post('http://api.erapor-smk.net/api/v1/all_sekolah', [
@@ -122,7 +122,7 @@ class SekolahSeeder extends Seeder
                     );
                 }
             }
-            Storage::disk('public')->put('sekolah/'.$i.'.json', $response->body());
+            //Storage::disk('public')->put('sekolah/'.$i.'.json', $response->body());
             $i++;
         }
         dd($i);

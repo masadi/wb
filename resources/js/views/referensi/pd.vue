@@ -28,7 +28,7 @@
                                 Data Peserta Didik
                             </h3>
                             <div class="card-tools">
-                                <button class="btn btn-success btn-sm btn-block btn-flat" v-show="hasRole('admin')" v-on:click="newModal">Tambah Data</button>
+                                <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Ambil Data Dapodik</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -127,7 +127,7 @@ export default {
         newModal() {
             this.editmode = false;
             this.form.reset();
-            this.form.user_id = user.user_id;
+            this.form.npsn = user.username;
             $('#modalAdd').modal('show');
         },
         loadPostsData() {

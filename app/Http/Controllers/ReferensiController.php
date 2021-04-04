@@ -24,6 +24,7 @@ use App\Tahun_pendataan;
 use App\Smk_coe;
 use App\Pendamping;
 use App\Jurusan;
+use App\Jurusan_sp;
 use App\Sektor;
 use Carbon\Carbon;
 use File;
@@ -981,10 +982,10 @@ class ReferensiController extends Controller
         ];
         return response()->json(['status' => 'success', 'data' => $data]);
         */
-        $all_data = Jurusan::orderBy(request()->sortby, request()->sortbydesc)
+        $all_data = Jurusan_sp::where('sekolah_id', $request->sekolah_id)->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama_jurusan', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        })->withCount(['rombongan_belajar', 'peserta_didik'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
 }

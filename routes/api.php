@@ -92,7 +92,12 @@ Route::resource('instrumen', 'InstrumenController');
 Route::post('/get-kuisioner', 'KuisionerController@proses');
 Route::get('/get-kuisioner', 'KuisionerController@proses');
 Route::post('/simpan-jawaban', 'KuisionerController@simpan_jawaban');
-Route::post('/sinkronisasi', 'HomeController@sinkron');
+Route::group(['prefix' => 'sinkronisasi'], function(){
+    Route::post('/', 'HomeController@sinkron');
+    Route::post('/komli', 'SinkronisasiController@komli');
+    Route::post('/ptk', 'SinkronisasiController@ptk');
+    Route::post('/pd', 'SinkronisasiController@pd');
+});
 Route::get('/progress', 'FrontController@progress')->name('api.progres');
 Route::get('/progress/edit-tahap/{id}', 'FrontController@edit_tahap')->name('api.edit_tahap');
 Route::post('/progress/simpan-tahap', 'FrontController@edit_tahap')->name('api.simpan_tahap');
