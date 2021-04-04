@@ -75,7 +75,7 @@ class SinkronisasiController extends Controller
             $response = Http::retry(3, 100)->post('http://api.erapor-smk.net/api/v1/all_pd', [
                 'offset' => $counter,
                 'sekolah_id' => $sekolah->sekolah_id,
-                'semester_id' => 20202,
+                'semester_id' => 20201,
             ]);
             $data_pd = json_decode($response->body());
             foreach($data_pd->data as $pd){
@@ -117,7 +117,7 @@ class SinkronisasiController extends Controller
             'username_dapo'		=> $sekolah->email,
 			'password_dapo'		=> $sekolah->npsn,
 			'tahun_ajaran_id'	=> 2020,
-			'semester_id'		=> 20202,
+			'semester_id'		=> 20201,
 			'sekolah_id'		=> $sekolah->sekolah_id,
 			'npsn'				=> $sekolah->npsn
         ]);
