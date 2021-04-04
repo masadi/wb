@@ -33,7 +33,6 @@ class SekolahSeeder extends Seeder
                 'offset' => $counter,
             ]);
             $data_sekolah = json_decode($response->body());
-            dd($data_sekolah);
             foreach($data_sekolah->data as $sekolah){
                 Sekolah::updateOrCreate(
                     ['sekolah_id' => $sekolah->sekolah_id],
