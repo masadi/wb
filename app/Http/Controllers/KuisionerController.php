@@ -11,7 +11,10 @@ use App\Nilai_aspek;
 use App\Nilai_instrumen;
 use App\Nilai_answer;
 use App\User;
+use App\Question;
+use App\Answer;
 use App\HelperModel;
+
 class KuisionerController extends Controller
 {
     public function index(Request $request){
@@ -52,15 +55,28 @@ class KuisionerController extends Controller
     public function simpan_jawaban(Request $request){
         if($request->answer_id){
             foreach($request->answer_id as $answer_id => $answer){
-                Nilai_answer::updateOrCreate(
-                    [
-                        'answer_id' => $answer_id,
-                        'user_id' => $request->user_id,
-                    ],
-                    [
-                        'answer' => ($answer) ? $answer : 0,
-                    ]
-                );
+                $find = Answer::where('question_id', $answer_id)->where('urut', $answer)->first();
+                if($find){
+                    Nilai_answer::updateOrCreate(
+                        [
+                            'answer_id' => $find->answer_id,
+                            'user_id' => $request->user_id,
+                        ],
+                        [
+                            'answer' => ($answer) ? $answer : 0,
+                        ]
+                    );
+                } else {
+                    Nilai_answer::updateOrCreate(
+                        [
+                            'answer_id' => $answer_id,
+                            'user_id' => $request->user_id,
+                        ],
+                        [
+                            'answer' => ($answer) ? $answer : 0,
+                        ]
+                    );
+                }
             }
         }
         if($request->instrumen_id){

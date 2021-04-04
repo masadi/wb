@@ -58,7 +58,7 @@
                                                                 <input v-if="answer.type === 'number'" class="form-control input-sm hitung" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
                                                             </template>
                                                             <div v-if="answer.type === 'radio'" class="custom-control custom-radio mt-1">
-                                                            <input class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.answer_id]" v-bind:value="answer.urut">
+                                                            <input class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
                                                             <label v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
                                                             </div>
                                                         </td>
@@ -216,8 +216,11 @@ export default {
                             //console.log(vq.answer);
                             $.each(vq.answer, function (answer_id, answer) {
                                 if(answer.nilai_answer){
-                                    var anu = answer.answer_id
-                                    tempAnswer[answer.answer_id] = answer.nilai_answer.answer
+                                    if(answer.type === 'radio'){
+                                        tempAnswer[answer.question_id] = answer.nilai_answer.answer
+                                    } else {
+                                        tempAnswer[answer.answer_id] = answer.nilai_answer.answer
+                                    }
                                 }
                             })
                         })
