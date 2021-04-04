@@ -41,6 +41,9 @@ Route::group(['prefix' => 'referensi'], function(){
     Route::put('/update-{query}/{id}', 'ReferensiController@update_data');
     Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');
 });
+Route::group(['prefix' => 'hitung-rapor'], function(){
+    Route::post('/snp', 'NilaiController@hitung_snp');
+});
 Route::group(['prefix' => 'kuisioner'], function(){
     Route::post('/', 'KuisionerController@index');
     Route::get('/', 'KuisionerController@index');

@@ -21,4 +21,8 @@ class Answer extends Model
     {
         return $this->hasOne('App\Nilai_answer', 'answer_id', 'answer_id');
     }
+    public function question()
+    {
+        return $this->belongsTo('App\Question', 'question_id', 'question_id');
+    }
 }

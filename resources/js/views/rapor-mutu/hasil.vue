@@ -517,6 +517,8 @@ export default {
                         total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
                 })
+                console.log(getData.rapor_mutu.nilai_rapor_mutu);
+                console.log(DataKeterangan);
                 vm.createChart('chartdiv', DataKeterangan)
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                 this.is_coe = (getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null

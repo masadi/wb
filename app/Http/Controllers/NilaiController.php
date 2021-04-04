@@ -8,6 +8,8 @@ use App\Komponen;
 use App\Nilai_aspek;
 use App\Nilai_komponen;
 use App\Nilai_akhir;
+use App\Isi_standar;
+use App\Nilai_standar;
 use App\HelperModel;
 class NilaiController extends Controller
 {
@@ -126,5 +128,56 @@ class NilaiController extends Controller
             ]
         );
         return response()->json(['status' => 'success', 'data' => '']);
+    }
+    public function hitung_snp(Request $request){
+        /*$nilai_answer = Nilai_answer::whereHas('answer', function($query){
+            $query->where('answer', 'Jumlah Total');
+        })->with('answer')->where(function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+            $query->whereHas('answer', function($query){
+                $query->whereHas('question', function($query){
+                    $query->whereHas('breakdown', function($query){
+                        $query->whereHas('breakdown_standar', function($query){
+                            $query->whereHas('isi_standar', function($query){
+                                $query->where('standar_id', 1);
+                            });
+                        });
+                    });
+                });
+            });
+        })->get();*/
+        $isi_standar = Isi_standar::where('standar_id', 1)->with(['breakdown_standar' => function($query) use ($request){
+            $query->with(['question.answer' => function($query) use ($request){
+                $query->where('answer', 'Jumlah Total');
+                $query->with(['nilai_answer' => function($query) use ($request){
+                    $query->where('user_id', $request->user_id);
+                }]);
+            }]);
+        }])->get();
+        foreach($isi_standar as $standar){
+            $sum=0;
+            $avg=0;
+            foreach($standar->breakdown_standar as $breakdown_standar){
+                $avg = count($breakdown_standar->question);
+                foreach($breakdown_standar->question as $question){
+                    foreach($question->answer as $answer){
+                        if($answer->nilai_answer){
+                            $sum+= $answer->nilai_answer->answer;
+                        }
+                    }
+                }
+            }
+            $nilai_akhir = ($sum) ? $sum / $avg : 0;
+            Nilai_standar::updateOrCreate(
+                [
+                    'user_id' => $request->user_id,
+                    'standar_id' => 1,
+                    'isi_standar_id' => $standar->id,
+                ],
+                [
+                    'nilai' => number_format($nilai_akhir,0,'.','.'),
+                ]
+            );
+        }
     }
 }

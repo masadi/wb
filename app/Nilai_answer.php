@@ -12,4 +12,8 @@ class Nilai_answer extends Model
 	protected $table = 'nilai_answer';
 	protected $primaryKey = 'nilai_answer_id';
     protected $guarded = [];
+    public function answer()
+    {
+        return $this->belongsTo('App\Answer', 'answer_id', 'answer_id');
+    }
 }

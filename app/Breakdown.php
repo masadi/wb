@@ -15,4 +15,8 @@ class Breakdown extends Model
     public function question(){
         return $this->hasMany('App\Question', 'breakdown_id', 'breakdown_id')->orderBy('urut', 'ASC');
     }
+    public function breakdown_standar()
+    {
+        return $this->belongsTo('App\Breakdown_standar', 'breakdown_id', 'breakdown_id');
+    }
 }

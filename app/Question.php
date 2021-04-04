@@ -15,4 +15,8 @@ class Question extends Model
     public function answer(){
         return $this->hasMany('App\Answer', 'question_id', 'question_id')->orderBy('urut', 'ASC');
     }
+    public function breakdown()
+    {
+        return $this->belongsTo('App\Breakdown', 'breakdown_id', 'breakdown_id');
+    }
 }

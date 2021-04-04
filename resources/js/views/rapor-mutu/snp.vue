@@ -37,7 +37,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="chartdiv" id="chartdiv" ref="chartdiv" style="width: 100%;height: 500px;"></div>
+                            <div class="chartdiv" id="chartdiv" ref="chartdiv" style="width: 100%;height: 700px;"></div>
                         </div>
                     </div>
                 </div>
@@ -82,45 +82,8 @@ export default {
             all_komponen: [1, 2, 3, 4, 5, 6, 7, 8],
             id_komponen: [],
             user: user,
-            rapor_mutu: {
-                instrumen: 0,
-                hitung: 0,
-                pakta: 0,
-                verval: 0,
-                verifikasi: 0,
-                pengesahan: 0
-            },
-            rapor: {
-                kuisioner: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                hitung: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                pakta: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                verval: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                proses: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                terima: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                tolak: {
-                    lengkap: 0,
-                    tgl: '-'
-                },
-                verifikator_id: null
-            },
+            pakta_integritas: 0,
+            nilai_standar: 0,
             sekolah_id: user.sekolah_id,
             kuisioners: [],
             output_indikator: [],
@@ -149,12 +112,9 @@ export default {
     },
     computed: {
         diMatikan() {
-            console.log(this.rapor);
-            if (!this.rapor.kuisioner.lengkap) {
+            if (this.nilai_standar) {
                 return true
-            } else if (this.rapor.pakta.lengkap) {
-                return true
-            } else if (!this.rapor.verifikator_id) {
+            } else if (this.pakta_integritas) {
                 return true
             } else {
                 return false
@@ -167,7 +127,6 @@ export default {
             this.$refs['my-modal'].show()
         },
         createChart(chartID, chartData) {
-            //console.log(this.$refs[chartID]);
             if (chartData) {
                 (function () {
                     var chart = am4core.create(
@@ -189,51 +148,30 @@ export default {
                     categoryAxis.dataFields.category = "komponen";
                     categoryAxis.renderer.grid.template.location = 0;
                     categoryAxis.renderer.minGridDistance = 30;
+                    categoryAxis.renderer.labels.template.rotation = 45;
 
                     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-                    valueAxis.title.text = "Ketercapaian Komponen";
+                    valueAxis.title.text = "Ketercapaian Standar";
                     valueAxis.min = 0;
-                    valueAxis.max = 100;
+                    //valueAxis.max = 100;
                     valueAxis.strictMinMax = true;
                     valueAxis.renderer.labels.template.adapter.add("text", function (text) {
-                        return text + "%";
+                        return text;
                     });
                     // Create series
                     var series = chart.series.push(new am4charts.ColumnSeries3D());
                     series.dataFields.valueY = "tercapai";
                     series.dataFields.categoryX = "komponen";
-                    series.name = "Komponen Tercapai";
+                    series.name = "Standar Tercapai";
                     series.clustered = false;
-                    series.columns.template.tooltipHTML = "<center>Komponen tercapai: <br> <strong>{valueY}</strong></center>";
+                    series.columns.template.tooltipHTML = "<center>Standar tercapai: <br> <strong>{valueY}</strong></center>";
                     series.columns.template.fillOpacity = 0.9;
                     series.columns.template.showTooltipOn = "always";
-                    series.tooltip.pointerOrientation = "top";
+                    series.tooltip.pointerOrientation = "down";
                     series.columns.template.width = am4core.percent(50);
                     /*series.columns.template.events.on("hit", function(ev) {
                         console.log("clicked on ", ev.target);
                     }, this);*/
-                    var bullet = series.bullets.push(new am4charts.LabelBullet())
-                    bullet.interactionsEnabled = false
-                    bullet.dy = 90;
-                    bullet.label.text = '{valueY}%'
-                    bullet.label.fill = am4core.color('#ffffff')
-                    var series2 = chart.series.push(new am4charts.ColumnSeries3D());
-                    series2.dataFields.valueY = "total";
-                    series2.dataFields.setTitle = "belum_tercapai";
-                    series2.dataFields.categoryX = "komponen";
-                    series2.name = "Komponen belum Tercapai";
-                    series2.clustered = false;
-                    series2.columns.template.tooltipHTML = "<center>Komponen belum tercapai: <br> <strong>{setTitle}</strong></center>";
-                    series2.columns.template.fillOpacity = 0.9;
-                    series2.columns.template.showTooltipOn = "always";
-                    series2.columns.template.tooltipY = 10;
-                    series2.columns.template.width = am4core.percent(60);
-                    series2.tooltip.pointerOrientation = "down";
-                    var bullet2 = series2.bullets.push(new am4charts.LabelBullet())
-                    bullet2.interactionsEnabled = false
-                    bullet2.dy = 10;
-                    bullet2.label.text = '{setTitle}%'
-                    bullet2.label.fill = am4core.color('red')
                     chart.exporting.menu = new am4core.ExportMenu();
                 })();
             }
@@ -243,20 +181,25 @@ export default {
                 user_id: user.user_id,
             }).then((response) => {
                 let getData = response.data
-                console.log(getData);
                 let DataKeterangan = [];
                 let vm = this
                 $.each(getData.data, function (key, valua) {
+                    console.log(valua.nilai_standar.nilai);
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua.nama,
-                        //tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key],
+                        tercapai: (valua.nilai_standar) ? valua.nilai_standar.nilai : 0,
                         //belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
                         //total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
                 })
-                console.log(DataKeterangan);
-                //vm.createChart('chartdiv', DataKeterangan)
+                //console.log(DataKeterangan);
+                //console.log(getData.detil_user);
+                vm.createChart('chartdiv', DataKeterangan)
+                this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
+                this.is_coe = (getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
+                this.nilai_standar = (getData.detil_user.nilai_standar) ? false : true
+                this.pakta_integritas = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.pakta_integritas : null
                 return false
                 this.data_lengkap = getData.detil_user
                 this.rapor_mutu = {
@@ -314,8 +257,6 @@ export default {
                     this.nilai_rapor_mutu_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.nilai : '-'
                     this.predikat_sekolah_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.predikat : '-'
                 }
-                this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
-                this.is_coe = (getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
             });
         },
         cetak_rapor_mutu(data) {
@@ -355,13 +296,12 @@ export default {
                 showLoaderOnConfirm: true,
             }).then((result) => {
                 if (result.value) {
-                    axios.post(`/api/hitung-nilai-instrumen`, {
+                    axios.post(`/api/hitung-rapor/snp`, {
                         user_id: user.user_id,
-                        verifikator_id: this.rapor.verifikator_id
                     }).then((response) => {
                         Swal.fire(
                             'Selesai',
-                            'Hitung Nilai Instrumen Berhasil!',
+                            'Hitung Rapor Mutu SNP Berhasil!',
                             'success'
                         ).then(() => {
                             this.loadPostsData();
