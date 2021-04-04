@@ -109,4 +109,19 @@ class SinkronisasiController extends Controller
             }
         }
     }
+    public function server(Request $request){
+        $sekolah = Sekolah::where('npsn', $request->npsn)->first();
+        $response = Http::withBasicAuth('admin', '1234')->withHeaders([
+            'x-api-key' => $sekolah->sekolah_id,
+        ])->post('http://103.40.55.242/erapor_server/api/status', [
+            'username_dapo'		=> $sekolah->email,
+			'password_dapo'		=> $sekolah->npsn,
+			'tahun_ajaran_id'	=> 2020,
+			'semester_id'		=> 20202,
+			'sekolah_id'		=> $sekolah->sekolah_id,
+			'npsn'				=> $sekolah->npsn
+        ]);
+        $data = json_decode($response->body());
+        dd($data);
+    }
 }

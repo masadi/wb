@@ -97,6 +97,7 @@ Route::group(['prefix' => 'sinkronisasi'], function(){
     Route::post('/komli', 'SinkronisasiController@komli');
     Route::post('/ptk', 'SinkronisasiController@ptk');
     Route::post('/pd', 'SinkronisasiController@pd');
+    Route::post('/server', 'SinkronisasiController@server');
 });
 Route::get('/progress', 'FrontController@progress')->name('api.progres');
 Route::get('/progress/edit-tahap/{id}', 'FrontController@edit_tahap')->name('api.edit_tahap');
