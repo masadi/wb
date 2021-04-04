@@ -86,4 +86,7 @@ class User extends Authenticatable
     public function nilai_aspek_verifikasi(){
         return $this->hasMany('App\Nilai_aspek', 'user_id', 'user_id')->whereNotNull('verifikator_id')->where('verifikator_id', '<>', '84ff9f29-1bd0-462f-976f-4c512dc22cc2');
     }
+    public function nilai_standar(){
+        return $this->hasMany('App\Nilai_standar', 'user_id', 'user_id');
+    }
 }

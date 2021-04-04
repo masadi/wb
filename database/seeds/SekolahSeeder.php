@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Sekolah;
 use App\Ptk;
+use App\Jurusan_sp;
 use App\User;
 use App\Role;
 use App\Sekolah_sasaran;
@@ -80,6 +81,45 @@ class SekolahSeeder extends Seeder
                         'sekolah_id' => $sekolah->sekolah_id,
                         'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
                     ]);
+                }
+                foreach($sekolah->ptk as $ptk){
+                    $new_ptk = Ptk::updateOrCreate(
+                        ['ptk_id' => $ptk->guru_id_dapodik],
+                        [
+                            'sekolah_id' => $ptk->sekolah_id,
+                            'nama' => $ptk->nama,
+                            'nuptk' => $ptk->nuptk,
+                            'nip' => $ptk->nip,
+                            'jenis_kelamin' => $ptk->jenis_kelamin,
+                            'tempat_lahir' => $ptk->tempat_lahir,
+                            'tanggal_lahir' => $ptk->tanggal_lahir,
+                            'nik' => $ptk->nik,
+                            'jenis_ptk_id' => $ptk->jenis_ptk_id,
+                            'agama_id' => $ptk->agama_id,
+                            'status_kepegawaian_id' => $ptk->status_kepegawaian_id,
+                            'alamat' => $ptk->alamat,
+                            'rt' => $ptk->rt,
+                            'rw' => $ptk->rw,
+                            'desa_kelurahan' => $ptk->desa_kelurahan,
+                            'kecamatan' => $ptk->kecamatan,
+                            'kode_wilayah' => $ptk->kode_wilayah,
+                            'kode_pos' => $ptk->kode_pos,
+                            'no_hp' => $ptk->no_hp,
+                            'email' => $ptk->email,
+                        ]
+                    );
+                }
+                foreach($sekolah->jurusan_sp as $jurusan_sp){
+                    Jurusan_sp::updateOrCreate(
+                        [
+                            'jurusan_sp_id' => $jurusan_sp->jurusan_sp_id_dapodik,
+                            'sekolah_id' => $jurusan_sp->sekolah_id,
+                        ],
+                        [
+                            'jurusan_id' => $jurusan_sp->jurusan_id,
+                            'nama_jurusan_sp' => $jurusan_sp->nama_jurusan_sp,
+                        ]
+                    );
                 }
             }
             Storage::disk('public')->put('sekolah/'.$i.'.json', $response->body());
