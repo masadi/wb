@@ -75,6 +75,7 @@ class SinkronisasiController extends Controller
             $response = Http::retry(3, 100)->post('http://api.erapor-smk.net/api/v1/all_pd', [
                 'offset' => $counter,
                 'sekolah_id' => $sekolah->sekolah_id,
+                'semester_id' => 20202,
             ]);
             $data_pd = json_decode($response->body());
             foreach($data_pd->data as $pd){
