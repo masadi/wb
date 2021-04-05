@@ -4,14 +4,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Rapor Mutu Balance Scorecard</h1>
+                    <h1 class="m-0 text-dark">Rapor Mutu Balance Score Card</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
                             <router-link tag="a" to="/beranda">Beranda</router-link>
                         </li>
-                        <li class="breadcrumb-item active">Rapor Mutu Balance Scorecard</li>
+                        <li class="breadcrumb-item active">Rapor Mutu Balance Score Card</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -27,7 +27,7 @@
                         </div>
                         <div class="card-body" v-show="is_coe">
                             <div class="d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU BALANCE SCORECARD</span></button>
+                                <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU BALANCE SCORE CARD</span></button>
                             </div>
                         </div>
                     </div>
