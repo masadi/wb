@@ -184,7 +184,6 @@ export default {
                 let DataKeterangan = [];
                 let vm = this
                 $.each(getData.data, function (key, valua) {
-                    console.log(valua.nilai_standar.nilai);
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua.nama,
