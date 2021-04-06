@@ -70,7 +70,13 @@ class SekolahSeeder extends Seeder
                     $role = Role::where('name', 'sekolah')->first();
                     $user_sekolah->attachRole($role);
                 }
-                if(in_array($sekolah->npsn, $npsn)){
+                $verifikator = User::where('username', 'verifikator')->first();
+                Sekolah_sasaran::updateOrCreate([
+                    'sekolah_id' => $sekolah->sekolah_id,
+                    'verifikator_id' => $verifikator->user_id,
+                    'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
+                ]);
+                /*if(in_array($sekolah->npsn, $npsn)){
                     $verifikator = User::where('username', 'verifikator')->first();
                     Sekolah_sasaran::updateOrCreate([
                         'sekolah_id' => $sekolah->sekolah_id,
@@ -81,7 +87,7 @@ class SekolahSeeder extends Seeder
                         'sekolah_id' => $sekolah->sekolah_id,
                         'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
                     ]);
-                }
+                }*/
                 foreach($sekolah->ptk as $ptk){
                     $new_ptk = Ptk::updateOrCreate(
                         ['ptk_id' => $ptk->guru_id_dapodik],

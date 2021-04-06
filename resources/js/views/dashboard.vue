@@ -236,7 +236,7 @@ export default {
                     if (!getData) {
                         return false
                     }
-                    this.is_coe = getData.smk_coe
+                    this.is_coe = true//getData.smk_coe
                     this.jml_sekolah_sasaran = getData.jml_sekolah_sasaran
                     this.jml_sekolah_sasaran_instrumen = getData.jml_sekolah_sasaran_instrumen
                     this.jml_sekolah_sasaran_no_instrumen = getData.jml_sekolah_sasaran_no_instrumen

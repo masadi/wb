@@ -777,12 +777,12 @@ class ReferensiController extends Controller
                 'sekolah_id' => $request->sekolah_id,
                 'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
             ]);
-            $verifikator = User::where('username', 'verifikator')->first();
+            /*$verifikator = User::where('username', 'verifikator')->first();
             Sekolah_sasaran::updateOrCreate([
                 'sekolah_id' => $request->sekolah_id,
                 'verifikator_id' => $verifikator->user_id,
                 'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
-            ]);
+            ]);*/
         } else {
             $text = 'Sekolah berhasil digagalkan sebagai SMK CoE';
             $coe = Smk_coe::where('sekolah_id', $request->sekolah_id)->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->delete();

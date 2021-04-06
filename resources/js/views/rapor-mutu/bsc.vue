@@ -196,7 +196,7 @@ export default {
                 //console.log(getData.detil_user);
                 vm.createChart('chartdiv', DataKeterangan)
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
-                this.is_coe = (getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
+                this.is_coe = true//(getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
                 this.nilai_standar = (getData.detil_user.nilai_standar) ? false : true
                 this.pakta_integritas = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.pakta_integritas : null
                 return false

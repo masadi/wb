@@ -124,7 +124,7 @@ export default {
                 this.jumlah_jawaban = tempData;
                 this.kuisioners = getData.data
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
-                this.is_coe = (getData.sekolah.sekolah) ? getData.sekolah.sekolah.smk_coe : null
+                this.is_coe = true//(getData.sekolah.sekolah) ? getData.sekolah.sekolah.smk_coe : null
             });
         },
         detilKuisioner: function (id) {
