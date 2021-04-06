@@ -150,31 +150,31 @@ $user = auth()->user();
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/hasil" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu APM</p>
+                                <p>Hasil Rapor Mutu</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/snp" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu SNP</p>
+                                <p>Hasil Rapor SNP</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/link-match" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu 8+i</p>
+                                <p>Hasil Rapor 8+i</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/renstra" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu Renstra</p>
+                                <p>Hasil Rapor Renstra</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/bsc" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu BSC</p>
+                                <p>Hasil Rapor BSC</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
