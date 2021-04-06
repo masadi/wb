@@ -187,7 +187,7 @@ export default {
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua.kode,
-                        tercapai: (valua.nilai_standar) ? valua.nilai_standar.nilai : 0,
+                        tercapai: (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0,
                         //belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
                         //total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
