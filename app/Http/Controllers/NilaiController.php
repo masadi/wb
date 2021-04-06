@@ -11,6 +11,8 @@ use App\Nilai_akhir;
 use App\Isi_standar;
 use App\Nilai_standar;
 use App\HelperModel;
+use App\Instrumen_standar;
+
 class NilaiController extends Controller
 {
     public function hitung_nilai(Request $request){
@@ -164,7 +166,35 @@ class NilaiController extends Controller
                 ]
             );
         }
+        $snp = Standar::updateOrCreate(['kode' => 'snp', 'nama' => 'Standar Nasional Pendidikan']);
+        $bsc = Standar::updateOrCreate(['kode' => 'bsc', 'nama' => 'Balanced Scorecard']);
+        $link_match = Standar::updateOrCreate(['kode' => 'link match', 'nama' => 'Link & Match']);
+        $renstra = Standar::updateOrCreate(['kode' => 'renstra', 'nama' => 'Rencana Strategis']);
         */
+        $isi_Standar = Isi_Standar::whereHas('standar', function($query){
+            $query->where('kode', 'snp');
+        })->get();
+        foreach($isi_Standar as $isi){
+            $instrumen_standar = Instrumen_standar::where('isi_standar_id', $isi->id)->with(['instrumen.jawaban'])->get();
+            $nilai=0;
+            foreach($instrumen_standar as $instrumen){
+                $nilai+= $instrumen->instrumen->jawaban->nilai * 100;
+            }
+            $nilai_akhir = ($nilai) ? $nilai / (count($instrumen_standar) * 5) : 0;
+            Nilai_akhir::updateOrCreate(
+                [
+                    'user_id' => $request->user_id,
+                    'verifikator_id' => NULL,
+                    'isi_standar_id' => $isi->id,
+                ],
+                [
+                    'nilai' => $nilai_akhir,
+                    'predikat' => HelperModel::predikat($nilai_akhir, true),
+                    'peringkat' => HelperModel::peringkat($nilai_akhir),
+                ]
+            );
+        }
+        dd($isi_Standar);
         $callback = function($query) use ($request){
             $query->where('user_id', $request->user_id);
             $query->whereNull('verifikator_id');

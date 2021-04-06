@@ -153,7 +153,7 @@ export default {
                     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                     valueAxis.title.text = "Ketercapaian Standar";
                     valueAxis.min = 0;
-                    //valueAxis.max = 100;
+                    valueAxis.max = 100;
                     valueAxis.strictMinMax = true;
                     valueAxis.renderer.labels.template.adapter.add("text", function (text) {
                         return text;
@@ -184,15 +184,16 @@ export default {
                 let DataKeterangan = [];
                 let vm = this
                 $.each(getData.data, function (key, valua) {
+                    console.log(valua);
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua.nama,
-                        tercapai: (valua.nilai_standar) ? valua.nilai_standar.nilai : 0,
+                        tercapai: (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0,
                         //belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
                         //total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
                 })
-                //console.log(DataKeterangan);
+                console.log(DataKeterangan);
                 //console.log(getData.detil_user);
                 vm.createChart('chartdiv', DataKeterangan)
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'

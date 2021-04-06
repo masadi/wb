@@ -30,7 +30,7 @@ class RaporController extends Controller
         }, 'nilai_standar' => function($query){
             $query->where('standar_id', 1);
         }])->find($request->user_id);
-        $komponen = Isi_standar::where('standar_id', 1)->with(['nilai_standar' => function($query) use ($request){
+        $komponen = Isi_standar::where('standar_id', 1)->with(['nilai_akhir' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
         }])->get();
         $respone = [

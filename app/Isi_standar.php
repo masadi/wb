@@ -18,4 +18,7 @@ class Isi_standar extends Model
     public function breakdown_standar(){
         return $this->hasMany('App\Breakdown_standar', 'isi_standar_id', 'id');
     }
+    public function nilai_akhir(){
+        return $this->hasOne('App\Nilai_akhir', 'isi_standar_id', 'id');
+    }
 }

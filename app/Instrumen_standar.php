@@ -12,4 +12,7 @@ class Instrumen_standar extends Model
 	protected $table = 'instrumen_standar';
 	protected $primaryKey = 'instrumen_standar_id';
     protected $guarded = [];
+    public function instrumen(){
+        return $this->hasOne('App\Instrumen', 'instrumen_id', 'instrumen_id');
+    }
 }
