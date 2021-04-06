@@ -119,9 +119,9 @@ class SekolahSeeder extends Seeder
                     Jurusan_sp::updateOrCreate(
                         [
                             'jurusan_sp_id' => $jurusan_sp->jurusan_sp_id_dapodik,
-                            'sekolah_id' => $jurusan_sp->sekolah_id,
                         ],
                         [
+                            'sekolah_id' => $jurusan_sp->sekolah_id,
                             'jurusan_id' => $jurusan_sp->jurusan_id,
                             'nama_jurusan_sp' => $jurusan_sp->nama_jurusan_sp,
                         ]
