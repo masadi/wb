@@ -35,6 +35,7 @@ class InstrumenSeeder extends Seeder
         DB::table('komponen')->truncate();
         DB::table('questions')->truncate();
         DB::table('answers')->truncate();
+        DB::table('instrumen_standar')->truncate();
         DB::table('breakdown_standars')->truncate();
         DB::table('breakdowns')->truncate();
         DB::table('ref.isi_standar')->truncate();
@@ -133,6 +134,70 @@ class InstrumenSeeder extends Seeder
                     $query->where('indikator_id', $item['No']);
                     $query->where('urut', 0);
                 })->first();
+                if($find){
+                    if($item['renstra']){
+                        $renstra_a = explode(";",$item['renstra']);
+                        foreach($renstra_a as $aa){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'renstra');
+                            })->where('kode', $aa)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Instrumen_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'instrumen_id' => $find->instrumen_id,
+                                    'standar_id' => $renstra->id,
+                                ]);
+                            }
+                        }
+                    }
+                    if($item['link match']){
+                        $link_match_a = explode(";",$item['link match']);
+                        foreach($link_match_a as $ab){
+                            $ab = trim($ab);
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'link match');
+                            })->where('kode', $ab)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Instrumen_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'instrumen_id' => $find->instrumen_id,
+                                    'standar_id' => $link_match->id,
+                                ]);
+                            }
+                        }
+                    }
+                    if($item['bsc']){
+                        $bsc_a = explode(";",$item['bsc']);
+                        foreach($bsc_a as $ac){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'bsc');
+                            })->where('kode', $ac)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Instrumen_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'instrumen_id' => $find->instrumen_id,
+                                    'standar_id' => $bsc->id,
+                                ]);
+                            }
+                        }
+                    }
+                    if($item['snp']){
+                        $snp_a = explode(";",$item['snp']);
+                        foreach($snp_a as $ad){
+                            $find_standar = Isi_standar::whereHas('standar', function($query){
+                                $query->where('kode', 'snp');
+                            })->where('kode', $ad)->whereNull('isi_standar_id')->first();
+                            //$find_standar = Standar::where('kode', 'link match')->where('kode', $ad)->whereNull('isi_standar_id')->first();
+                            if($find_standar){
+                                Instrumen_standar::updateOrCreate([
+                                    'isi_standar_id' => $find_standar->id,
+                                    'instrumen_id' => $find->instrumen_id,
+                                    'standar_id' => $snp->id,
+                                ]);
+                            }
+                        }
+                    }
+                }
                 if($find && $item['no_breakdown']){
                     $breakdown = Breakdown::updateOrCreate([
                         'instrumen_id' => $find->instrumen_id,
@@ -146,11 +211,6 @@ class InstrumenSeeder extends Seeder
                                 $query->where('kode', 'renstra');
                             })->where('kode', $aa)->whereNull('isi_standar_id')->first();
                             if($find_standar){
-                                Instrumen_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'instrumen_id' => $find->instrumen_id,
-                                    'standar_id' => $renstra->id,
-                                ]);
                                 Breakdown_standar::updateOrCreate([
                                     'isi_standar_id' => $find_standar->id,
                                     'breakdown_id' => $breakdown->breakdown_id,
@@ -161,6 +221,7 @@ class InstrumenSeeder extends Seeder
                     if($item['link match']){
                         $link_match_a = explode(";",$item['link match']);
                         foreach($link_match_a as $ab){
+                            $ab = trim($ab);
                             $find_standar = Isi_standar::whereHas('standar', function($query){
                                 $query->where('kode', 'link match');
                             })->where('kode', $ab)->whereNull('isi_standar_id')->first();
@@ -185,11 +246,6 @@ class InstrumenSeeder extends Seeder
                             })->where('kode', $ac)->whereNull('isi_standar_id')->first();
                             //$find_standar = Standar::where('kode', 'link match')->where('kode', $ac)->whereNull('isi_standar_id')->first();
                             if($find_standar){
-                                Instrumen_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'instrumen_id' => $find->instrumen_id,
-                                    'standar_id' => $bsc->id,
-                                ]);
                                 Breakdown_standar::updateOrCreate([
                                     'isi_standar_id' => $find_standar->id,
                                     'breakdown_id' => $breakdown->breakdown_id,
@@ -205,11 +261,6 @@ class InstrumenSeeder extends Seeder
                             })->where('kode', $ad)->whereNull('isi_standar_id')->first();
                             //$find_standar = Standar::where('kode', 'link match')->where('kode', $ad)->whereNull('isi_standar_id')->first();
                             if($find_standar){
-                                Instrumen_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'instrumen_id' => $find->instrumen_id,
-                                    'standar_id' => $snp->id,
-                                ]);            
                                 Breakdown_standar::updateOrCreate([
                                     'isi_standar_id' => $find_standar->id,
                                     'breakdown_id' => $breakdown->breakdown_id,
