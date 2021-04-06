@@ -37,7 +37,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="chartdiv" id="chartdiv" ref="chartdiv" style="width: 100%;height: 700px;"></div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div id="chartRadar" style="width: 100%;height: 500px;"></div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="chartdiv" id="chartdiv" ref="chartdiv" style="width: 100%;height: 500px;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -303,6 +310,50 @@ export default {
                 })();
             }
         },
+        createChartRadial(chartID, chartData) {
+            if (chartData) {
+                (function () {
+                    var chart = am4core.create(
+                        document.getElementById(chartID),
+                        am4charts.RadarChart
+                    );
+                    let data = [];
+                    let value1 = 500;
+                    let value2 = 600;
+
+                    for(var i = 0; i < 12; i++){
+                    let date = new Date();
+                    date.setMonth(i, 1);
+                    value1 -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 50);
+                    value2 -= Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 50);
+                    data.push({date:date, value1:value1, value2:value2})
+                    }
+
+                    chart.data = chartData;
+
+                    /* Create axes */
+                    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                    categoryAxis.dataFields.category = "standar";
+                    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis.extraMin = 0.2;
+                    valueAxis.extraMax = 0.2;
+                    valueAxis.tooltip.disabled = true;
+                    
+
+                    /* Create and configure series */
+                    let series1 = chart.series.push(new am4charts.RadarSeries());
+                    series1.dataFields.valueY = "tercapai";
+                    series1.dataFields.categoryX = "standar";
+                    series1.strokeWidth = 3;
+                    series1.tooltipText = "{valueY}";
+                    series1.name = "Rapor SNP";
+                    series1.bullets.create(am4charts.CircleBullet);
+                    series1.dataItems.template.locations.dateX = 0.5;
+                    chart.cursor = new am4charts.RadarCursor();
+                    chart.legend = new am4charts.Legend();
+                })();
+            }
+        },
         loadPostsData() {
             axios.post(`/api/rapor-mutu/snp`, {
                 user_id: user.user_id,
@@ -317,6 +368,7 @@ export default {
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua.kode,
+                        standar: valua.nama.replace('Standar',''),
                         tercapai: (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0,
                     }
                     $.each(valua.instrumen_standar, function (a, b) {
@@ -324,6 +376,7 @@ export default {
                     })
                 })
                 vm.createChart('chartdiv', DataKeterangan)
+                vm.createChartRadial('chartRadar', DataKeterangan)
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                 this.is_coe = true//(getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
                 this.nilai_standar = (getData.detil_user.nilai_standar) ? false : true
