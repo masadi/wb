@@ -10,7 +10,7 @@
                 {PAGENO}/{nbpg}
             </td>
             <td width="33%" style="text-align: right;font-style: italic; font-size:7pt;">
-                Dicetak dari Aplikasi APM SMK V.1.0.0
+                Dicetak dari Aplikasi APM SMK V.2.1
             </td>
         </tr>
     </table>
