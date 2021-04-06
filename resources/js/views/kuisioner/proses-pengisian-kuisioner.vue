@@ -28,42 +28,44 @@
                                 <div v-for="(value, name) in items">
                                     <h2>Aspek {{name}} </h2>
                                     <ol class="pl-4">
-                                        <li class="mb-1" v-for="(item, index) in value">
-                                            <input type="hidden" v-model="form.indikator_id[item.instrumen_id]">
-                                            <input type="hidden" v-model="form.atribut_id[item.instrumen_id]">
-                                            <input type="hidden" v-model="form.aspek_id[item.instrumen_id]">
-                                            <input type="hidden" v-model="form.komponen_id[item.instrumen_id]">
-                                            <span style="font-weight: 600;">{{item.pertanyaan}} <a href="javascript:{}" class="text-danger" v-on:click="petunjuk(item.instrumen_id)" title="Petunjuk Pengisian"><i class="fas fa-info-circle"></i></a></span>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">
-                                                    <input class="custom-control-input" type="radio" v-bind:id="item.instrumen_id+subs.urut" v-model="form.instrumen_id[item.instrumen_id]" v-bind:value="subs.urut">
-                                                    <label v-bind:for="item.instrumen_id+subs.urut" class="custom-control-label" style="font-weight: normal;">{{subs.urut}}. {{subs.pertanyaan}}</label>
+                                        <li class="mb-1 list-style" v-for="(item, index) in value">
+                                            <div class="item-style">
+                                                <input type="hidden" v-model="form.indikator_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.atribut_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.aspek_id[item.instrumen_id]">
+                                                <input type="hidden" v-model="form.komponen_id[item.instrumen_id]">
+                                                <span style="font-weight: 600;">{{item.pertanyaan}} <a href="javascript:{}" class="text-danger" v-on:click="petunjuk(item.instrumen_id)" title="Petunjuk Pengisian"><i class="fas fa-info-circle"></i></a></span>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-radio mt-1" v-for="subs in item.subs">
+                                                        <input class="custom-control-input" type="radio" v-bind:id="item.instrumen_id+subs.urut" v-model="form.instrumen_id[item.instrumen_id]" v-bind:value="subs.urut">
+                                                        <label v-bind:for="item.instrumen_id+subs.urut" class="custom-control-label" style="font-weight: normal;">{{subs.urut}}. {{subs.pertanyaan}}</label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group" v-for="breakdown in item.breakdown">
-                                                <table class="table table-bordered">
-                                                    <tr>
-                                                        <th>{{breakdown.breakdown}}</th>
-                                                        <template v-for="question in breakdown.question.slice(0,1)">
-                                                            <th v-for="answer in question.answer" width="150">{{answer.answer}}</th>
-                                                        </template>
-                                                    </tr>
-                                                    <tr v-for="question in breakdown.question">
-                                                        <td>{{question.question}}</td>
-                                                        <td v-for="(answer, index) in question.answer">
-                                                            <template v-if="answer.answer === 'Jumlah Total' && question.answer.length > 1">
-                                                                <input v-if="answer.type === 'number'" class="form-control input-sm jumlah" type="number" name="jumlah" step="1" min="0" v-model="form.answer_id[answer.answer_id]">
+                                                <div class="form-group" v-for="breakdown in item.breakdown">
+                                                    <table class="table table-bordered">
+                                                        <tr>
+                                                            <th>{{breakdown.breakdown}}</th>
+                                                            <template v-for="question in breakdown.question.slice(0,1)">
+                                                                <th v-for="answer in question.answer" width="150">{{answer.answer}}</th>
                                                             </template>
-                                                            <template v-else>
-                                                                <input v-if="answer.type === 'number'" class="form-control input-sm hitung" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
-                                                            </template>
-                                                            <div v-if="answer.type === 'radio'" class="custom-control custom-radio mt-1">
-                                                            <input class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
-                                                            <label v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                                        </tr>
+                                                        <tr v-for="question in breakdown.question">
+                                                            <td>{{question.question}}</td>
+                                                            <td v-for="(answer, index) in question.answer">
+                                                                <template v-if="answer.answer === 'Jumlah Total' && question.answer.length > 1">
+                                                                    <input v-if="answer.type === 'number'" class="form-control input-sm jumlah" type="number" name="jumlah" step="1" min="0" v-model="form.answer_id[answer.answer_id]">
+                                                                </template>
+                                                                <template v-else>
+                                                                    <input v-if="answer.type === 'number'" class="form-control input-sm hitung" type="number" step="1" min="0" v-model="form.answer_id[answer.answer_id]" @input="filterInput">
+                                                                </template>
+                                                                <div v-if="answer.type === 'radio'" class="custom-control custom-radio mt-1">
+                                                                <input class="custom-control-input" type="radio" v-bind:id="answer.answer_id" v-model="form.answer_id[answer.question_id]" v-bind:value="answer.urut">
+                                                                <label v-bind:for="answer.answer_id" class="custom-control-label" style="font-weight: normal;">{{answer.answer}}</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </li>
                                     </ol>
@@ -286,3 +288,14 @@ export default {
     }
 }
 </script>
+<style>
+ /* The style of odd lines */
+.list-style:nth-child(odd)>.item-style {
+   background: #ffffff;
+}
+
+ /* The style of even lines */
+.list-style:nth-child(even)>.item-style {
+  background: #e9ecef;
+}
+ </style>
