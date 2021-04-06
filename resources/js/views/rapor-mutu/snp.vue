@@ -148,7 +148,7 @@ export default {
                     categoryAxis.dataFields.category = "komponen";
                     categoryAxis.renderer.grid.template.location = 0;
                     categoryAxis.renderer.minGridDistance = 30;
-                    categoryAxis.renderer.labels.template.rotation = 45;
+                    //categoryAxis.renderer.labels.template.rotation = 45;
 
                     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                     valueAxis.title.text = "Ketercapaian Standar";
@@ -187,7 +187,7 @@ export default {
                     console.log(valua);
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
-                        komponen: valua.nama,
+                        komponen: valua.kode,
                         tercapai: (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0,
                         //belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
                         //total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),

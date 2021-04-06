@@ -148,12 +148,12 @@ export default {
                     categoryAxis.dataFields.category = "komponen";
                     categoryAxis.renderer.grid.template.location = 0;
                     categoryAxis.renderer.minGridDistance = 30;
-                    categoryAxis.renderer.labels.template.rotation = 45;
+                    //categoryAxis.renderer.labels.template.rotation = 45;
 
                     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                     valueAxis.title.text = "Ketercapaian Standar";
                     valueAxis.min = 0;
-                    //valueAxis.max = 100;
+                    valueAxis.max = 100;
                     valueAxis.strictMinMax = true;
                     valueAxis.renderer.labels.template.adapter.add("text", function (text) {
                         return text;
@@ -177,7 +177,7 @@ export default {
             }
         },
         loadPostsData() {
-            axios.post(`/api/rapor-mutu/snp`, {
+            axios.post(`/api/rapor-mutu/link-match`, {
                 user_id: user.user_id,
             }).then((response) => {
                 let getData = response.data
@@ -186,7 +186,7 @@ export default {
                 $.each(getData.data, function (key, valua) {
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
-                        komponen: valua.nama,
+                        komponen: valua.kode,
                         tercapai: (valua.nilai_standar) ? valua.nilai_standar.nilai : 0,
                         //belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
                         //total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
@@ -295,12 +295,12 @@ export default {
                 showLoaderOnConfirm: true,
             }).then((result) => {
                 if (result.value) {
-                    axios.post(`/api/hitung-rapor/snp`, {
+                    axios.post(`/api/hitung-rapor/link-match`, {
                         user_id: user.user_id,
                     }).then((response) => {
                         Swal.fire(
                             'Selesai',
-                            'Hitung Rapor Mutu SNP Berhasil!',
+                            'Hitung Rapor Mutu Link & Match Berhasil!',
                             'success'
                         ).then(() => {
                             this.loadPostsData();

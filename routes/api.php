@@ -43,6 +43,9 @@ Route::group(['prefix' => 'referensi'], function(){
 });
 Route::group(['prefix' => 'hitung-rapor'], function(){
     Route::post('/snp', 'NilaiController@hitung_snp');
+    Route::post('/renstra', 'NilaiController@hitung_renstra');
+    Route::post('/link-match', 'NilaiController@hitung_link_match');
+    Route::post('/bsc', 'NilaiController@hitung_bsc');
 });
 Route::group(['prefix' => 'kuisioner'], function(){
     Route::post('/', 'KuisionerController@index');

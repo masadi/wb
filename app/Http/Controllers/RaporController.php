@@ -32,21 +32,62 @@ class RaporController extends Controller
         }])->find($request->user_id);
         $komponen = Isi_standar::where('standar_id', 1)->with(['nilai_akhir' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
-        }])->get();
+        }])->whereNull('isi_standar_id')->get();
         $respone = [
             'status' => 'success', 
             'detil_user' => $user,
             'data' => $komponen, 
-            /*'rapor' => [
-                'jml_instrumen' => $jml_instrumen, 
-                'kuisioner' => ($kuisioner) ? HelperModel::TanggalIndo($kuisioner->updated_at) : NULL,
-                'hitung' => ($hitung) ? HelperModel::TanggalIndo($hitung->updated_at) : NULL,
-                'pakta_integritas' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
-                'pakta' => ($pakta_integritas) ? HelperModel::TanggalIndo($pakta_integritas->updated_at) : NULL,
-                'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
-                'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
-                'pengesahan' => ($verifikasi) ? ($verifikasi->verifikasi) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL : NULL,
-            ],*/
+            'rapor_mutu' => [],//HelperModel::rapor_mutu($request->user_id),
+        ];
+        return response()->json($respone);
+    }
+    public function renstra(Request $request){
+        $user = User::with(['sekolah' => function($query){
+            $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
+        }, 'nilai_standar' => function($query){
+            $query->where('standar_id', 4);
+        }])->find($request->user_id);
+        $komponen = Isi_standar::where('standar_id', 4)->with(['nilai_akhir' => function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+        }])->whereNull('isi_standar_id')->get();
+        $respone = [
+            'status' => 'success', 
+            'detil_user' => $user,
+            'data' => $komponen, 
+            'rapor_mutu' => [],//HelperModel::rapor_mutu($request->user_id),
+        ];
+        return response()->json($respone);
+    }
+    public function bsc(Request $request){
+        $user = User::with(['sekolah' => function($query){
+            $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
+        }, 'nilai_standar' => function($query){
+            $query->where('standar_id', 2);
+        }])->find($request->user_id);
+        $komponen = Isi_standar::where('standar_id', 2)->with(['nilai_akhir' => function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+        }])->whereNull('isi_standar_id')->get();
+        $respone = [
+            'status' => 'success', 
+            'detil_user' => $user,
+            'data' => $komponen, 
+            'rapor_mutu' => [],//HelperModel::rapor_mutu($request->user_id),
+        ];
+        return response()->json($respone);
+    }
+    public function link_match(Request $request){
+        $user = User::with(['sekolah' => function($query){
+            $query->with(['smk_coe', 'sekolah_sasaran.pakta_integritas']);
+        }, 'nilai_standar' => function($query){
+            $query->where('standar_id', 3);
+        }])->find($request->user_id);
+        $komponen = Isi_standar::where('standar_id', 3)->with(['nilai_akhir' => function($query) use ($request){
+            $query->where('user_id', $request->user_id);
+        }])->whereNull('isi_standar_id')->get();
+        $respone = [
+            'status' => 'success', 
+            'detil_user' => $user,
+            'data' => $komponen, 
             'rapor_mutu' => [],//HelperModel::rapor_mutu($request->user_id),
         ];
         return response()->json($respone);
