@@ -160,15 +160,15 @@ $user = auth()->user();
                             </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link tag="a" to="/rapor-mutu/renstra" class="nav-link">
-                                <i class="nav-icon fas fa-hand-point-right"></i>
-                                <p>Hasil Rapor Mutu Renstra</p>
-                            </router-link>
-                        </li>
-                        <li class="nav-item">
                             <router-link tag="a" to="/rapor-mutu/link-match" class="nav-link">
                                 <i class="nav-icon fas fa-hand-point-right"></i>
                                 <p>Hasil Rapor Mutu 8+i</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/rapor-mutu/renstra" class="nav-link">
+                                <i class="nav-icon fas fa-hand-point-right"></i>
+                                <p>Hasil Rapor Mutu Renstra</p>
                             </router-link>
                         </li>
                         <li class="nav-item">
