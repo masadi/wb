@@ -21,4 +21,7 @@ class Isi_standar extends Model
     public function nilai_akhir(){
         return $this->hasOne('App\Nilai_akhir', 'isi_standar_id', 'id');
     }
+    public function instrumen_standar(){
+        return $this->hasMany('App\Instrumen_standar', 'isi_standar_id', 'id');
+    }
 }

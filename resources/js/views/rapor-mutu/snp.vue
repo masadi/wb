@@ -4,14 +4,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Rapor Mutu Standar Nasional Pendidikan (SNP)</h1>
+                    <h1 class="m-0 text-dark">Informasi Mutu Standar Nasional Pendidikan (SNP)</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
                             <router-link tag="a" to="/beranda">Beranda</router-link>
                         </li>
-                        <li class="breadcrumb-item active">Rapor Mutu Standar Nasional Pendidikan (SNP)</li>
+                        <li class="breadcrumb-item active">Informasi Mutu Standar Nasional Pendidikan (SNP)</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -27,7 +27,7 @@
                         </div>
                         <div class="card-body" v-show="is_coe">
                             <div class="d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG RAPOR MUTU SNP</span></button>
+                                <button type="button" class="btn btn-primary btn-lg btn-flat mb-3" :disabled='diMatikan' v-on:click="hitung_rapor_mutu"><span class="h4"><i class="fas fa-clipboard-check"></i> HITUNG INFORMASI MUTU SNP</span></button>
                             </div>
                         </div>
                     </div>
@@ -38,6 +38,136 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="chartdiv" id="chartdiv" ref="chartdiv" style="width: 100%;height: 700px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-show="is_coe">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col">Nama Sekolah</th>
+                                        <th class="text-center" scope="col">NPSN</th>
+                                        <th class="text-center" scope="col">Kab/Kota</th>
+                                        <th class="text-center" scope="col">Provinsi</th>
+                                        <th class="text-center" scope="col">Capaian SNP</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col">No</th>
+                                        <th class="text-center" scope="col">Standar</th>
+                                        <th class="text-center" scope="col">Nilai</th>
+                                        <th class="text-center" scope="col">Predikat</th>
+                                        <th class="text-center" scope="col">Kategori</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(kuisioner, key) in kuisioners">
+                                        <td class="text-center">{{key + 1}}</td>
+                                        <td><span @click="batang(kuisioner.id)">{{kuisioner.nama}}</span></td>
+                                        <td class="text-center">{{(kuisioner.nilai_akhir) ? kuisioner.nilai_akhir.nilai : 0}}</td>
+                                        <td class="text-center">{{(kuisioner.nilai_akhir) ? kuisioner.nilai_akhir.predikat : '-'}}</td>
+                                        <td class="text-center">
+                                            <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 1}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 21}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 41}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 61}"></span>
+                                            <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 81}"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col" colspan="4">No</th>
+                                        <th class="text-center" scope="col">Standar/Instrumen/Breakdown</th>
+                                        <th class="text-center" scope="col">Nilai</th>
+                                        <th class="text-center" scope="col">Predikat</th>
+                                        <th class="text-center" scope="col">Kategori</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template v-for="(kuisioner, key) in kuisioners">
+                                        <tr class="bg-success">
+                                            <td class="text-right">{{key+1}}</td>
+                                            <td colspan="4">{{kuisioner.nama}}</td>
+                                            <td class="text-center">{{(kuisioner.nilai_akhir) ? kuisioner.nilai_akhir.nilai : 0}}</td>
+                                            <td class="text-center">{{(kuisioner.nilai_akhir) ? kuisioner.nilai_akhir.predikat : '-'}}</td>
+                                            <td class="text-center">
+                                                <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 1}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 21}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 41}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 61}"></span>
+                                                <span class="fa fa-star" v-bind:class="{'bintang': bintangKomponen[kuisioner.id] >= 81}"></span>
+                                            </td>
+                                        </tr>
+                                        <template v-for="(instrumen, sub_key) in kuisioner.instrumen_standar">
+                                            <tr>
+                                                <td class="text-right"></td>
+                                                <td class="text-right">{{key+1}}.{{sub_key+1}}</td>
+                                                <td colspan="3">{{instrumen.instrumen.pertanyaan}}</td>
+                                                <td class="text-center">{{(instrumen.instrumen.nilai_instrumen) ? instrumen.instrumen.nilai_instrumen.nilai : 0}}</td>
+                                                <td class="text-center">{{(instrumen.instrumen.nilai_instrumen) ? instrumen.instrumen.nilai_instrumen.predikat : '-'}}</td>
+                                                <td class="text-center">
+                                                    <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 1}"></span>
+                                                    <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 2}"></span>
+                                                    <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 3}"></span>
+                                                    <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 4}"></span>
+                                                    <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 5}"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td colspan="3">Capaian</td>
+                                            </tr>
+                                            <template v-for="(breakdown, sub_sub_key) in instrumen.instrumen.breakdown">
+                                                <tr>
+                                                    <td class="text-right"></td>
+                                                    <td class="text-right"></td>
+                                                    <td style="vertical-align:middle;" class="text-right">{{key+1}}.{{sub_key+1}}.{{sub_sub_key+1}}</td>
+                                                    <td colspan="5">{{breakdown.breakdown}}</td>
+                                                </tr>
+                                                <template v-for="(question, sub_sub_sub_key) in breakdown.question">
+                                                    <tr>
+                                                        <td class="text-right"></td>
+                                                        <td class="text-right"></td>
+                                                        <td class="text-right"></td>
+                                                        <td style="vertical-align:middle;" class="text-right">{{key+1}}.{{sub_key+1}}.{{sub_sub_key+1}}.{{sub_sub_sub_key+1}}</td>
+                                                        <td>{{question.question}}</td>
+                                                        <template v-if="question.answer.length == 1">
+                                                            <td v-for="(answer, sub_sub_sub_sub_key) in question.answer" class="text-center">{{(answer.nilai_answer) ? answer.nilai_answer.answer : '-'}}</td>
+                                                            <td class="text-center">-</td>
+                                                            <td class="text-center">-</td>
+                                                        </template>
+                                                        <template v-else>
+                                                            <td v-for="(answer, sub_sub_sub_sub_key) in question.answer" class="text-center">{{(answer.nilai_answer) ? answer.nilai_answer.answer : '-'}}</td>
+                                                        </template>
+                                                    </tr>
+                                                </template>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -169,9 +299,6 @@ export default {
                     series.columns.template.showTooltipOn = "always";
                     series.tooltip.pointerOrientation = "down";
                     series.columns.template.width = am4core.percent(50);
-                    /*series.columns.template.events.on("hit", function(ev) {
-                        console.log("clicked on ", ev.target);
-                    }, this);*/
                     chart.exporting.menu = new am4core.ExportMenu();
                 })();
             }
@@ -183,23 +310,28 @@ export default {
                 let getData = response.data
                 let DataKeterangan = [];
                 let vm = this
+                let tempBintangKomponen = {}
+                let tempBintangInstrumen = {};
                 $.each(getData.data, function (key, valua) {
-                    console.log(valua);
+                    tempBintangKomponen[valua.id] = (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0;
                     vm.id_komponen[key] = valua
                     DataKeterangan[key] = {
                         komponen: valua.kode,
                         tercapai: (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0,
-                        //belum_tercapai: getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key],
-                        //total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
+                    $.each(valua.instrumen_standar, function (a, b) {
+                        tempBintangInstrumen[b.instrumen_id] = (b.instrumen.nilai_instrumen) ? b.instrumen.nilai_instrumen.nilai : 0;
+                    })
                 })
-                console.log(DataKeterangan);
-                //console.log(getData.detil_user);
                 vm.createChart('chartdiv', DataKeterangan)
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                 this.is_coe = true//(getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null
                 this.nilai_standar = (getData.detil_user.nilai_standar) ? false : true
                 this.pakta_integritas = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.pakta_integritas : null
+                this.kuisioners = getData.data
+                this.bintangKomponen = tempBintangKomponen
+                this.bintangInstrumen = tempBintangInstrumen
+                console.log(this.bintangInstrumen);
                 return false
                 this.data_lengkap = getData.detil_user
                 this.rapor_mutu = {
@@ -211,9 +343,9 @@ export default {
                     terima: getData.rapor_mutu.terima,
                     tolak: getData.rapor_mutu.tolak,
                 }
-                let tempBintangKomponen = {};
+                
                 let tempBintangAspek = {};
-                let tempBintangInstrumen = {};
+                
                 $.each(getData.data, function (komponen_id, komponen) {
                     tempBintangKomponen[komponen.id] = (komponen.nilai_komponen) ? komponen.nilai_komponen.total_nilai : 0;
                     $.each(komponen.aspek, function (aspek_id, aspek) {
@@ -223,10 +355,7 @@ export default {
                         });
                     });
                 });
-                this.bintangKomponen = tempBintangKomponen
                 this.bintangAspek = tempBintangAspek
-                this.bintangInstrumen = tempBintangInstrumen
-                this.kuisioners = getData.data
                 this.output_indikator = getData.output_indikator
                 this.rapor.kuisioner.lengkap = getData.rapor_mutu.instrumen
                 this.rapor.pakta.lengkap = getData.rapor_mutu.pakta

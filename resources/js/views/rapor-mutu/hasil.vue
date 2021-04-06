@@ -374,7 +374,6 @@ export default {
             this.$refs['my-modal'].show()
         },
         createChart(chartID, chartData) {
-            //console.log(this.$refs[chartID]);
             if (chartData) {
                 (function () {
                     var chart = am4core.create(
@@ -416,9 +415,6 @@ export default {
                     series.columns.template.showTooltipOn = "always";
                     series.tooltip.pointerOrientation = "top";
                     series.columns.template.width = am4core.percent(50);
-                    /*series.columns.template.events.on("hit", function(ev) {
-                        console.log("clicked on ", ev.target);
-                    }, this);*/
                     var bullet = series.bullets.push(new am4charts.LabelBullet())
                     bullet.interactionsEnabled = false
                     bullet.dy = 90;
@@ -517,8 +513,6 @@ export default {
                         total: parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_tercapai[key]) + parseFloat(getData.rapor_mutu.nilai_rapor_mutu.nilai_belum_tercapai[key]),
                     }
                 })
-                console.log(getData.rapor_mutu.nilai_rapor_mutu);
-                console.log(DataKeterangan);
                 vm.createChart('chartdiv', DataKeterangan)
                 this.no_coe = 'Penjaminan Mutu Tahun 2021 belum dibuka'//'Sekolah Anda belum ditetapkan sebagai SMK Center of Excelent'
                 this.is_coe = true//(getData.detil_user.sekolah) ? getData.detil_user.sekolah.smk_coe : null

@@ -30,14 +30,16 @@ class RaporController extends Controller
         }, 'nilai_standar' => function($query){
             $query->where('standar_id', 1);
         }])->find($request->user_id);
-        $komponen = Isi_standar::where('standar_id', 1)->with(['nilai_akhir' => function($query) use ($request){
+        $komponen = Isi_standar::where('standar_id', 1)->with(['instrumen_standar.instrumen' => function($query){
+            $query->with(['jawaban', 'breakdown.question.answer.nilai_answer', 'nilai_instrumen']);
+        }, 'nilai_akhir' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
         }])->whereNull('isi_standar_id')->get();
         $respone = [
             'status' => 'success', 
             'detil_user' => $user,
             'data' => $komponen, 
-            'rapor_mutu' => [],//HelperModel::rapor_mutu($request->user_id),
+            'rapor_mutu' => $komponen,//HelperModel::rapor_mutu($request->user_id),
         ];
         return response()->json($respone);
     }
