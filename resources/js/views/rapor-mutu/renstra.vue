@@ -153,7 +153,7 @@ export default {
                     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
                     valueAxis.title.text = "Ketercapaian Standar";
                     valueAxis.min = 0;
-                    //valueAxis.max = 100;
+                    valueAxis.max = 100;
                     valueAxis.strictMinMax = true;
                     valueAxis.renderer.labels.template.adapter.add("text", function (text) {
                         return text;
