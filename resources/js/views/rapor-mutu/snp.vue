@@ -147,7 +147,7 @@
                                                     <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 5}"></span>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!--tr>
                                                 <td colspan="5"></td>
                                                 <td colspan="3" class="text-center">Capaian</td>
                                             </tr>
@@ -156,7 +156,10 @@
                                                     <td class="text-right"></td>
                                                     <td class="text-right"></td>
                                                     <td style="vertical-align:middle;" class="text-right">{{key+1}}.{{sub_key+1}}.{{sub_sub_key+1}}</td>
-                                                    <td colspan="5">{{breakdown.breakdown}}</td>
+                                                    <td colspan="2">{{breakdown.breakdown}}</td>
+                                                    <td class="text-right"></td>
+                                                    <td class="text-right"></td>
+                                                    <td class="text-right"></td>
                                                 </tr>
                                                 <template v-for="(question, sub_sub_sub_key) in breakdown.question">
                                                     <tr>
@@ -175,7 +178,7 @@
                                                         </template>
                                                     </tr>
                                                 </template>
-                                            </template>
+                                            </template-->
                                         </template>
                                     </template>
                                 </tbody>
