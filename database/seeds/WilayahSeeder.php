@@ -10,7 +10,8 @@ class WilayahSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {  
+        Schema::disableForeignKeyConstraints();
         DB::table('wilayah')->truncate();
 		DB::table('negara')->truncate();
         DB::table('level_wilayah')->truncate();
@@ -64,5 +65,6 @@ class WilayahSeeder extends Seeder
                 }
             }
         }
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Wilayah;
-use App\Komponen;
+
 class DashboardController extends Controller
 {
     public function index(Request $request){
@@ -14,9 +14,6 @@ class DashboardController extends Controller
             $query->where('id_level_wilayah', 1);
         })->orderBy('kode_wilayah')->get();
         $params = [
-            'komponen' => Komponen::with('all_nilai_komponen', 'aspek.all_nilai_aspek')->get(),
-            'komponen_kinerja' => Komponen::whereIn('id', [1,2,3])->get(),
-            'komponen_dampak' => Komponen::whereIn('id', [4,5])->get(),
             'all_wilayah' => $all_wilayah,
         ];
         return view('dashboard.rapor-mutu.sekolah')->with($params);

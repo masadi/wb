@@ -61,12 +61,12 @@
                             <a href="{{url('/')}}"><img src="{{asset('vendor/img/logo.png')}}" alt=""
                                     class="img-responsive"></a>
                         </div>
-                        <img style="max-width: 200px;" src="{{asset('vendor/img/smk-bisa-smk-hebat.png')}}" alt="" class="img-responsive float-right mt-1">
+                        <img style="max-width: 120px;" src="{{asset('vendor/img/smk-bisa-smk-hebat.png')}}" alt="" class="img-responsive float-right mt-1">
                         <div class="header-text">
-                            <h1 class="mb-0">Aplikasi Penjaminan Mutu SMK</h1>
-                            <p class="lead mb-0"><strong>Direktorat Sekolah Menengah Kejuruan</strong></p>
-                            <p class="lead mb-0"><strong>Direktorat Jenderal Pendidikan Vokasi</strong></p>
-                            <p class="lead">Kementerian Pendidikan dan Kebudayaan</p>
+                            <h1 class="mb-0">Aplikasi Pendataan Sarana & Prasana</h1>
+                            <p class="lead mb-0"><strong>Dinas Pendidikan Kabupaten Sampang</strong></p>
+                            <p class="lead mb-0"><strong>Pemerintah Kabupaten Sampang</strong></p>
+                            <p class="lead">Pemerintah Provinsi Jawa Timur</p>
                         </div>
                     </div>
                 </div>
@@ -85,6 +85,7 @@
                 </button>
                 <div class="collapse navbar-collapse order-2 ml-2" id="navbarCollapse">
                     <ul class="nav navbar-nav">
+                        <!--
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'berita'])}}">Berita</a></li>
                         @auth
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'progres-data'])}}" target="_blank">Progres Data</a></li>
@@ -94,6 +95,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'pencarian'])}}">Pencarian</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'galeri'])}}">Galeri</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('page', ['query' => 'faq'])}}">FAQ</a></li>
+                        -->
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-auto order-3 order-md-3 navbar-no-expand">

@@ -65,45 +65,34 @@ class LaratrustSeeder extends Seeder
                         'name' => 'Achmadi',
                         'username' => 'masadi',
                         'email' => 'masadi.com@gmail.com',
-                        'password' => bcrypt('3l3ktr4&cyber')
-                    ]);
-                    $user->attachRole($role);
-                } else if($key == 'penjamin_mutu'){
-                    $user = \App\User::create([
-                        'name' => 'Tim Verifikator',
-                        'username' => 'verifikator',
-                        'email' => 'verifikator@apmsmk.net',
-                        'password' => bcrypt('3l3ktr4&cyber')
-                    ]);
-                    $user->attachRole($role);
-                } else if($key == 'direktorat'){
-                    $user = \App\User::create([
-                        'name' => 'Direktorat',
-                        'username' => 'direktorat',
-                        'email' => 'direktorat@apmsmk.net',
-                        'password' => bcrypt('3l3ktr4&cyber')
-                    ]);
-                    $user->attachRole($role);
-                } 
-                /*
-                */
-                /*
-                else {
-                    asdas
-                    asdas
-                    adsa
-                    d
-                    ini kode login
-
-                // Create default user for each role
-                    $user = \App\User::create([
-                        'name' => ucwords(str_replace('_', ' ', $key)),
-                        'username' => strtolower(str_replace(' ', '_', $key)),
-                        'email' => $key.'@apmsmk.net',
                         'password' => bcrypt('12345678')
                     ]);
                     $user->attachRole($role);
-                }*/
+                } else if($key == 'dinas'){
+                    $user = \App\User::create([
+                        'name' => 'Admin Dinas',
+                        'username' => 'dinas',
+                        'email' => 'dinas@disdik.sampangkab.go.id',
+                        'password' => bcrypt('12345678')
+                    ]);
+                    $user->attachRole($role);
+                } else if($key == 'author'){
+                    $user = \App\User::create([
+                        'name' => 'Author',
+                        'username' => 'author',
+                        'email' => 'author@disdik.sampangkab.go.id',
+                        'password' => bcrypt('12345678')
+                    ]);
+                    $user->attachRole($role);
+                } else if($key == 'pengawas'){
+                    $user = \App\User::create([
+                        'name' => 'Pengawas',
+                        'username' => 'pengawas',
+                        'email' => 'pengawas@disdik.sampangkab.go.id',
+                        'password' => bcrypt('12345678')
+                    ]);
+                    $user->attachRole($role);
+                }
             }
 
         }
@@ -124,12 +113,12 @@ class LaratrustSeeder extends Seeder
         $rolesTable = (new \App\Role)->getTable();
         $permissionsTable = (new \App\Permission)->getTable();
         if(Config::get('laratrust_seeder.truncate_tables')) {
-            DB::statement("TRUNCATE TABLE {$permissionsTable} CASCADE");
-            DB::statement("TRUNCATE TABLE {$rolesTable} CASCADE");
+            DB::statement("TRUNCATE TABLE {$permissionsTable}");
+            DB::statement("TRUNCATE TABLE {$rolesTable}");
         }
         if(Config::get('laratrust_seeder.truncate_tables') && Config::get('laratrust_seeder.create_users')) {
             $usersTable = (new \App\User)->getTable();
-            DB::statement("TRUNCATE TABLE {$usersTable} CASCADE");
+            DB::statement("TRUNCATE TABLE {$usersTable}");
         }
         Schema::enableForeignKeyConstraints();
     }
