@@ -65,6 +65,11 @@
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td class="text-center">{{nama_sekolah}}</td>
+                                        <td class="text-center">{{npsn}}</td>
+                                        <td class="text-center">{{kab_kota}}</td>
+                                        <td class="text-center">{{provinsi}}</td>
+                                        <td class="text-center">{{capaian_snp}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -144,7 +149,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="5"></td>
-                                                <td colspan="3">Capaian</td>
+                                                <td colspan="3" class="text-center">Capaian</td>
                                             </tr>
                                             <template v-for="(breakdown, sub_sub_key) in instrumen.instrumen.breakdown">
                                                 <tr>
@@ -228,6 +233,10 @@ export default {
             bintangAspek: {},
             bintangInstrumen: {},
             nama_sekolah: '',
+            npsn: '',
+            kab_kota: '',
+            provinsi: '',
+            capaian_snp: '',
             nilai_rapor_mutu: 0,
             nilai_rapor_mutu_verifikasi: 0,
             predikat_sekolah: '-',
@@ -363,6 +372,7 @@ export default {
                 let vm = this
                 let tempBintangKomponen = {}
                 let tempBintangInstrumen = {};
+                var tempCapaian=0;
                 $.each(getData.data, function (key, valua) {
                     tempBintangKomponen[valua.id] = (valua.nilai_akhir) ? valua.nilai_akhir.nilai : 0;
                     vm.id_komponen[key] = valua
@@ -374,6 +384,7 @@ export default {
                     $.each(valua.instrumen_standar, function (a, b) {
                         tempBintangInstrumen[b.instrumen_id] = (b.instrumen.nilai_instrumen) ? b.instrumen.nilai_instrumen.nilai : 0;
                     })
+                    tempCapaian+= (valua.nilai_akhir) ? Number(valua.nilai_akhir.nilai) : 0
                 })
                 vm.createChart('chartdiv', DataKeterangan)
                 vm.createChartRadial('chartRadar', DataKeterangan)
@@ -384,7 +395,12 @@ export default {
                 this.kuisioners = getData.data
                 this.bintangKomponen = tempBintangKomponen
                 this.bintangInstrumen = tempBintangInstrumen
-                console.log(this.bintangInstrumen);
+                this.nama_sekolah = getData.detil_user.name
+                this.npsn = getData.detil_user.username
+                this.kab_kota = getData.detil_user.sekolah.kabupaten
+                this.provinsi = getData.detil_user.sekolah.provinsi
+                this.capaian_snp = (tempCapaian / 7) +'%'
+                console.log(tempCapaian / 7);
                 return false
                 this.data_lengkap = getData.detil_user
                 this.rapor_mutu = {
@@ -428,7 +444,7 @@ export default {
                 this.rapor.tolak.lengkap = getData.rapor.tolak
                 this.rapor.tolak.tgl = (getData.rapor.tolak) ? getData.rapor.tolak : '-'
                 this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null*/
-                this.nama_sekolah = getData.detil_user.name
+                
                 this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
                 this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : '-'
                 if (getData.detil_user.sekolah.npsn === '20219159') {
