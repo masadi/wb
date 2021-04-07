@@ -147,7 +147,7 @@
                                                     <span class="fa fa-star" v-bind:class="{'bintang': bintangInstrumen[instrumen.instrumen.instrumen_id] >= 5}"></span>
                                                 </td>
                                             </tr>
-                                            <!--tr>
+                                            <tr>
                                                 <td colspan="5"></td>
                                                 <td colspan="3" class="text-center">Capaian</td>
                                             </tr>
@@ -178,7 +178,7 @@
                                                         </template>
                                                     </tr>
                                                 </template>
-                                            </template-->
+                                            </template>
                                         </template>
                                     </template>
                                 </tbody>
