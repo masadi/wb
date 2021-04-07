@@ -66,7 +66,9 @@ class RaporController extends Controller
         }, 'nilai_standar' => function($query){
             $query->where('standar_id', 2);
         }])->find($request->user_id);
-        $komponen = Isi_standar::where('standar_id', 2)->with(['nilai_akhir' => function($query) use ($request){
+        $komponen = Isi_standar::where('standar_id', 2)->with(['breakdown', 'sub_isi_standar' => function($query){
+            $query->with(['sub_isi_standar']);
+        }, 'nilai_akhir' => function($query) use ($request){
             $query->where('user_id', $request->user_id);
         }])->whereNull('isi_standar_id')->get();
         $respone = [

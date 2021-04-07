@@ -24,4 +24,18 @@ class Isi_standar extends Model
     public function instrumen_standar(){
         return $this->hasMany('App\Instrumen_standar', 'isi_standar_id', 'id');
     }
+    public function sub_isi_standar(){
+        return $this->hasMany('App\Isi_standar', 'isi_standar_id', 'id');
+    }
+    public function breakdown()
+    {
+        return $this->hasManyThrough(
+            Breakdown::class,
+            Breakdown_standar::class,
+            'isi_standar_id', // Foreign key on the environments table...
+            'breakdown_id', // Foreign key on the deployments table...
+            'id', // Local key on the projects table...
+            'breakdown_id' // Local key on the environments table...
+        );
+    }
 }

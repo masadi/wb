@@ -42,6 +42,42 @@
                     </div>
                 </div>
             </div>
+            <div class="row" v-show="is_coe">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col">No</th>
+                                        <th class="text-center" scope="col">Dimensi</th>
+                                        <th class="text-center" scope="col">Indikator Level 1</th>
+                                        <th class="text-center" scope="col">No L2</th>
+                                        <th class="text-center" scope="col">Indikator Level 2</th>
+                                        <th class="text-center" scope="col">Hasil Perhitungan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template v-for="(data, key) in all_data">
+                                        <template v-for="(data_a, key_a) in data.sub_isi_standar">
+                                            <template v-for="(data_b, key_b) in data_a.sub_isi_standar">
+                                                <tr>
+                                                    <td class="text-center">{{data.kode}}</td>
+                                                    <td>{{data.nama}}</td>
+                                                    <td>{{data_a.kode}} {{data_a.nama}}</td>
+                                                    <td class="text-center">{{data_b.kode}}</td>
+                                                    <td>{{data_b.nama}}</td>
+                                                    <td class="text-center">?</td>
+                                                </tr>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <my-loader />
@@ -79,8 +115,10 @@ export default {
         return {
             is_coe: null,
             no_coe: 'Loading....',
-            all_komponen: [1, 2, 3, 4, 5, 6, 7, 8],
+            isi_batang: null,
             id_komponen: [],
+            all_data: [],
+            /*all_komponen: [1, 2, 3, 4, 5, 6, 7, 8],
             user: user,
             pakta_integritas: 0,
             nilai_standar: 0,
@@ -99,7 +137,7 @@ export default {
             show_spinner_cetak: false,
             show_text_cetak: true,
             chartData: [],
-            isi_batang: null,
+            */
         }
     },
     components: {
@@ -181,6 +219,7 @@ export default {
                 user_id: user.user_id,
             }).then((response) => {
                 let getData = response.data
+                this.all_data = getData.data
                 let DataKeterangan = [];
                 let vm = this
                 $.each(getData.data, function (key, valua) {
@@ -200,62 +239,6 @@ export default {
                 this.nilai_standar = (getData.detil_user.nilai_standar) ? false : true
                 this.pakta_integritas = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.pakta_integritas : null
                 return false
-                this.data_lengkap = getData.detil_user
-                this.rapor_mutu = {
-                    instrumen: getData.rapor_mutu.instrumen,
-                    hitung: getData.rapor_mutu.hitung,
-                    pakta: getData.rapor_mutu.pakta,
-                    verval: getData.rapor_mutu.verval,
-                    proses: getData.rapor_mutu.proses,
-                    terima: getData.rapor_mutu.terima,
-                    tolak: getData.rapor_mutu.tolak,
-                }
-                let tempBintangKomponen = {};
-                let tempBintangAspek = {};
-                let tempBintangInstrumen = {};
-                $.each(getData.data, function (komponen_id, komponen) {
-                    tempBintangKomponen[komponen.id] = (komponen.nilai_komponen) ? komponen.nilai_komponen.total_nilai : 0;
-                    $.each(komponen.aspek, function (aspek_id, aspek) {
-                        tempBintangAspek[aspek.id] = (aspek.nilai_aspek) ? aspek.nilai_aspek.total_nilai : 0;
-                        $.each(aspek.instrumen, function (key, instrumen) {
-                            tempBintangInstrumen[instrumen.instrumen_id] = (instrumen.nilai_instrumen) ? instrumen.nilai_instrumen.nilai : 0;
-                        });
-                    });
-                });
-                this.bintangKomponen = tempBintangKomponen
-                this.bintangAspek = tempBintangAspek
-                this.bintangInstrumen = tempBintangInstrumen
-                this.kuisioners = getData.data
-                this.output_indikator = getData.output_indikator
-                this.rapor.kuisioner.lengkap = getData.rapor_mutu.instrumen
-                this.rapor.pakta.lengkap = getData.rapor_mutu.pakta
-                this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null
-                /*this.rapor.kuisioner.lengkap = (getData.rapor.jml_instrumen == getData.detil_user.nilai_instrumen_count)
-                this.rapor.kuisioner.tgl = (getData.rapor.kuisioner) ? getData.rapor.kuisioner : '-'
-                this.rapor.hitung.lengkap = getData.rapor.hitung
-                this.rapor.hitung.tgl = (getData.rapor.hitung) ? getData.rapor.hitung : '-'
-                this.rapor.pakta.lengkap = getData.rapor.pakta_integritas
-                this.rapor.pakta.tgl = (getData.rapor.pakta_integritas) ? getData.rapor.pakta_integritas : '-'
-                this.rapor.verval.lengkap = getData.rapor.verval
-                this.rapor.verval.tgl = (getData.rapor.verval) ? getData.rapor.verval : '-'
-                this.rapor.proses.lengkap = getData.rapor.proses
-                this.rapor.proses.tgl = (getData.rapor.proses) ? getData.rapor.proses : '-'
-                this.rapor.terima.lengkap = getData.rapor.terima
-                this.rapor.terima.tgl = (getData.rapor.terima) ? getData.rapor.terima : '-'
-                this.rapor.tolak.lengkap = getData.rapor.tolak
-                this.rapor.tolak.tgl = (getData.rapor.tolak) ? getData.rapor.tolak : '-'
-                this.rapor.verifikator_id = (getData.detil_user.sekolah.sekolah_sasaran) ? getData.detil_user.sekolah.sekolah_sasaran.verifikator_id : null*/
-                this.nama_sekolah = getData.detil_user.name
-                this.nilai_rapor_mutu = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.nilai : 0
-                this.predikat_sekolah = (getData.detil_user.nilai_akhir) ? getData.detil_user.nilai_akhir.predikat : '-'
-                if (getData.detil_user.sekolah.npsn === '20219159') {
-                    this.nilai_rapor_mutu_verifikasi = '-'
-                    this.predikat_sekolah_verifikasi = '-'
-                    this.rapor_mutu.verval = null
-                } else {
-                    this.nilai_rapor_mutu_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.nilai : '-'
-                    this.predikat_sekolah_verifikasi = (getData.detil_user.nilai_akhir_verifikasi) ? getData.detil_user.nilai_akhir_verifikasi.predikat : '-'
-                }
             });
         },
         cetak_rapor_mutu(data) {
