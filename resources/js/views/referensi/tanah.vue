@@ -22,6 +22,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">List Tanah</h3>
+                                <div class="card-tools" v-show="hasRole('sekolah')">
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Berita'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
@@ -120,6 +123,28 @@ export default {
 
                 this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
             }
+        },
+        newModal(){
+            this.editmode = false;
+            this.form.reset();
+            this.form.user_id = user.user_id;
+            $('#modalAdd').modal('show');
+        },
+        insertData(){
+            this.form.post('/api/referensi/simpan-tanah').then((response)=>{
+                console.log(response);
+                $('#modalAdd').modal('hide');
+                Toast.fire({
+                    icon: 'success',
+                    title: response.message
+                });
+                this.loadPostsData();
+            }).catch((e)=>{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
         },
     }
 }

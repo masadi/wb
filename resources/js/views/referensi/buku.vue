@@ -4,14 +4,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Data Pendamping</h1>
+                    <h1 class="m-0 text-dark">Data Buku</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
                             <router-link tag="a" to="/beranda">Beranda</router-link>
                         </li>
-                        <li class="breadcrumb-item active">Data Pendamping</li>
+                        <li class="breadcrumb-item active">Data Buku</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -25,9 +25,9 @@
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="fas fa-th mr-1"></i>
-                                Data Pendamping
+                                Data Buku
                             </h3>
-                            <div class="card-tools" v-show="hasRole('admin') || hasRole('direktorat')">
+                            <div class="card-tools" v-show="hasRole('sekolah')">
                                 <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Pendamping</h5>
+                    <h5 class="modal-title">Tambah Buku</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import Datatable from './../components/Pendamping.vue' //IMPORT COMPONENT DATATABLENYA
+import Datatable from './../components/Buku.vue' //IMPORT COMPONENT DATATABLENYA
 export default {
     data() {
         return {
@@ -160,7 +160,7 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page : 1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/referensi/pendamping`, {
+            axios.get(`/api/referensi/buku`, {
                     //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                     params: {
                         sekolah_id: this.sekolah_id,
@@ -216,7 +216,7 @@ export default {
             $('#modalAdd').modal('show');
         },
         insertData() {
-            this.form.post('/api/referensi/simpan-pendamping').then((response) => {
+            this.form.post('/api/referensi/simpan-buku').then((response) => {
                 console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({

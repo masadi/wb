@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Data Instrumen</h1>
+                        <h1 class="m-0 text-dark">Data Angkutan</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Data Instrumen</li>
+                            <li class="breadcrumb-item active">Data Angkutan</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -20,6 +20,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">List Angkutan</h3>
+                                <div class="card-tools" v-show="hasRole('sekolah')">
+                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
+                                </div>
+                            </div>
                             <div class="card-body">
                                 <app-instrumen :items="items" :fields="fields" :meta="meta" :editUrl="'/edit/'" :title="'Hapus Instrumen'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" @delete="handleDelete"/>
                             </div>
@@ -34,7 +40,7 @@
 
 <script>
     // VueJS components will run here.
-    import Instrumen from './../components/Instrumen.vue' //IMPORT COMPONENT DATATABLENYA
+    import Instrumen from './../components/Angkutan.vue' //IMPORT COMPONENT DATATABLENYA
 import axios from 'axios' //IMPORT AXIOS
 
 export default {
@@ -68,7 +74,7 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/instrumen`, {
+            axios.get(`/api/referensi/angkutan`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
                     page: current_page,
@@ -93,10 +99,10 @@ export default {
             })
         },
         deletePostData(id) {
-            axios.delete(`/api/instrumen/${id}`).then(() => this.loadPostsData())
+            axios.delete(`/api/referensi/hapus-angkutan/${id}`).then(() => this.loadPostsData())
         },
         editPostData(id) {
-            axios.get(`/api/instrumen/${id}`).then(() => this.loadPostsData())
+            axios.get(`/api/referensi/hapus-angkutan/${id}`).then(() => this.loadPostsData())
         },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
         handlePerPage(val) {
@@ -123,7 +129,29 @@ export default {
         },
         handleDelete(val) {
             this.deletePostData(val.id)
-        }
+        },
+        newModal(){
+            this.editmode = false;
+            this.form.reset();
+            this.form.user_id = user.user_id;
+            $('#modalAdd').modal('show');
+        },
+        insertData(){
+            this.form.post('/api/referensi/simpan-angkutan').then((response)=>{
+                console.log(response);
+                $('#modalAdd').modal('hide');
+                Toast.fire({
+                    icon: 'success',
+                    title: response.message
+                });
+                this.loadPostsData();
+            }).catch((e)=>{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
+        },
     }
 }
 </script>

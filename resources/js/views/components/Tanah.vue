@@ -57,7 +57,7 @@
             ></b-pagination>
         </div>
         </div>
-        <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Berita">
+        <b-modal id="modal-xl" size="xl" v-model="showModal" title="Detil Tanah">
             {{ modalText }}
             <template v-slot:modal-footer>
                 <div class="w-100 float-right">
@@ -75,7 +75,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Perbaharui Aspek</h5>
+                    <h5 class="modal-title">Perbaharui Data Tanah</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

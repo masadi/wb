@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Data Komponen</h1>
+                        <h1 class="m-0 text-dark">Data Bangunan</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Data Komponen</li>
+                            <li class="breadcrumb-item active">Data Bangunan</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -21,9 +21,11 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">List Komponen</h3>
+                                <h3 class="card-title">List Bangunan</h3>
                                 <div class="card-tools">
-                                    <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
+                                    <div class="card-tools" v-show="hasRole('sekolah')">
+                                        <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -38,7 +40,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Komponen</h5>
+                    <h5 class="modal-title">Tambah Bangunan</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -47,7 +49,7 @@
                 <form @submit.prevent="insertData()" enctype="multipart/form-data" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Nama Komponen</label>
+                            <label>Nama Bangunan</label>
                             <input v-model="form.id" type="hidden" name="id"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
                             <input v-model="form.nama" type="text" name="nama"
@@ -83,7 +85,7 @@
 </template>
 <script>
     // VueJS components will run here.
-    import Datatable from './../components/Komponen.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './../components/Bangunan.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
     import objectToFormData from "./../components/objectToFormData"; 
     //window.objectToFormData = objectToFormData;
@@ -129,7 +131,7 @@ export default {
             this.isLoading = true
             let formData = new FormData();
             formData.append('file', this.file);
-            axios.post('/api/referensi/komponen/upload', formData, {
+            axios.post('/api/referensi/bangunan/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },
@@ -150,7 +152,7 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/referensi/komponen`, {
+            axios.get(`/api/referensi/bangunan`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
                     page: current_page,
@@ -205,7 +207,7 @@ export default {
             $('#modalAdd').modal('show');
         },
         insertData(){
-            this.form.post('/api/referensi/simpan-komponen').then((response)=>{
+            this.form.post('/api/referensi/simpan-bangunan').then((response)=>{
                 console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({
