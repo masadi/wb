@@ -4,12 +4,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Data Aspek</h1>
+                        <h1 class="m-0 text-dark">Data Tanah</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><router-link tag="a" to="/beranda">Beranda</router-link></li>
-                            <li class="breadcrumb-item active">Data Aspek</li>
+                            <li class="breadcrumb-item active">Data Tanah</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -21,7 +21,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">List Aspek</h3>
+                                <h3 class="card-title">List Tanah</h3>
                             </div>
                             <div class="card-body">
                                 <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Berita'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort"/>
@@ -36,7 +36,7 @@
 </template>
 <script>
     // VueJS components will run here.
-    import Datatable from './../components/Aspek.vue' //IMPORT COMPONENT DATATABLENYA
+    import Datatable from './../components/Tanah.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
     import objectToFormData from "./../components/objectToFormData"; 
     //window.objectToFormData = objectToFormData;
@@ -73,7 +73,7 @@ export default {
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page:1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
-            axios.get(`/api/referensi/aspek`, {
+            axios.get(`/api/referensi/tanah`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
                     page: current_page,

@@ -27,9 +27,6 @@
                                 <i class="fas fa-th mr-1"></i>
                                 Data Sekolah
                             </h3>
-                            <div class="card-tools">
-                                <button class="btn btn-success btn-sm btn-block btn-flat" v-show="hasRole('admin')" v-on:click="newModal">Tambah Data</button>
-                            </div>
                         </div>
                         <div class="card-body">
                             <app-datatable :items="items" :fields="fields" :meta="meta" :title="'Hapus Sekolah'" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" />
@@ -82,37 +79,32 @@ export default {
             user: user,
             fields: [{
                     key: 'nama',
-                    'label': 'Nama Sekolah',
+                    label: 'Nama Sekolah',
                     sortable: true
                 },
                 {
                     key: 'npsn',
-                    'label': 'NPSN',
+                    label: 'NPSN',
                     sortable: true
                 },
                 {
-                    key: 'is_coe',
-                    'label': 'SMK CoE',
+                    key: 'alamat',
+                    label: 'Alamat',
                     sortable: true
                 },
                 {
-                    key: 'sektor_coe',
-                    'label': 'Sektor CoE',
+                    key: 'desa_kelurahan',
+                    label: 'Desa/Kelurahan',
                     sortable: false
                 },
                 {
-                    key: 'kabupaten',
-                    'label': 'Kabupaten/Kota',
-                    sortable: true
-                },
-                {
-                    key: 'provinsi',
-                    'label': 'Provinsi',
+                    key: 'kecamatan',
+                    label: 'Kecamatan',
                     sortable: true
                 },
                 {
                     key: 'actions',
-                    'label': 'Aksi',
+                    label: 'Aksi',
                     sortable: false
                 }, //TAMBAHKAN CODE INI
             ],

@@ -201,7 +201,7 @@ export default {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    return fetch('/api/aspek/'+id, {
+                    return fetch('/api/referensi/hapus-tanah/'+id, {
                         method: 'DELETE',
                     }).then(()=>{
                     //this.form.delete('api/komponen/'+id).then(()=>{

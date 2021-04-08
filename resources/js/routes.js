@@ -22,44 +22,44 @@ let routes = [{
         component: require('./views/news/faq').default
     },
     {
-        path: '/komponen',
-        name: 'komponen',
-        component: require('./views/referensi/komponen').default
+        path: '/sekolah',
+        name: 'sekolah',
+        component: require('./views/referensi/sekolah').default
     },
     {
-        path: '/aspek',
-        name: 'aspek',
-        component: require('./views/referensi/aspek').default
+        path: '/tanah',
+        name: 'tanah',
+        component: require('./views/referensi/tanah').default
     },
     {
-        path: '/atribut',
-        name: 'atribut',
-        component: require('./views/referensi/atribut').default
+        path: '/bangunan',
+        name: 'bangunan',
+        component: require('./views/referensi/bangunan').default
     },
     {
-        path: '/indikator',
-        name: 'indikator',
-        component: require('./views/referensi/indikator').default
+        path: '/ruang',
+        name: 'ruang',
+        component: require('./views/referensi/ruang').default
     },
     {
-        path: '/instrumen',
-        name: 'instrumen',
-        component: require('./views/referensi/instrumen').default
+        path: '/alat',
+        name: 'alat',
+        component: require('./views/referensi/alat').default
     },
     {
-        path: '/pendamping',
-        name: 'pendamping',
-        component: require('./views/referensi/pendamping').default
+        path: '/angkutan',
+        name: 'angkutan',
+        component: require('./views/referensi/angkutan').default
+    },
+    {
+        path: '/buku',
+        name: 'buku',
+        component: require('./views/referensi/buku').default
     },
     {
         path: '/verifikator',
         name: 'verifikator',
         component: require('./views/referensi/penjamin_mutu').default
-    },
-    {
-        path: '/sekolah',
-        name: 'sekolah',
-        component: require('./views/referensi/sekolah').default
     },
     {
         path: '/komli',
