@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Sekolah;
 use App\User;
 use App\HelperModel;
-use App\Komponen;
 use App\Wilayah;
 use Validator;
 class SekolahController extends Controller
@@ -53,7 +52,7 @@ class SekolahController extends Controller
         }
         $data = NULL;
         if($user->hasRole('sekolah')){
-            $data = HelperModel::rapor_mutu($request->user_id);
+            $data = Sekolah::find($user->sekolah_id);
         } elseif($user->hasRole('penjamin_mutu')){
             $data = [
                 'jml_sekolah_sasaran' => Sekolah::whereHas('sekolah_sasaran', function($query) use ($request){

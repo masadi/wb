@@ -17,30 +17,31 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::resource('sekolah', 'SekolahController');
+Route::group(['prefix' => 'referensi'], function(){
+    Route::get('/{query}', 'ReferensiController@index');
+    Route::post('/simpan-{query}', 'ReferensiController@simpan_data');
+    Route::put('/update-{query}/{id}', 'ReferensiController@update_data');
+    Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');
+});
+/*
 Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
 //Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
 Route::get('/get-kategori', 'BeritaController@kategori');
 Route::get('/cetak-instrumen', 'ReferensiController@cetak');
-/*Route::get('/berita', 'BeritaController@index');
-
-Route::delete('/berita/{id}', 'BeritaController@destroy');*/
 Route::get('/hitung-nilai-instrumen/{user_id}', 'NilaiController@hitung_nilai');
 Route::post('/hitung-nilai-instrumen', 'NilaiController@hitung_nilai');
 //Route::get('/users', 'UsersController@index');
 //Route::post('/users', 'UsersController@create');
-Route::group(['prefix' => 'referensi'], function(){
-    Route::get('/{query}', 'ReferensiController@index');
-    Route::post('/simpan-{query}', 'ReferensiController@simpan_data');
+
     Route::post('/komponen/upload', 'ReferensiController@upload');
     Route::post('/sekolah-sasaran', 'ReferensiController@sekolah_sasaran');
     Route::post('/sekolah-sasaran-pendamping', 'ReferensiController@sekolah_sasaran_pendamping');
     Route::post('/status-coe', 'ReferensiController@status_coe');
     Route::post('/sektor-coe', 'ReferensiController@sektor_coe');
     Route::post('/reset-isian-instrumen', 'ReferensiController@reset_isian_instrumen');
-    Route::put('/update-{query}/{id}', 'ReferensiController@update_data');
-    Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');
-});
+    
 Route::group(['prefix' => 'hitung-rapor'], function(){
     Route::post('/snp', 'NilaiController@hitung_snp');
     Route::post('/renstra', 'NilaiController@hitung_renstra');
@@ -88,7 +89,6 @@ Route::resource('users', 'UsersController');
 Route::post('/profile', 'UsersController@profile');
 Route::post('/reset-password', 'UsersController@reset_passsword');
 Route::post('/update-profile', 'UsersController@update_profile');
-Route::resource('sekolah', 'SekolahController');
 Route::resource('komponen', 'KomponenController');
 Route::resource('aspek', 'AspekController');
 Route::resource('atribut', 'AtributController');
@@ -136,3 +136,4 @@ Route::group(['prefix' => 'laporan'], function(){
     Route::post('/simpan', 'LaporanController@simpan')->name('api.laporan.simpan');
     Route::post('/upload', 'LaporanController@upload')->name('api.laporan.upload');
 });
+*/
