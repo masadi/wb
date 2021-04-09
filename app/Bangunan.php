@@ -11,4 +11,7 @@ class Bangunan extends Model
 	protected $table = 'bangunan';
 	protected $primaryKey = 'bangunan_id';
     protected $guarded = [];
+    public function tanah(){
+        return $this->belongsTo('App\Tanah', 'tanah_id', 'tanah_id');
+    }
 }

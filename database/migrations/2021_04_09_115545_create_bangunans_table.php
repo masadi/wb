@@ -17,8 +17,6 @@ class CreateBangunansTable extends Migration
             $table->uuid('bangunan_id');
             $table->uuid('tanah_id');
             $table->foreign('tanah_id')->references('tanah_id')->on('tanah')->onDelete('cascade');
-            $table->uuid('sekolah_id');
-            $table->foreign('sekolah_id')->references('sekolah_id')->on('sekolah')->onDelete('cascade');
             $table->string('nama');
             $table->string('imb')->nullable();
             $table->integer('panjang')->unsigned()->nullable();

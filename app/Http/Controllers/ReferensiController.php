@@ -15,6 +15,10 @@ use PDF;
 use Artisan;
 use App\Tanah;
 use App\Bangunan;
+use App\Ruang;
+use App\Alat;
+use App\Angkutan;
+use App\Buku;
 
 class ReferensiController extends Controller
 {
@@ -38,11 +42,75 @@ class ReferensiController extends Controller
     public function get_bangunan($request){
         $all_data = Bangunan::where(function($query){
             if(request()->sekolah_id){
+                $query->whereHas('tanah', function($query){
+                    $query->where('sekolah_id', request()->sekolah_id);
+                });
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
+                ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_ruang($request){
+        $all_data = Ruang::where(function($query){
+            if(request()->sekolah_id){
+                $query->whereHas('bangunan', function($query){
+                    $query->whereHas('tanah', function($query){
+                        $query->where('sekolah_id', request()->sekolah_id);
+                    });
+                });
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
+                ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_alat($request){
+        $all_data = Alat::where(function($query){
+            if(request()->sekolah_id){
+                $query->whereHas('ruang', function($query){
+                    $query->whereHas('bangunan', function($query){
+                        $query->whereHas('tanah', function($query){
+                            $query->where('sekolah_id', request()->sekolah_id);
+                        });
+                    });
+                });
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
+                ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_angkutan($request){
+        $all_data = Angkutan::where(function($query){
+            if(request()->sekolah_id){
                 $query->where('sekolah_id', request()->sekolah_id);
             }
         })->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
+                ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_buku($request){
+        $all_data = Buku::where(function($query){
+            if(request()->sekolah_id){
+                $query->where('sekolah_id', request()->sekolah_id);
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('judul', 'ilike', '%' . request()->q . '%')
                 ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
                 ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
