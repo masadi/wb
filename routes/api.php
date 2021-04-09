@@ -24,6 +24,7 @@ Route::group(['prefix' => 'referensi'], function(){
     Route::put('/update-{query}/{id}', 'ReferensiController@update_data');
     Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');
 });
+Route::resource('berita', 'BeritaController');
 /*
 Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
@@ -93,7 +94,7 @@ Route::resource('komponen', 'KomponenController');
 Route::resource('aspek', 'AspekController');
 Route::resource('atribut', 'AtributController');
 Route::resource('indikator', 'IndikatorController');
-Route::resource('berita', 'BeritaController');
+
 Route::resource('instrumen', 'InstrumenController');
 Route::post('/get-kuisioner', 'KuisionerController@proses');
 Route::get('/get-kuisioner', 'KuisionerController@proses');

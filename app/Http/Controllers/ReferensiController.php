@@ -13,12 +13,26 @@ use File;
 use Validator;
 use PDF;
 use Artisan;
+use App\Tanah;
 
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
         $function = 'get_'.str_replace('-', '_', $query);
         return $this->{$function}($request);
+    }
+    public function get_tanah($request){
+        $all_data = Tanah::where(function($query){
+            if(request()->sekolah_id){
+                $query->where('sekolah_id', request()->sekolah_id);
+            }
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            ->when(request()->q, function($all_data) {
+                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
+                ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
+                ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_sekolah($request)
     {
