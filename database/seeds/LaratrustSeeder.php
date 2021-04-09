@@ -62,9 +62,9 @@ class LaratrustSeeder extends Seeder
                 $this->command->info("Creating '{$key}' user");
                 if($key == 'admin'){
                     $user = \App\User::create([
-                        'name' => 'Achmadi',
-                        'username' => 'masadi',
-                        'email' => 'masadi.com@gmail.com',
+                        'name' => 'Admin',
+                        'username' => 'admin',
+                        'email' => 'admin@disdik.sampangkab.go.id',
                         'password' => bcrypt('12345678')
                     ]);
                     $user->attachRole($role);
