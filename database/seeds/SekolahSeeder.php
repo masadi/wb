@@ -81,7 +81,7 @@ class SekolahSeeder extends Seeder
                             'provinsi_id' => $provinsi_id,
                         ]
                     );
-                    $email = ($sekolah->email) ? $sekolah->email : $sekolah->npsn.'@disdik.sampangkab.go.id';
+                    /*$email = ($sekolah->email) ? $sekolah->email : $sekolah->npsn.'@disdik.sampangkab.go.id';
                     $user_sekolah = User::updateOrCreate(
                         ['email' => $email],
                         [
@@ -94,7 +94,7 @@ class SekolahSeeder extends Seeder
                     if(!$user_sekolah->hasRole('sekolah')){
                         $role = Role::where('name', 'sekolah')->first();
                         $user_sekolah->attachRole($role);
-                    }
+                    }*/
                 }
             }
         }
