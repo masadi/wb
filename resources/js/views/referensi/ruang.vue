@@ -22,7 +22,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">List Ruang</h3>
-                                <div class="card-tools" v-show="hasRole('sekolah')">
+                                <div class="card-tools" v-show="hasRole('admin')">
                                     <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
                                 </div>
                             </div>

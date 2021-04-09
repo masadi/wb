@@ -17,7 +17,7 @@ return [
             'referensi' => 'c,r,u,d',
             'news'  => 'c,r,u,d',
         ],
-        'dinas' => [
+        /*'dinas' => [
             'users' => 'c,r,u,d',
             'referensi' => 'c,r,u,d',
             'news'  => 'c,r,u,d',
@@ -34,7 +34,7 @@ return [
             'users' => 'r',
             'referensi' => 'r',
             'news'  => 'r',
-        ],
+        ],*/
     ],
 
     'permissions_map' => [

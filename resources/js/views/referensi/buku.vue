@@ -27,7 +27,7 @@
                                 <i class="fas fa-th mr-1"></i>
                                 Data Buku
                             </h3>
-                            <div class="card-tools" v-show="hasRole('sekolah')">
+                            <div class="card-tools" v-show="hasRole('admin')">
                                 <button class="btn btn-success btn-sm btn-block btn-flat" v-on:click="newModal">Tambah Data</button>
                             </div>
                         </div>
