@@ -137,8 +137,16 @@ export default {
         return {
             editmode: false,
             form: new Form({
-                id : '',
+                tanah_id: '',
+                sekolah_id: '',
                 nama: '',
+                no_sertifikat_tanah: '',
+                panjang: '',
+                lebar: '',
+                luas: '',
+                luas_lahan_tersedia: '',
+                kepemilikan: '',
+                keterangan: '',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI

@@ -34,6 +34,67 @@
                 </div>
             </div>
         </section>
+        <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data Tanah</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form @submit.prevent="insertData()" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input v-model="form.sekolah_id" type="text" name="sekolah_id" class="form-control" :class="{ 'is-invalid': form.errors.has('sekolah_id') }">
+                            <label>Nama</label>
+                            <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
+                            <has-error :form="form" field="nama"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor Sertifikat Tanah</label>
+                            <input v-model="form.no_sertifikat_tanah" type="text" name="no_sertifikat_tanah" class="form-control" :class="{ 'is-invalid': form.errors.has('no_sertifikat_tanah') }">
+                            <has-error :form="form" field="no_sertifikat_tanah"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Panjang (m)</label>
+                            <input v-model="form.panjang" type="text" name="panjang" class="form-control" :class="{ 'is-invalid': form.errors.has('panjang') }">
+                            <has-error :form="form" field="panjang"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Lebar (m)</label>
+                            <input v-model="form.lebar" type="text" name="lebar" class="form-control" :class="{ 'is-invalid': form.errors.has('lebar') }">
+                            <has-error :form="form" field="lebar"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Luas (m<sup>2</sup>)</label>
+                            <input v-model="form.luas" type="text" name="luas" class="form-control" :class="{ 'is-invalid': form.errors.has('luas') }">
+                            <has-error :form="form" field="luas"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Kepemilikan</label>
+                            <input v-model="form.kepemilikan" type="text" name="kepemilikan" class="form-control" :class="{ 'is-invalid': form.errors.has('kepemilikan') }">
+                            <has-error :form="form" field="kepemilikan"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Luas Lahan Tersedia (m<sup>2</sup>)</label>
+                            <input v-model="form.luas_lahan_tersedia" type="text" name="luas_lahan_tersedia" class="form-control" :class="{ 'is-invalid': form.errors.has('luas_lahan_tersedia') }">
+                            <has-error :form="form" field="luas_lahan_tersedia"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>keterangan</label>
+                            <input v-model="form.keterangan" type="text" name="keterangan" class="form-control" :class="{ 'is-invalid': form.errors.has('keterangan') }">
+                            <has-error :form="form" field="keterangan"></has-error>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Sinkronisasi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
         <my-loader/>
     </div>
 </template>
@@ -54,9 +115,14 @@ export default {
         return {
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
-                {key: 'id', 'label': 'ID Aspek', sortable: true},
-                {key: 'nama', 'label': 'Nama Aspek', sortable: true},
-                {key: 'bobot', 'label': 'Bobot Aspek', sortable: true},
+                {key: 'nama', 'label': 'Nama', sortable: true},
+                {key: 'no_sertifikat_tanah', 'label': 'Nomor Sertifikat', sortable: true},
+                {key: 'panjang', 'label': 'Panjang (m)', sortable: true},
+                {key: 'lebar', 'label': 'Lebar (m)', sortable: true},
+                {key: 'luas', 'label': 'Luas (m2)', sortable: true},
+                {key: 'luas_lahan_tersedia', 'label': 'Luas Lahan Tersedia (m2)', sortable: true},
+                {key: 'kepemilikan', 'label': 'Kepemilikan', sortable: true},
+                {key: 'keterangan', 'label': 'Keterangan', sortable: true},
                 {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
@@ -64,9 +130,20 @@ export default {
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
             per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
             search: '',
-            sortBy: 'komponen_id', //DEFAULT SORTNYA ADALAH CREATED_AT
+            sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
             isLoading: false,
+            form: new Form({
+                sekolah_id: '',
+                nama: '',
+                no_sertifikat_tanah: '',
+                panjang: '',
+                lebar: '',
+                luas: '',
+                luas_lahan_tersedia: '',
+                kepemilikan: '',
+                keterangan: '',
+            }),
         }
     },
     components: {
@@ -127,7 +204,7 @@ export default {
         newModal(){
             this.editmode = false;
             this.form.reset();
-            this.form.user_id = user.user_id;
+            this.form.sekolah_id = user.sekolah_id;
             $('#modalAdd').modal('show');
         },
         insertData(){

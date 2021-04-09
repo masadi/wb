@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuid;
 class Ruang extends Model
 {
+    use Uuid;
     public $incrementing = false;
     protected $keyType = 'string';
 	protected $table = 'ruang';

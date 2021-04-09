@@ -792,34 +792,33 @@ class ReferensiController extends Controller
         return response()->json(['status' => 'success', 'data' => $users]);
     }
     public function simpan_data(Request $request){
-        if($request->route('query') == 'pendamping'){
+        if($request->route('query') == 'tanah'){
             $messages = [
                 'nama.required'	=> 'Nama tidak boleh kosong',
-                'instansi.required'	=> 'Asal Instansi tidak boleh kosong',
-                'email.required'	=> 'Email tidak boleh kosong',
-                'email.email'	=> 'Email tidak valid',
-                'nomor_hp.required'	=> 'Nomor Handphone tidak boleh kosong',
-                'token.required' => 'Token tidak boleh kosong',
+                'no_sertifikat_tanah.required'	=> 'Nomor Sertifikat Tanah tidak boleh kosong',
+                'panjang.required'	=> 'Panjang (m) tidak boleh kosong',
+                'panjang.numeric'	=> 'Panjang (m) harus berupa angka',
+                'lebar.required'	=> 'Lebar (m) tidak boleh kosong',
+                'lebar.numeric'	=> 'Lebar (m) harus berupa angka',
+                'luas.required' => 'Luas (m<sup>2</sup>) tidak boleh kosong',
+                'luas.numeric'	=> 'Luas (m) harus berupa angka',
+                'kepemilikan.required' => 'Kepemilikan tidak boleh kosong',
+                'luas_lahan_tersedia.required' => 'Luas Lahan Tersedia (m<sup>2</sup>) tidak boleh kosong',
+                'luas_lahan_tersedia.numeric'	=> 'Luas Lahan Tersedia (m<sup>2</sup>) harus berupa angka',
             ];
             $validator = Validator::make(request()->all(), [
                 'nama' => 'required',
-                'instansi' => 'required',
-                'email' => 'required|email',
-                'nomor_hp' => 'required',
-                'token' => 'required',
+                'no_sertifikat_tanah' => 'required',
+                'panjang' => 'required|numeric',
+                'lebar' => 'required|numeric',
+                'luas' => 'required|numeric',
+                'kepemilikan' => 'required',
+                'luas_lahan_tersedia' => 'required|numeric',
             ],
             $messages
             )->validate();
-            $pendamping = Pendamping::create([
-                'nama' => $request->nama,
-                'nip' => $request->nip,
-                'nuptk' => $request->nuptk,
-                'instansi' => $request->instansi,
-                'email' => $request->email,
-                'nomor_hp' => $request->nomor_hp,
-                'token' => strtolower($request->token),
-            ]);
-            return response()->json(['status' => 'success', 'data' => $pendamping]);
+            $insert_data = Tanah::create($request->all());
+            return response()->json(['status' => 'success', 'data' => $insert_data]);
         } elseif($request->route('query') == 'verifikator'){
             $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
             $sekolah_sasaran->verifikator_id = $request->verifikator_id;

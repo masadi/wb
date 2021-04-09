@@ -149,15 +149,11 @@
             </div>
         </form-->
     </b-modal>
-    <TambahSekolahPendamping ref="TambahSekolahPendamping"></TambahSekolahPendamping>
-    <ListSekolahPendamping ref="ListSekolahPendamping"></ListSekolahPendamping>
 </div>
 </template>
 
 <script>
 import _ from 'lodash' //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
-import TambahSekolahPendamping from "./TambahSekolahPendamping";
-import ListSekolahPendamping from "./ListSekolahPendamping";
 export default {
     //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
     props: {
@@ -185,8 +181,6 @@ export default {
         }
     },
     components: {
-        TambahSekolahPendamping,
-        ListSekolahPendamping
     },
     data() {
         return {
