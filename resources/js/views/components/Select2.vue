@@ -8,7 +8,6 @@
 
 <script>
 export default {
-    //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
     props: ["options", "value"],
         //template: "#select2-template",
         mounted: function() {
