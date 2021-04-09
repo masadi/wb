@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTanahsTable extends Migration
+class CreateBangunansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,24 @@ class CreateTanahsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tanah', function (Blueprint $table) {
+        Schema::create('bangunan', function (Blueprint $table) {
+            $table->uuid('bangunan_id');
             $table->uuid('tanah_id');
+            $table->foreign('tanah_id')->references('tanah_id')->on('tanah')->onDelete('cascade');
             $table->uuid('sekolah_id');
             $table->foreign('sekolah_id')->references('sekolah_id')->on('sekolah')->onDelete('cascade');
             $table->string('nama');
-            $table->string('no_sertifikat_tanah')->nullable();
+            $table->string('imb')->nullable();
             $table->integer('panjang')->unsigned()->nullable();
             $table->integer('lebar')->unsigned()->nullable();
             $table->integer('luas')->unsigned()->nullable();
-            $table->integer('luas_lahan_tersedia')->unsigned()->nullable();
+            $table->integer('lantai')->unsigned()->nullable();
             $table->string('kepemilikan')->nullable();
+            $table->integer('tahun_bangun')->unsigned()->nullable();
+            $table->date('tanggal_sk')->nullable();
             $table->string('keterangan')->nullable();
             $table->timestamps();
-            $table->primary('tanah_id');
+            $table->primary('bangunan_id');
         });
     }
 
@@ -37,6 +41,6 @@ class CreateTanahsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tanah');
+        Schema::dropIfExists('bangunan');
     }
 }
