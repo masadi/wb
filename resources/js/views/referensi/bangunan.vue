@@ -108,8 +108,12 @@ export default {
             }),
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
-                {key: 'id', 'label': 'ID Komponen', sortable: true, class:'text-center'},
-                {key: 'nama', 'label': 'Nama Komponen', sortable: true},
+                {key: 'nama', 'label': 'Nama Bangunan', sortable: true, class:'text-center'},
+                {key: 'sekolah_id', 'label': 'Sekolah', sortable: true},
+                {key: 'panjang', 'label': 'Panjang', sortable: true},
+                {key: 'lebar', 'label': 'Lebar', sortable: true},
+                {key: 'luas', 'label': 'Luas', sortable: true},
+                {key: 'lantai', 'label': 'Lantai', sortable: true},
                 {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
