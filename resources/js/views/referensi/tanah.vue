@@ -119,6 +119,7 @@ export default {
         return {
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
+                {key: 'sekolah.nama', 'label': 'Sekolah', sortable: true},
                 {key: 'nama', 'label': 'Nama', sortable: true},
                 {key: 'no_sertifikat_tanah', 'label': 'Nomor Sertifikat', sortable: true},
                 {key: 'panjang', 'label': 'Panjang (m)', sortable: true},

@@ -36,7 +36,7 @@ class ReferensiController extends Controller
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
                 ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        })->with(['sekolah'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_bangunan($request){
@@ -51,7 +51,7 @@ class ReferensiController extends Controller
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
                 ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        })->with(['tanah.sekolah'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_ruang($request){

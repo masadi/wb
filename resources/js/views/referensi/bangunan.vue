@@ -140,8 +140,9 @@ export default {
             editmode: false,
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
+                {key: 'tanah.sekolah.nama', 'label': 'Sekolah', sortable: true},
+                {key: 'tanah.nama', 'label': 'Nama Tanah', sortable: true},
                 {key: 'nama', 'label': 'Nama Bangunan', sortable: true, class:'text-center'},
-                {key: 'sekolah_id', 'label': 'Sekolah', sortable: true},
                 {key: 'panjang', 'label': 'Panjang', sortable: true},
                 {key: 'lebar', 'label': 'Lebar', sortable: true},
                 {key: 'luas', 'label': 'Luas', sortable: true},

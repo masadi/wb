@@ -22,32 +22,9 @@ class TahunSeeder extends Seeder
     public function run()
     {
         $tahun_pendataan = Tahun_pendataan::updateOrCreate([
-            'tahun_pendataan_id' => 2020,
-            'nama' => 'Tahun Ajaran 2020/2021',
+            'tahun_pendataan_id' => 2021,
+            'nama' => 'Tahun Ajaran 2021/2022',
             'periode_aktif' => 1,
         ]);
-        $jenis_rapor = [
-            'pakta' => 'Pakta Integritas',
-            'verval' => 'Hasil Verifikasi dan Validasi',
-            'supervisi' => 'Hasil Supervisi',
-            'validasi' => 'Validasi Pusat',
-            'pengesahan' => 'Pengesahan Pusat',
-        ];
-        $status_rapor = [
-            'terkirim' => 'Terkirim',
-            'waiting' => 'Menunggu',
-            'proses' => 'Telah di Proses',
-            'terima' => 'Diterima',
-            'tolak' => 'Ditolak',
-            'afirmasi' => 'Afirmasi',
-        ];
-        $jenis_berita = [
-            'verifikasi' => 'Verifikasi',
-            'pendukung' => 'Pendukung',
-        ];
-        $jenis_dokumen = [
-            'berita_acara' => 'Berita Acara',
-            'pendukung' => 'Pendukung',
-        ];
     }
 }

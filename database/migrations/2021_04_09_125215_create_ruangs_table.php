@@ -22,6 +22,9 @@ class CreateRuangsTable extends Migration
             $table->string('nama');
             $table->string('registrasi')->nullable();
             $table->integer('lantai_ke')->unsigned()->nullable();
+            $table->integer('panjang')->unsigned()->nullable();
+            $table->integer('lebar')->unsigned()->nullable();
+            $table->integer('luas')->unsigned()->nullable();
             $table->integer('luas_plester')->unsigned()->nullable();
             $table->integer('luas_plafon')->unsigned()->nullable();
             $table->integer('luas_dindik')->unsigned()->nullable();
