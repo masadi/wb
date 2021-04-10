@@ -25,6 +25,9 @@ Route::group(['prefix' => 'referensi'], function(){
     Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');
 });
 Route::resource('berita', 'BeritaController');
+Route::post('/profile', 'UsersController@profile');
+Route::post('/reset-password', 'UsersController@reset_passsword');
+Route::post('/update-profile', 'UsersController@update_profile');
 /*
 Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
@@ -87,9 +90,6 @@ Route::group(['prefix' => 'validasi'], function(){
     Route::get('/download', 'ValidasiController@download');
 });
 Route::resource('users', 'UsersController');
-Route::post('/profile', 'UsersController@profile');
-Route::post('/reset-password', 'UsersController@reset_passsword');
-Route::post('/update-profile', 'UsersController@update_profile');
 Route::resource('komponen', 'KomponenController');
 Route::resource('aspek', 'AspekController');
 Route::resource('atribut', 'AtributController');

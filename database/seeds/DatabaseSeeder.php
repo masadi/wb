@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
         $this->call(LaratrustSeeder::class);
         $this->call(KategoriSeeder::class);
         $this->call(JenisPrasaranaSeeder::class);
+        $this->call(JenisSaranaSeeder::class);
         $this->call(TahunSeeder::class);
         $this->call(ActiveSeeder::class);
         $this->call(WilayahSeeder::class);
         $this->call(SekolahSeeder::class);
-        //$this->call(WilayahSekolahSeeder::class);
     }
 }

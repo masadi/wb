@@ -53,8 +53,11 @@ export default {
         return {
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
-                {key: 'id', 'label': 'ID Indikator', sortable: true},
-                {key: 'nama', 'label': 'Nama Indikator', sortable: true},
+                {key: 'ruang.bangunan.tanah.sekolah.nama', 'label': 'Nama Sekolah', sortable: true},
+                {key: 'ruang.nama', 'label': 'Nama Ruang', sortable: true},
+                {key: 'nama', 'label': 'Nama Alat', sortable: true},
+                {key: 'nama', 'label': 'Nama Alat', sortable: true},
+                {key: 'nama', 'label': 'Nama Alat', sortable: true},
                 {key: 'actions', 'label': 'Aksi', sortable: false}, //TAMBAHKAN CODE INI
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
