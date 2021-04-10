@@ -39,44 +39,81 @@
         <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Bangunan</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Bangunan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
-                <form @submit.prevent="insertData()" enctype="multipart/form-data" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nama Bangunan</label>
-                            <input v-model="form.id" type="hidden" name="id"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
-                            <input v-model="form.nama" type="text" name="nama"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
-                            <has-error :form="form" field="nama"></has-error>
+                    <form @submit.prevent="insertData()" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Sekolah</label>
+                                <v-select label="nama" :options="data_sekolah" v-model="form.sekolah_id" @input="updateTanah" />
+                                <has-error :form="form" field="sekolah_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Tanah</label>
+                                <v-select label="nama" :options="data_tanah" v-model="form.tanah_id" />
+                                <has-error :form="form" field="tanah_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama</label>
+                                <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
+                                <has-error :form="form" field="nama"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Nomor IMB</label>
+                                <input v-model="form.imb" type="text" name="imb" class="form-control" :class="{ 'is-invalid': form.errors.has('imb') }">
+                                <has-error :form="form" field="imb"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Panjang (m)</label>
+                                <input v-model="form.panjang" type="text" name="panjang" class="form-control" :class="{ 'is-invalid': form.errors.has('panjang') }">
+                                <has-error :form="form" field="panjang"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Lebar (m)</label>
+                                <input v-model="form.lebar" type="text" name="lebar" class="form-control" :class="{ 'is-invalid': form.errors.has('lebar') }">
+                                <has-error :form="form" field="lebar"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Luas (m<sup>2</sup>)</label>
+                                <input v-model="form.luas" type="text" name="luas" class="form-control" :class="{ 'is-invalid': form.errors.has('luas') }">
+                                <has-error :form="form" field="luas"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Jumlah Lantai</label>
+                                <input v-model="form.lantai" type="text" name="lantai" class="form-control" :class="{ 'is-invalid': form.errors.has('lantai') }">
+                                <has-error :form="form" field="lantai"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Kepemilikan</label>
+                                <input v-model="form.kepemilikan" type="text" name="kepemilikan" class="form-control" :class="{ 'is-invalid': form.errors.has('kepemilikan') }">
+                                <has-error :form="form" field="kepemilikan"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Tahun Bangun</label>
+                                <input v-model="form.tahun_bangun" type="text" name="tahun_bangun" class="form-control" :class="{ 'is-invalid': form.errors.has('tahun_bangun') }">
+                                <has-error :form="form" field="tahun_bangun"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>tanggal_sk</label>
+                                <input v-model="form.tanggal_sk" type="text" name="tanggal_sk" class="form-control" :class="{ 'is-invalid': form.errors.has('tanggal_sk') }">
+                                <has-error :form="form" field="tanggal_sk"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>keterangan</label>
+                                <input v-model="form.keterangan" type="text" name="keterangan" class="form-control" :class="{ 'is-invalid': form.errors.has('keterangan') }">
+                                <has-error :form="form" field="keterangan"></has-error>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Import Excel</label>
-                            <input type="file" name="file" @change="fileUpload($event.target)"
-                                class="form-control" :class="{ 'is-invalid': form.errors.has('file') }">
-                            <has-error :form="form" field="file"></has-error>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
-                        <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                  </form>
-                  <div class="progress">
-                        <!-- PROGRESS BAR DENGAN VALUE NYA KITA DAPATKAN DARI VARIABLE progressBar -->
-                        <div class="progress-bar" role="progressbar" 
-                            :style="{width: progressBar + '%'}" 
-                            :aria-valuenow="progressBar" 
-                            aria-valuemin="0" 
-                            aria-valuemax="100"></div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -101,11 +138,6 @@ export default {
             progressBar: 0,
             file: '',
             editmode: false,
-            form: new Form({
-                id : '',
-                nama: '',
-                file: '',
-            }),
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
             fields: [
                 {key: 'nama', 'label': 'Nama Bangunan', sortable: true, class:'text-center'},
@@ -124,12 +156,62 @@ export default {
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
             isLoading: false,
+            form: new Form({
+                sekolah_id: '',
+                tanah_id: '',
+                nama: '',
+                imb: '',
+                panjang: '',
+                lebar: '',
+                luas: '',
+                lantai: '',
+                tahun_bangun: '',
+                kepemilikan: '',
+                tanggal_sk: '',
+                keterangan: '',
+            }),
+            data_sekolah: [],
+            data_tanah: [],
         }
     },
     components: {
         'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
     },
+    watch: {
+        selected(current, previous) {
+            if (current) {
+                current.lastSelectedAt = new Date();
+            }
+            if (previous) {
+                previous.lastDeselectedAt = new Date();
+            }
+        }
+    },
     methods: {
+        updateTanah(data){
+            console.log('updateTanah');
+            console.log(data);
+            axios.get(`/api/referensi/all-tanah`, {
+                //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                params: {
+                    sekolah_id: data.sekolah_id,
+                }
+            })
+            .then((response) => {
+                let getData = response.data.data
+                this.data_tanah = getData
+            })
+        },
+        getSekolah() {
+            axios.get(`/api/referensi/all-sekolah`)
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                //this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                this.data_sekolah = getData
+            })
+        },
         fileUpload(event) {
             this.file = event.files[0]
             this.isLoading = true
@@ -207,7 +289,7 @@ export default {
         newModal(){
             this.editmode = false;
             this.form.reset();
-            this.form.user_id = user.user_id;
+            this.getSekolah();
             $('#modalAdd').modal('show');
         },
         insertData(){

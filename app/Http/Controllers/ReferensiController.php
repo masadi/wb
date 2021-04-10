@@ -120,6 +120,10 @@ class ReferensiController extends Controller
         $all_data = Sekolah::select('sekolah_id', 'nama')->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
+    public function get_all_tanah($request){
+        $all_data = Tanah::select('tanah_id', 'nama')->where('sekolah_id', $request->sekolah_id)->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
     public function get_sekolah($request)
     {
         $sortBy = request()->sortby;
@@ -822,7 +826,7 @@ class ReferensiController extends Controller
             $messages
             )->validate();
             $insert_data = Tanah::create([
-                'sekolah_id' => $request->sekolah_id['sekolah_id'],
+                'tanah_id' => $request->tanah_id['tanah_id'],
                 'nama' => $request->nama,
                 'no_sertifikat_tanah' => $request->no_sertifikat_tanah,
                 'panjang' => $request->panjang,
@@ -833,16 +837,50 @@ class ReferensiController extends Controller
                 'keterangan' => $request->keterangan,
             ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);
-        } elseif($request->route('query') == 'verifikator'){
-            $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
-            $sekolah_sasaran->verifikator_id = $request->verifikator_id;
-            $sekolah_sasaran->save();
-            $response = [
-                'title' => 'Berhasil',
-                'text' => 'Verifikator berhasil diganti',
-                'icon' => 'success',
+        } elseif($request->route('query') == 'bangunan'){
+            $messages = [
+                'tanah_id.required'	=> 'Tanah tidak boleh kosong',
+                'nama.required'	=> 'Nama tidak boleh kosong',
+                'imb.required'	=> 'Nomor IMB tidak boleh kosong',
+                'panjang.required'	=> 'Panjang (m) tidak boleh kosong',
+                'panjang.numeric'	=> 'Panjang (m) harus berupa angka',
+                'lebar.required'	=> 'Lebar (m) tidak boleh kosong',
+                'lebar.numeric'	=> 'Lebar (m) harus berupa angka',
+                'luas.required' => 'Luas (m<sup>2</sup>) tidak boleh kosong',
+                'luas.numeric'	=> 'Luas (m) harus berupa angka',
+                'lantai.required' => 'Jumlah Lantai tidak boleh kosong',
+                'lantai.numeric'	=> 'Jumlah Lantai harus berupa angka',
+                'kepemilikan.required' => 'Kepemilikan tidak boleh kosong',
+                'tahun_bangun.required' => 'Tahun Bangun tidak boleh kosong',
+                'tahun_bangun.numeric'	=> 'Tahun Bangun harus berupa angka',
             ];
-            return response()->json(['status' => 'success', 'data' => $response]);
+            $validator = Validator::make(request()->all(), [
+                'tanah_id' => 'required',
+                'nama' => 'required',
+                'imb' => 'required',
+                'panjang' => 'required|numeric',
+                'lebar' => 'required|numeric',
+                'luas' => 'required|numeric',
+                'kepemilikan' => 'required',
+                'lantai' => 'required|numeric',
+                'tahun_bangun' => 'required|numeric',
+            ],
+            $messages
+            )->validate();
+            $insert_data = Bangunan::create([
+                'tanah_id' => $request->tanah_id['tanah_id'],
+                'nama' => $request->nama,
+                'imb' => $request->imb,
+                'panjang' => $request->panjang,
+                'lebar' => $request->lebar,
+                'luas' => $request->luas,
+                'lantai' => $request->lantai,
+                'kepemilikan' => $request->kepemilikan,
+                'tahun_bangun' => $request->tahun_bangun,
+                'keterangan' => $request->keterangan,
+                //'tanggal_sk' => $request->tanggal_sk,
+            ]);
+            return response()->json(['status' => 'success', 'data' => $insert_data]);
         }
         return response()->json(['status' => 'failed', 'data' => NULL]);
     }
