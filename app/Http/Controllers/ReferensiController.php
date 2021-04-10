@@ -116,6 +116,10 @@ class ReferensiController extends Controller
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
+    public function get_all_sekolah($request){
+        $all_data = Sekolah::select('sekolah_id', 'nama')->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
     public function get_sekolah($request)
     {
         $sortBy = request()->sortby;
@@ -817,7 +821,17 @@ class ReferensiController extends Controller
             ],
             $messages
             )->validate();
-            $insert_data = Tanah::create($request->all());
+            $insert_data = Tanah::create([
+                'sekolah_id' => $request->sekolah_id['sekolah_id'],
+                'nama' => $request->nama,
+                'no_sertifikat_tanah' => $request->no_sertifikat_tanah,
+                'panjang' => $request->panjang,
+                'lebar' => $request->lebar,
+                'luas' => $request->luas,
+                'luas_lahan_tersedia' => $request->luas_lahan_tersedia,
+                'kepemilikan' => $request->kepemilikan,
+                'keterangan' => $request->keterangan,
+            ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);
         } elseif($request->route('query') == 'verifikator'){
             $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);

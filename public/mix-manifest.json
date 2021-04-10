@@ -1,8 +1,4 @@
 {
-    "/js/app.js": "/js/app.js?id=981dcd509efb2d8f5b93",
-    "/css/app.css": "/css/app.css?id=96650654f176bb069cf9",
-    "/vendors~canvg.js": "/vendors~canvg.js?id=6cf4135d4aac81074e16",
-    "/vendors~pdfmake.js": "/vendors~pdfmake.js?id=5283c2826e5f30fa91cb",
-    "/vendors~xlsx.js": "/vendors~xlsx.js?id=2f97d9c5002d7a2615d0",
-    "/xlsx.js": "/xlsx.js?id=f8a41ce1c8c988b435a5"
+    "/js/app.js": "/js/app.js?id=3b74c00e1077c3a54c43",
+    "/css/app.css": "/css/app.css?id=96650654f176bb069cf9"
 }

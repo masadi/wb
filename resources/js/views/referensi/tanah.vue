@@ -46,7 +46,11 @@
                 <form @submit.prevent="insertData()" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input v-model="form.sekolah_id" type="text" name="sekolah_id" class="form-control" :class="{ 'is-invalid': form.errors.has('sekolah_id') }">
+                            <label>Sekolah</label>
+                            <v-select label="nama" :options="data_sekolah" v-model="form.sekolah_id" />
+                            <has-error :form="form" field="sekolah_id"></has-error>
+                        </div>
+                        <div class="form-group">
                             <label>Nama</label>
                             <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
                             <has-error :form="form" field="nama"></has-error>
@@ -144,6 +148,7 @@ export default {
                 kepemilikan: '',
                 keterangan: '',
             }),
+            data_sekolah: [],
         }
     },
     components: {
@@ -177,6 +182,16 @@ export default {
                 }
             })
         },
+        getSekolah() {
+            axios.get(`/api/referensi/all-sekolah`)
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                //this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                this.data_sekolah = getData
+            })
+        },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
         handlePerPage(val) {
             this.per_page = val //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
@@ -204,7 +219,7 @@ export default {
         newModal(){
             this.editmode = false;
             this.form.reset();
-            this.form.sekolah_id = user.sekolah_id;
+            this.getSekolah();
             $('#modalAdd').modal('show');
         },
         insertData(){

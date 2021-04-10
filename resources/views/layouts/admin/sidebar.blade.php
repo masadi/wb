@@ -22,24 +22,12 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 @if($user->isAbleTo('news-create'))
-                <li class="nav-item">
-                    <router-link tag="a" to="/berita" class="nav-link">
-                        <i class="nav-icon fas fa-newspaper"></i>
-                        <p>Berita</p>
-                    </router-link>
-                </li>
-                <li class="nav-item">
+                <!--li class="nav-item">
                     <router-link tag="a" to="/galeri" class="nav-link">
                         <i class="nav-icon fas fa-photo-video"></i>
                         <p>Galeri</p>
                     </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link tag="a" to="/faq" class="nav-link">
-                        <i class="nav-icon fas fa-comments"></i>
-                        <p>FAQ</p>
-                    </router-link>
-                </li>
+                </li-->
                 @endif
                 <li class="nav-item">
                     <router-link tag="a" to="/sekolah" class="nav-link">
