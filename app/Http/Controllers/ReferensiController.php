@@ -124,6 +124,10 @@ class ReferensiController extends Controller
         $all_data = Tanah::select('tanah_id', 'nama')->where('sekolah_id', $request->sekolah_id)->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
+    public function get_all_bangunan($request){
+        $all_data = Bangunan::select('bangunan_id', 'nama')->where('tanah_id', $request->tanah_id)->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
     public function get_sekolah($request)
     {
         $sortBy = request()->sortby;
@@ -802,6 +806,7 @@ class ReferensiController extends Controller
     public function simpan_data(Request $request){
         if($request->route('query') == 'tanah'){
             $messages = [
+                'sekolah_id.required'	=> 'Sekolah tidak boleh kosong',
                 'nama.required'	=> 'Nama tidak boleh kosong',
                 'no_sertifikat_tanah.required'	=> 'Nomor Sertifikat Tanah tidak boleh kosong',
                 'panjang.required'	=> 'Panjang (m) tidak boleh kosong',
@@ -815,6 +820,7 @@ class ReferensiController extends Controller
                 'luas_lahan_tersedia.numeric'	=> 'Luas Lahan Tersedia (m<sup>2</sup>) harus berupa angka',
             ];
             $validator = Validator::make(request()->all(), [
+                'sekolah_id' => 'required',
                 'nama' => 'required',
                 'no_sertifikat_tanah' => 'required',
                 'panjang' => 'required|numeric',
@@ -826,7 +832,7 @@ class ReferensiController extends Controller
             $messages
             )->validate();
             $insert_data = Tanah::create([
-                'tanah_id' => $request->tanah_id['tanah_id'],
+                'sekolah_id' => $request->sekolah_id['sekolah_id'],
                 'nama' => $request->nama,
                 'no_sertifikat_tanah' => $request->no_sertifikat_tanah,
                 'panjang' => $request->panjang,

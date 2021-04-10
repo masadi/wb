@@ -27,7 +27,7 @@ class CreateRuangsTable extends Migration
             $table->integer('luas')->unsigned()->nullable();
             $table->integer('luas_plester')->unsigned()->nullable();
             $table->integer('luas_plafon')->unsigned()->nullable();
-            $table->integer('luas_dindik')->unsigned()->nullable();
+            $table->integer('luas_dinding')->unsigned()->nullable();
             $table->integer('luas_daun_jendela')->unsigned()->nullable();
             $table->integer('luas_kusen')->unsigned()->nullable();
             $table->integer('luas_tutup_lantai')->unsigned()->nullable();
@@ -37,7 +37,7 @@ class CreateRuangsTable extends Migration
             $table->integer('panjang_drainase')->unsigned()->nullable();
             $table->integer('luas_finish_struktur')->unsigned()->nullable();
             $table->integer('luas_finish_plafon')->unsigned()->nullable();
-            $table->integer('luas_finish_dindik')->unsigned()->nullable();
+            $table->integer('luas_finish_dinding')->unsigned()->nullable();
             $table->integer('luas_finish_kpj')->unsigned()->nullable();
             $table->string('keterangan')->nullable();
             $table->timestamps();

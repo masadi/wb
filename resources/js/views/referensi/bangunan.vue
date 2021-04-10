@@ -190,8 +190,6 @@ export default {
     },
     methods: {
         updateTanah(data){
-            console.log('updateTanah');
-            console.log(data);
             axios.get(`/api/referensi/all-tanah`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
                 params: {
