@@ -19,7 +19,7 @@ use App\Ruang;
 use App\Alat;
 use App\Angkutan;
 use App\Buku;
-
+use App\Jenis_prasarana;
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
@@ -126,6 +126,10 @@ class ReferensiController extends Controller
     }
     public function get_all_bangunan($request){
         $all_data = Bangunan::select('bangunan_id', 'nama')->where('tanah_id', $request->tanah_id)->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_all_jenis_prasarana($request){
+        $all_data = Jenis_prasarana::select('id', 'nama')->where('a_ruang', 1)->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_sekolah($request)
@@ -885,6 +889,88 @@ class ReferensiController extends Controller
                 'tahun_bangun' => $request->tahun_bangun,
                 'keterangan' => $request->keterangan,
                 //'tanggal_sk' => $request->tanggal_sk,
+            ]);
+            return response()->json(['status' => 'success', 'data' => $insert_data]);
+        } elseif($request->route('query') == 'ruang'){
+            $messages = [
+                'sekolah_id.required'	=> 'Sekolah tidak boleh kosong',
+                'tanah_id.required'	=> 'Tanah tidak boleh kosong',
+                'bangunan_id.required'	=> 'Bangunan tidak boleh kosong',
+                'jenis_prasarana_id.required'	=> 'Jenis Ruang tidak boleh kosong',
+                'kode.required'	=> 'Panjang (m) tidak boleh kosong',
+                'nama.required'	=> 'Panjang (m) harus berupa angka',
+                'lantai_ke.numeric' => 'Lantai Ke- harus berupa angka',
+                'panjang.numeric' => 'Panjang harus berupa angka',
+                'lebar.numeric' => 'Lebar harus berupa angka',
+                'luas.numeric' => 'Luas harus berupa angka',
+                'luas_plester.numeric' => 'Luas Plester harus berupa angka',
+                'luas_plafon.numeric' => 'Luas Plafon harus berupa angka',
+                'luas_dinding.numeric' => 'Luas Dinding harus berupa angka',
+                'luas_daun_jendela.numeric' => 'Luas Daun Jendela harus berupa angka',
+                'luas_kusen.numeric' => 'Luas Kusen harus berupa angka',
+                'luas_tutup_lantai.numeric' => 'Luas Tutup Lantai harus berupa angka',
+                'jumlah_instalasi_listrik.numeric' => 'Jumlah Instalasi Listrik harus berupa angka',
+                'panjang_instalasi_air.numeric' => 'Panjang Instalasi Air harus berupa angka',
+                'jumlah_instalasi_air.numeric' => 'Jumlah Instalasi Air harus berupa angka',
+                'panjang_drainase.numeric' => 'Panjang Drainase harus berupa angka',
+                'luas_finish_struktur.numeric' => 'Luas Finish Struktur harus berupa angka',
+                'luas_finish_plafon.numeric' => 'Luas Finish Plafon harus berupa angka',
+                'luas_finish_dinding.numeric' => 'Luas Finish Dinding harus berupa angka',
+                'luas_finish_kpj.numeric' => 'Luas Finish KPJ harus berupa angka',
+            ];
+            $validator = Validator::make(request()->all(), [
+                'sekolah_id' => 'required',
+                'tanah_id' => 'required',
+                'bangunan_id' => 'required',
+                'jenis_prasarana_id' => 'required',
+                'kode' => 'required',
+                'nama' => 'required',
+                'lantai_ke' => 'numeric',
+                'panjang' => 'numeric',
+                'lebar' => 'numeric',
+                'luas' => 'numeric',
+                'luas_plester' => 'numeric',
+                'luas_plafon' => 'numeric',
+                'luas_dinding' => 'numeric',
+                'luas_daun_jendela' => 'numeric',
+                'luas_kusen' => 'numeric',
+                'luas_tutup_lantai' => 'numeric',
+                'jumlah_instalasi_listrik' => 'numeric',
+                'panjang_instalasi_air' => 'numeric',
+                'jumlah_instalasi_air' => 'numeric',
+                'panjang_drainase' => 'numeric',
+                'luas_finish_struktur' => 'numeric',
+                'luas_finish_plafon' => 'numeric',
+                'luas_finish_dinding' => 'numeric',
+                'luas_finish_kpj' => 'numeric',
+            ],
+            $messages
+            )->validate();
+            $insert_data = Ruang::create([
+                'jenis_prasarana_id' => $request->jenis_prasarana_id['id'],
+                'bangunan_id' => $request->bangunan_id['bangunan_id'],
+                'kode' => $request->kode,
+                'nama' => $request->nama,
+                'registrasi' => $request->registrasi,
+                'lantai_ke' => $request->lantai_ke,
+                'panjang' => $request->panjang,
+                'lebar' => $request->lebar,
+                'luas' => $request->luas,
+                'luas_plester' => $request->luas_plester,
+                'luas_plafon' => $request->luas_plafon,
+                'luas_dinding' => $request->luas_dinding,
+                'luas_daun_jendela' => $request->luas_daun_jendela,
+                'luas_kusen' => $request->luas_kusen,
+                'luas_tutup_lantai' => $request->luas_tutup_lantai,
+                'jumlah_instalasi_listrik' => $request->jumlah_instalasi_listrik,
+                'panjang_instalasi_air' => $request->panjang_instalasi_air,
+                'jumlah_instalasi_air' => $request->jumlah_instalasi_air,
+                'panjang_drainase' => $request->panjang_drainase,
+                'luas_finish_struktur' => $request->luas_finish_struktur,
+                'luas_finish_plafon' => $request->luas_finish_plafon,
+                'luas_finish_dinding' => $request->luas_finish_dinding,
+                'luas_finish_kpj' => $request->luas_finish_kpj,
+                'keterangan' => $request->keterangan,
             ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);
         }

@@ -47,18 +47,23 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Sekolah</label>
-                                <v-select label="nama" :options="data_sekolah" v-model="form.sekolah_id" @input="updateTanah" class="form-control" />
+                                <v-select label="nama" :options="data_sekolah" v-model="form.sekolah_id" @input="updateTanah" />
                                 <has-error :form="form" field="sekolah_id"></has-error>
                             </div>
                             <div class="form-group">
                                 <label>Tanah</label>
-                                <v-select label="nama" :options="data_tanah" v-model="form.tanah_id" class="form-control" @input="updateBangunan" />
+                                <v-select label="nama" :options="data_tanah" v-model="form.tanah_id" @input="updateBangunan" />
                                 <has-error :form="form" field="tanah_id"></has-error>
                             </div>
                             <div class="form-group">
                                 <label>Bangunan</label>
-                                <v-select label="nama" :options="data_bangunan" v-model="form.bangunan_id" />
+                                <v-select label="nama" :options="data_bangunan" v-model="form.bangunan_id" @input="updateJenis" />
                                 <has-error :form="form" field="bangunan_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Jenis Ruang</label>
+                                <v-select label="nama" :options="data_jenis" v-model="form.jenis_ruang_id" />
+                                <has-error :form="form" field="jenis_ruang_id"></has-error>
                             </div>
                             <div class="form-group">
                                 <label>Kode Ruang</label>
@@ -249,6 +254,7 @@ export default {
             data_sekolah: [],
             data_tanah: [],
             data_bangunan: [],
+            data_jenis: [],
         }
     },
     components: {
@@ -265,6 +271,18 @@ export default {
             .then((response) => {
                 let getData = response.data.data
                 this.data_bangunan = getData
+            })
+        },
+        updateJenis(){
+            axios.get(`/api/referensi/all-jenis-prasarana`, {
+                //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                params: {
+                    query: 'a_ruang',
+                }
+            })
+            .then((response) => {
+                let getData = response.data.data
+                this.data_jenis = getData
             })
         },
         updateTanah(data){
@@ -347,7 +365,7 @@ export default {
             $('#modalAdd').modal('show');
         },
         insertData(){
-            this.form.post('/api/referensi/simpan-tanah').then((response)=>{
+            this.form.post('/api/referensi/simpan-ruang').then((response)=>{
                 console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({

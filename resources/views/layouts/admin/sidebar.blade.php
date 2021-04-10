@@ -73,6 +73,7 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 @endif
+                <!--
                 @if($user->isAbleTo('users-create'))
                 <li class="nav-item">
                     <router-link tag="a" to="/pengguna" class="nav-link">
@@ -81,6 +82,7 @@ $user = auth()->user();
                     </router-link>
                 </li>
                 @endif
+                -->
                 <li class="nav-item">
                     <router-link tag="a" to="/profil" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
