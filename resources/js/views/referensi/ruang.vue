@@ -62,8 +62,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Jenis Ruang</label>
-                                <v-select label="nama" :options="data_jenis" v-model="form.jenis_ruang_id" />
-                                <has-error :form="form" field="jenis_ruang_id"></has-error>
+                                <v-select label="nama" :options="data_jenis" v-model="form.jenis_prasarana_id" />
+                                <has-error :form="form" field="jenis_prasarana_id"></has-error>
                             </div>
                             <div class="form-group">
                                 <label>Kode Ruang</label>
