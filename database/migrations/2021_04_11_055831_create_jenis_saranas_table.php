@@ -42,7 +42,7 @@ class CreateJenisSaranasTable extends Migration
             $table->dropForeign(['jenis_sarana_id']);
         });
         Schema::table('angkutan', function (Blueprint $table) {
-            //$table->dropForeign(['jenis_sarana_id']);
+            $table->dropForeign(['jenis_sarana_id']);
         });
         Schema::dropIfExists('jenis_sarana');
     }
