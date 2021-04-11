@@ -50,7 +50,7 @@ class CreateStatusKepemilikanSarprasTable extends Migration
             $table->dropForeign(['kepemilikan_sarpras_id']);
         });
         Schema::table('angkutan', function (Blueprint $table) {
-            //$table->dropForeign(['kepemilikan_sarpras_id']);
+            $table->dropForeign(['kepemilikan_sarpras_id']);
         });
         Schema::dropIfExists('status_kepemilikan_sarpras');
     }
