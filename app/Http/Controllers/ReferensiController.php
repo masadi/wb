@@ -249,7 +249,9 @@ class ReferensiController extends Controller
             ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);
         } elseif($request->route('query') == 'bangunan'){
+            $a = $request->tahun_bangun;
             $messages = [
+                'sekolah_id.required'	=> 'Sekolah tidak boleh kosong',
                 'tanah_id.required'	=> 'Tanah tidak boleh kosong',
                 'nama.required'	=> 'Nama tidak boleh kosong',
                 'imb.required'	=> 'Nomor IMB tidak boleh kosong',
@@ -261,9 +263,8 @@ class ReferensiController extends Controller
                 'luas.numeric'	=> 'Luas (m) harus berupa angka',
                 'lantai.required' => 'Jumlah Lantai tidak boleh kosong',
                 'lantai.numeric'	=> 'Jumlah Lantai harus berupa angka',
-                'kepemilikan.required' => 'Kepemilikan tidak boleh kosong',
+                'kepemilikan_sarpras_id.required' => 'Kepemilikan tidak boleh kosong',
                 'tahun_bangun.required' => 'Tahun Bangun tidak boleh kosong',
-                'tahun_bangun.numeric'	=> 'Tahun Bangun harus berupa angka',
             ];
             $validator = Validator::make(request()->all(), [
                 'tanah_id' => 'required',
@@ -272,9 +273,9 @@ class ReferensiController extends Controller
                 'panjang' => 'required|numeric',
                 'lebar' => 'required|numeric',
                 'luas' => 'required|numeric',
-                'kepemilikan' => 'required',
+                'kepemilikan_sarpras_id' => 'required',
                 'lantai' => 'required|numeric',
-                'tahun_bangun' => 'required|numeric',
+                'tahun_bangun' => 'required',
             ],
             $messages
             )->validate();
@@ -286,10 +287,10 @@ class ReferensiController extends Controller
                 'lebar' => $request->lebar,
                 'luas' => $request->luas,
                 'lantai' => $request->lantai,
-                'kepemilikan' => $request->kepemilikan,
-                'tahun_bangun' => $request->tahun_bangun,
+                'kepemilikan_sarpras_id' => $request->kepemilikan_sarpras_id['kepemilikan_sarpras_id'],
+                'tahun_bangun' => date('Y', strtotime($request->tahun_bangun)),
                 'keterangan' => $request->keterangan,
-                //'tanggal_sk' => $request->tanggal_sk,
+                'tanggal_sk' => $request->tanggal_sk,
             ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);
         } elseif($request->route('query') == 'ruang'){

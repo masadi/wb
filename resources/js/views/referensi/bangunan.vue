@@ -90,17 +90,19 @@
                             </div>
                             <div class="form-group">
                                 <label>Kepemilikan</label>
-                                <input v-model="form.kepemilikan" type="text" name="kepemilikan" class="form-control" :class="{ 'is-invalid': form.errors.has('kepemilikan') }">
-                                <has-error :form="form" field="kepemilikan"></has-error>
+                                <v-select label="nama" :options="data_kepemilikan" v-model="form.kepemilikan_sarpras_id" />
+                                <has-error :form="form" field="kepemilikan_sarpras_id"></has-error>
                             </div>
                             <div class="form-group">
-                                <label>Tahun Bangun</label>
-                                <input v-model="form.tahun_bangun" type="text" name="tahun_bangun" class="form-control" :class="{ 'is-invalid': form.errors.has('tahun_bangun') }">
+                                <label>Tahun Bangun</label><br>
+                                <!--input v-model="form.tahun_bangun" type="text" name="tahun_bangun" class="form-control" :class="{ 'is-invalid': form.errors.has('tahun_bangun') }"-->
+                                <date-picker v-model="form.tahun_bangun" type="year" :class="{ 'is-invalid': form.errors.has('tahun_bangun') }"></date-picker>
                                 <has-error :form="form" field="tahun_bangun"></has-error>
                             </div>
                             <div class="form-group">
-                                <label>tanggal_sk</label>
-                                <input v-model="form.tanggal_sk" type="text" name="tanggal_sk" class="form-control" :class="{ 'is-invalid': form.errors.has('tanggal_sk') }">
+                                <label>Tanggal SK</label><br>
+                                <!--input v-model="form.tanggal_sk" type="text" name="tanggal_sk" class="form-control" :class="{ 'is-invalid': form.errors.has('tanggal_sk') }"-->
+                                <date-picker v-model="form.tanggal_sk" valueType="format" :class="{ 'is-invalid': form.errors.has('tanggal_sk') }"></date-picker>
                                 <has-error :form="form" field="tanggal_sk"></has-error>
                             </div>
                             <div class="form-group">
@@ -125,6 +127,8 @@
     import Datatable from './../components/Bangunan.vue' //IMPORT COMPONENT DATATABLENYA
     import axios from 'axios' //IMPORT AXIOS
     import objectToFormData from "./../components/objectToFormData"; 
+    import DatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/index.css';
     //window.objectToFormData = objectToFormData;
     //const objectToFormData = window.objectToFormData
 export default {
@@ -167,16 +171,18 @@ export default {
                 luas: '',
                 lantai: '',
                 tahun_bangun: '',
-                kepemilikan: '',
+                kepemilikan_sarpras_id: '',
                 tanggal_sk: '',
                 keterangan: '',
             }),
             data_sekolah: [],
             data_tanah: [],
+            data_kepemilikan: [],
         }
     },
     components: {
-        'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
+        'app-datatable': Datatable, //REGISTER COMPONENT DATATABLE
+        DatePicker
     },
     watch: {
         selected(current, previous) {
@@ -189,6 +195,16 @@ export default {
         }
     },
     methods: {
+        getKepemilikan(){
+            axios.get(`/api/referensi/kepemilikan`)
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                //this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                this.data_kepemilikan = getData
+            })
+        },
         updateTanah(data){
             axios.get(`/api/referensi/all-tanah`, {
                 //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
@@ -289,6 +305,7 @@ export default {
             this.editmode = false;
             this.form.reset();
             this.getSekolah();
+            this.getKepemilikan();
             $('#modalAdd').modal('show');
         },
         insertData(){
