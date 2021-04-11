@@ -9,165 +9,38 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <section class="card" v-show="hasRole('sekolah')">
-                        <div class="card-body" v-show="!is_coe">
-                            <p>{{no_coe}}</p>
-                        </div>
-                        <div class="card-body" v-show="is_coe">
-                            <div class="row">
-                                <div class="col-md-3 text-center border-right">
-                                    <div class="text-lg text-center">Kemajuan Pengisian Instrumen</div>
-                                    <center><canvas id="kemajuan" style="height: 700px; width: 100%;"></canvas></center>
-                                </div>
-                                <div class="col-md-3 text-center border-right">
-                                    <div class="text-lg text-center">Nilai Rapor Mutu Sekolah</div>
-                                    <center><canvas id="nilai_rapor" style="height: 700px; width: 100%;"></canvas></center>
-                                </div>
-                                <div class="col-md-6 text-center">
-                                    <div class="text-lg text-center">Nilai Komponen Mutu Sekolah</div>
-                                    <center><canvas id="nilai_komponen"></canvas></center>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <div class="card" style="display:none;">
+                    <div class="card">
                         <div class="card-body">
-                            <section class="ps-timeline-sec" v-show="hasRole('sekolah')">
-                                <div class="container" v-show="is_coe">
-                                    <!--exclamation-->
-                                    <ol class="ps-timeline">
-                                        <li>
-                                            <div class="img-handler-bot">
-                                                <img src="/images/icon_progres/1.png" width="150" alt="" />
-                                            </div>
-                                            <div class="ps-top">
-                                                <p>Proses pengisian instrumen</p>
-                                            </div>
-                                            <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.instrumen }"></i></span>
-                                        </li>
-                                        <li>
-                                            <div class="img-handler-top">
-                                                <img src="/images/icon_progres/2.png" width="150" alt="" style="margin-bottom:80px;" />
-                                            </div>
-                                            <div class="ps-bot">
-                                                <p>Hitung rapor mutu sekolah</p>
-                                            </div>
-                                            <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.hitung }"></i></i></span>
-                                        </li>
-                                        <li>
-                                            <div class="img-handler-bot">
-                                                <img src="/images/icon_progres/3.png" width="200" alt="" />
-                                            </div>
-                                            <div class="ps-top">
-                                                <p>Kirim rapor mutu sekolah</p>
-                                            </div>
-                                            <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.pakta }"></i></i></span>
-                                        </li>
-                                        <li>
-                                            <div class="img-handler-top">
-                                                <img src="/images/icon_progres/4.png" width="230" alt="" style="margin-bottom:80px;" />
-                                            </div>
-                                            <div class="ps-bot">
-                                                <p>Verifikasi dan Validasi oleh Tim Penjamin Mutu</p>
-                                            </div>
-                                            <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.verval }"></i></i></span>
-                                        </li>
-                                        <li>
-                                            <div class="img-handler-bot">
-                                                <img src="/images/icon_progres/5.png" width="150" alt="" />
-                                            </div>
-                                            <div class="ps-top">
-                                                <p>Verifikasi oleh Direktorat</p>
-                                            </div>
-                                            <span class="ps-sp-bot"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.proses }"></i></i></span>
-                                        </li>
-                                        <li>
-                                            <div class="img-handler-top">
-                                                <img src="/images/icon_progres/6.png" width="180" alt="" style="margin-bottom:80px;" />
-                                            </div>
-                                            <div class="ps-bot">
-                                                <p>Hasil Rapor Mutu Sekolah dan Pengesahan</p>
-                                            </div>
-                                            <span class="ps-sp-top"><i class="fas" v-bind:class="{ 'fa-check text-success': rapor.terima, 'fa-times text-danger': rapor.tolak }"></i></i></span>
-                                        </li>
-                                    </ol>
+                            <!--div class="row">
+                                <div class="small-box text-center mr-2">
+                                    <img src="/vendor/img/pdf.png" width="100">
+                                    <div class="inner">Panduan Penggunaan Aplikasi (Sekolah)</div>
+                                    <div class="small-box-footer bg-primary">
+                                        <a href="/downloads/Panduan APM SMK 2020 (Sekolah).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
+                                    </div>
                                 </div>
-                            </section>
-                            <section v-show="hasRole('admin')">
-                                Content akses admin
-                            </section>
-                            <section v-show="hasRole('direktorat')">
-                                Content akses direktorat
-                            </section>
-                            <section v-show="hasRole('penjamin_mutu')">
-                                <div class="row">
-                                    <div class="col-lg-3 col-6">
-
-                                        <div class="small-box bg-info">
-                                            <div class="inner">
-                                                <h3>{{jml_sekolah_sasaran}}</h3>
-                                                <p>Jumlah Sekolah Sasaran</p>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="ion ion-bag"></i>
-                                            </div>
-                                            <a href="#" class="small-box-footer">&nbsp;</a>
-                                        </div>
+                                <div class="small-box text-center mr-2">
+                                    <img src="/vendor/img/pdf.png" width="100">
+                                    <div class="inner">Panduan Penggunaan Aplikasi (Penjamin Mutu)</div>
+                                    <div class="small-box-footer bg-primary">
+                                        <a href="/downloads/Panduan APM SMK 2020 (Penjamin Mutu).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
                                     </div>
-
-                                    <div class="col-lg-3 col-6">
-
-                                        <div class="small-box bg-warning">
-                                            <div class="inner">
-                                                <h3>{{jml_sekolah_sasaran_no_instrumen}}</h3>
-
-                                                <p>Sekolah Sasaran Belum Mengisi Instrumen</p>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="ion ion-person-add"></i>
-                                            </div>
-                                            <a href="#" class="small-box-footer">&nbsp;</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3 col-6">
-
-                                        <div class="small-box bg-success">
-                                            <div class="inner">
-                                                <h3>{{jml_sekolah_sasaran_instrumen}}</h3>
-
-                                                <p>Sekolah Sasaran Telah Mengisi Instrumen</p>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="ion ion-stats-bars"></i>
-                                            </div>
-                                            <a href="#" class="small-box-footer">&nbsp;</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3 col-6">
-
-                                        <div class="small-box bg-danger">
-                                            <div class="inner">
-                                                <h3>{{jml_sekolah_sasaran_verval}}</h3>
-
-                                                <p>Sekolah Sasaran Telah di Verval</p>
-                                            </div>
-                                            <div class="icon">
-                                                <i class="ion ion-pie-graph"></i>
-                                            </div>
-                                            <a href="#" class="small-box-footer">&nbsp;</a>
-                                        </div>
-                                    </div>
-
                                 </div>
-                            </section>
+                                <div class="small-box text-center mr-2">
+                                    <img src="/vendor/img/pdf.png" width="100">
+                                    <div class="inner">Pedoman Penjaminan Mutu SMK</div>
+                                    <div class="small-box-footer bg-primary">
+                                        Unduh <i class="fas fa-download"></i>
+                                    </div>
+                                </div>
+                            </div-->
+                            <h1 class="text-center">Sedang dalam Pengembangan</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        </section>
     <my-loader />
 </div>
 </template>
