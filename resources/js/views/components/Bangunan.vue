@@ -422,17 +422,19 @@ export default {
                     this.form.ket_plester_struktur = getData.ket_plester_struktur
                     this.form.rusak_tutup_atap = number_format(getData.rusak_tutup_atap)
                     this.form.ket_tutup_atap = getData.ket_tutup_atap
-                    let total = Number(getData.rusak_pondasi) + Number(getData.rusak_sloop_kolom_balok) + Number(getData.rusak_kudakuda_atap) + Number(getData.rusak_plester_struktur) + Number(getData.rusak_tutup_atap)
+                    let total_kerusakan = Number(getData.rusak_pondasi) + Number(getData.rusak_sloop_kolom_balok) + Number(getData.rusak_kudakuda_atap) + Number(getData.rusak_plester_struktur) + Number(getData.rusak_tutup_atap)
                     this.presentase_kerusakan = number_format(total,2)
                     let make_kriteria = null
-                    if(total == 0){
+                    if(total_kerusakan == 0){
                         make_kriteria = 'BAIK'
-                    } else if(total >= 1 && total <= 20){
+                    } else if(total_kerusakan >= 1 && total <= 30){
                         make_kriteria = 'RINGAN'
-                    } else if(total > 20){
+                    } else if(total_kerusakan >= 31 && total <= 45){
                         make_kriteria = 'SEDANG'
-                    } else if(total > 50){
+                    } else if(total_kerusakan >= 46 && total <= 65){
                         make_kriteria = 'BERAT'
+                    } else if(total_kerusakan > 66){
+                        make_kriteria = 'TOTAL'
                     }
                     this.kriteria_kerusakan = make_kriteria
                     console.log(getData);
