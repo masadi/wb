@@ -7,21 +7,6 @@ let routes = [{
         component: require('./views/dashboard').default
     },
     {
-        path: '/berita',
-        name: 'berita',
-        component: require('./views/news/berita').default
-    },
-    {
-        path: '/galeri',
-        name: 'galeri',
-        component: require('./views/news/galeri').default
-    },
-    {
-        path: '/faq',
-        name: 'faq',
-        component: require('./views/news/faq').default
-    },
-    {
         path: '/sekolah',
         name: 'sekolah',
         component: require('./views/referensi/sekolah').default
