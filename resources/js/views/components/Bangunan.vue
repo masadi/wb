@@ -114,6 +114,24 @@
 
                 <form @submit.prevent="updateKondisi()">
                     <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-box bg-info">
+                                    <div class="info-box-content text-center">
+                                        <h5 class="info-box-text">Tingkat Persentase Kerusakan</h5> 
+                                        <h3 class="info-box-number">{{presentase_kerusakan}}</h3> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-box bg-navy">
+                                    <div class="info-box-content text-center">
+                                        <h5 class="info-box-text">Kriteria Kerusakan</h5> 
+                                        <h3 class="info-box-number">{{kriteria_kerusakan}}</h3> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <input v-model="form.bangunan_id" type="hidden" name="bangunan_id" class="form-control" :class="{ 'is-invalid': form.errors.has('bangunan_id') }">
                         <div class="row">
                             <div class="col-sm-12">
@@ -269,6 +287,8 @@ export default {
     },
     data() {
         return {
+            presentase_kerusakan: '0%',
+            kriteria_kerusakan : '-',
             data_pondasi: [
                 {label: 'Tidak ada kerusakan', code: 0},
                 {label: 'Penurunan merata pada seluruh struktur bangunan', code: 20},
@@ -391,19 +411,52 @@ export default {
                 //JIKA RESPONSENYA DITERIMA
                 let getData = response.data.data
                 this.form.bangunan_id = getData.bangunan_id
-                this.form.rusak_pondasi = getData.rusak_pondasi
+                this.form.rusak_pondasi = number_format(getData.rusak_pondasi)
                 this.form.ket_pondasi = getData.ket_pondasi
-                this.form.rusak_sloop_kolom_balok = getData.rusak_sloop_kolom_balok
+                this.form.rusak_sloop_kolom_balok = number_format(getData.rusak_sloop_kolom_balok)
                 this.form.ket_sloop_kolom_balok = getData.ket_sloop_kolom_balok
-                this.form.rusak_kudakuda_atap = getData.rusak_kudakuda_atap
+                this.form.rusak_kudakuda_atap = number_format(getData.rusak_kudakuda_atap)
                 this.form.ket_kudakuda_atap = getData.ket_kudakuda_atap
-                this.form.rusak_plester_struktur = getData.rusak_plester_struktur
+                this.form.rusak_plester_struktur = number_format(getData.rusak_plester_struktur)
                 this.form.ket_plester_struktur = getData.ket_plester_struktur
-                this.form.rusak_tutup_atap = getData.rusak_tutup_atap
+                this.form.rusak_tutup_atap = number_format(getData.rusak_tutup_atap)
                 this.form.ket_tutup_atap = getData.ket_tutup_atap
+                let total = Number(getData.rusak_pondasi) + Number(getData.rusak_sloop_kolom_balok) + Number(getData.rusak_kudakuda_atap) + Number(getData.rusak_plester_struktur) + Number(getData.rusak_tutup_atap)
+                this.presentase_kerusakan = number_format(total,2)
+                let make_kriteria = null
+                if(total == 0){
+                    make_kriteria = 'BAIK'
+                } else if(total >= 1 && total <= 20){
+                     make_kriteria = 'RINGAN'
+                } else if(total > 20){
+                     make_kriteria = 'SEDANG'
+                } else if(total > 50){
+                     make_kriteria = 'BERAT'
+                }
+                this.kriteria_kerusakan = make_kriteria
                 console.log(getData);
             })
             $('#modalKondisi').modal('show');
+            function number_format(number, decimals, dec_point, thousands_sep) {
+                var n = !isFinite(+number) ? 0 : +number, 
+                    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                    toFixedFix = function (n, prec) {
+                        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+                        var k = Math.pow(10, prec);
+                        return Math.round(n * k) / k;
+                    },
+                    s = (prec ? toFixedFix(n, prec) : Math.round(n)).toString().split('.');
+                    if (s[0].length > 3) {
+                        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                    }
+                    if ((s[1] || '').length < prec) {
+                        s[1] = s[1] || '';
+                        s[1] += new Array(prec - s[1].length + 1).join('0');
+                    }
+                    return s.join(dec);
+                }
         },
         updateKondisi(){
             this.form.post('/api/kondisi/simpan-bangunan').then((response)=>{
