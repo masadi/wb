@@ -410,31 +410,33 @@ export default {
             .then((response) => {
                 //JIKA RESPONSENYA DITERIMA
                 let getData = response.data.data
-                this.form.bangunan_id = getData.bangunan_id
-                this.form.rusak_pondasi = number_format(getData.rusak_pondasi)
-                this.form.ket_pondasi = getData.ket_pondasi
-                this.form.rusak_sloop_kolom_balok = number_format(getData.rusak_sloop_kolom_balok)
-                this.form.ket_sloop_kolom_balok = getData.ket_sloop_kolom_balok
-                this.form.rusak_kudakuda_atap = number_format(getData.rusak_kudakuda_atap)
-                this.form.ket_kudakuda_atap = getData.ket_kudakuda_atap
-                this.form.rusak_plester_struktur = number_format(getData.rusak_plester_struktur)
-                this.form.ket_plester_struktur = getData.ket_plester_struktur
-                this.form.rusak_tutup_atap = number_format(getData.rusak_tutup_atap)
-                this.form.ket_tutup_atap = getData.ket_tutup_atap
-                let total = Number(getData.rusak_pondasi) + Number(getData.rusak_sloop_kolom_balok) + Number(getData.rusak_kudakuda_atap) + Number(getData.rusak_plester_struktur) + Number(getData.rusak_tutup_atap)
-                this.presentase_kerusakan = number_format(total,2)
-                let make_kriteria = null
-                if(total == 0){
-                    make_kriteria = 'BAIK'
-                } else if(total >= 1 && total <= 20){
-                     make_kriteria = 'RINGAN'
-                } else if(total > 20){
-                     make_kriteria = 'SEDANG'
-                } else if(total > 50){
-                     make_kriteria = 'BERAT'
+                if(getData){
+                    this.form.bangunan_id = getData.bangunan_id
+                    this.form.rusak_pondasi = number_format(getData.rusak_pondasi)
+                    this.form.ket_pondasi = getData.ket_pondasi
+                    this.form.rusak_sloop_kolom_balok = number_format(getData.rusak_sloop_kolom_balok)
+                    this.form.ket_sloop_kolom_balok = getData.ket_sloop_kolom_balok
+                    this.form.rusak_kudakuda_atap = number_format(getData.rusak_kudakuda_atap)
+                    this.form.ket_kudakuda_atap = getData.ket_kudakuda_atap
+                    this.form.rusak_plester_struktur = number_format(getData.rusak_plester_struktur)
+                    this.form.ket_plester_struktur = getData.ket_plester_struktur
+                    this.form.rusak_tutup_atap = number_format(getData.rusak_tutup_atap)
+                    this.form.ket_tutup_atap = getData.ket_tutup_atap
+                    let total = Number(getData.rusak_pondasi) + Number(getData.rusak_sloop_kolom_balok) + Number(getData.rusak_kudakuda_atap) + Number(getData.rusak_plester_struktur) + Number(getData.rusak_tutup_atap)
+                    this.presentase_kerusakan = number_format(total,2)
+                    let make_kriteria = null
+                    if(total == 0){
+                        make_kriteria = 'BAIK'
+                    } else if(total >= 1 && total <= 20){
+                        make_kriteria = 'RINGAN'
+                    } else if(total > 20){
+                        make_kriteria = 'SEDANG'
+                    } else if(total > 50){
+                        make_kriteria = 'BERAT'
+                    }
+                    this.kriteria_kerusakan = make_kriteria
+                    console.log(getData);
                 }
-                this.kriteria_kerusakan = make_kriteria
-                console.log(getData);
             })
             $('#modalKondisi').modal('show');
             function number_format(number, decimals, dec_point, thousands_sep) {
