@@ -38,7 +38,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Data Tanah</h5>
+                        <h5 class="modal-title">Tambah Data Alat</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -120,6 +120,7 @@ export default {
             fields: [
                 {key: 'ruang.bangunan.tanah.sekolah.nama', 'label': 'Nama Sekolah', sortable: true},
                 {key: 'ruang.nama', 'label': 'Nama Ruang', sortable: true},
+                {key: 'jenis_sarana.nama', 'label': 'Jenis Sarana', sortable: true},
                 {key: 'nama', 'label': 'Nama Alat', sortable: true},
                 {key: 'spesifikasi', 'label': 'Spesifikasi', sortable: true},
                 {key: 'kepemilikan.nama', 'label': 'Kepemilikan', sortable: true},

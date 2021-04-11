@@ -24,4 +24,8 @@ class Alat extends Model
     {
         return $this->belongsTo(Status_kepemilikan_sarpras::class, 'kepemilikan_sarpras_id', 'kepemilikan_sarpras_id');
     }
+    public function jenis_sarana()
+    {
+        return $this->belongsTo(Jenis_sarana::class, 'jenis_sarana_id', 'id');
+    }
 }

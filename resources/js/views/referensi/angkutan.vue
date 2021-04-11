@@ -34,6 +34,71 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Data Alat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="insertData()" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Sekolah</label>
+                                <v-select label="nama" :options="data_sekolah" v-model="form.sekolah_id" @input="updateJenis" />
+                                <has-error :form="form" field="sekolah_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Jenis Sarana</label>
+                                <v-select label="nama" :options="data_jenis" v-model="form.jenis_sarana_id" />
+                                <has-error :form="form" field="jenis_sarana_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama</label>
+                                <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
+                                <has-error :form="form" field="nama"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Merk</label>
+                                <input v-model="form.merk" type="text" name="merk" class="form-control" :class="{ 'is-invalid': form.errors.has('merk') }">
+                                <has-error :form="form" field="merk"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Nomor Polisi</label>
+                                <input v-model="form.no_polisi" type="text" name="no_polisi" class="form-control" :class="{ 'is-invalid': form.errors.has('no_polisi') }">
+                                <has-error :form="form" field="no_polisi"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Nomor BPKB</label>
+                                <input v-model="form.no_bpkb" type="text" name="no_bpkb" class="form-control" :class="{ 'is-invalid': form.errors.has('no_bpkb') }">
+                                <has-error :form="form" field="no_bpkb"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Spesifikasi</label>
+                                <input v-model="form.spesifikasi" type="text" name="spesifikasi" class="form-control" :class="{ 'is-invalid': form.errors.has('spesifikasi') }">
+                                <has-error :form="form" field="spesifikasi"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Kepemilikan</label>
+                                <v-select label="nama" :options="data_kepemilikan" v-model="form.kepemilikan_sarpras_id" />
+                                <has-error :form="form" field="kepemilikan_sarpras_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input v-model="form.keterangan" type="text" name="keterangan" class="form-control" :class="{ 'is-invalid': form.errors.has('keterangan') }">
+                                <has-error :form="form" field="keterangan"></has-error>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <my-loader/>
     </div>
 </template>
@@ -70,7 +135,22 @@ export default {
             per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
-            sortByDesc: false //ASCEDING
+            sortByDesc: false, //ASCEDING
+            form: new Form({
+                sekolah_id: '',
+                jenis_sarana_id: '',
+                nama: '',
+                spesifikasi: '',
+                merk: '',
+                no_polisi: '',
+                no_bpkb: '',
+                alamat: '',
+                kepemilikan_sarpras_id: '',
+                keterangan: '',
+            }),
+            data_sekolah: [],
+            data_jenis: [],
+            data_kepemilikan: [],
         }
     },
     components: {
@@ -105,11 +185,44 @@ export default {
                 }
             })
         },
+        getSekolah() {
+            axios.get(`/api/referensi/all-sekolah`)
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                //this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                this.data_sekolah = getData
+            })
+        },
+        getKepemilikan(){
+            axios.get(`/api/referensi/kepemilikan`)
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                //this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                this.data_kepemilikan = getData
+            })
+        },
+        updateJenis(){
+            axios.get(`/api/referensi/all-jenis-sarana`, {
+                //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                params: {
+                    data: 'a_angkutan',
+                }
+            })
+            .then((response) => {
+                let getData = response.data.data
+                this.data_jenis = getData
+                this.getKepemilikan()
+            })
+        },
         deletePostData(id) {
             axios.delete(`/api/referensi/hapus-angkutan/${id}`).then(() => this.loadPostsData())
         },
         editPostData(id) {
-            axios.get(`/api/referensi/hapus-angkutan/${id}`).then(() => this.loadPostsData())
+            axios.get(`/api/referensi/edit-angkutan/${id}`).then(() => this.loadPostsData())
         },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
         handlePerPage(val) {
@@ -140,7 +253,7 @@ export default {
         newModal(){
             this.editmode = false;
             this.form.reset();
-            this.form.user_id = user.user_id;
+            this.getSekolah()
             $('#modalAdd').modal('show');
         },
         insertData(){

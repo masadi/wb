@@ -22,6 +22,7 @@ use App\Buku;
 use App\Jenis_prasarana;
 use App\Jenis_sarana;
 use App\Status_kepemilikan_sarpras;
+use App\Mata_pelajaran;
 
 class ReferensiController extends Controller
 {
@@ -90,7 +91,7 @@ class ReferensiController extends Controller
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
                 ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
-        })->with(['ruang.bangunan.tanah.sekolah', 'kepemilikan'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        })->with(['ruang.bangunan.tanah.sekolah', 'kepemilikan', 'jenis_sarana'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_angkutan($request){
@@ -121,6 +122,12 @@ class ReferensiController extends Controller
     }
     public function get_all_sekolah($request){
         $all_data = Sekolah::select('sekolah_id', 'nama')->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_all_mapel($request){
+        $all_data = Mata_pelajaran::select('mata_pelajaran_id', 'nama')->whereHas('mapel', function($query) use ($request){
+            $query->where('tingkat_pendidikan_id', $request->tingkat_pendidikan_id);
+        })->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_all_tanah($request){
@@ -394,6 +401,72 @@ class ReferensiController extends Controller
                 'nama' => $request->nama,
                 'spesifikasi' => $request->spesifikasi,
                 'kepemilikan_sarpras_id' => $request->kepemilikan_sarpras_id['kepemilikan_sarpras_id'],
+                'keterangan' => $request->keterangan,
+            ]);
+            return response()->json(['status' => 'success', 'data' => $insert_data]);
+        } elseif($request->route('query') == 'angkutan'){
+            $messages = [
+                'sekolah_id.required'	=> 'Sekolah tidak boleh kosong',
+                'jenis_sarana_id.required'	=> 'Jenis Sarana tidak boleh kosong',
+                'nama.required'	=> 'Nama tidak boleh kosong',
+                'spesifikasi.required'	=> 'Spesifikasi tidak boleh kosong',
+                'merk.required'	=> 'Merk tidak boleh kosong',
+                'no_polisi.required'	=> 'Nomor Polisi tidak boleh kosong',
+                'no_bpkb.required'	=> 'Nomor BPKB tidak boleh kosong',
+                'kepemilikan_sarpras_id.required'	=> 'Kepemilikan tidak boleh kosong',
+            ];
+            $validator = Validator::make(request()->all(), [
+                'sekolah_id' => 'required',
+                'jenis_sarana_id' => 'required',
+                'nama' => 'required',
+                'spesifikasi' => 'required',
+                'merk' => 'required',
+                'no_polisi' => 'required',
+                'no_bpkb' => 'required',
+                'kepemilikan_sarpras_id' => 'required',
+            ],
+            $messages
+            )->validate();
+            $insert_data = Angkutan::create([
+                'sekolah_id' => $request->sekolah_id['sekolah_id'],
+                'jenis_sarana_id' => $request->jenis_sarana_id['id'],
+                'nama' => $request->nama,
+                'spesifikasi' => $request->spesifikasi,
+                'merk' => $request->merk,
+                'no_polisi' => $request->no_polisi,
+                'kepemilikan_sarpras_id' => $request->kepemilikan_sarpras_id['kepemilikan_sarpras_id'],
+                'keterangan' => $request->keterangan,
+            ]);
+            return response()->json(['status' => 'success', 'data' => $insert_data]);
+        } elseif($request->route('query') == 'buku'){
+            $messages = [
+                'sekolah_id.required'	=> 'Sekolah tidak boleh kosong',
+                'kode.required'	=> 'Kode Buku tidak boleh kosong',
+                'judul.required'	=> 'Judul tidak boleh kosong',
+                'mata_pelajaran_id.required'	=> 'Mata Pelajaran tidak boleh kosong',
+                'nama_penerbit.required'	=> 'Nama Penerbit tidak boleh kosong',
+                'isbn_issn.required'	=> 'ISBN/ISSN tidak boleh kosong',
+                'kelas.required'	=> 'Kelas tidak boleh kosong',
+            ];
+            $validator = Validator::make(request()->all(), [
+                'sekolah_id' => 'required',
+                'kode' => 'required',
+                'judul' => 'required',
+                'mata_pelajaran_id' => 'required',
+                'nama_penerbit' => 'required',
+                'isbn_issn' => 'required',
+                'kelas' => 'required',
+            ],
+            $messages
+            )->validate();
+            $insert_data = Buku::create([
+                'sekolah_id' => $request->sekolah_id['sekolah_id'],
+                'kode' => $request->kode,
+                'judul' => $request->judul,
+                'mata_pelajaran_id' => $request->mata_pelajaran_id['mata_pelajaran_id'],
+                'nama_penerbit' => $request->nama_penerbit,
+                'isbn_issn' => $request->isbn_issn,
+                'kelas' => $request->kelas,
                 'keterangan' => $request->keterangan,
             ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);

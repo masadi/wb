@@ -39,65 +39,66 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Buku</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Data Buku</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="insertData()" method="post">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Sekolah</label>
+                                <v-select label="nama" :options="data_sekolah" v-model="form.sekolah_id" />
+                                <has-error :form="form" field="sekolah_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <v-select label="nama" :options="data_kelas" v-model="form.kelas" @input="updateMapel" />
+                                <has-error :form="form" field="kelas"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Mata Pelajaran</label>
+                                <v-select label="nama" :options="data_mapel" v-model="form.mata_pelajaran_id" />
+                                <has-error :form="form" field="mata_pelajaran_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Kode Buku</label>
+                                <input v-model="form.kode" type="text" name="kode" class="form-control" :class="{ 'is-invalid': form.errors.has('kode') }">
+                                <has-error :form="form" field="kode"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Judul Buku</label>
+                                <input v-model="form.judul" type="text" name="judul" class="form-control" :class="{ 'is-invalid': form.errors.has('judul') }">
+                                <has-error :form="form" field="judul"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Penerbit</label>
+                                <input v-model="form.nama_penerbit" type="text" name="nama_penerbit" class="form-control" :class="{ 'is-invalid': form.errors.has('nama_penerbit') }">
+                                <has-error :form="form" field="nama_penerbit"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>ISBN/ISSN</label>
+                                <input v-model="form.isbn_issn" type="text" name="isbn_issn" class="form-control" :class="{ 'is-invalid': form.errors.has('isbn_issn') }">
+                                <has-error :form="form" field="isbn_issn"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input v-model="form.keterangan" type="text" name="keterangan" class="form-control" :class="{ 'is-invalid': form.errors.has('keterangan') }">
+                                <has-error :form="form" field="keterangan"></has-error>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
-
-                <form @submit.prevent="insertData()" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nama Lengkap</label>
-                            <input v-model="form.id" type="hidden" name="id" class="form-control" :class="{ 'is-invalid': form.errors.has('id') }">
-                            <input v-model="form.nama" type="text" name="nama" class="form-control" :class="{ 'is-invalid': form.errors.has('nama') }">
-                            <has-error :form="form" field="nama"></has-error>
-                        </div>
-                        <div class="form-group">
-                            <label>NIP</label>
-                            <input v-model="form.nip" type="text" name="nip" class="form-control" :class="{ 'is-invalid': form.errors.has('nip') }">
-                            <has-error :form="form" field="nip"></has-error>
-                        </div>
-                        <div class="form-group">
-                            <label>NUPTK</label>
-                            <input v-model="form.nuptk" type="text" name="nuptk" class="form-control" :class="{ 'is-invalid': form.errors.has('nuptk') }">
-                            <has-error :form="form" field="nuptk"></has-error>
-                        </div>
-                        <div class="form-group">
-                            <label>Asal Instansi</label>
-                            <input v-model="form.instansi" type="text" name="instansi" class="form-control" :class="{ 'is-invalid': form.errors.has('instansi') }">
-                            <has-error :form="form" field="instansi"></has-error>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input v-model="form.email" type="text" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                            <has-error :form="form" field="email"></has-error>
-                        </div>
-                        <div class="form-group">
-                            <label>Nomor Handphone</label>
-                            <input v-model="form.nomor_hp" type="text" name="nomor_hp" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_hp') }">
-                            <has-error :form="form" field="nomor_hp"></has-error>
-                        </div>
-                        <div class="form-group">
-                            <label>Token</label>
-                            <input v-model="form.token" type="text" name="token" class="form-control" :class="{ 'is-invalid': form.errors.has('token') }">
-                            <has-error :form="form" field="token"></has-error>
-                        </div>
-        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
-                        <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
     <my-loader />
 </div>
 </template>
@@ -110,13 +111,14 @@ export default {
             editmode: false,
             form: new Form({
                 id: '',
-                nama: '',
-                nip: '',
-                nuptk: '',
-                instansi: '',
-                email: '',
-                nomor_hp: '',
-                token: '',
+                sekolah_id: '',
+                kode: '',
+                judul: '',
+                mata_pelajaran_id: '',
+                nama_penerbit: '',
+                isbn_issn: '',
+                keterangan: '',
+                kelas: '',
             }),
             fields: [{
                     key: 'sekolah.nama',
@@ -164,7 +166,9 @@ export default {
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: true, //ASCEDING
-            sekolah_id: user.sekolah_id,
+            data_sekolah: [],
+            data_mapel: [],
+            data_kelas: [7, 8, 9],
         }
     },
     created() {
@@ -175,6 +179,30 @@ export default {
         'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
     },
     methods: {
+        updateMapel(data){
+            console.log(data);
+            axios.get(`/api/referensi/all-mapel`, {
+                //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                params: {
+                    tingkat_pendidikan_id: data,
+                }
+            })
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                this.data_mapel = getData
+            })
+        },
+        getSekolah() {
+            axios.get(`/api/referensi/all-sekolah`)
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                //this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+                this.data_sekolah = getData
+            })
+        },
         loadPostsData() {
             let current_page = this.search == '' ? this.current_page : 1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
@@ -230,7 +258,7 @@ export default {
         newModal() {
             this.editmode = false;
             this.form.reset();
-            this.form.user_id = user.user_id;
+            this.getSekolah()
             $('#modalAdd').modal('show');
         },
         insertData() {
