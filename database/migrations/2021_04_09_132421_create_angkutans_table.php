@@ -15,7 +15,7 @@ class CreateAngkutansTable extends Migration
     {
         Schema::create('angkutan', function (Blueprint $table) {
             $table->uuid('angkutan_id');
-            $table->unsignedBigInteger('jenis_prasarana_id');
+            $table->unsignedBigInteger('jenis_sarana_id');
             $table->uuid('sekolah_id');
             $table->foreign('sekolah_id')->references('sekolah_id')->on('sekolah')->onDelete('cascade');
             $table->string('nama');
@@ -28,7 +28,6 @@ class CreateAngkutansTable extends Migration
             $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->primary('angkutan_id');
-            $table->foreign('jenis_prasarana_id')->references('id')->on('jenis_prasarana')->onDelete('cascade');
         });
     }
 

@@ -26,6 +26,9 @@ class CreateJenisSaranasTable extends Migration
         Schema::table('alat', function (Blueprint $table) {
             $table->foreign('jenis_sarana_id')->references('id')->on('jenis_sarana')->onDelete('cascade');
         });
+        Schema::table('angkutan', function (Blueprint $table) {
+            $table->foreign('jenis_sarana_id')->references('id')->on('jenis_sarana')->onDelete('cascade');
+        });
     }
 
     /**
@@ -37,6 +40,9 @@ class CreateJenisSaranasTable extends Migration
     {
         Schema::table('alat', function (Blueprint $table) {
             $table->dropForeign(['jenis_sarana_id']);
+        });
+        Schema::table('angkutan', function (Blueprint $table) {
+            //$table->dropForeign(['jenis_sarana_id']);
         });
         Schema::dropIfExists('jenis_sarana');
     }
