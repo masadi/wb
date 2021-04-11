@@ -23,7 +23,7 @@ class CreateTanahsTable extends Migration
             $table->integer('lebar')->unsigned()->nullable();
             $table->integer('luas')->unsigned()->nullable();
             $table->integer('luas_lahan_tersedia')->unsigned()->nullable();
-            $table->string('kepemilikan')->nullable();
+            $table->decimal('kepemilikan_sarpras_id', 1,0);
             $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->primary('tanah_id');

@@ -23,7 +23,7 @@ class CreateBangunansTable extends Migration
             $table->integer('lebar')->unsigned()->nullable();
             $table->integer('luas')->unsigned()->nullable();
             $table->integer('lantai')->unsigned()->nullable();
-            $table->string('kepemilikan')->nullable();
+            $table->decimal('kepemilikan_sarpras_id', 1,0);
             $table->integer('tahun_bangun')->unsigned()->nullable();
             $table->date('tanggal_sk')->nullable();
             $table->string('keterangan')->nullable();

@@ -22,6 +22,12 @@ class CreateStatusKepemilikanSarprasTable extends Migration
         Schema::table('alat', function (Blueprint $table) {
             $table->foreign('kepemilikan_sarpras_id')->references('kepemilikan_sarpras_id')->on('status_kepemilikan_sarpras')->onDelete('cascade');
         });
+        Schema::table('tanah', function (Blueprint $table) {
+            $table->foreign('kepemilikan_sarpras_id')->references('kepemilikan_sarpras_id')->on('status_kepemilikan_sarpras')->onDelete('cascade');
+        });
+        Schema::table('bangunan', function (Blueprint $table) {
+            $table->foreign('kepemilikan_sarpras_id')->references('kepemilikan_sarpras_id')->on('status_kepemilikan_sarpras')->onDelete('cascade');
+        });
     }
 
     /**
@@ -32,6 +38,12 @@ class CreateStatusKepemilikanSarprasTable extends Migration
     public function down()
     {
         Schema::table('alat', function (Blueprint $table) {
+            $table->dropForeign(['kepemilikan_sarpras_id']);
+        });
+        Schema::table('tanah', function (Blueprint $table) {
+            $table->dropForeign(['kepemilikan_sarpras_id']);
+        });
+        Schema::table('bangunan', function (Blueprint $table) {
             $table->dropForeign(['kepemilikan_sarpras_id']);
         });
         Schema::dropIfExists('status_kepemilikan_sarpras');

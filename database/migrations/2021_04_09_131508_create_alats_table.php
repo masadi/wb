@@ -20,7 +20,6 @@ class CreateAlatsTable extends Migration
             $table->foreign('ruang_id')->references('ruang_id')->on('ruang')->onDelete('cascade');
             $table->string('nama');
             $table->string('spesifikasi')->nullable();
-            $table->string('registrasi')->nullable();
             $table->decimal('kepemilikan_sarpras_id', 1,0);
             $table->string('keterangan')->nullable();
             $table->timestamps();

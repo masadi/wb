@@ -20,6 +20,9 @@ use App\Alat;
 use App\Angkutan;
 use App\Buku;
 use App\Jenis_prasarana;
+use App\Jenis_sarana;
+use App\Status_kepemilikan_sarpras;
+
 class ReferensiController extends Controller
 {
     public function index(Request $request, $query){
@@ -87,7 +90,7 @@ class ReferensiController extends Controller
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
                 ->orWhere('kepemilikan', 'ilike', '%' . request()->q . '%')
                 ->orWhere('keterangan', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        })->with(['ruang.bangunan.tanah.sekolah', 'kepemilikan'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_angkutan($request){
@@ -128,8 +131,20 @@ class ReferensiController extends Controller
         $all_data = Bangunan::select('bangunan_id', 'nama')->where('tanah_id', $request->tanah_id)->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
+    public function get_all_ruang($request){
+        $all_data = Ruang::select('ruang_id', 'nama')->where('bangunan_id', $request->bangunan_id)->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
     public function get_all_jenis_prasarana($request){
         $all_data = Jenis_prasarana::select('id', 'nama')->where('a_ruang', 1)->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_all_jenis_sarana($request){
+        $all_data = Jenis_sarana::select('id', 'nama')->where($request->data, 1)->get();//->pluck('nama', 'sekolah_id');
+        return response()->json(['status' => 'success', 'data' => $all_data]);
+    }
+    public function get_kepemilikan($request){
+        $all_data = Status_kepemilikan_sarpras::select('kepemilikan_sarpras_id', 'nama')->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_sekolah($request)
@@ -169,429 +184,6 @@ class ReferensiController extends Controller
         })*/->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
-    public function get_ptk($request)
-    {
-        $all_data = Ptk::where(function($query){
-            if(request()->sekolah_id){
-                $query->where('sekolah_id', request()->sekolah_id);
-            }
-        })->orderBy(request()->sortby, request()->sortbydesc)
-            ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
-                ->orWhere('nuptk', 'ilike', '%' . request()->q . '%')
-                ->orWhere('nik', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
-        return response()->json(['status' => 'success', 'data' => $all_data]);
-    }
-    public function get_pd($request)
-    {
-        $all_data = Peserta_didik::where(function($query){
-            if(request()->sekolah_id){
-                $query->where('sekolah_id', request()->sekolah_id);
-            }
-        })->orderBy(request()->sortby, request()->sortbydesc)
-            ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%')
-                ->orWhere('no_induk', 'ilike', '%' . request()->q . '%')
-                ->orWhere('nisn', 'ilike', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
-        return response()->json(['status' => 'success', 'data' => $all_data]);
-    }
-    public function upload(Request $request){
-        $messages = [
-            'file.required'	=> 'File Upload tidak boleh kosong',
-            'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
-        ];
-        $validator = Validator::make(request()->all(), [
-            'file' => 'required|mimes:xlsx',
-            //'file' => 'required',
-        ],
-        $messages
-        )->validate();
-        $file = $request->file('file');
-        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move('uploads', $fileExcel);
-        $insert = 0;
-        $snp = Standar::updateOrCreate(['kode' => 'snp', 'nama' => 'Standar Nasional Pendidikan']);
-        $bsc = Standar::updateOrCreate(['kode' => 'bsc', 'nama' => 'Balanced Scorecard']);
-        $link_match = Standar::updateOrCreate(['kode' => 'link match', 'nama' => 'Link & Match']);
-        $renstra = Standar::updateOrCreate(['kode' => 'renstra', 'nama' => 'Rencana Strategis']);
-        $data_snp = (new FastExcel)->sheet(1)->import('uploads/'.$fileExcel);
-        foreach($data_snp as $isi_snp){
-            Isi_standar::updateOrCreate([
-                'standar_id' => $snp->id,
-                'kode' => $isi_snp['kode'],
-                'nama' => $isi_snp['nama'],
-            ]);
-        }
-        $data_bsc = (new FastExcel)->sheet(2)->import('uploads/'.$fileExcel);
-        foreach($data_bsc as $isi_bsc){
-            $induk = Isi_standar::updateOrCreate([
-                'standar_id' => $bsc->id,
-                'kode' => $isi_bsc['kode_induk'],
-                'nama' => $isi_bsc['isi'],
-            ]);
-            $sub = Isi_standar::updateOrCreate([
-                'standar_id' => $bsc->id,
-                'isi_standar_id' => $induk->id,
-                'kode' => $isi_bsc['kode_sub'],
-                'nama' => $isi_bsc['isi_sub'],
-            ]);
-            $sub_sub = Isi_standar::updateOrCreate([
-                'standar_id' => $bsc->id,
-                'isi_standar_id' => $sub->id,
-                'kode' => $isi_bsc['kode_sub_sub'],
-                'nama' => $isi_bsc['isi_sub_sub'],
-            ]);
-        }
-        $data_link_match = (new FastExcel)->sheet(3)->import('uploads/'.$fileExcel);
-        foreach($data_link_match as $isi_link_match){
-            Isi_standar::updateOrCreate([
-                'standar_id' => $link_match->id,
-                'kode' => $isi_link_match['kode'],
-                'nama' => $isi_link_match['nama'],
-            ]);
-        }
-        $data_renstra = (new FastExcel)->sheet(4)->import('uploads/'.$fileExcel);
-        foreach($data_renstra as $isi_renstra){
-            $induk_renstra = Isi_standar::updateOrCreate([
-                'standar_id' => $renstra->id,
-                'kode' => $isi_renstra['kode'],
-                'nama' => $isi_renstra['renstra'],
-            ]);
-            Isi_standar::updateOrCreate([
-                'standar_id' => $renstra->id,
-                'isi_standar_id' => $induk_renstra->id,
-                'kode' => $isi_renstra['kode'],
-                'nama' => $isi_renstra['sub_renstra'],
-            ]);
-        }
-        $data_instrumen = (new FastExcel)->sheet(5)->import('uploads/'.$fileExcel);
-        foreach($data_instrumen as $item){
-            if($item['Komponen']){
-                $komponen = Komponen::updateOrCreate([
-                    'nama' => $item['Komponen'],
-                ]);
-                $aspek = Aspek::updateOrCreate([
-                    'komponen_id' => $komponen->id,
-                    'nama' => $item['Aspek'],
-                    'bobot' => $item['Bobot'],
-                ]);
-                $atribut = Atribut::updateOrCreate([
-                    'aspek_id' => $aspek->id,
-                    'nama' => $item['Atribut'],
-                ]);
-                $indikator = Indikator::updateOrCreate([
-                    'atribut_id' => $atribut->id,
-                    'nama' => $item['Indikator Kinerja'],
-                ]);
-                $instrumen = Instrumen::updateOrCreate([
-                    'indikator_id' => $indikator->id,
-                    'urut' => 0,
-                    'pertanyaan' => $item['Rumusan Pertanyaan'],
-                    'petunjuk_pengisian' => $item['petunjuk pengisian'],
-                    'skor' => 5,
-                ]);
-                for($i=1;$i<=5;$i++){
-                    Instrumen::updateOrCreate([
-                        'indikator_id' => $indikator->id,
-                        'ins_id' => $instrumen->instrumen_id,
-                        'urut' => $i,
-                        'pertanyaan' => $item['Capaian '.$i],
-                        'petunjuk_pengisian' => $item['petunjuk pengisian'],
-                        'skor' => 5,
-                    ]);
-                }
-                $find = Instrumen::where(function($query) use ($item){
-                    $query->where('indikator_id', $item['No']);
-                    $query->where('urut', 0);
-                })->first();
-                if($find && $item['no_breakdown']){
-                    $breakdown = Breakdown::updateOrCreate([
-                        'instrumen_id' => $find->instrumen_id,
-                        'urut' => $item['no_breakdown'],
-                        'breakdown' => $item['breakdown'],
-                    ]);
-                    if($item['renstra']){
-                        $renstra_a = explode(";",$item['renstra']);
-                        foreach($renstra_a as $aa){
-                            $find_standar = Isi_standar::whereHas('standar', function($query){
-                                $query->where('kode', 'renstra');
-                            })->where('kode', $aa)->whereNull('isi_standar_id')->first();
-                            if($find_standar){
-                                Breakdown_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'breakdown_id' => $breakdown->breakdown_id,
-                                ]);
-                            }
-                        }
-                    }
-                    if($item['link match']){
-                        $link_match_a = explode(";",$item['link match']);
-                        foreach($link_match_a as $ab){
-                            $find_standar = Isi_standar::whereHas('standar', function($query){
-                                $query->where('kode', 'link match');
-                            })->where('kode', $ab)->whereNull('isi_standar_id')->first();
-                            if($find_standar){
-                                Breakdown_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'breakdown_id' => $breakdown->breakdown_id,
-                                ]);
-                            }
-                        }
-                    }
-                    if($item['bsc']){
-                        $bsc_a = explode(";",$item['bsc']);
-                        foreach($bsc_a as $ac){
-                            $find_standar = Isi_standar::whereHas('standar', function($query){
-                                $query->where('kode', 'bsc');
-                            })->where('kode', $ac)->whereNull('isi_standar_id')->first();
-                            //$find_standar = Standar::where('kode', 'link match')->where('kode', $ac)->whereNull('isi_standar_id')->first();
-                            if($find_standar){
-                                Breakdown_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'breakdown_id' => $breakdown->breakdown_id,
-                                ]);
-                            }
-                        }
-                    }
-                    if($item['snp']){
-                        $snp_a = explode(";",$item['snp']);
-                        foreach($snp_a as $ad){
-                            $find_standar = Isi_standar::whereHas('standar', function($query){
-                                $query->where('kode', 'snp');
-                            })->where('kode', $ad)->whereNull('isi_standar_id')->first();
-                            //$find_standar = Standar::where('kode', 'link match')->where('kode', $ad)->whereNull('isi_standar_id')->first();
-                            if($find_standar){
-                                Breakdown_standar::updateOrCreate([
-                                    'isi_standar_id' => $find_standar->id,
-                                    'breakdown_id' => $breakdown->breakdown_id,
-                                ]);
-                            }
-                        }
-                    }
-                    $question = Question::updateOrCreate([
-                        'breakdown_id' => $breakdown->breakdown_id,
-                        'urut' => $item['no_isian'],
-                        'question' => $item['question'],
-                        //'answer' => $item['answer'],
-                    ]);
-                    $answer = Answer::updateOrCreate([
-                        'question_id' => $question->question_id,
-                        'urut' => $item['urut_answer'],
-                        'answer' => $item['answer'],
-                        'type' => $item['type'],
-                    ]);
-                }
-            }
-        }
-        if(File::delete(public_path('uploads/'.$fileExcel))){
-            $data = [
-                'title' => 'Berhasil',
-                'text' => 'Data breakdown berhasil disimpan',
-                'icon' => 'success',
-            ];
-        } else {
-            $data = [
-                'title' => 'Gagal',
-                'text' => 'Data breakdown gagal disimpan',
-                'icon' => 'error',
-            ];
-        }
-        return response()->json($data);
-        $sheets = (new FastExcel)->importSheets('uploads/'.$fileExcel);
-        foreach($sheets as $sheet){
-            dd($sheet);
-        }
-        dd($sheets);
-    }
-    public function upload_old(Request $request){
-        $messages = [
-            'file.required'	=> 'File Upload tidak boleh kosong',
-            'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
-        ];
-        $validator = Validator::make(request()->all(), [
-            'file' => 'required|mimes:xlsx',
-            //'file' => 'required',
-        ],
-        $messages
-        )->validate();
-        $file = $request->file('file');
-        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move('uploads', $fileExcel);
-        $insert = 0;
-        $komponen = (new FastExcel)->import('uploads/'.$fileExcel, function ($item) use ($request, &$insert){
-            if($item['Komponen']){
-                $komponen = Komponen::updateOrCreate([
-                    'nama' => $item['Komponen'],
-                ]);
-                $aspek = Aspek::updateOrCreate([
-                    'komponen_id' => $komponen->id,
-                    'nama' => $item['Aspek'],
-                    'bobot' => $item['Bobot'],
-                ]);
-                $atribut = Atribut::updateOrCreate([
-                    'aspek_id' => $aspek->id,
-                    'nama' => $item['Atribut'],
-                ]);
-                $indikator = Indikator::updateOrCreate([
-                    'atribut_id' => $atribut->id,
-                    'nama' => $item['Indikator Kinerja'],
-                ]);
-                $instrumen = Instrumen::updateOrCreate([
-                    'indikator_id' => $indikator->id,
-                    'urut' => 0,
-                    'pertanyaan' => $item['Rumusan Pertanyaan'],
-                    'skor' => 5,
-                ]);
-                for($i=1;$i<=5;$i++){
-                    Instrumen::updateOrCreate([
-                        'indikator_id' => $indikator->id,
-                        'ins_id' => $instrumen->instrumen_id,
-                        'urut' => $i,
-                        'pertanyaan' => $item['Capaian '.$i],
-                        'skor' => 5,
-                    ]);
-                }
-            }
-            $insert++;
-        });
-        File::delete(public_path('uploads/'.$fileExcel));
-        if($insert){
-            $data = [
-                'title' => 'Berhasil',
-                'text' => 'Data Instrumen berhasil disimpan',
-                'icon' => 'success',
-            ];
-        } else {
-            $data = [
-                'title' => 'Gagal',
-                'text' => 'Data Instrumen gagal disimpan',
-                'icon' => 'error',
-            ];
-        }
-        return response()->json($data);
-    }
-    public function upload_new(Request $request){
-        $messages = [
-            'file.required'	=> 'File Upload tidak boleh kosong',
-            'file.mimes'	=> 'File Upload harus berekstensi .XLSX',
-        ];
-        $validator = Validator::make(request()->all(), [
-            'file' => 'required|mimes:xlsx',
-            //'file' => 'required',
-        ],
-        $messages
-        )->validate();
-        $file = $request->file('file');
-        $fileExcel = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move('uploads', $fileExcel);
-        $insert = 0;
-        $komponen = (new FastExcel)->import('uploads/'.$fileExcel, function ($item) use ($request, &$insert){
-            $find = Instrumen::where(function($query) use ($item){
-                $query->where('indikator_id', $item['nomor']);
-                $query->where('urut', 0);
-            })->first();
-            if($find && $item['no_breakdown']){
-                $breakdown = Breakdown::updateOrCreate([
-                    'instrumen_id' => $find->instrumen_id,
-                    'urut' => $item['no_breakdown'],
-                    'breakdown' => $item['breakdown'],
-                ]);
-                $question = Question::updateOrCreate([
-                    'breakdown_id' => $breakdown->breakdown_id,
-                    'urut' => $item['no_isian'],
-                    'question' => $item['question'],
-                    //'answer' => $item['answer'],
-                ]);
-                $answer = Answer::updateOrCreate([
-                    'question_id' => $question->question_id,
-                    'urut' => $item['urut_answer'],
-                    'answer' => $item['answer'],
-                    'type' => $item['type'],
-                ]);
-            }
-            //dd($find);
-            $insert++;
-        });
-        File::delete(public_path('uploads/'.$fileExcel));
-        if($insert){
-            $data = [
-                'title' => 'Berhasil',
-                'text' => 'Data breakdown berhasil disimpan',
-                'icon' => 'success',
-            ];
-        } else {
-            $data = [
-                'title' => 'Gagal',
-                'text' => 'Data breakdown gagal disimpan',
-                'icon' => 'error',
-            ];
-        }
-        return response()->json($data);
-    }
-    public function get_detil_sekolah($request){
-        /*if($request->sekolah_id){
-            $sekolah = Sekolah::withCount(['ptk', 'pd'])->find($request->sekolah_id);
-            $nilai = [
-                'grade_personal' => 10,
-                'grade_sekolah' => 1,
-            ];
-            $custom = collect($nilai);
-            $data = $custom->merge($sekolah);
-        } else {
-            $nilai = [
-                'sekolah' => Sekolah::count(),
-                'ptk_count' => Ptk::count(),
-                'grade_personal' => 10,
-                'grade_sekolah' => 1,
-            ];
-            $data = collect($nilai);
-        }*/
-        $user = User::withCount(['nilai_instrumen' => function($query){
-            $query->whereNull('verifikator_id');
-        }])->with(['nilai_akhir', 'sekolah.sekolah_sasaran' => function($query){
-            $query->with(['pakta_integritas', 'rapor_mutu.status_rapor']);
-        }])->find($request->user_id);
-        $instrumen = Instrumen::where('urut', 0)->count();
-        /*$nilai_instrumen = Nilai_instrumen::where(function($query) use ($request){
-            $query->where('user_id', $request->user_id);
-            $query->whereNull('verifikator_id');
-        })->count();
-        $hitung = Nilai_akhir::where('user_id', $request->user_id)->first();
-        $pakta = Pakta_integritas::whereHas('sekolah_sasaran', function($query) use ($user){
-            $query->where('sekolah_id', $user->sekolah_id);
-        })->first();
-        $verval = Verval::where('sekolah_id', $user->sekolah_id)->first();
-        $verifikasi = Verifikasi::where('sekolah_id', $user->sekolah_id)->first();*/
-        /*$pakta = NULL;
-        $verval = NULL;
-        $verifikasi = NULL;
-        $pengesahan = NULL;
-        $sasaran = $user->sekolah->sekolah_sasaran;
-        if($sasaran){
-            $pakta = $sasaran->pakta_integritas;
-            $verval = $sasaran->rapor_mutu;
-            if($verval){
-                if($verval->status_rapor->status != 'waiting'){
-                    $verifikasi = $verval;
-                }
-                if($verval->status_rapor->status != 'terima'){
-                    $pengesahan = $verval;
-                }
-            }
-        }
-        $data = [
-            'instrumen' => ($instrumen == $user->nilai_instrumen_count),
-            'hitung' => ($user->nilai_akhir) ? HelperModel::TanggalIndo($user->nilai_akhir->updated_at) : NULL,
-            'pakta' => ($pakta) ? HelperModel::TanggalIndo($pakta->updated_at) : NULL,
-            'verval' => ($verval) ? HelperModel::TanggalIndo($verval->updated_at) : NULL,
-            'verifikasi' => ($verifikasi) ? HelperModel::TanggalIndo($verifikasi->created_at) : NULL,
-            'pengesahan' => ($pengesahan) ? HelperModel::TanggalIndo($pengesahan->updated_at) : NULL,
-        ];*/
-        $data = HelperModel::rapor_mutu($request->user_id);
-        return response()->json(['status' => 'success', 'data' => $data]);
-    }
     public function cetak(Request $request){
         $data['all_komponen'] = Komponen::with(['aspek.instrumen' => function($query){
             $query->with(['jawaban' => function($query){
@@ -608,204 +200,6 @@ class ReferensiController extends Controller
         ]);
         //return $pdf->stream('instrumen.pdf');
 		return $pdf->download('instrumen.pdf');
-    }
-    public function get_penjamin_mutu(){
-        $users = User::where(function($query){
-            $query->whereRoleIs('penjamin_mutu');
-            if(request()->sekolah_id){
-                $query->whereHas('sekolah_sasaran', function($query){
-                    $query->where('sekolah_id', request()->sekolah_id);
-                });
-            }
-        })->orderBy(request()->sortby, request()->sortbydesc)
-            //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
-            ->when(request()->q, function($posts) {
-                //MAKA FUNGSI FILTER AKAN DIJALANKAN
-                $posts = $posts->where('name', 'LIKE', '%' . request()->q . '%')
-                    ->orWhere('email', 'LIKE', '%' . request()->q . '%')
-                    ->orWhere('username', 'LIKE', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
-        return response()->json(['status' => 'success', 'data' => $users]);
-    }
-    public function sekolah_sasaran(Request $request){
-        $tahun = Tahun_pendataan::where('periode_aktif', 1)->first();
-        if($request->permintaan == 'add'){
-            $insert = Sekolah_sasaran::updateOrCreate([
-                'sekolah_id' => $request->sekolah_id,
-                'verifikator_id' => $request->verifikator_id,
-                'tahun_pendataan_id' => $tahun->tahun_pendataan_id,
-            ]);
-            if($insert){
-                $response = [
-                    'title' => 'Berhasil',
-                    'text' => 'Sekolah sasaran berhasil ditambahkan',
-                    'icon' => 'success',
-                ];
-            } else {
-                $response = [
-                    'title' => 'Gagal',
-                    'text' => 'Sekolah sasaran gagal ditambahkan',
-                    'icon' => 'error',
-                ];
-            }
-        } else {
-            $delete = Sekolah_sasaran::where(function($query) use ($request, $tahun){
-                $query->where('sekolah_id', $request->sekolah_id);
-                $query->where('verifikator_id', $request->verifikator_id);
-                $query->where('tahun_pendataan_id', $tahun->tahun_pendataan_id);
-            })->delete();
-            if($delete){
-                $response = [
-                    'title' => 'Berhasil',
-                    'text' => 'Sekolah sasaran berhasil dihapus',
-                    'icon' => 'success',
-                ];
-            } else {
-                $response = [
-                    'title' => 'Gagal',
-                    'text' => 'Sekolah sasaran gagal dihapus',
-                    'icon' => 'error',
-                ];
-            }
-        }
-        return response()->json($response);
-    }
-    public function sekolah_sasaran_pendamping(Request $request){
-        $tahun = Tahun_pendataan::where('periode_aktif', 1)->first();
-        $sekolah = Sekolah_sasaran::where(function($query) use ($request, $tahun){
-            $query->where('sekolah_id', $request->sekolah_id);
-            $query->where('tahun_pendataan_id', $tahun->tahun_pendataan_id);
-        })->first();
-        $insert = 0;
-        $delete = 0;
-        if($request->permintaan == 'add'){
-            if($sekolah){
-                $sekolah->pendamping_id = $request->pendamping_id;
-                $insert = $sekolah->save();
-            } else {
-                $verifikator = User::where('username', 'verifikator')->first();
-                $insert = Sekolah_sasaran::create([
-                    'sekolah_id' => $request->sekolah_id,
-                    'pendamping_id' => $request->pendamping_id,
-                    'verifikator_id' => $verifikator->user_id,
-                    'tahun_pendataan_id' => $tahun->tahun_pendataan_id,
-                ]);
-            }
-            if($insert){
-                $response = [
-                    'title' => 'Berhasil',
-                    'text' => 'Sekolah sasaran berhasil ditambahkan',
-                    'icon' => 'success',
-                ];
-            } else {
-                $response = [
-                    'title' => 'Gagal',
-                    'text' => 'Sekolah sasaran gagal ditambahkan',
-                    'icon' => 'error',
-                ];
-            }
-        } elseif($request->permintaan == 'ganti'){
-            $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
-            $sekolah_sasaran->pendamping_id = $request->pendamping_id;
-            if($sekolah_sasaran->save()){
-                $response = [
-                    'title' => 'Berhasil',
-                    'text' => 'Pendamping berhasil diganti',
-                    'icon' => 'success',
-                ];
-            } else {
-                $response = [
-                    'title' => 'Gagal',
-                    'text' => 'Pendamping gagal diganti',
-                    'icon' => 'error',
-                ];
-            }
-        } else {
-            if($sekolah){
-                $sekolah->pendamping_id = NULL;
-                $delete = $sekolah->save();
-            }
-            if($delete){
-                $response = [
-                    'title' => 'Berhasil',
-                    'text' => 'Sekolah sasaran berhasil dihapus',
-                    'icon' => 'success',
-                ];
-            } else {
-                $response = [
-                    'title' => 'Gagal',
-                    'text' => 'Sekolah sasaran gagal dihapus',
-                    'icon' => 'error',
-                ];
-            }
-        }
-        return response()->json($response);
-    }
-    public function get_sekolah_sasaran($request){
-        return $this->get_sekolah($request);
-    }
-    public function get_sekolah_sasaran_pendamping($request){
-        return $this->get_sekolah($request);
-    }
-    public function status_coe(Request $request){
-        if($request->status_coe){
-            $text = 'Sekolah berhasil ditetapkan sebagai SMK CoE';
-            $coe = Smk_coe::updateOrCreate([
-                'sekolah_id' => $request->sekolah_id,
-                'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
-            ]);
-            /*$verifikator = User::where('username', 'verifikator')->first();
-            Sekolah_sasaran::updateOrCreate([
-                'sekolah_id' => $request->sekolah_id,
-                'verifikator_id' => $verifikator->user_id,
-                'tahun_pendataan_id' => HelperModel::tahun_pendataan(),
-            ]);*/
-        } else {
-            $text = 'Sekolah berhasil digagalkan sebagai SMK CoE';
-            $coe = Smk_coe::where('sekolah_id', $request->sekolah_id)->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->delete();
-            Sekolah_sasaran::where('sekolah_id', $request->sekolah_id)->where('tahun_pendataan_id', HelperModel::tahun_pendataan())->delete();
-        }
-        if($coe){
-            $response = [
-                'title' => 'Berhasil',
-                'text' => $text,
-                'icon' => 'success',
-            ];
-        } else {
-            $response = [
-                'title' => 'Gagal',
-                'text' => 'Permintaan gagal. Silahkan coba beberapa saat lagi!',
-                'icon' => 'error',
-            ];
-        }
-        return response()->json($response);
-    }
-    public function get_pendamping(){
-        $users = Pendamping::where(function($query){
-            if(request()->sekolah_id){
-                $query->whereHas('sekolah_sasaran', function($query){
-                    $query->where('sekolah_sasaran.sekolah_id', request()->sekolah_id);
-                });
-            }
-            $query->whereNotNull('token');
-        //})->has('sekolah_sasaran')->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
-        })->withCount('sekolah_sasaran')->orderBy(request()->sortby, request()->sortbydesc)
-            //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
-            ->when(request()->q, function($posts) {
-                //MAKA FUNGSI FILTER AKAN DIJALANKAN
-                $posts = $posts->where('nama', 'ILIKE', '%' . request()->q . '%')
-                    ->orWhere('instansi', 'ILIKE', '%' . request()->q . '%')
-                    ->orWhereHas('sekolah_sasaran', function($query){
-                        $query->where('nama', 'ILIKE', '%' . request()->q . '%');
-                    })
-                    ->orWhereHas('sekolah_sasaran', function($query){
-                        $query->where('npsn', 'LIKE', '%' . request()->q . '%');
-                    });
-                    //->orWhere('pendamping_id', function($query){
-                        //$query->select('pendamping_id')->from('sekolah_sasaran')->join('sekolah', 'sekolah_sasaran.sekolah_id', '=', 'sekolah.sekolah_id')->where('sekolah.nama', 'ILIKE', '%' . request()->q . '%');
-                    //});
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
-        return response()->json(['status' => 'success', 'data' => $users]);
     }
     public function simpan_data(Request $request){
         if($request->route('query') == 'tanah'){
@@ -973,12 +367,38 @@ class ReferensiController extends Controller
                 'keterangan' => $request->keterangan,
             ]);
             return response()->json(['status' => 'success', 'data' => $insert_data]);
+        } elseif($request->route('query') == 'alat'){
+            $messages = [
+                'sekolah_id.required'	=> 'Sekolah tidak boleh kosong',
+                'tanah_id.required'	=> 'Tanah tidak boleh kosong',
+                'bangunan_id.required'	=> 'Bangunan tidak boleh kosong',
+                'ruang_id.required'	=> 'Ruang tidak boleh kosong',
+                'jenis_sarana_id.required'	=> 'Jenis Sarana tidak boleh kosong',
+                'nama.required'	=> 'Nama tidak boleh kosong',
+                'kepemilikan_sarpras_id.required'	=> 'Kepemilikan tidak boleh kosong',
+            ];
+            $validator = Validator::make(request()->all(), [
+                'sekolah_id' => 'required',
+                'tanah_id' => 'required',
+                'bangunan_id' => 'required',
+                'ruang_id' => 'required',
+                'jenis_sarana_id' => 'required',
+                'nama' => 'required',
+                'kepemilikan_sarpras_id' => 'required',
+            ],
+            $messages
+            )->validate();
+            $insert_data = Alat::create([
+                'jenis_sarana_id' => $request->jenis_sarana_id['id'],
+                'ruang_id' => $request->ruang_id['ruang_id'],
+                'nama' => $request->nama,
+                'spesifikasi' => $request->spesifikasi,
+                'kepemilikan_sarpras_id' => $request->kepemilikan_sarpras_id['kepemilikan_sarpras_id'],
+                'keterangan' => $request->keterangan,
+            ]);
+            return response()->json(['status' => 'success', 'data' => $insert_data]);
         }
         return response()->json(['status' => 'failed', 'data' => NULL]);
-    }
-    public function reset_isian_instrumen(Request $request)
-    {
-        return Artisan::call('reset:rapor', ['npsn' => $request->npsn]);
     }
     public function update_data(Request $request)
     {
@@ -1028,68 +448,5 @@ class ReferensiController extends Controller
                 return response()->json(['title' => 'Gagal', 'status' => 'error', 'message' => 'Data Pendamping gagal dihapus']);
             }
         }
-    }
-    public function get_jurusan($request){
-        $data = [
-            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'jurusan' => Jurusan::where('level_bidang_id', 12)->pluck('nama_jurusan', 'jurusan_id'),
-        ];
-        return response()->json(['status' => 'success', 'data' => $data]);
-    }
-    public function get_sektor($request){
-        $data = [
-            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'sektor' => Sektor::pluck('nama', 'id'),
-        ];
-        return response()->json(['status' => 'success', 'data' => $data]);
-    }
-    public function get_verifikator($request){
-        //$verifikator = User::whereRoleIs('penjamin_mutu')->select('name', 'token')->get();
-        $data = [
-            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'verifikator' => User::whereRoleIs('penjamin_mutu')->pluck('name', 'user_id'),
-        ];
-        return response()->json(['status' => 'success', 'data' => $data]);
-    }
-    public function get_list_pendamping($request){
-        //$verifikator = User::whereRoleIs('penjamin_mutu')->select('name', 'token')->get();
-        $data = [
-            //'sekolah_sasaran' => Pendamping::has('sekolah_sasaran')->pluck('nama', 'pendamping_id'),
-            'pendamping' => Pendamping::whereNotNull('token')->pluck('nama', 'pendamping_id'),
-        ];
-        return response()->json(['status' => 'success', 'data' => $data]);
-    }
-    public function sektor_coe(Request $request){
-        $sekolah_sasaran = Sekolah_sasaran::find($request->sekolah_sasaran_id);
-        $sekolah_sasaran->sektor_id = $request->sektor_id;
-        $sektor_coe = $sekolah_sasaran->save();
-        if($sektor_coe){
-            $response = [
-                'title' => 'Berhasil',
-                'text' => 'Sektor CoE berhasil diperbaharui',
-                'icon' => 'success',
-            ];
-        } else {
-            $response = [
-                'title' => 'Gagal',
-                'text' => 'Permintaan gagal. Silahkan coba beberapa saat lagi!',
-                'icon' => 'error',
-            ];
-        }
-        return response()->json($response);
-    }
-    public function get_komli(Request $request){
-        /*
-        $data = [
-            //'sekolah_sasaran' => Sekolah_sasaran::find($request->sekolah_sasaran_id),
-            'jurusan' => Jurusan::where('level_bidang_id', 12)->pluck('nama_jurusan', 'jurusan_id'),
-        ];
-        return response()->json(['status' => 'success', 'data' => $data]);
-        */
-        $all_data = Jurusan_sp::where('sekolah_id', $request->sekolah_id)->orderBy(request()->sortby, request()->sortbydesc)
-            ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama_jurusan', 'ilike', '%' . request()->q . '%');
-        })->withCount(['rombongan_belajar', 'peserta_didik'])->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
-        return response()->json(['status' => 'success', 'data' => $all_data]);
     }
 }
