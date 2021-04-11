@@ -32,6 +32,7 @@
             <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
                 <template v-slot:cell(actions)="row">
                     <b-dropdown id="dropdown-dropleft" dropleft text="Aksi" variant="success">
+                        <b-dropdown-item href="javascript:" @click="inputKondisi(row)"><i class="fas fa-list"></i> Input Kondisi</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                         <b-dropdown-item href="javascript:" @click="deleteData(row.item.id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
                     </b-dropdown>
@@ -101,6 +102,139 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalKondisi" tabindex="-1" role="dialog" aria-labelledby="modalKondisi" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Input Kondisi Ruang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form @submit.prevent="updateKondisi()">
+                    <div class="modal-body">
+                        <input v-model="form.bangunan_id" type="hidden" name="bangunan_id" class="form-control" :class="{ 'is-invalid': form.errors.has('bangunan_id') }">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Klasifikasi Kerusakan Pondasi</label>
+                                    <div class="col-sm-9">
+                                        <v-select :options="data_pondasi" v-model="form.ket_pondasi" @input="updatePondasi" />
+                                        <has-error :form="form" field="ket_pondasi"></has-error>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Kerusakan Pondasi (%)</label>
+                                    <div class="col-sm-9">
+                                        <input v-model="form.rusak_pondasi" type="text" name="rusak_pondasi" readonly
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('rusak_pondasi') }">
+                                        <has-error :form="form" field="rusak_pondasi"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Kerusakan Kolom (%)</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.rusak_sloop_kolom_balok" type="text" name="rusak_sloop_kolom_balok"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('rusak_sloop_kolom_balok') }">
+                                        <has-error :form="form" field="rusak_sloop_kolom_balok"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Keterangan Kolom</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.ket_sloop_kolom_balok" type="text" name="ket_sloop_kolom_balok"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('ket_sloop_kolom_balok') }">
+                                        <has-error :form="form" field="ket_sloop_kolom_balok"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Kerusakan Balok (%)</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.rusak_kudakuda_atap" type="text" name="rusak_kudakuda_atap"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('rusak_kudakuda_atap') }">
+                                        <has-error :form="form" field="rusak_kudakuda_atap"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Keterangan Balok</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.ket_kudakuda_atap" type="text" name="ket_kudakuda_atap"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('ket_kudakuda_atap') }">
+                                        <has-error :form="form" field="ket_kudakuda_atap"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Kerusakan Pelat Lantai (%)</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.rusak_plester_struktur" type="text" name="rusak_plester_struktur"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('rusak_plester_struktur') }">
+                                        <has-error :form="form" field="rusak_plester_struktur"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Keterangan Pelat Lantai</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.ket_plester_struktur" type="text" name="ket_plester_struktur"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('ket_plester_struktur') }">
+                                        <has-error :form="form" field="ket_plester_struktur"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Kerusakan Atap (%)</label>
+                                    <div class="col-sm-6">
+                                        <input v-model="form.rusak_tutup_atap" type="text" name="rusak_tutup_atap"
+                                            class="form-control" :class="{ 'is-invalid': form.errors.has('rusak_tutup_atap') }">
+                                        <has-error :form="form" field="rusak_tutup_atap"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-6 col-form-label">Keterangan Penutup Atap</label>
+                                    <div class="col-sm-6">
+                                        <b-form-group v-slot="{ ariaDescribedby }">
+                                            <b-form-radio v-model="form.ket_tutup_atap" :aria-describedby="ariaDescribedby" name="ket_tutup_atap" value="BUKAN DAK">BUKAN DAK</b-form-radio>
+                                            <b-form-radio v-model="form.ket_tutup_atap" :aria-describedby="ariaDescribedby" name="ket_tutup_atap" value="DAK BETON">DAK BETON</b-form-radio>
+                                            <b-form-radio v-model="form.ket_tutup_atap" :aria-describedby="ariaDescribedby" name="ket_tutup_atap" value="TIDAK MEMILIKI ATAP">TIDAK MEMILIKI ATAP</b-form-radio>
+                                        </b-form-group>
+                                        <has-error :form="form" field="ket_tutup_atap"></has-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button v-show="editmode" type="submit" class="btn btn-success">Perbaharui</button>
+                        <button v-show="!editmode" type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -135,10 +269,27 @@ export default {
     },
     data() {
         return {
+            data_pondasi: [
+                {label: 'Tidak ada kerusakan', code: 0},
+                {label: 'Penurunan merata pada seluruh struktur bangunan', code: 20},
+                {label: 'Penurunan tidak merata, namun perbedaan penurunan tidak melebihi 1/250L', code: 40},
+                {label: 'Penurunan > 1/250L sehingga menimbulkan kerusakan struktur atasnya. Tanah di sekeliling bangunan naik', code: 60},
+                {label: 'Bangunan miring secara kasat mata, lantai dasar naik/menggelembung', code: 80},
+                {label: 'Pondasi patah, bergeser akibat longsor, stuktur atas menjadi rusak', code: 10},
+            ],
             editmode: false,
             form: new Form({
-                id : '',
-                nama: '',
+                bangunan_id: '',
+                rusak_pondasi : 0,
+                ket_pondasi: 'Tidak ada kerusakan',
+                rusak_sloop_kolom_balok: 0,
+                ket_sloop_kolom_balok: '-',
+                rusak_kudakuda_atap: 0,
+                ket_kudakuda_atap: '-',
+                rusak_plester_struktur: 0,
+                ket_plester_struktur: '-',
+                rusak_tutup_atap: 0,
+                ket_tutup_atap: '-',
             }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
@@ -172,6 +323,9 @@ export default {
         }
     },
     methods: {
+        updatePondasi(val){
+            this.form.rusak_pondasi = val.code
+        },
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
@@ -201,13 +355,13 @@ export default {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    return fetch('/api/komponen/'+id, {
+                    return fetch('/api/hapus-bangunan/'+id, {
                         method: 'DELETE',
                     }).then(()=>{
                     //this.form.delete('api/komponen/'+id).then(()=>{
                         Swal.fire(
                             'Berhasil!',
-                            'Data Komponen berhasil dihapus',
+                            'Data Bangunan berhasil dihapus',
                             'success'
                         ).then(()=>{
                             this.loadPerPage(10);
@@ -222,9 +376,51 @@ export default {
             //console.log(row);
             this.editmode = true
             this.editModal = true
-            this.form.id = row.item.id
-            this.form.nama = row.item.nama
             $('#modalEdit').modal('show');
+        },
+        inputKondisi(row){
+            this.editmode = true
+            this.form.bangunan_id = row.item.bangunan_id
+            axios.get(`/api/kondisi/bangunan`, {
+                //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+                params: {
+                    bangunan_id: row.item.bangunan_id,
+                }
+            })
+            .then((response) => {
+                //JIKA RESPONSENYA DITERIMA
+                let getData = response.data.data
+                this.form.bangunan_id = getData.bangunan_id
+                this.form.rusak_pondasi = getData.rusak_pondasi
+                this.form.ket_pondasi = getData.ket_pondasi
+                this.form.rusak_sloop_kolom_balok = getData.rusak_sloop_kolom_balok
+                this.form.ket_sloop_kolom_balok = getData.ket_sloop_kolom_balok
+                this.form.rusak_kudakuda_atap = getData.rusak_kudakuda_atap
+                this.form.ket_kudakuda_atap = getData.ket_kudakuda_atap
+                this.form.rusak_plester_struktur = getData.rusak_plester_struktur
+                this.form.ket_plester_struktur = getData.ket_plester_struktur
+                this.form.rusak_tutup_atap = getData.rusak_tutup_atap
+                this.form.ket_tutup_atap = getData.ket_tutup_atap
+                console.log(getData);
+            })
+            $('#modalKondisi').modal('show');
+        },
+        updateKondisi(){
+            this.form.post('/api/kondisi/simpan-bangunan').then((response)=>{
+                console.log(response);
+                $('#modalKondisi').modal('hide');
+                Toast.fire({
+                    icon: 'success',
+                    title: response.status
+                });
+                this.loadPerPage(10);
+            }).catch((e)=>{
+                console.log(e);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
         },
         updateData(){
             let id = this.form.id;

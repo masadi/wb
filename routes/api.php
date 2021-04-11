@@ -28,6 +28,10 @@ Route::resource('berita', 'BeritaController');
 Route::post('/profile', 'UsersController@profile');
 Route::post('/reset-password', 'UsersController@reset_passsword');
 Route::post('/update-profile', 'UsersController@update_profile');
+Route::group(['prefix' => 'kondisi'], function(){
+    Route::get('/{query}', 'KondisiController@index');
+    Route::post('/simpan-{query}', 'KondisiController@simpan_data');
+});
 /*
 Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
