@@ -119,23 +119,41 @@ export default {
                 token: '',
             }),
             fields: [{
-                    key: 'nama',
-                    'label': 'Nama Lengkap',
+                    key: 'sekolah.nama',
+                    label: 'Sekolah',
                     sortable: true
                 },
                 {
-                    key: 'instansi',
-                    'label': 'Instansi',
+                    key: 'kode',
+                    label: 'Kode Buku',
                     sortable: true
                 },
                 {
-                    key: 'jml_sekolah',
-                    'label': 'Jml Sekolah',
+                    key: 'judul',
+                    label: 'Judul Buku',
+                    sortable: true
+                },
+                {
+                    key: 'mata_pelajaran.nama',
+                    label: 'Mata Pelajaran',
+                    sortable: true
+                },
+                {
+                    key: 'kelas',
+                    sortable: true
+                },
+                {
+                    key: 'nama_penerbit',
+                    sortable: true
+                },
+                {
+                    key: 'isbn_issn',
+                    label: 'ISBN/ISSN',
                     sortable: true
                 },
                 {
                     key: 'actions',
-                    'label': 'Aksi',
+                    label: 'Aksi',
                     sortable: false
                 }, //TAMBAHKAN CODE INI
             ],

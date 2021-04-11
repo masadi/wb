@@ -15,4 +15,10 @@ class Angkutan extends Model
     public function sekolah(){
         return $this->belongsTo('App\Sekolah', 'sekolah_id', 'sekolah_id');
     }
+    public function kepemilikan(){
+        return $this->belongsTo('App\Status_kepemilikan_sarpras', 'kepemilikan_sarpras_id', 'kepemilikan_sarpras_id');
+    }
+    public function jenis_sarana(){
+        return $this->belongsTo('App\Jenis_sarana', 'jenis_sarana_id', 'id');
+    }
 }

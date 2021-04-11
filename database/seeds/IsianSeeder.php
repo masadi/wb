@@ -82,8 +82,8 @@ class IsianSeeder extends Seeder
         $insert_buku = Buku::create([
             'sekolah_id' => $sekolah->sekolah_id,
             'kode' => 'BI-0001',
-            'nama' => 'Bahasa Inggris Kelas 7 Kurikulum 2013',
-            'mata_pelajaran_id' => '01001010',
+            'judul' => 'Bahasa Inggris Kelas 7 Kurikulum 2013',
+            'mata_pelajaran_id' => '100010000',
             'nama_penerbit' => 'Airlangga',
             'isbn_issn' => '1234567890',
             'kelas' => 7,
