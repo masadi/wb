@@ -18,10 +18,6 @@ class IsianSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('alat')->delete();
-        DB::table('ruang')->delete();
-        DB::table('bangunan')->delete();
-        DB::table('tanah')->delete();
         $sekolah = Sekolah::first();
         $insert_tanah = Tanah::create([
             'sekolah_id' => $sekolah->sekolah_id,
@@ -36,7 +32,7 @@ class IsianSeeder extends Seeder
         ]);
         $insert_bangunan = Bangunan::create([
             'tanah_id' => $insert_tanah->tanah_id,
-            'nama' => 'Tanah Utama',
+            'nama' => 'Bangunan Utama',
             'imb' => '123',
             'panjang' => 0,
             'lebar' => 0,
