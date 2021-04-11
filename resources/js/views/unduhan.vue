@@ -27,7 +27,7 @@
                                 </h3>
                             </div>
                             <div class="card-body">
-                                <div class="row">
+                                <!--div class="row">
                                     <div class="small-box text-center mr-2">
                                         <img src="/vendor/img/pdf.png" width="100">
                                         <div class="inner">Panduan Penggunaan Aplikasi (Sekolah)</div>
@@ -49,7 +49,8 @@
                                             Unduh <i class="fas fa-download"></i>
                                         </div>
                                     </div>
-                                </div>
+                                </div-->
+                                <h1 class="text-center">Sedang dalam Pengembangan</h1>
                             </div>
                         </div>
                     </div>
