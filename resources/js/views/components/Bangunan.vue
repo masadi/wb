@@ -423,7 +423,7 @@ export default {
                     this.form.rusak_tutup_atap = number_format(getData.rusak_tutup_atap)
                     this.form.ket_tutup_atap = getData.ket_tutup_atap
                     let total_kerusakan = Number(getData.rusak_pondasi) + Number(getData.rusak_sloop_kolom_balok) + Number(getData.rusak_kudakuda_atap) + Number(getData.rusak_plester_struktur) + Number(getData.rusak_tutup_atap)
-                    this.presentase_kerusakan = number_format(total,2)
+                    this.presentase_kerusakan = number_format(total_kerusakan,2)
                     let make_kriteria = null
                     if(total_kerusakan == 0){
                         make_kriteria = 'BAIK'
