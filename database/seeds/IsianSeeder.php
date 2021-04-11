@@ -67,5 +67,27 @@ class IsianSeeder extends Seeder
             'kepemilikan_sarpras_id' => 1,
             'keterangan' => 'keterangan',
         ]);
+        $insert_angkutan = Angkutan::create([
+            'jenis_sarana_id' => 10001,
+            'sekolah_id' => $sekolah->sekolah_id,
+            'nama' => 'FIZ R',
+            'spesifikasi' => 'Motor Racing 2 Tak',
+            'merk' => 'Yamaha',
+            'no_polisi' => 'M 4454 DI',
+            'no_bpkb' => 'ABCDEFGH',
+            'alamat' => $sekolah->alamat,
+            'kepemilikan_sarpras_id' => 1,
+            'keterangan' => 'keterangan',
+        ]);
+        $insert_buku = Buku::create([
+            'sekolah_id' => $sekolah->sekolah_id,
+            'kode' => 'BI-0001',
+            'nama' => 'Bahasa Inggris Kelas 7 Kurikulum 2013',
+            'mata_pelajaran_id' => '01001010',
+            'nama_penerbit' => 'Airlangga',
+            'isbn_issn' => '1234567890',
+            'kelas' => 7,
+            'keterangan' => 'keterangan',
+        ]);
     }
 }

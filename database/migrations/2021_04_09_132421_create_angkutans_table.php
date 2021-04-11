@@ -24,7 +24,7 @@ class CreateAngkutansTable extends Migration
             $table->string('no_polisi')->nullable();
             $table->string('no_bpkb')->nullable();
             $table->string('alamat')->nullable();
-            $table->string('kepemilikan')->nullable();
+            $table->decimal('kepemilikan_sarpras_id', 1,0);
             $table->string('keterangan')->nullable();
             $table->timestamps();
             $table->primary('angkutan_id');

@@ -22,7 +22,8 @@ class CreateBukusTable extends Migration
             $table->unsignedInteger('mata_pelajaran_id');
             $table->string('nama_penerbit')->nullable();
             $table->string('isbn_issn')->nullable();
-            $table->string('kelas')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->unsignedInteger('kelas')->nullable();
             $table->timestamps();
             $table->primary('buku_id');
         });
