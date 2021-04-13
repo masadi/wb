@@ -11,16 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(LaratrustSeeder::class);
-        $this->call(KategoriSeeder::class);
-        $this->call(JenisPrasaranaSeeder::class);
-        $this->call(JenisSaranaSeeder::class);
-        $this->call(KepemilikanSeeder::class);
-        $this->call(MapelSeeder::class);
-        $this->call(TahunSeeder::class);
-        $this->call(ActiveSeeder::class);
-        $this->call(WilayahSeeder::class);
-        $this->call(SekolahSeeder::class);
-        $this->call(IsianSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        //$this->call(CategoriesTableSeeder::class);
+        //$this->call(TagsTableSeeder::class);
+        //$this->call(ProductsTableSeeder::class);
+        //duplicate product for data 
+        //$this->call(ProductsTableSeeder::class);
     }
 }
