@@ -159,7 +159,7 @@ class MasterController extends Controller
     }
     public function get_sub_ib($request)
     {
-        $all_data = Trader::whereHas('upline')->withCount('downline')->orderBy(request()->sortby, request()->sortbydesc)
+        $all_data = Trader::whereNotNull('email')->withCount('downline')->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
