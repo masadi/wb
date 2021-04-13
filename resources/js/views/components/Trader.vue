@@ -150,7 +150,7 @@
         <template v-slot:default="{ hide }">
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input v-model="form.id" type="text" name="id" class="form-control">
+                <input v-model="form.id" type="hidden" name="id" class="form-control">
                 <input v-model="form.nama_lengkap" type="text" name="nama_lengkap" class="form-control" :class="{ 'is-invalid': form.errors.has('nama_lengkap') }">
                 <has-error :form="form" field="nama_lengkap"></has-error>
             </div>
