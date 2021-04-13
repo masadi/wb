@@ -5,6 +5,6 @@
         Versi 1.0
     </div>
     <!-- Default to the left -->
-    <strong>Hak Cipta &copy; {{ now()->year }} Dinas Pendidikan Kab. Sampang</strong>. All rights reserved.
+    <strong>Copyright &copy; {{ now()->year }} Warung Broker</strong>. All rights reserved.
 
 </footer>
