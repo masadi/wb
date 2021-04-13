@@ -1,80 +1,99 @@
 <template>
-<div class="no">
+  <div class="no">
     <div class="content-header">
-        <div class="container-fluid">
-            <h1 class="m-0 text-dark">Beranda</h1>
-        </div>
+      <div class="container-fluid">
+        <h1 class="m-0 text-dark">Beranda</h1>
+      </div>
     </div>
     <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <!--div class="row">
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Panduan Penggunaan Aplikasi (Sekolah)</div>
-                                    <div class="small-box-footer bg-primary">
-                                        <a href="/downloads/Panduan APM SMK 2020 (Sekolah).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
-                                    </div>
-                                </div>
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Panduan Penggunaan Aplikasi (Penjamin Mutu)</div>
-                                    <div class="small-box-footer bg-primary">
-                                        <a href="/downloads/Panduan APM SMK 2020 (Penjamin Mutu).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
-                                    </div>
-                                </div>
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Pedoman Penjaminan Mutu SMK</div>
-                                    <div class="small-box-footer bg-primary">
-                                        Unduh <i class="fas fa-download"></i>
-                                    </div>
-                                </div>
-                            </div-->
-                            <h1 class="text-center">Sedang dalam Pengembangan</h1>
-                        </div>
-                    </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <label>Upload File Rebate</label>
+                <input
+                  type="file"
+                  name="file"
+                  @change="fileUpload($event.target)"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('file') }"
+                />
+                <has-error :form="form" field="file"></has-error>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    :style="{ width: progressBar + '%' }"
+                    :aria-valuenow="progressBar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-        </section>
+      </div>
+    </section>
     <my-loader />
-</div>
+  </div>
 </template>
 
 <script>
-import Chart from 'chart.js';
-import axios from 'axios' //IMPORT AXIOS
+import Chart from "chart.js";
+import axios from "axios"; //IMPORT AXIOS
 export default {
-    //KETIKA COMPONENT INI DILOAD
-    created() {
-        //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
-        this.loadPostsData()
+  //KETIKA COMPONENT INI DILOAD
+  data() {
+    return {
+      user: user.id,
+      progressBar: 0,
+      form: new Form({
+        file: null,
+      }),
+    };
+  },
+  //mounted() {
+  //this.createChart('kemajuan', this.planetChartData);
+  //},
+  methods: {
+    fileUpload(event) {
+      this.file = event.files[0];
+      this.isLoading = true;
+      let formData = new FormData();
+      formData.append("file", this.file);
+      axios
+        .post("/api/master/simpan-file", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          //FUNGSI INI YANG MEMILIKI PERAN UNTUK MENGUBAH SEBERAPA JAUH PROGRESS UPLOAD FILE BERJALAN
+          onUploadProgress: function (progressEvent) {
+            //DATA TERSEBUT AKAN DI ASSIGN KE VARIABLE progressBar
+            this.progressBar = parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            );
+          }.bind(this),
+        })
+        .then((response) => {
+          setTimeout(() => {
+            this.isLoading = false;
+            this.progressBar = 0;
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Upload berhasil",
+          });
+        });
     },
-    data() {
-        return {
-            user: user.id,
-        }
+    getResults(page = 1) {
+      this.$Progress.start();
+
+      //axios.get('/api/dollar?page=' + page).then(({ data }) => (this.form.dollar = data.data));
+
+      this.$Progress.finish();
     },
-    //mounted() {
-    //this.createChart('kemajuan', this.planetChartData);
-    //},
-    methods: {
-        loadPostsData() {
-            axios.post(`/api/dashboard`, {
-                    user_id: user.id,
-                })
-                .then((response) => {
-                    let getData = response.data.data
-                    if (!getData) {
-                        return false
-                    }
-                    console.log(getData);
-                })
-        },
-    },
-}
+  },
+};
 </script>

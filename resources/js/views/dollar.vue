@@ -11,30 +11,16 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <!--div class="row">
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Panduan Penggunaan Aplikasi (Sekolah)</div>
-                                    <div class="small-box-footer bg-primary">
-                                        <a href="/downloads/Panduan APM SMK 2020 (Sekolah).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
-                                    </div>
-                                </div>
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Panduan Penggunaan Aplikasi (Penjamin Mutu)</div>
-                                    <div class="small-box-footer bg-primary">
-                                        <a href="/downloads/Panduan APM SMK 2020 (Penjamin Mutu).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
-                                    </div>
-                                </div>
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Pedoman Penjaminan Mutu SMK</div>
-                                    <div class="small-box-footer bg-primary">
-                                        Unduh <i class="fas fa-download"></i>
-                                    </div>
-                                </div>
-                            </div-->
-                            <h1 class="text-center">Sedang dalam Pengembangan</h1>
+                            <div class="form-group">
+                                <input v-model="form.dollar" type="text" name="dollar" class="form-control" :class="{ 'is-invalid': form.errors.has('dollar') }">
+                                <has-error :form="form" field="dollar"></has-error>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-sm btn-primary" @click="simpanData">
+                                <i class="fa fa-save"></i>
+                                Simpan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -57,24 +43,40 @@ export default {
     data() {
         return {
             user: user.id,
+            form: new Form({
+                dollar : '',
+            })
         }
     },
-    //mounted() {
-    //this.createChart('kemajuan', this.planetChartData);
-    //},
     methods: {
         loadPostsData() {
-            axios.post(`/api/dashboard`, {
-                    user_id: user.id,
+            axios.get(`/api/master/dollar`, {
+                    params: {
+                        user_id: user.id,
+                    }
                 })
                 .then((response) => {
                     let getData = response.data.data
                     if (!getData) {
                         return false
                     }
-                    console.log(getData);
+                    this.form.dollar = getData.value
                 })
         },
+        simpanData(){
+            this.form.post('/api/master/simpan-dollar').then((response)=>{
+                Toast.fire({
+                    icon: 'success',
+                    title: response.message
+                });
+                this.loadPostsData();
+            }).catch(()=>{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Some error occured! Please try again'
+                });
+            })
+        }
     },
 }
 </script>

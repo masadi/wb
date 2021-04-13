@@ -18,11 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/dashboard', 'DashboardController@index');
-Route::group(['prefix' => 'referensi'], function(){
-    Route::get('/{query}', 'ReferensiController@index');
-    Route::post('/simpan-{query}', 'ReferensiController@simpan_data');
-    Route::put('/update-{query}/{id}', 'ReferensiController@update_data');
-    Route::delete('/delete-{query}/{id}', 'ReferensiController@delete_data');
+Route::group(['prefix' => 'master'], function(){
+    Route::get('/{query}', 'MasterController@index');
+    Route::post('/simpan-{query}', 'MasterController@simpan_data');
+    Route::put('/update-{query}/{id}', 'MasterController@update_data');
+    Route::delete('/delete-{query}/{id}', 'MasterController@delete_data');
 });
 Route::resource('berita', 'BeritaController');
 Route::post('/profile', 'UsersController@profile');
