@@ -24,12 +24,12 @@
     </style>
     <script>
         window.user = {!! json_encode([
-            'user_id' => $user->user_id,
+            'user_id' => $user->id,
             'sekolah_id' => $user->sekolah_id,
             'name' => $user->name,
             'email' => $user->email,
             'username' => $user->username,
-            'verifikator_id' => ($user->hasRole('penjamin_mutu')) ? $user->user_id : NULL,
+            'verifikator_id' => ($user->hasRole('penjamin_mutu')) ? $user->id : NULL,
             'roles' => $user->roles,
         ]) !!};
     </script>

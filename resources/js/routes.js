@@ -6,55 +6,22 @@ let routes = [{
         name: 'beranda',
         component: require('./views/dashboard').default
     },
+    { path: '/master/kurs-dollar', name: 'kurs_dollar', component: require('./views/dollar.vue').default },
+    { path: '/master/sub-ib', name: 'sub_ib', component: require('./views/sub_ib.vue').default },
+    { path: '/master/trader', name: 'trader', component: require('./views/trader.vue').default },
+    { path: '/transaksi/upload', name: 'upload', component: require('./views/upload.vue').default },
+    { path: '/transaksi/rebate', name: 'rebate', component: require('./views/rebate.vue').default },
+    { path: '/transaksi/komisi', name: 'komisi', component: require('./views/komisi.vue').default },
+    { path: '/transaksi/trader', name: 'new_trader', component: require('./views/new_trader.vue').default },
     {
-        path: '/sekolah',
-        name: 'sekolah',
-        component: require('./views/referensi/sekolah').default
-    },
-    {
-        path: '/tanah',
-        name: 'tanah',
-        component: require('./views/referensi/tanah').default
-    },
-    {
-        path: '/bangunan',
-        name: 'bangunan',
-        component: require('./views/referensi/bangunan').default
-    },
-    {
-        path: '/ruang',
-        name: 'ruang',
-        component: require('./views/referensi/ruang').default
-    },
-    {
-        path: '/alat',
-        name: 'alat',
-        component: require('./views/referensi/alat').default
-    },
-    {
-        path: '/angkutan',
-        name: 'angkutan',
-        component: require('./views/referensi/angkutan').default
-    },
-    {
-        path: '/buku',
-        name: 'buku',
-        component: require('./views/referensi/buku').default
-    },
-    {
-        path: '/pengguna',
-        name: 'pengguna',
-        component: require('./views/referensi/users').default
+        path: '/users',
+        name: 'users',
+        component: require('./views/users').default
     },
     {
         path: '/profil',
         name: 'profil',
         component: require('./views/profile').default
-    },
-    {
-        path: '/unduhan',
-        name: 'unduhan',
-        component: require('./views/unduhan').default
     },
 ];
 

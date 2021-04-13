@@ -4,8 +4,8 @@ $user = auth()->user();
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="{{url('/')}}" class="brand-link">
         <!--router-link tag="a" to="/beranda" class="brand-link"-->
-        <img src="/images/AdminLTELogo.png" alt="{{ config('app.name', 'Laravel') }}" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
+        <img src="/images/AdminLTELogo.png" alt="{{ config('app.name', 'Laravel') }}"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">{{ config('app.name', 'Laravel') }}</span>
         <!--/router-link-->
     </a>
@@ -21,67 +21,97 @@ $user = auth()->user();
                         <p>Beranda</p>
                     </router-link>
                 </li>
-                @if($user->isAbleTo('news-create'))
-                <!--li class="nav-item">
-                    <router-link tag="a" to="/galeri" class="nav-link">
-                        <i class="nav-icon fas fa-photo-video"></i>
-                        <p>Galeri</p>
-                    </router-link>
-                </li-->
-                @endif
-                <li class="nav-item">
-                    <router-link tag="a" to="/sekolah" class="nav-link">
-                        <i class="nav-icon fas fa-house-user"></i>
-                        <p>Sekolah</p>
-                    </router-link>
+                @if($user->isAbleTo('users-create'))
+                <li class="nav-item has-treeview">
+                    <a class="nav-link" href="javascript:{}">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>Data Master
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <router-link tag="a" to="/master/kurs-dollar" class="nav-link">
+                                <i class="nav-icon fas fa-search-dollar"></i>
+                                <p>Kurs Dollar</p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/master/trader" class="nav-link">
+                                <i class="nav-icon fas fa-tags orange"></i>
+                                <p>
+                                    Data Trader
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link tag="a" to="/master/sub-ib" class="nav-link">
+                                <i class="nav-icon fas fa-list-ol orange"></i>
+                                <p>
+                                    Data SUB IB
+                                </p>
+                            </router-link>
+                        </li>
+                    </ul>
                 </li>
-                @if($user->isAbleTo('referensi-create'))
-                <li class="nav-item">
-                    <router-link tag="a" to="/tanah" class="nav-link">
-                        <i class="nav-icon fas fa-road"></i>
-                        <p>Tanah</p>
-                    </router-link>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cog green"></i>
+                        <p>
+                            Data Transaksi
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <router-link to="/transaksi/upload" class="nav-link">
+                                <i class="nav-icon fas fa-list-ol green"></i>
+                                <p>
+                                    Upload File Rebate
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/transaksi/rebate" class="nav-link">
+                                <i class="nav-icon fas fa-tags green"></i>
+                                <p>
+                                    Data Rebate Trader
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/transaksi/komisi" class="nav-link">
+                                <i class="nav-icon fas fa-tags green"></i>
+                                <p>
+                                    Data Komisi SUB IB
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/transaksi/trader" class="nav-link">
+                                <i class="nav-icon fas fa-tags green"></i>
+                                <p>
+                                    Trader Baru
+                                </p>
+                            </router-link>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <router-link tag="a" to="/bangunan" class="nav-link">
-                        <i class="nav-icon fas fa-building"></i>
-                        <p>Bangunan</p>
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link tag="a" to="/ruang" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>Ruang</p>
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link tag="a" to="/alat" class="nav-link">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>Alat</p>
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link tag="a" to="/angkutan" class="nav-link">
-                        <i class="nav-icon fas fa-car"></i>
-                        <p>Angkutan</p>
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link tag="a" to="/buku" class="nav-link">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>Buku</p>
+                    <router-link to="/users" class="nav-link">
+                        <i class="fa fa-users nav-icon blue"></i>
+                        <p>Data Pengguna</p>
                     </router-link>
                 </li>
                 @endif
                 <!--
-                @if($user->isAbleTo('users-create'))
                 <li class="nav-item">
                     <router-link tag="a" to="/pengguna" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Pengguna</p>
                     </router-link>
                 </li>
-                @endif
                 -->
                 <li class="nav-item">
                     <router-link tag="a" to="/profil" class="nav-link">

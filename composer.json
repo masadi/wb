@@ -16,6 +16,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.5",
         "laravel/framework": "^7.0",
+        "laravel/passport": "~9.0",
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
         "rap2hpoutre/fast-excel": "^2.0",
