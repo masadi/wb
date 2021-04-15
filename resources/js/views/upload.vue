@@ -2,7 +2,7 @@
   <div class="no">
     <div class="content-header">
       <div class="container-fluid">
-        <h1 class="m-0 text-dark">Beranda</h1>
+        <h1 class="m-0 text-dark">Upload File Rebate</h1>
       </div>
     </div>
     <section class="content">
