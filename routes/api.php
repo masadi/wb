@@ -24,15 +24,15 @@ Route::group(['prefix' => 'master'], function(){
     Route::put('/update-{query}/{id}', 'MasterController@update_data');
     Route::delete('/delete-{query}/{id}', 'MasterController@delete_data');
 });
-Route::resource('berita', 'BeritaController');
 Route::post('/profile', 'UsersController@profile');
 Route::post('/reset-password', 'UsersController@reset_passsword');
 Route::post('/update-profile', 'UsersController@update_profile');
-Route::group(['prefix' => 'kondisi'], function(){
-    Route::get('/{query}', 'KondisiController@index');
-    Route::post('/simpan-{query}', 'KondisiController@simpan_data');
-});
-/*
+Route::group(['prefix' => 'transaksi'], function(){
+    Route::get('/{query}', 'TransaksiController@index');
+    Route::post('/simpan-{query}', 'TransaksiController@simpan_data');
+    Route::put('/update-{query}/{id}', 'TransaksiController@update_data');
+    Route::delete('/delete-{query}/{id}', 'TransaksiController@delete_data');
+});/*
 Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
 //Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
