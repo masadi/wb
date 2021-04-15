@@ -71,7 +71,6 @@ import axios from 'axios' //IMPORT AXIOS
 export default {
     //KETIKA COMPONENT INI DILOAD
     created() {
-        //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
         this.loadPostsData()
     },
     data() {
