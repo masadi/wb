@@ -2,7 +2,7 @@
 <div class="no">
     <div class="content-header">
         <div class="container-fluid">
-            <h1 class="m-0 text-dark">Beranda</h1>
+            <h1 class="m-0 text-dark">Data Pengguna</h1>
         </div>
     </div>
     <section class="content">
@@ -11,29 +11,6 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <!--div class="row">
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Panduan Penggunaan Aplikasi (Sekolah)</div>
-                                    <div class="small-box-footer bg-primary">
-                                        <a href="/downloads/Panduan APM SMK 2020 (Sekolah).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
-                                    </div>
-                                </div>
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Panduan Penggunaan Aplikasi (Penjamin Mutu)</div>
-                                    <div class="small-box-footer bg-primary">
-                                        <a href="/downloads/Panduan APM SMK 2020 (Penjamin Mutu).pdf" target="_blank">Unduh <i class="fas fa-download"></i></a>
-                                    </div>
-                                </div>
-                                <div class="small-box text-center mr-2">
-                                    <img src="/vendor/img/pdf.png" width="100">
-                                    <div class="inner">Pedoman Penjaminan Mutu SMK</div>
-                                    <div class="small-box-footer bg-primary">
-                                        Unduh <i class="fas fa-download"></i>
-                                    </div>
-                                </div>
-                            </div-->
                             <h1 class="text-center">Sedang dalam Pengembangan</h1>
                         </div>
                     </div>
