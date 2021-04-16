@@ -20,9 +20,7 @@ class UsersController extends Controller
     }
     public function index() {
         $users = User::where(function($query){
-            if(request()->sekolah_id){
-                $query->where('sekolah_id', request()->sekolah_id);
-            }
+            $query->where('id', '<>', request()->user_id);
         })->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($posts) {
@@ -55,39 +53,43 @@ class UsersController extends Controller
 			'name.required'	=> 'Nama Lengkap tidak boleh kosong',
 			'email.email'	=> 'Email Tidak Valid',
 			'email.unique'	=> 'Email sudah terdaftar di database',
-			/*'current_password.nullable' => 'Please enter current password',
+			//'current_password.nullable' => 'Please enter current password',
     		'password.nullable' => 'Please enter password',
 			'email.required'	=> 'Email tidak boleh kosong',
-			'password.required_with_all' => 'Kata sandi baru tidak boleh kosong',
-			'password_confirmation.same' => 'Konfirmasi sandi tidak sama dengan sandi baru',*/
-			'token.required' => 'Token tidak boleh kosong',
-			'token.unique' => 'Token sudah terdaftar di database',
+			'password.required_with_all' => 'Password baru tidak boleh kosong',
+			'password.confirmed' => 'Konfirmasi password tidak sama',
+			'password.min' => 'Password minimal 8 karakter',
+			//'token.required' => 'Token tidak boleh kosong',
+			//'token.unique' => 'Token sudah terdaftar di database',
 		];
 		$validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-			//'password' => ['required', 'string', 'min:8', 'confirmed'],
-			'token' => ['required', 'string', 'max:255', 'unique:users,username'],
+			'password' => ['required', 'string', 'min:8', 'confirmed'],
+			//'token' => ['required', 'string', 'max:255', 'unique:users,username'],
         ],
 		$messages
 		)->validate();
-		$username = strtolower($request->token);
-		$username = str_replace(' ', '', $username);
-		$username = trim($username);
+		//$username = strtolower($request->token);
+		//$username = str_replace(' ', '', $username);
+		//$username = trim($username);
         $user =  User::create([
             'name' => $request['name'],
 			'email' => $request['email'],
-			'username' => $username,
-			'password' => Hash::make($username),
-			'token' => strtolower($request->token),
+			'type' => $request->type['key'],
+			'password' => Hash::make($request->password),
+			//'token' => strtolower($request->token),
 		]);
-		if(!$user->hasRole('penjamin_mutu')){
-			$role = Role::where('name', 'penjamin_mutu')->first();
+		if(!$user->hasRole($request->type['key'])){
+			$role = Role::where('name', $request->type['key'])->first();
+			if(!$role){
+				$role = Role::create(['name' => $request->type['key'], 'display_name' => $request->type['value']]);
+			}
 			$user->attachRole($role);
 		}
 		$response = [
 			'title' => 'Berhasil',
-			'text' => 'Verifikator berhasil ditambahkan',
+			'text' => 'Pengguna berhasil ditambahkan',
 			'icon' => 'success',
 		];
 		return response()->json($response);
@@ -104,10 +106,10 @@ class UsersController extends Controller
 			/*'current_password.nullable' => 'Please enter current password',
     		'password.nullable' => 'Please enter password',
 			'email.required'	=> 'Email tidak boleh kosong',
-			'password.required_with_all' => 'Kata sandi baru tidak boleh kosong',
+			'password.required_with_all' => 'Password baru tidak boleh kosong',
 			'password_confirmation.same' => 'Konfirmasi sandi tidak sama dengan sandi baru',*/
-			'password.min' => 'Kata sandi minimal terdiri dari 8 karakter',
-			'password_confirmation.confirmed' => 'Konfirmasi kata sandi salah',
+			'password.min' => 'Password minimal terdiri dari 8 karakter',
+			'password_confirmation.confirmed' => 'Konfirmasi Password salah',
 			'token.required' => 'Token tidak boleh kosong',
 			'token.unique' => 'Token sudah terdaftar di database',
 		];
@@ -222,21 +224,13 @@ class UsersController extends Controller
 		return response()->json($response);
 	}
 	public function destroy($id){
-		$user = User::withCount('sekolah_sasaran')->find($id);
-		if($user->sekolah_sasaran_count){
-			$response = [
-				'title' => 'Gagal',
-				'text' => 'Verifikator masih memiliki sekolah sasaran. Silahkan ganti verifikator terlebih dahulu',
-				'icon' => 'error',
-			];
-		} else {
-			$user->delete();
-			$response = [
-				'title' => 'Berhasil',
-				'text' => 'Verifikator berhasil dihapus',
-				'icon' => 'success',
-			];
-		}
+		$user = User::find($id);
+		$user->delete();
+		$response = [
+			'title' => 'Berhasil',
+			'text' => 'Pengguna berhasil dihapus',
+			'icon' => 'success',
+		];
 		return response()->json($response);
 	}
 	public function update(Request $request, $id){

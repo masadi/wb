@@ -32,7 +32,9 @@ Route::group(['prefix' => 'transaksi'], function(){
     Route::post('/simpan-{query}', 'TransaksiController@simpan_data');
     Route::put('/update-{query}/{id}', 'TransaksiController@update_data');
     Route::delete('/delete-{query}/{id}', 'TransaksiController@delete_data');
-});/*
+});
+Route::resource('users', 'UsersController');
+/*
 Route::post('/login-user', 'ApiController@login_api');
 //Route::get('/instrumen', 'InstrumenController@index');
 //Route::delete('/instrumen/{id}', 'InstrumenController@destroy');
