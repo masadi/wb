@@ -151,7 +151,7 @@ class MasterController extends Controller
     }
     public function get_trader($request)
     {
-        $all_data = Trader::with(['upline.trader'])->orderBy(request()->sortby, request()->sortbydesc)
+        $all_data = Trader::with(['upline.trader', 'downline'])->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
                 $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
         })->whereNotNull('email')->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER

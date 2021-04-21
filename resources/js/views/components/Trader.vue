@@ -57,79 +57,43 @@
             <b-pagination v-model="meta.current_page" :total-rows="meta.total" :per-page="meta.per_page" align="right" @change="changePage" aria-controls="dw-datatable"></b-pagination>
         </div>
     </div>
-    <b-modal id="modal-xl" size="lg" v-model="showModal" title="Detil Sekolah">
+    <b-modal id="modal-xl" size="lg" v-model="showModal" title="Detil Trader">
         <table class="table">
             <tr>
-                <td width="30%">Nama</td>
-                <td width="70%">: {{modalText.nama}}</td>
+                <td width="30%">Nama Lengkap</td>
+                <td width="70%">: {{modalText.nama_lengkap}}</td>
             </tr>
             <tr>
-                <td>NPSN</td>
-                <td>: {{modalText.npsn}}</td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td>: {{modalText.alamat_jalan}}</td>
-            </tr>
-            <tr>
-                <td>Desa/Kelurahan</td>
-                <td>: {{modalText.desa_kelurahan}}</td>
-            </tr>
-            <tr>
-                <td>Kecamatan</td>
-                <td>: {{modalText.kecamatan}}</td>
-            </tr>
-            <tr>
-                <td>Kabupaten/Kota</td>
-                <td>: {{modalText.kabupaten}}</td>
-            </tr>
-            <tr>
-                <td>Provinsi</td>
-                <td>: {{modalText.provinsi}}</td>
-            </tr>
-            <tr>
-                <td>Kodepos</td>
-                <td>: {{modalText.kode_pos}}</td>
-            </tr>
-            <tr>
-                <td>Telepon</td>
-                <td>: {{modalText.no_telp}}</td>
-            </tr>
-            <tr>
-                <td>Fax</td>
-                <td>: {{modalText.no_fax}}</td>
+                <td>Nomor Akun</td>
+                <td>: {{modalText.nomor_akun}}</td>
             </tr>
             <tr>
                 <td>Email</td>
                 <td>: {{modalText.email}}</td>
             </tr>
             <tr>
-                <td>Website</td>
-                <td>: {{modalText.website}}</td>
+                <td>Telepon</td>
+                <td>: {{modalText.telepon}}</td>
             </tr>
             <tr>
-                <td>Status Sekolah</td>
-                <td>: {{(modalText.status_sekolah == 1) ? 'Negeri' : 'Swasta'}}</td>
+                <td>Nama Bank</td>
+                <td>: {{modalText.bank}}</td>
             </tr>
             <tr>
-                <td>Nama Kepala Sekolah</td>
-                <td>: {{modalText.nama_kepsek}}</td>
+                <td>Nomor Rekening</td>
+                <td>: {{modalText.nomor_rekening}}</td>
             </tr>
             <tr>
-                <td>NIP Kepala Sekolah</td>
-                <td>: {{modalText.nip_kepsek}}</td>
+                <td>Nilai Rebate</td>
+                <td>: {{modalText.nilai_rebate}}</td>
             </tr>
             <tr>
-                <td>Nama Pengawas Pembina</td>
-                <td>: {{modalText.nama_pengawas}}</td>
+                <td>Sebagai SUB IB</td>
+                <td>: {{modalText.sub_ib}}</td>
             </tr>
             <tr>
-                <td>NIP Pengawas Pembina</td>
-                <td>: {{modalText.nip_pengawas}}</td>
-            </tr>
-            <tr>
-                <td>Verifikator</td>
-                <td>: {{(modalText.sekolah_sasaran) ? modalText.sekolah_sasaran.verifikator.name : 'Belum dipilih'}}</td>
+                <td>Jumlah Downline</td>
+                <td>: {{(modalText.downline) ? modalText.downline.length : 0}}</td>
             </tr>
         </table>
         <template v-slot:modal-footer>
