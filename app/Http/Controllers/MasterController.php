@@ -66,7 +66,7 @@ class MasterController extends Controller
                 $volume = str_replace(' lots', '', $item['Volume Trading']);
                 $laba_ib = $item['Laba IB'];
                 //$rebate = (($volume / $trader->nilai_rebate) * $trader->nilai_rebate)  * $setting->value;
-                $rebate = (($laba_ib / 12) * 8)  * $setting->value;
+                $rebate = (($laba_ib / 12) * $trader->nilai_rebate)  * $setting->value;
                 //=((E2/F2)*F2)*14000
                 Transaksi::updateOrCreate(
                     [
