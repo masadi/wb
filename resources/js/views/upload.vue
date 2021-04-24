@@ -81,7 +81,7 @@ export default {
             this.isLoading = false;
             this.progressBar = 0;
           });
-          Toast.fire({
+          Swal.fire({
             icon: "success",
             title: "Upload berhasil",
           });
