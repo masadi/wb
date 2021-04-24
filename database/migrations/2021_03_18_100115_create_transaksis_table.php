@@ -16,7 +16,7 @@ class CreateTransaksisTable extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('trader_id')->constrained();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->date('tanggal');
             $table->date('tanggal_upload');
             $table->string('volume');
