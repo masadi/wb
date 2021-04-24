@@ -83,17 +83,17 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'trader.nama_lengkap',
+                    key: 'trader_email.nama_lengkap',
                     label: 'Nama Lengkap',
                     sortable: true
                 },
                 {
-                    key: 'trader.nomor_akun',
+                    key: 'trader_email.nomor_akun',
                     label: 'Nomor Akun',
                     sortable: true
                 },
                 {
-                    key: 'trader.email',
+                    key: 'email',
                     label: 'Email',
                     sortable: true
                 },
@@ -108,12 +108,12 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'trader.bank',
+                    key: 'trader_email.bank',
                     label: 'Bank',
                     sortable: true
                 },
                 {
-                    key: 'trader.nomor_rekening',
+                    key: 'trader_email.nomor_rekening',
                     label: 'Nomor Rekening',
                     sortable: true
                 },
@@ -129,7 +129,7 @@ export default {
             per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
             search: '',
             sortBy: 'nama_lengkap', //DEFAULT SORTNYA ADALAH CREATED_AT
-            sortByDesc: true, //ASCEDING
+            sortByDesc: false, //ASCEDING
             form: new Form({
                 npsn: '',
             }),
