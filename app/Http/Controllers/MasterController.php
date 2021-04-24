@@ -125,6 +125,7 @@ class MasterController extends Controller
                 //'sub_ib_id' => (is_array($request->sub_ib_id)) ? $request->sub_ib_id['id'] : $request->sub_ib_id,
                 'nilai_rebate' => $request->nilai_rebate,
             ]);
+            Transaksi::where('trader_id', $request->id)->update(['email' => $request->email]);
             if($request->sub_ib_id){
                 Upline::updateOrCreate(
                     [
