@@ -71,7 +71,7 @@ class MasterController extends Controller
                 Transaksi::updateOrCreate(
                     [
                         'trader_id' => $trader->id,
-                        'email' => $trader->email,
+                        //'email' => $trader->email,
                         'tanggal' => $item['Tanggal'],
                     ],
                     [
