@@ -82,19 +82,24 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'trader.nama_lengkap',
+                    key: 'trader_email.nama_lengkap',
                     label: 'Nama Lengkap',
                     sortable: true
                 },
                 {
-                    key: 'trader.nomor_akun',
+                    key: 'trader_email.nomor_akun',
                     label: 'Nomor Akun',
                     sortable: true
                 },
                 {
-                    key: 'trader.email',
+                    key: 'email',
                     label: 'Email',
                     sortable: true
+                },
+                {
+                    key: 'sum_laba_ib',
+                    label: 'Laba IB',
+                    sortable: false
                 },
                 {
                     key: 'volume_trading',
@@ -107,12 +112,12 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'trader.bank',
+                    key: 'trader_email.bank',
                     label: 'Bank',
                     sortable: true
                 },
                 {
-                    key: 'trader.nomor_rekening',
+                    key: 'trader_email.nomor_rekening',
                     label: 'Nomor Rekening',
                     sortable: true
                 },

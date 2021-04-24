@@ -64,15 +64,19 @@ class MasterController extends Controller
                 );
                 $tanggal = strtotime($item['Tanggal']);
                 $volume = str_replace(' lots', '', $item['Volume Trading']);
-                $rebate = (($volume / $trader->nilai_rebate) * $trader->nilai_rebate)  * $setting->value;
+                $laba_ib = $item['Laba IB'];
+                //$rebate = (($volume / $trader->nilai_rebate) * $trader->nilai_rebate)  * $setting->value;
+                $rebate = (($laba_ib / 12) * 8)  * $setting->value;
                 //=((E2/F2)*F2)*14000
                 Transaksi::updateOrCreate(
                     [
                         'trader_id' => $trader->id,
+                        'email' => $trader->email,
                         'tanggal' => $item['Tanggal'],
                     ],
                     [
                         'volume' => $volume,
+                        'laba_ib' => $laba_ib,
                         'komisi' => $trader->nilai_rebate,
                         'dollar' => $setting->value,
                         'rebate' => $rebate,

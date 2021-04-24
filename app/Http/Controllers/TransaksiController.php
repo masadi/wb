@@ -12,15 +12,16 @@ class TransaksiController extends Controller
         return $this->{$function}($request);
     }
     public function get_rebate($request){
-        $all_data = Transaksi::whereHas('trader', function($query){
+        $all_data = Transaksi::whereHas('trader_email', function($query){
             $query->whereNotNull('email');
         })
         ->with(['trader.upline'])
-        ->selectRaw('trader_id')
+        ->selectRaw('email')
         ->selectRaw('tanggal_upload')
         ->selectRaw("SUM(volume) as volume_trading")
+        ->selectRaw("SUM(laba_ib) as sum_laba_ib")
         ->selectRaw("SUM(rebate) as jumlah_rebate")
-        ->groupBy('trader_id')
+        ->groupBy('email')
         ->groupBy('tanggal_upload')
         ->paginate(10);
         return response()->json(['status' => 'success', 'data' => $all_data]);
@@ -30,11 +31,12 @@ class TransaksiController extends Controller
             $query->whereNotNull('email');
         })
         ->with(['trader.upline'])
-        ->selectRaw('trader_id')
+        ->selectRaw('email')
         ->selectRaw('tanggal_upload')
         ->selectRaw("SUM(volume) as volume_trading")
+        ->selectRaw("SUM(laba_ib) as sum_laba_ib")
         ->selectRaw("SUM(rebate) as jumlah_rebate")
-        ->groupBy('trader_id')
+        ->groupBy('email')
         ->groupBy('tanggal_upload')
         ->paginate(10);
         return response()->json(['status' => 'success', 'data' => $all_data]);

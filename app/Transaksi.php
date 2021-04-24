@@ -11,4 +11,8 @@ class Transaksi extends Model
     {
         return $this->hasOne('App\Trader', 'id', 'trader_id');
     }
+    public function trader_email()
+    {
+        return $this->hasOne('App\Trader', 'email', 'email');
+    }
 }
