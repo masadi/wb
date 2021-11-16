@@ -9,6 +9,6 @@ class Downline extends Model
     protected $guarded = [];
     public function trader()
     {
-        return $this->belongsTo('App\Trader', 'trader_id', 'id');
+        return $this->belongsTo('App\Trader', 'downline_id', 'id');
     }
 }

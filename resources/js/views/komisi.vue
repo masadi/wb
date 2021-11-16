@@ -88,11 +88,6 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'trader_email.nomor_akun',
-                    label: 'Nomor Akun',
-                    sortable: true
-                },
-                {
                     key: 'email',
                     label: 'Email',
                     sortable: true
@@ -108,6 +103,11 @@ export default {
                     sortable: true
                 },
                 {
+                    key: 'komisi',
+                    label: 'Jumlah Komisi',
+                    sortable: false
+                },
+                {
                     key: 'trader_email.bank',
                     label: 'Bank',
                     sortable: true
@@ -118,8 +118,13 @@ export default {
                     sortable: true
                 },
                 {
-                    key: 'upline.nama',
+                    key: 'sub_ib',
                     label: 'SUB IB',
+                    sortable: false
+                },
+                {
+                    key: 'action_komisi',
+                    label: 'Aksi',
                     sortable: false
                 },
             ],
@@ -171,7 +176,6 @@ export default {
                         to: getData.to,
                         isBusy: false,
                     }
-                    console.log(getData.data)
                 })
         },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
@@ -200,7 +204,6 @@ export default {
         },
         insertData() {
             this.form.post('/api/sinkronisasi').then((response) => {
-                //console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({
                     icon: 'success',

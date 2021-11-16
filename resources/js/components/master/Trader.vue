@@ -126,25 +126,18 @@
                         </div>
                         <div class="form-group">
                             <label>Status SUB IB</label>
-                            <!--select name="sub_id_id" v-model="form.sub_id_id" id="sub_id_id" class="form-control" :class="{ 'is-invalid': form.errors.has('sub_id_id') }">
-                                <option value="">Pilih Sub ID</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">Standard User</option>
-                            </select>
-                            <has-error :form="form" field="sub_id_id"></has-error-->
                             <v-select :options="[{label: 'Ya', code: 'ya'}, {label: 'Tidak', code: 'tidak'}]" v-model="form.sub_ib" :class="{ 'is-invalid': form.errors.has('sub_ib') }" required></v-select>
                             <has-error :form="form" field="sub_ib"></has-error>
                         </div>
                         <div class="form-group">
                             <label>Upline SUB IB</label>
-                            <!--select name="sub_id_id" v-model="form.sub_id_id" id="sub_id_id" class="form-control" :class="{ 'is-invalid': form.errors.has('sub_id_id') }">
-                                <option value="">Pilih Sub ID</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">Standard User</option>
-                            </select>
-                            <has-error :form="form" field="sub_id_id"></has-error-->
                             <v-select :options="data_sub_ib" v-model="form.sub_ib_id" :class="{ 'is-invalid': form.errors.has('sub_ib_id') }"></v-select>
                             <has-error :form="form" field="sub_ib_id"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <label>Komisi SUB IB</label>
+                            <input v-model="form.komisi_sub_id" type="text" name="komisi_sub_id" class="form-control" :class="{ 'is-invalid': form.errors.has('komisi_sub_id') }">
+                            <has-error :form="form" field="komisi_sub_id"></has-error>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -178,18 +171,17 @@
                     nilai_rebate: '',
                     sub_ib: '',
                     sub_ib_id: '',
+                    komisi_sub_id: '',
                 })
             }
         },
         methods: {
-
             getResults(page = 1) {
-
-                  this.$Progress.start();
-                  
-                  axios.get('/api/trader?page=' + page).then(({ data }) => (this.data_trader = data.data));
-
-                  this.$Progress.finish();
+                this.$Progress.start();  
+                axios.get('/api/trader?page=' + page).then(({ data }) => (
+                    this.data_trader = data.data
+                ));
+                this.$Progress.finish();
             },
             updateTrader(){
                 this.$Progress.start();
@@ -212,12 +204,12 @@
 
             },
             editModal(trader){
+                console.log(this.form.sub_ib_id);
                 this.editmode = true;
                 this.loaddata_sub_ib();
                 this.form.reset();
                 $('#addNew').modal('show');
                 this.form.fill(trader);
-                console.log(trader)
             },
             newModal(){
                 this.loaddata_sub_ib();

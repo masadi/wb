@@ -49,7 +49,6 @@ export default {
                     if (!getData) {
                         return false
                     }
-                    console.log(getData);
                 })
         },
     },

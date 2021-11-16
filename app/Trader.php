@@ -14,7 +14,7 @@ class Trader extends Model
      */
     public function upline()
     {
-        return $this->hasOne('App\Upline', 'upline_id', 'id');
+        return $this->hasOne('App\Upline', 'trader_id', 'id');
     }
     public function downline()
     {

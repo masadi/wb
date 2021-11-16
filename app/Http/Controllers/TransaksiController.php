@@ -15,7 +15,7 @@ class TransaksiController extends Controller
         $all_data = Transaksi::whereHas('trader_email', function($query){
             $query->whereNotNull('email');
         })
-        ->with(['trader_email.upline'])
+        ->with(['trader_email.upline.trader'])
         ->selectRaw('email')
         ->selectRaw('tanggal_upload')
         ->selectRaw("SUM(volume) as volume_trading")
@@ -29,8 +29,11 @@ class TransaksiController extends Controller
     public function get_komisi($request){
         $all_data = Transaksi::whereHas('trader_email', function($query){
             $query->whereNotNull('email');
+            $query->whereHas('downline');
         })
-        ->with(['trader_email.upline'])
+        ->with(['trader_email' => function($query){
+            $query->with(['upline.trader', 'downline.trader']);
+        }])
         ->selectRaw('email')
         ->selectRaw('tanggal_upload')
         ->selectRaw("SUM(volume) as volume_trading")

@@ -166,7 +166,6 @@ export default {
                         to: getData.to,
                         isBusy: false,
                     }
-                    console.log(getData.data)
                 })
         },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
@@ -195,7 +194,6 @@ export default {
         },
         insertData() {
             this.form.post('/api/sinkronisasi').then((response) => {
-                //console.log(response);
                 $('#modalAdd').modal('hide');
                 Toast.fire({
                     icon: 'success',

@@ -133,7 +133,7 @@ class MasterController extends Controller
                         'upline_id' => $request->sub_ib_id['id'],
                     ],
                     [
-                        'komisi' => (8 - $request->nilai_rebate)
+                        'komisi' => $request->komisi_sub_id,
                     ]
                 );
                 Downline::updateOrCreate(
@@ -142,12 +142,12 @@ class MasterController extends Controller
                         'downline_id' => $request->id,
                     ],
                     [
-                        'komisi' => (8 - $request->nilai_rebate)
+                        'komisi' => $request->komisi_sub_id,
                     ]
                 );
             } else {
-                Upline::where('upline_id', $request->id)->delete();
-                Downline::where('trader_id', $request->id)->delete();
+                Upline::where('trader_id', $request->id)->delete();
+                Downline::where('downline_id', $request->id)->delete();
             }
             return response()->json(['status' => 'success', 'data' => $data, 'message' => 'Dollar berhasil diperbaharui']);
         } elseif($request->route('query') == 'file'){
@@ -156,17 +156,17 @@ class MasterController extends Controller
     }
     public function get_trader($request)
     {
-        $all_data = Trader::with(['upline.trader', 'downline'])->orderBy(request()->sortby, request()->sortbydesc)
+        $all_data = Trader::with(['upline.trader', 'downline.trader'])->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama_lengkap', 'like', '%' . request()->q . '%');
         })->whereNotNull('email')->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
     public function get_sub_ib($request)
     {
-        $all_data = Trader::whereHas('downline')->withCount('downline')->orderBy(request()->sortby, request()->sortbydesc)
+        $all_data = Trader::whereHas('downline')->withCount('downline')->with(['downline.trader'])->orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama_lengkap', 'like', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
@@ -174,7 +174,7 @@ class MasterController extends Controller
     {
         $all_data = Trader::orderBy(request()->sortby, request()->sortbydesc)
             ->when(request()->q, function($all_data) {
-                $all_data = $all_data->where('nama', 'ilike', '%' . request()->q . '%');
+                $all_data = $all_data->where('nama_lengkap', 'like', '%' . request()->q . '%');
         })->whereNull('email')->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }

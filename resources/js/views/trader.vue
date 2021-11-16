@@ -36,32 +36,6 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAdd" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Sekolah</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form @submit.prevent="insertData()" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>NPSN</label>
-                            <input v-model="form.npsn" type="text" name="npsn" class="form-control" :class="{ 'is-invalid': form.errors.has('npsn') }">
-                            <has-error :form="form" field="npsn"></has-error>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Sinkronisasi</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <my-loader />
 </div>
 </template>
 
@@ -166,7 +140,6 @@ export default {
                         to: getData.to,
                         isBusy: false,
                     }
-                    console.log(getData.data)
                 })
         },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
@@ -192,22 +165,6 @@ export default {
 
                 this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
             }
-        },
-        insertData() {
-            this.form.post('/api/sinkronisasi').then((response) => {
-                //console.log(response);
-                $('#modalAdd').modal('hide');
-                Toast.fire({
-                    icon: 'success',
-                    title: response.message
-                });
-                this.loadPostsData();
-            }).catch((e) => {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Some error occured! Please try again'
-                });
-            })
         },
     }
 }

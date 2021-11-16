@@ -36,11 +36,14 @@
                 <strong>Loading...</strong>
             </div>
         </template>
+        <template v-slot:cell(sub_ib)="row">
+            {{(row.item.trader_email.upline) ? row.item.trader_email.upline.trader.nama_lengkap : ''}}
+        </template>
         <template v-slot:cell(actions)="row">
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
+                <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
                 <b-dropdown-item href="javascript:" @click="deleteData(row)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
-                <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
             </b-dropdown>
         </template>
     </b-table>
@@ -96,6 +99,26 @@
                 <td>: {{(modalText.downline) ? modalText.downline.length : 0}}</td>
             </tr>
         </table>
+        <template v-if="modalText.downline_count">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">No</th>
+                        <th class="text-center">Nama Lengkap</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">No HP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(downline, index) in modalText.downline">
+                        <td class="text-center">{{index + 1}}</td>
+                        <td>{{downline.trader.nama_lengkap}}</td>
+                        <td>{{downline.trader.email}}</td>
+                        <td>{{downline.trader.telepon}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
         <template v-slot:modal-footer>
             <div class="w-100 float-right">
                 <b-button variant="secondary" size="sm" @click="showModal=false">
@@ -155,8 +178,13 @@
             </div>
             <div class="form-group">
                 <label>Upline SUB IB</label>
-                <v-select label="nama_lengkap" :options="data_upline" v-model="form.sub_ib_id" />
+                <v-select label="nama_lengkap" :options="data_upline" v-model="form.sub_ib_id" @input="showKomisi" />
                 <has-error :form="form" field="sub_ib_id"></has-error>
+            </div>
+            <div class="form-group" v-if="form_komisi">
+                <label>Komisi SUB IB</label>
+                <input v-model="form.komisi_sub_id" type="text" name="komisi_sub_id" class="form-control" :class="{ 'is-invalid': form.errors.has('komisi_sub_id') }">
+                <has-error :form="form" field="komisi_sub_id"></has-error>
             </div>
         </template>
         <template v-slot:modal-footer="{ hide }">
@@ -198,6 +226,7 @@ export default {
     },
     data() {
         return {
+            form_komisi: 0,
             user: user,
             data_status: [],
             data_upline: [],
@@ -212,7 +241,8 @@ export default {
                 nilai_rebate: '',
                 sub_ib: '',
                 sub_ib_id: '',
-            }),
+                komisi_sub_id: ''
+,            }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
             sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
@@ -312,9 +342,22 @@ export default {
             this.form.nilai_rebate = getData.nilai_rebate
             this.form.sub_ib = (getData.sub_ib == 'ya') ? 'Ya' : 'Tidak'
             this.form.sub_ib_id = (getData.upline) ? {id: getData.upline.id, nama_lengkap: getData.upline.trader.nama_lengkap} : ''
+            if(getData.upline){
+                this.form_komisi = 1
+                this.form.komisi_sub_id = getData.upline.komisi
+            } else {
+                this.form_komisi = 0
+            }
             this.getStatus()
             this.getUpline(row)
             $('#modalEdit').modal('show');
+        },
+        showKomisi(val){
+            if(val){
+                this.form_komisi = 1
+            } else {
+                this.form_komisi = 0
+            }
         },
         updateData() {
             let id = this.form.id;
@@ -339,7 +382,6 @@ export default {
             ]
         },
         getUpline(row){
-            console.log(row);
             axios.get(`/api/master/all-upline`, {
                 params: {
                     id: row.item.id
