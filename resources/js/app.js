@@ -89,6 +89,11 @@ Vue.filter('formatDate', function (value) {
         return moment(String(value)).format('LL')
     }
 });
+Vue.filter('rupiah', function (value) {
+    if (value) {
+        return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(value);
+    }
+});
 new Vue({
     el: '#pmp_smk',
     router,

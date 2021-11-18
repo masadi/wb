@@ -11,4 +11,8 @@ class Downline extends Model
     {
         return $this->belongsTo('App\Trader', 'downline_id', 'id');
     }
+    public function transaksi()
+    {
+        return $this->hasMany('App\Transaksi', 'trader_id', 'downline_id');
+    }
 }

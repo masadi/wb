@@ -154,29 +154,26 @@ export default {
             let current_page = this.search == '' ? this.current_page : 1
             //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
             axios.get(`/api/transaksi/komisi`, {
-                    //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
-                    params: {
-                        page: current_page,
-                        per_page: this.per_page,
-                        q: this.search,
-                        sortby: this.sortBy,
-                        sortbydesc: this.sortByDesc ? 'DESC' : 'ASC'
-                    }
-                })
-                .then((response) => {
-                    //JIKA RESPONSENYA DITERIMA
-                    let getData = response.data.data
-                    this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
-                    //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
-                    this.meta = {
-                        total: getData.total,
-                        current_page: getData.current_page,
-                        per_page: getData.per_page,
-                        from: getData.from,
-                        to: getData.to,
-                        isBusy: false,
-                    }
-                })
+                params: {
+                    page: current_page,
+                    per_page: this.per_page,
+                    q: this.search,
+                    sortby: this.sortBy,
+                    sortbydesc: this.sortByDesc ? 'DESC' : 'ASC'
+                }
+            })
+            .then((response) => {
+                let getData = response.data.data
+                this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                this.meta = {
+                    total: getData.total,
+                    current_page: getData.current_page,
+                    per_page: getData.per_page,
+                    from: getData.from,
+                    to: getData.to,
+                    isBusy: false,
+                }
+            })
         },
         //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
         handlePerPage(val) {

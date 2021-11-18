@@ -37,7 +37,16 @@
             </div>
         </template>
         <template v-slot:cell(sub_ib)="row">
-            {{(row.item.trader_email.upline) ? row.item.trader_email.upline.trader.nama_lengkap : ''}}
+            {{(row.item.trader_email.upline) ? row.item.trader_email.upline.trader.nama_lengkap : '-'}}
+        </template>
+        <template v-slot:cell(komisi)="row">
+            <template v-if="row.item.trader_email.transaksi_downline">
+                {{row.item.trader_email.transaksi_downline.total_komisi | rupiah}}
+            </template>
+            <template v-else>0</template>
+        </template>
+        <template v-slot:cell(action_komisi)="row">
+            <b-button id="show-btn" @click="detilTransaksi(row.item)" variant="success" size="sm" squared>Detil</b-button>
         </template>
         <template v-slot:cell(actions)="row">
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
@@ -60,6 +69,45 @@
             <b-pagination v-model="meta.current_page" :total-rows="meta.total" :per-page="meta.per_page" align="right" @change="changePage" aria-controls="dw-datatable"></b-pagination>
         </div>
     </div>
+    <b-modal id="modal-detil-komisi" title="Detil Komisi SUB IB" ref="modal-detil-komisi" size="xl">
+        <table class="table table-bordered" v-if="data_komisi">
+            <tr>
+                <td>Nama Trader</td>
+                <td>{{data_komisi.nama_lengkap}}</td>
+            </tr>
+            <tr>
+                <td>Jumlah Komisi</td>
+                <td>{{total_komisi | rupiah}}</td>
+            </tr>
+        </table>
+        <h3>Detil Komisi</h3>
+        <table class="table table-bordered table-striped" v-if="data_komisi">
+            <thead>
+                <tr>
+                    <th class="text-center">No</th>
+                    <th class="text-center">Nama Downline</th>
+                    <th class="text-center">Laba IB</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-for="downline in data_komisi.downline">
+                    <template v-for="(transaksi, index) in downline.transaksi">
+                <tr>
+                    <td class="text-center">{{index+1}}</td>
+                    <td>{{downline.trader.nama_lengkap}}</td>
+                    <td class="text-center">(({{Number(transaksi.laba_ib)}}/12)*{{downline.komisi}})*{{transaksi.dollar}} = {{((Number(transaksi.laba_ib)/12)*downline.komisi) * transaksi.dollar | rupiah}}</td>
+                </tr>
+                </template>
+                </template>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" class="text-right">Total Komisi</td>
+                    <td class="text-center">{{rumus_komisi}}{{total_komisi | rupiah}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </b-modal>
     <b-modal id="modal-xl" size="lg" v-model="showModal" title="Detil Trader">
         <table class="table">
             <tr>
@@ -95,6 +143,10 @@
                 <td>: {{modalText.sub_ib}}</td>
             </tr>
             <tr>
+                <td>Keterangan</td>
+                <td>: {{modalText.keterangan}}</td>
+            </tr>
+            <tr>
                 <td>Jumlah Downline</td>
                 <td>: {{(modalText.downline) ? modalText.downline.length : 0}}</td>
             </tr>
@@ -127,7 +179,7 @@
             </div>
         </template>
     </b-modal>
-    <b-modal id="modal-xl" size="lg" v-model="editModal" title="Edit Data Trader">
+    <b-modal id="modal-xl" size="xl" v-model="editModal" title="Edit Data Trader">
         <template v-slot:modal-header>
             <h5 class="modal-title">Edit Data Trader</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -135,56 +187,82 @@
             </button>
         </template>
         <template v-slot:default="{ hide }">
-            <div class="form-group">
-                <label>Nama Lengkap</label>
+            <div class="form-group row">
+                <label for="nama_lengkap" class="col-sm-3 col-form-label">Nama Lengkap</label>
                 <input v-model="form.id" type="hidden" name="id" class="form-control">
-                <input v-model="form.nama_lengkap" type="text" name="nama_lengkap" class="form-control" :class="{ 'is-invalid': form.errors.has('nama_lengkap') }">
-                <has-error :form="form" field="nama_lengkap"></has-error>
+                <div class="col-sm-9">
+                    <input v-model="form.nama_lengkap" type="text" id="nama_lengkap" class="form-control" :class="{ 'is-invalid': form.errors.has('nama_lengkap') }">
+                    <has-error :form="form" field="nama_lengkap"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Nomor Akun</label>
-                <input v-model="form.nomor_akun" type="text" name="nomor_akun" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_akun') }">
-                <has-error :form="form" field="nomor_akun"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Nomor Akun</label>
+                <div class="col-sm-9">
+                    <input v-model="form.nomor_akun" type="text" name="nomor_akun" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_akun') }">
+                    <has-error :form="form" field="nomor_akun"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input v-model="form.email" type="email" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                <has-error :form="form" field="email"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                    <input v-model="form.email" type="email" name="email" class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                    <has-error :form="form" field="email"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Nomor HP</label>
-                <input v-model="form.telepon" type="text" name="telepon" class="form-control" :class="{ 'is-invalid': form.errors.has('telepon') }">
-                <has-error :form="form" field="telepon"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Nomor HP</label>
+                <div class="col-sm-9">
+                    <input v-model="form.telepon" type="text" name="telepon" class="form-control" :class="{ 'is-invalid': form.errors.has('telepon') }">
+                    <has-error :form="form" field="telepon"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Nama Bank</label>
-                <input v-model="form.bank" type="text" name="bank" class="form-control" :class="{ 'is-invalid': form.errors.has('bank') }">
-                <has-error :form="form" field="bank"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Nama Bank</label>
+                <div class="col-sm-9">
+                    <input v-model="form.bank" type="text" name="bank" class="form-control" :class="{ 'is-invalid': form.errors.has('bank') }">
+                    <has-error :form="form" field="bank"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Nomor Rekening</label>
-                <input v-model="form.nomor_rekening" type="text" name="nomor_rekening" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_rekening') }">
-                <has-error :form="form" field="nomor_rekening"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Nomor Rekening</label>
+                <div class="col-sm-9">
+                    <input v-model="form.nomor_rekening" type="text" name="nomor_rekening" class="form-control" :class="{ 'is-invalid': form.errors.has('nomor_rekening') }">
+                    <has-error :form="form" field="nomor_rekening"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Nilai Rebate</label>
-                <input v-model="form.nilai_rebate" type="text" name="nilai_rebate" class="form-control" :class="{ 'is-invalid': form.errors.has('nilai_rebate') }">
-                <has-error :form="form" field="nilai_rebate"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Nilai Rebate</label>
+                <div class="col-sm-9">
+                    <input v-model="form.nilai_rebate" type="text" name="nilai_rebate" class="form-control" :class="{ 'is-invalid': form.errors.has('nilai_rebate') }">
+                    <has-error :form="form" field="nilai_rebate"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Status SUB IB</label>
-                <v-select label="value" :options="data_status" v-model="form.sub_ib" />
-                <has-error :form="form" field="sub_ib"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Status SUB IB</label>
+                <div class="col-sm-9">
+                    <v-select label="value" :options="data_status" v-model="form.sub_ib" />
+                    <has-error :form="form" field="sub_ib"></has-error>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Upline SUB IB</label>
-                <v-select label="nama_lengkap" :options="data_upline" v-model="form.sub_ib_id" @input="showKomisi" />
-                <has-error :form="form" field="sub_ib_id"></has-error>
+            <div class="form-group row">
+                <label  class="col-sm-3 col-form-label">Upline SUB IB</label>
+                <div class="col-sm-9">
+                    <v-select label="nama_lengkap" :options="data_upline" v-model="form.sub_ib_id" @input="showKomisi" />
+                    <has-error :form="form" field="sub_ib_id"></has-error>
+                </div>
             </div>
-            <div class="form-group" v-if="form_komisi">
-                <label>Komisi SUB IB</label>
-                <input v-model="form.komisi_sub_id" type="text" name="komisi_sub_id" class="form-control" :class="{ 'is-invalid': form.errors.has('komisi_sub_id') }">
-                <has-error :form="form" field="komisi_sub_id"></has-error>
+            <div class="form-group row" v-if="form_komisi">
+                <label  class="col-sm-3 col-form-label">Komisi SUB IB</label>
+                <div class="col-sm-9">
+                    <input v-model="form.komisi_sub_id" type="text" name="komisi_sub_id" class="form-control" :class="{ 'is-invalid': form.errors.has('komisi_sub_id') }">
+                    <has-error :form="form" field="komisi_sub_id"></has-error>
+                </div>
+            </div>
+            <div class="form-group row" v-if="form_komisi">
+                <label  class="col-sm-3 col-form-label">Keterangan</label>
+                <div class="col-sm-9">
+                    <b-form-textarea id="textarea" v-model="form.keterangan" placeholder="Enter something..." rows="3" max-rows="6"></b-form-textarea>
+                </div>
             </div>
         </template>
         <template v-slot:modal-footer="{ hide }">
@@ -241,8 +319,9 @@ export default {
                 nilai_rebate: '',
                 sub_ib: '',
                 sub_ib_id: '',
-                komisi_sub_id: ''
-,            }),
+                komisi_sub_id: '',
+                keterangan: '',
+            }),
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
             sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
@@ -250,6 +329,9 @@ export default {
             showModal: false,
             editModal: false,
             modalText: {},
+            data_komisi: null,
+            total_komisi: 0,
+            rumus_komisi: '',
         }
     },
     watch: {
@@ -324,6 +406,29 @@ export default {
                 }
             })
         },
+        detilTransaksi(item){
+            axios.post(`/api/transaksi/detil-komisi`, {
+                trader_id: item.trader_email.id,
+            })
+            .then((response) => {
+                let getData = response.data.data
+                this.data_komisi = getData
+                let laba_ib = 0;
+                let dollar = 0;
+                let komisi = 0;
+                getData.downline.forEach((downline, index) => {
+                    komisi = downline.komisi
+                    downline.transaksi.forEach((transaksi, index) => {
+                        laba_ib += Number(transaksi.laba_ib)
+                        dollar = transaksi.dollar
+                    })
+                })
+                //(({{Number(transaksi.laba_ib)}}/12)*{{downline.komisi}})*{{transaksi.dollar}}=
+                this.rumus_komisi = `((`+laba_ib+`/12)*`+komisi+`)*`+dollar+` = `
+                this.total_komisi = ((laba_ib/12)*komisi) * dollar
+                this.$refs['modal-detil-komisi'].show()
+            })
+        },
         openShowModal(row) {
             this.showModal = true
             this.modalText = row.item
@@ -342,6 +447,7 @@ export default {
             this.form.nilai_rebate = getData.nilai_rebate
             this.form.sub_ib = (getData.sub_ib == 'ya') ? 'Ya' : 'Tidak'
             this.form.sub_ib_id = (getData.upline) ? {id: getData.upline.id, nama_lengkap: getData.upline.trader.nama_lengkap} : ''
+            this.form.keterangan = getData.keterangan
             if(getData.upline){
                 this.form_komisi = 1
                 this.form.komisi_sub_id = getData.upline.komisi
@@ -391,7 +497,7 @@ export default {
                 let getData = response.data.data
                 this.data_upline = getData
             })
-        }
+        },
     }
 }
 </script>

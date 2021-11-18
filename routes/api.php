@@ -29,6 +29,7 @@ Route::post('/reset-password', 'UsersController@reset_passsword');
 Route::post('/update-profile', 'UsersController@update_profile');
 Route::group(['prefix' => 'transaksi'], function(){
     Route::get('/{query}', 'TransaksiController@index');
+    Route::post('/{query}', 'TransaksiController@index');
     Route::post('/simpan-{query}', 'TransaksiController@simpan_data');
     Route::put('/update-{query}/{id}', 'TransaksiController@update_data');
     Route::delete('/delete-{query}/{id}', 'TransaksiController@delete_data');
