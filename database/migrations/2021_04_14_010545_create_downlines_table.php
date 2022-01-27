@@ -16,9 +16,9 @@ class CreateDownlinesTable extends Migration
         Schema::create('downlines', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trader_id');
-            $table->foreign('trader_id')->references('id')->on('traders');
+            $table->foreign('trader_id')->references('id')->on('traders')->onDelete('cascade');
             $table->unsignedBigInteger('downline_id');
-            $table->foreign('downline_id')->references('id')->on('traders');
+            $table->foreign('downline_id')->references('id')->on('traders')->onDelete('cascade');
             $table->string('komisi')->nullable();
             $table->timestamps();
         });

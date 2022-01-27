@@ -15,8 +15,8 @@ class CreateKomisisTable extends Migration
     {
         Schema::create('komisis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sub_ib_id')->constrained();
-            $table->foreignId('trader_id')->constrained();
+            $table->foreignId('sub_ib_id')->constrained()->onDelete('cascade');
+            $table->foreignId('trader_id')->constrained()->onDelete('cascade');
             //$table->unsignedBigInteger('downline_id');
             //$table->foreign('downline_id')->references('id')->on('traders');
             $table->string('komisi')->nullable();

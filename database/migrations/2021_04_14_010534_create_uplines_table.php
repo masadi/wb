@@ -16,9 +16,9 @@ class CreateUplinesTable extends Migration
         Schema::create('uplines', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trader_id');
-            $table->foreign('trader_id')->references('id')->on('traders');
+            $table->foreign('trader_id')->references('id')->on('traders')->onDelete('cascade');
             $table->unsignedBigInteger('upline_id');
-            $table->foreign('upline_id')->references('id')->on('traders');
+            $table->foreign('upline_id')->references('id')->on('traders')->onDelete('cascade');
             $table->string('komisi')->nullable();
             $table->timestamps();
         });

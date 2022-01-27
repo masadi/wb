@@ -183,4 +183,23 @@ class MasterController extends Controller
         $all_data = Trader::select('id', 'nama_lengkap')->whereNotNull('email')->where('sub_ib', 'ya')->where('id', '<>', $request->id)->get();//->pluck('nama', 'sekolah_id');
         return response()->json(['status' => 'success', 'data' => $all_data]);
     }
+    public function delete_data(Request $request){
+        $delete = NULL;
+        $messages = [
+            'status' => 'error',
+            'title' => 'Gagal',
+            'text' => 'Tidak ada data terhapus',
+        ];
+        if($request->route('query') == 'trader'){
+            $id = $request->route('id');
+            $delete = Trader::find($id);
+            $delete->delete();
+            $messages = [
+                'status' => 'success',
+                'title' => 'Berhasil!',
+                'text' => 'Data Trader berhasil terhapus',
+            ];
+        }
+        return response()->json($messages);
+    }
 }

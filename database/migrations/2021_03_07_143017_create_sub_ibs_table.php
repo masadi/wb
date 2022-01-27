@@ -22,7 +22,7 @@ class CreateSubIbsTable extends Migration
             $table->string('bank');
             $table->string('nomor_rekening');
             $table->enum('sub_ib', ['ya', 'tidak']);*/
-            $table->foreignId('trader_id')->constrained();
+            $table->foreignId('trader_id')->constrained()->onDelete('cascade');
             //$table->unsignedBigInteger('downline_id');
             //$table->foreign('downline_id')->references('id')->on('traders');
             //$table->string('komisi_sub_id')->nullable();

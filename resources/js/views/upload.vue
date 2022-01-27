@@ -10,6 +10,15 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-th mr-1"></i>
+                  Data Excel
+                </h3>
+                <div class="card-tools">
+                  <a class="btn btn-success btn-sm btn-block btn-flat" href="/downloads/Template.xlsx">Download Template</a>
+                </div>
+              </div>
               <div class="card-body">
                 <label>Upload File Rebate</label>
                 <input

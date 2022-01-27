@@ -52,7 +52,7 @@
             <b-dropdown v-show="hasRole('admin')" id="dropdown-dropleft" dropleft text="Aksi" variant="success" size="sm">
                 <b-dropdown-item href="javascript:" @click="openShowModal(row)"><i class="fas fa-eye"></i> Detil</b-dropdown-item>
                 <b-dropdown-item href="javascript:" @click="editData(row)"><i class="fas fa-edit"></i> Edit</b-dropdown-item>
-                <b-dropdown-item href="javascript:" @click="deleteData(row)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
+                <b-dropdown-item href="javascript:" @click="deleteData(row.item.id)"><i class="fas fa-trash"></i> Hapus</b-dropdown-item>
             </b-dropdown>
         </template>
     </b-table>
@@ -389,14 +389,18 @@ export default {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    return fetch('/api/sekolah/' + id, {
+                    return fetch('/api/master/delete-trader/' + id, {
                         method: 'DELETE',
-                    }).then(() => {
+                    }).then((response) => {
+                        return response.json()
                         //this.form.delete('api/komponen/'+id).then(()=>{
+                        /**/
+                    }).then((data) => {
+                        console.log(data);
                         Swal.fire(
-                            'Berhasil!',
-                            'Data Sekolah berhasil dihapus',
-                            'success'
+                            data.title,
+                            data.text,
+                            data.status
                         ).then(() => {
                             this.loadPerPage(10);
                         });
